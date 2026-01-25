@@ -8,20 +8,20 @@
 import hashlib
 import json
 import logging
-import time
-from datetime import datetime
-from pathlib import Path
-from typing import Optional, Iterable
-
 import os
+import time
+from pathlib import Path
+
 import httpx
+
 try:
     import browser_cookie3  # may be unavailable in Docker
 except Exception:
     browser_cookie3 = None
 
-from http.cookiejar import MozillaCookieJar, CookieJar
-from familylink.models import AlwaysAllowedState, AppUsage, MembersResponse
+from http.cookiejar import CookieJar, MozillaCookieJar
+
+from familylink.models import MembersResponse
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ def _generate_sapisidhash(sapisid: str, origin: str) -> str:
     # return f"{ts}_{digest}"  # underscore is accepted by many Google backends
 
     ts = int(time.time() * 1000)  # milliseconds
-    digest = hashlib.sha1(f"{ts} {sapisid} {origin}".encode("utf-8")).hexdigest()
+    digest = hashlib.sha1(f"{ts} {sapisid} {origin}".encode()).hexdigest()
     return f"{ts}_{digest}"  # underscore, not space
 
     # ts = int(time.time() * 1000)
@@ -55,9 +55,9 @@ class FamilyLink:
 
     def __init__(
         self,
-        account_id: Optional[str] = None,
+        account_id: str | None = None,
         browser: str = "firefox",
-        cookie_file_path: Optional[Path] = None,
+        cookie_file_path: Path | None = None,
     ):
         """Initialize the Family Link client.
 
@@ -87,15 +87,24 @@ class FamilyLink:
 
         # --- Cookie/SAPISID sources ---
         sapisid = os.getenv("FAMILYLINK_SAPISID", "").strip() or None
-        cookies_jar: Optional[CookieJar] = None
+        cookies_jar: CookieJar | None = None
 
         # ENV cookie file overrides
         env_cookie_file = os.getenv("FAMILYLINK_COOKIE_FILE", "").strip()
         if env_cookie_file:
             cookie_file_path = Path(env_cookie_file)
 
+        # browser="txt": cookies from file only (no browser sync; e.g. Home Assistant)
+        if browser == "txt":
+            p = Path(cookie_file_path) if cookie_file_path else Path("./cookies.txt")
+            if not p.exists() or not p.is_file():
+                raise ValueError(f"Cookie file not found: {p}")
+            cj = MozillaCookieJar()
+            cj.load(str(p.resolve()), ignore_discard=True, ignore_expires=True)
+            cookies_jar = cj
+
         # If running under profile dir, first try local sapisid/cookies files
-        if in_profiles_dir and not sapisid:
+        if not cookies_jar and in_profiles_dir and not sapisid and browser != "txt":
             # a) sapisid.txt or SAPISID file (raw value)
             for fname in ("sapisid.txt", "SAPISID"):
                 p = Path(fname)
@@ -106,7 +115,7 @@ class FamilyLink:
                         break
 
         # Always try cookies.txt if present (even if sapisid already set)
-        if in_profiles_dir and cookies_jar is None:
+        if not cookies_jar and in_profiles_dir:
             p = Path("cookies.txt")
             if p.exists() and p.is_file():
                 try:
@@ -160,7 +169,6 @@ class FamilyLink:
 
         # --- Build headers/session ---
         sapisidhash = _generate_sapisidhash(sapisid, self.ORIGIN)
-        authorization = f"SAPISIDHASH {sapisidhash}"
 
         # self._headers = {
         #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",
@@ -186,11 +194,25 @@ class FamilyLink:
         self._app_names = {}
 
     # ----------------- minimal API methods -----------------
-    def _get(self, path: str, params: Optional[dict] = None) -> httpx.Response:
+    def _get(self, path: str, params: dict | None = None) -> httpx.Response:
         url = f"{self.BASE_URL}{path}"
         r = self._session.get(url, params=params)
         r.raise_for_status()
         return r
+
+    def _post(self, path: str, content: str) -> httpx.Response:
+        r = self._session.post(f"{self.BASE_URL}{path}", content=content)
+        r.raise_for_status()
+        return r
+
+    def _ensure_account_id(self) -> str:
+        if self.account_id:
+            return self.account_id
+        m = self.get_members()
+        for mem in m.members:
+            if mem.user_id != m.my_user_id:
+                return mem.user_id
+        raise ValueError("No child account; set account_id explicitly")
 
     def get_members(self) -> MembersResponse:
         """List family members for the authenticated parent."""
@@ -226,4 +248,206 @@ class FamilyLink:
     def get_applied_time_limits(self, child_id: str) -> dict:
         r = self._session.get(f"{self.BASE_URL}/people/{child_id}/appliedTimeLimits")
         r.raise_for_status()
+        return r.json()
+
+    def get_time_limits(self, account_id: str | None = None) -> dict:
+        """Get applied time limits for a child (today)."""
+        aid = account_id or self._ensure_account_id()
+        r = self._session.get(
+            f"{self.BASE_URL}/people/{aid}/appliedTimeLimits",
+            headers={"Content-Type": "application/json"},
+        )
+        r.raise_for_status()
+        return r.json()
+
+    def set_time_limits_device(
+        self,
+        account_id: str | None = None,
+        device_id: str = "",
+        period_id: str = "",
+        time_in_minutes: int = 0,
+    ) -> dict:
+        """Set daily time limit (minutes) for a device."""
+        aid = account_id or self._ensure_account_id()
+        payload = json.dumps(
+            [
+                None,
+                aid,
+                [
+                    [
+                        None,
+                        None,
+                        8,
+                        device_id,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        [2, time_in_minutes, period_id],
+                    ],
+                ],
+                [1],
+            ]
+        )
+        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
+        return r.json()
+
+    def disable_time_limits_device(
+        self,
+        account_id: str | None = None,
+        device_id: str = "",
+        period_id: str = "",
+        time_in_minutes: int = 0,
+    ) -> dict:
+        """Disable all time limits for a device (today)."""
+        aid = account_id or self._ensure_account_id()
+        payload = json.dumps(
+            [
+                None,
+                aid,
+                [
+                    [
+                        None,
+                        None,
+                        8,
+                        device_id,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        [1, time_in_minutes, period_id],
+                    ],
+                ],
+                [1],
+            ]
+        )
+        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
+        return r.json()
+
+    def enable_time_limits_device(
+        self,
+        account_id: str | None = None,
+        device_id: str = "",
+        period_id: str = "",
+        time_in_minutes: int = 0,
+    ) -> dict:
+        """Re-enable previous time limits for a device (calls set_time_limits_device)."""
+        return self.set_time_limits_device(
+            account_id, device_id, period_id, time_in_minutes
+        )
+
+    def lock_device(
+        self,
+        account_id: str | None = None,
+        device_id: str = "",
+    ) -> dict:
+        """Lock a device."""
+        aid = account_id or self._ensure_account_id()
+        payload = json.dumps([None, aid, [[None, None, 1, device_id]], [1]])
+        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
+        return r.json()
+
+    def unlock_device(
+        self,
+        account_id: str | None = None,
+        device_id: str = "",
+    ) -> dict:
+        """Unlock a device."""
+        aid = account_id or self._ensure_account_id()
+        payload = json.dumps([None, aid, [[None, None, 4, device_id]], [1]])
+        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
+        return r.json()
+
+    def disable_downtime_device(
+        self,
+        account_id: str | None = None,
+        device_id: str = "",
+        start_hour: int = 0,
+        start_minute: int = 0,
+        end_hour: int = 0,
+        end_minute: int = 0,
+        period_id: str = "",
+    ) -> dict:
+        """Disable downtime for a device (today)."""
+        aid = account_id or self._ensure_account_id()
+        payload = json.dumps(
+            [
+                None,
+                aid,
+                [
+                    [
+                        None,
+                        None,
+                        9,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        [
+                            1,
+                            [start_hour, end_minute],
+                            [end_hour, end_minute],
+                            period_id,
+                        ],
+                    ],
+                ],
+                [1],
+            ]
+        )
+        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
+        return r.json()
+
+    def enable_downtime_device(
+        self,
+        account_id: str | None = None,
+        device_id: str = "",
+        start_hour: int = 0,
+        start_minute: int = 0,
+        end_hour: int = 0,
+        end_minute: int = 0,
+        period_id: str = "",
+    ) -> dict:
+        """Enable downtime for a device (today)."""
+        aid = account_id or self._ensure_account_id()
+        payload = json.dumps(
+            [
+                None,
+                aid,
+                [
+                    [
+                        None,
+                        None,
+                        9,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        [
+                            2,
+                            [start_hour, end_minute],
+                            [end_hour, end_minute],
+                            period_id,
+                        ],
+                    ],
+                ],
+                [1],
+            ]
+        )
+        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
         return r.json()
