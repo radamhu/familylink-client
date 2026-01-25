@@ -1,0 +1,5 @@
+# Netscape HTTP Cookie File
+# This is a generated file! Do not edit.
+.google.com	TRUE	/	TRUE	0	SAPISID	test_sapisid_12345
+.google.com	TRUE	/	TRUE	0	SID	sample_sid_value
+.google.com	TRUE	/	TRUE	0	HSID	sample_hsid_value

@@ -14,6 +14,55 @@ A non-official Python package to interact with Google Family Link, to manage you
 pip install familylink
 ```
 
+## Development setup (direnv + .env)
+
+- **direnv**: Uses `.python-version` (3.12) and **uv** for the venv. Run `direnv allow` in the project root.
+- **.env**: Copy `.env.example` → `.env` and set `FAMILYLINK_*` (see [docs/SUMMARY](docs/SUMMARY.md) § Auth). `.env` is gitignored; `.env.example` is tracked.
+
+```bash
+cp .env.example .env
+# edit .env, then:
+direnv allow
+uv sync   # if not auto-run by direnv
+```
+
+## Testing
+
+### 🔄 **CI Pipeline** ([ci.yml](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html))
+
+1. Lint & Format Check (Ruff)
+2. Type Check (MyPy)
+3. Unit Tests (Python 3.10, 3.11, 3.12)
+4. Integration Tests
+5. Smoke Tests
+6. E2E Tests
+7. Coverage Report (80% threshold)
+8. Final validation
+
+### 🧪 **Local Test Runner** ([run_tests.py](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html))
+
+* Interactive menu
+* CLI mode (`--suite`, `-v`, `--fail-under`)
+* Color-coded output
+* Mirrors CI exactly
+
+```
+# Install dependencies
+uv sync --group test
+
+# Interactive menu
+python scripts/run_tests.py
+
+# CLI mode
+python scripts/run_tests.py --suite all -v
+python scripts/run_tests.py --suite smoke
+```
+
+📚 **Documentation**
+
+* [README.md](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) - Test suite guide
+* [TESTING.md](vscode-file://vscode-app/usr/share/code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) - Comprehensive testing docs
+
 ## Usage as a CLI
 
 Create a `config.csv` file with the following format:

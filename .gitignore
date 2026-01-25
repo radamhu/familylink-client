@@ -21,8 +21,12 @@ wheels/
 *.egg
 MANIFEST
 
-# Virtual environments
+# Env files (secrets); .env.example is tracked
 .env
+.env.local
+.env.*.local
+
+# Virtual environments
 .venv
 env/
 venv/
@@ -62,12 +66,6 @@ cover/
 *.log
 logs/
 
-# Local development
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -79,3 +77,5 @@ Thumbs.db
 
 # Project specific
 *.csv
+
+.specstory/
