@@ -1,17 +1,25 @@
 """Family Link CLI"""
 
 import argparse
+import base64
 import csv
 import logging
+import sys
 from datetime import datetime
+from http.cookiejar import MozillaCookieJar
 from pathlib import Path
 
 from rich.console import Console
 from rich.logging import RichHandler
 from rich.theme import Theme
 
-from familylink import FamilyLink
+from familylink import FamilyLink, SessionExpiredError
 from familylink.models import AlwaysAllowedState
+
+try:
+    import browser_cookie3
+except Exception:
+    browser_cookie3 = None
 
 # Configure rich console with custom theme
 console = Console(
@@ -44,8 +52,238 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 _logger = logging.getLogger(__name__)
 
 
+def _cmd_export_cookies(argv: list[str]) -> None:
+    """Export Google cookies for cloud/Docker deployment."""
+    parser = argparse.ArgumentParser(
+        prog="familylink export-cookies",
+        description=(
+            "Export Google cookies from your local browser to a file or base64 string "
+            "for use with FAMILYLINK_COOKIES_B64 or FAMILYLINK_COOKIE_FILE."
+        ),
+    )
+    parser.add_argument(
+        "--browser",
+        choices=["firefox", "chrome"],
+        default="firefox",
+        help="Browser to extract cookies from (default: firefox)",
+    )
+    parser.add_argument(
+        "--output",
+        "-o",
+        default="cookies.txt",
+        help="Output file path (default: cookies.txt)",
+    )
+    parser.add_argument(
+        "--base64",
+        action="store_true",
+        help="Also print the base64-encoded value for FAMILYLINK_COOKIES_B64",
+    )
+    args = parser.parse_args(argv)
+
+    if browser_cookie3 is None:
+        console.print(
+            "[error]browser_cookie3 is not installed.[/error]\n"
+            "Run: [bold]pip install browser-cookie3[/bold]  (host only — not needed in Docker)"
+        )
+        sys.exit(1)
+
+    console.print(f"Extracting Google cookies from [bold]{args.browser}[/bold]...")
+    source_jar = getattr(browser_cookie3, args.browser)()
+
+    out_jar = MozillaCookieJar()
+    for cookie in source_jar:
+        if "google.com" in cookie.domain:
+            out_jar.set_cookie(cookie)
+
+    sapisid_found = any(c.name == "SAPISID" for c in out_jar)
+    if not sapisid_found:
+        console.print(
+            "[error]SAPISID cookie not found.[/error] "
+            "Sign in to [bold]https://familylink.google.com[/bold] in your browser first."
+        )
+        sys.exit(1)
+
+    out_jar.save(args.output, ignore_discard=True, ignore_expires=True)
+    console.print(f"[success]Cookies saved to {args.output}[/success]")
+
+    if args.base64:
+        content = Path(args.output).read_bytes()
+        encoded = base64.b64encode(content).decode()
+        console.print(
+            "\n[bold]For cloud/Docker — store this value as a secret and inject as:[/bold]\n"
+            f"  [cyan]export FAMILYLINK_COOKIES_B64={encoded}[/cyan]\n\n"
+            "[dim]Re-run this command when Google invalidates the session (sign-out, password change).[/dim]"
+        )
+
+
+def _mins_to_hhmm(mins: int) -> str:
+    return f"{mins // 60}:{mins % 60:02d}"
+
+
+def _cmd_fetch_config(argv: list[str]) -> None:
+    """Fetch current Family Link supervision settings and write config CSV file(s)."""
+    parser = argparse.ArgumentParser(
+        prog="familylink fetch-config",
+        description=(
+            "Read the current Family Link supervision state for every child and write "
+            "a config CSV that reproduces it. Blocked apps are excluded (absence = blocked). "
+            "Always-allowed and time-limited apps are included."
+        ),
+    )
+    parser.add_argument(
+        "--browser",
+        choices=["firefox", "chrome"],
+        default="firefox",
+        help="Browser to read cookies from (default: firefox)",
+    )
+    parser.add_argument(
+        "--output-dir",
+        "-o",
+        default=".",
+        help="Directory for output CSV files (default: current directory)",
+    )
+    args = parser.parse_args(argv)
+
+    from familylink.models import AlwaysAllowedState
+
+    client = FamilyLink(browser=args.browser)
+    members = client.get_members()
+    children = [
+        m
+        for m in members.members
+        if m.member_supervision_info and m.member_supervision_info.is_supervised_member
+    ]
+
+    if not children:
+        console.print("[error]No supervised accounts found.[/error]")
+        sys.exit(1)
+
+    out_dir = Path(args.output_dir)
+    multi = len(children) > 1
+
+    def _day_nums_to_range_strs(nums: list[int]) -> list[str]:
+        """[1,2,3,4,5] → ['Mon-Fri']  |  [1,2,3,4,5,7] → ['Mon-Fri','Sun']  |  all 7 → ['']"""
+        _D = {1: "Mon", 2: "Tue", 3: "Wed", 4: "Thu", 5: "Fri", 6: "Sat", 7: "Sun"}
+        s = sorted(nums)
+        if s == list(range(1, 8)):
+            return [""]
+        runs, run = [], [s[0]]
+        for n in s[1:]:
+            if n == run[-1] + 1:
+                run.append(n)
+            else:
+                runs.append(run)
+                run = [n]
+        runs.append(run)
+        return [_D[r[0]] if len(r) == 1 else f"{_D[r[0]]}-{_D[r[-1]]}" for r in runs]
+
+    for child in children:
+        given = child.profile.given_name or child.profile.display_name.split()[0]
+        safe = "".join(c for c in given if c.isalnum() or c in "-_")
+        filename = f"config-{safe}.csv" if multi else "config.csv"
+        out_path = out_dir / filename
+
+        console.print(
+            f"Fetching settings for [bold]{child.profile.display_name}[/bold]..."
+        )
+        usage = client.get_apps_and_usage(child.user_id)
+
+        # Fetch and parse the device schedule (downtime + screen-time limits)
+        schedule: dict[int, dict] = {}
+        try:
+            r = client._session.get(
+                f"{client.BASE_URL}/people/{child.user_id}/timeLimit"
+            )
+            if r.is_success:
+                schedule = FamilyLink._parse_time_limit(r.json())
+        except Exception:
+            pass
+
+        # Group day numbers (1=Mon…7=Sun) by their available time window
+        from collections import defaultdict
+
+        time_groups: dict[str, list[int]] = defaultdict(list)
+        for d in range(1, 8):
+            info = schedule.get(d, {})
+            key = (
+                f"{info['avail_start']}-{info['avail_end']}"
+                if "avail_start" in info
+                else ""
+            )
+            time_groups[key].append(d)
+        # Sort groups so earlier days come first
+        sorted_groups = sorted(time_groups.items(), key=lambda kv: kv[1][0])
+
+        rows = []
+        for app in sorted(usage.apps, key=lambda a: a.title.lower()):
+            sup = app.supervision_setting
+            is_system = any(
+                app.package_name.startswith(p) for p in ["com.google", "com.android"]
+            )
+
+            if sup.hidden:
+                continue  # excluded — absence keeps it blocked
+
+            if sup.usage_limit:
+                # One row per day-group × consecutive day-range within that group
+                dur = _mins_to_hhmm(sup.usage_limit.daily_usage_limit_mins)
+                for time_range, day_nums in sorted_groups:
+                    for days_str in _day_nums_to_range_strs(day_nums):
+                        rows.append(
+                            {
+                                "App": app.title,
+                                "Max Duration": dur,
+                                "Days": days_str,
+                                "Time Ranges": time_range,
+                            }
+                        )
+            elif (
+                sup.always_allowed_app_info
+                and sup.always_allowed_app_info.always_allowed_state
+                == AlwaysAllowedState.ENABLED
+            ) or not is_system:
+                # Always-allowed (or permitted unmanaged) — no time restriction
+                rows.append(
+                    {
+                        "App": app.title,
+                        "Max Duration": "",
+                        "Days": "",
+                        "Time Ranges": "",
+                    }
+                )
+
+        n_limited = sum(1 for r in rows if r["Max Duration"])
+        n_always = len(rows) - n_limited
+
+        with open(out_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(
+                f, fieldnames=["App", "Max Duration", "Days", "Time Ranges"]
+            )
+            writer.writeheader()
+            writer.writerows(rows)
+
+        console.print(
+            f"[success]Saved {out_path}[/success] — "
+            f"{n_limited} time-limited rows, {n_always} always allowed"
+        )
+
+    if multi:
+        console.print(
+            "\n[dim]One file per supervised member. Pass the right file as the config argument "
+            "and set account_id to target the matching member.[/dim]"
+        )
+
+
 def main():
     """Main entry point for the CLI"""
+    if len(sys.argv) > 1 and sys.argv[1] == "export-cookies":
+        _cmd_export_cookies(sys.argv[2:])
+        return
+
+    if len(sys.argv) > 1 and sys.argv[1] == "fetch-config":
+        _cmd_fetch_config(sys.argv[2:])
+        return
+
     parser = argparse.ArgumentParser(
         description="Apply Family Link configuration from CSV file"
     )
@@ -95,14 +333,18 @@ def main():
     if args.browser:
         client_kwargs["browser"] = args.browser
 
-    client = FamilyLink(**client_kwargs)
+    try:
+        client = FamilyLink(**client_kwargs)
 
-    if not Path(args.config_file).exists():
-        _create_default_config(client, args.config_file)
-        return
+        if not Path(args.config_file).exists():
+            _create_default_config(client, args.config_file)
+            return
 
-    config = _load_config(args.config_file)
-    _apply_config(client, config, args.dry_run)
+        config = _load_config(args.config_file)
+        _apply_config(client, config, args.dry_run)
+    except SessionExpiredError as e:
+        console.print(f"[error]Session expired:[/error] {e}")
+        sys.exit(1)
 
 
 def _parse_duration(duration_str: str) -> int:
@@ -198,7 +440,9 @@ def _get_expected_limits(config: dict) -> dict[str, bool | int]:
 
 def _apply_config(client: FamilyLink, config: dict, dry_run: bool = True):
     expected_limits = _get_expected_limits(config)
-    app_usage = client.get_apps_and_usage()
+    child_id = client._ensure_account_id()
+    app_usage = client.get_apps_and_usage(child_id)
+    pkg_by_title = {app.title: app.package_name for app in app_usage.apps}
 
     # {"Always allowed app": True, "Limited app": 120, "Blocked app": False,
     # "Unsupervised app": None}
@@ -231,26 +475,30 @@ def _apply_config(client: FamilyLink, config: dict, dry_run: bool = True):
             elif expected_limit is True:
                 console.print(f"[success]• Setting '{app}' to unlimited[/success]")
                 if not dry_run:
-                    client.always_allow_app(app)
+                    if pkg := pkg_by_title.get(app):
+                        client.always_allow_app(pkg, child_id)
             else:
                 console.print(
                     f"[info]• Setting '{app}' to {expected_limit} min[/info]"
                     f"[dim] (previously {limit})[/dim]"
                 )
                 if not dry_run:
-                    client.set_app_limit(app, expected_limit)
+                    if pkg := pkg_by_title.get(app):
+                        client.set_app_limit(pkg, expected_limit, child_id)
 
         elif limit is not False:
             console.print(
                 f"[warning]• Blocking '{app}'[/warning][dim] (previously {limit})[/dim]"
             )
             if not dry_run:
-                client.block_app(app)
+                if pkg := pkg_by_title.get(app):
+                    client.block_app(pkg, child_id)
 
 
 def _create_default_config(client: FamilyLink, config_file: str):
     """Create a default config file with all apps and 0:00 limit"""
-    app_usage = client.get_apps_and_usage()
+    child_id = client._ensure_account_id()
+    app_usage = client.get_apps_and_usage(child_id)
 
     with open(config_file, "w", newline="") as f:
         writer = csv.DictWriter(

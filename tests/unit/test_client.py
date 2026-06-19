@@ -1,5 +1,7 @@
 """Unit tests for FamilyLink client public API."""
 
+import json
+
 import pytest
 
 from familylink import FamilyLink, SessionExpiredError
@@ -76,3 +78,64 @@ def test_get_members_raises_on_403(client, httpx_mock):
     httpx_mock.add_response(url=f"{BASE}/families/mine/members", status_code=403)
     with pytest.raises(SessionExpiredError):
         client.get_members()
+
+
+def test_set_app_limit_posts_to_correct_endpoint(client, httpx_mock):
+    """set_app_limit() POSTs to the apps:updateRestrictions endpoint with the right body."""
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE}/people/child1/apps:updateRestrictions",
+        json={},
+    )
+    client.set_app_limit("com.google.android.youtube", 30, child_id="child1")
+    request = httpx_mock.get_requests()[-1]
+    assert "/people/child1/apps:updateRestrictions" in str(request.url)
+    body = json.loads(request.content)
+    assert body[0] == "child1"
+    assert "com.google.android.youtube" in str(body)
+    assert 30 in body[1][0][2]
+
+
+def test_block_app_posts_to_correct_endpoint(client, httpx_mock):
+    """block_app() POSTs to the apps:updateRestrictions endpoint."""
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE}/people/child1/apps:updateRestrictions",
+        json={},
+    )
+    client.block_app("com.google.android.youtube", child_id="child1")
+    request = httpx_mock.get_requests()[-1]
+    assert "/people/child1/apps:updateRestrictions" in str(request.url)
+    body = json.loads(request.content)
+    assert body[0] == "child1"
+    assert "com.google.android.youtube" in str(body)
+
+
+def test_always_allow_app(client, httpx_mock):
+    """always_allow_app() POSTs to the apps:updateRestrictions endpoint."""
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE}/people/child1/apps:updateRestrictions",
+        json={},
+    )
+    client.always_allow_app("com.google.android.youtube", child_id="child1")
+    request = httpx_mock.get_requests()[-1]
+    assert "/people/child1/apps:updateRestrictions" in str(request.url)
+    body = json.loads(request.content)
+    assert body[0] == "child1"
+    assert "com.google.android.youtube" in str(body)
+
+
+def test_remove_app_limit(client, httpx_mock):
+    """remove_app_limit() POSTs to the apps:updateRestrictions endpoint."""
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE}/people/child1/apps:updateRestrictions",
+        json={},
+    )
+    client.remove_app_limit("com.google.android.youtube", child_id="child1")
+    request = httpx_mock.get_requests()[-1]
+    assert "/people/child1/apps:updateRestrictions" in str(request.url)
+    body = json.loads(request.content)
+    assert body[0] == "child1"
+    assert "com.google.android.youtube" in str(body)

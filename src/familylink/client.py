@@ -328,3 +328,42 @@ class FamilyLink:
         return self._post(
             f"/people/{aid}/timeLimitOverrides:batchCreate", payload
         ).json()
+
+    # ── App supervision ───────────────────────────────────────────────────────────
+
+    def set_app_limit(
+        self,
+        package_name: str,
+        minutes: int,
+        child_id: str | None = None,
+    ) -> dict:
+        """Set a daily time limit (minutes) on an app."""
+        aid = child_id or self._ensure_account_id()
+        data = [[package_name], None, [minutes, 1]]
+        return self._post(
+            f"/people/{aid}/apps:updateRestrictions", json.dumps([aid, [data]])
+        ).json()
+
+    def block_app(self, package_name: str, child_id: str | None = None) -> dict:
+        """Block an app (hidden from child)."""
+        aid = child_id or self._ensure_account_id()
+        data = [[package_name], [1]]
+        return self._post(
+            f"/people/{aid}/apps:updateRestrictions", json.dumps([aid, [data]])
+        ).json()
+
+    def always_allow_app(self, package_name: str, child_id: str | None = None) -> dict:
+        """Set an app to always allowed (no daily limit)."""
+        aid = child_id or self._ensure_account_id()
+        data = [[package_name], None, None, [1]]
+        return self._post(
+            f"/people/{aid}/apps:updateRestrictions", json.dumps([aid, [data]])
+        ).json()
+
+    def remove_app_limit(self, package_name: str, child_id: str | None = None) -> dict:
+        """Remove any daily time limit from an app (returns it to blocked)."""
+        aid = child_id or self._ensure_account_id()
+        data = [[package_name], [1]]
+        return self._post(
+            f"/people/{aid}/apps:updateRestrictions", json.dumps([aid, [data]])
+        ).json()
