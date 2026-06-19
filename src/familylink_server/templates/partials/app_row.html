@@ -1,0 +1,41 @@
+<tr id="row-{{ app.package_name | replace('.', '-') }}">
+  <td>{{ app.title }}</td>
+  <td>
+    {% if app.state == "blocked" %}
+      <span style="color:var(--pico-color-red-500)">Blocked</span>
+    {% elif app.state == "limited" %}
+      <span style="color:var(--pico-color-orange-500)">{{ app.state_label }}</span>
+    {% elif app.state == "allowed" %}
+      <span style="color:var(--pico-color-green-500)">Always allowed</span>
+    {% else %}
+      <span style="color:var(--pico-color-grey-500)">Unmanaged</span>
+    {% endif %}
+  </td>
+  <td>
+    <details>
+      <summary role="button" class="outline secondary" style="font-size:0.8rem">Edit</summary>
+      <div style="padding:0.5rem 0">
+        <form hx-post="/apps/{{ app.package_name }}/allow"
+              hx-target="#row-{{ app.package_name | replace('.', '-') }}"
+              hx-swap="outerHTML" style="display:inline">
+          <input type="hidden" name="child_id" value="{{ app.child_id }}">
+          <button type="submit" class="outline" style="font-size:0.75rem;padding:0.25rem 0.5rem">Always allow</button>
+        </form>
+        <form hx-post="/apps/{{ app.package_name }}/block"
+              hx-target="#row-{{ app.package_name | replace('.', '-') }}"
+              hx-swap="outerHTML" style="display:inline">
+          <input type="hidden" name="child_id" value="{{ app.child_id }}">
+          <button type="submit" class="outline secondary" style="font-size:0.75rem;padding:0.25rem 0.5rem">Block</button>
+        </form>
+        <form hx-post="/apps/{{ app.package_name }}/limit"
+              hx-target="#row-{{ app.package_name | replace('.', '-') }}"
+              hx-swap="outerHTML" style="display:inline">
+          <input type="hidden" name="child_id" value="{{ app.child_id }}">
+          <input type="number" name="minutes" value="{{ app.limit_mins or 30 }}"
+                 min="1" max="1440" style="width:5rem;display:inline">
+          <button type="submit" class="outline" style="font-size:0.75rem;padding:0.25rem 0.5rem">Set limit</button>
+        </form>
+      </div>
+    </details>
+  </td>
+</tr>

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Apps{% endblock %}
+{% block content %}
+<h2>Apps</h2>
+<nav>
+  {% for f in ["all", "allowed", "limited", "blocked"] %}
+    <a href="/apps?filter={{ f }}"
+       {% if filter == f %}aria-current="page"{% endif %}>{{ f | capitalize }}</a>
+  {% endfor %}
+</nav>
+<table>
+  <thead><tr><th>App</th><th>Status</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for app in apps %}
+      {% include "partials/app_row.html" %}
+    {% else %}
+      <tr><td colspan="3">No apps found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
