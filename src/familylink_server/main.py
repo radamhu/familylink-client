@@ -10,6 +10,8 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from familylink_server.auth.oauth import router as auth_router
 from familylink_server.config import settings
+from familylink_server.routers.members import router as members_router
+from familylink_server.routers.usage import router as usage_router
 from familylink_server.services.family_link import init_service
 
 
@@ -30,6 +32,8 @@ app = FastAPI(
 app.add_middleware(SessionMiddleware, secret_key=settings.secret_key)
 
 app.include_router(auth_router)
+app.include_router(members_router)
+app.include_router(usage_router)
 
 _static = Path(__file__).parent / "static"
 if _static.exists():
