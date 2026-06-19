@@ -24,7 +24,7 @@ class SessionExpiredError(RuntimeError):
 
 
 def _generate_sapisidhash(sapisid: str, origin: str) -> str:
-    ts = int(time.time() * 1000)
+    ts = int(time.time() * 1000)  # milliseconds
     digest = hashlib.sha1(f"{ts} {sapisid} {origin}".encode()).hexdigest()
     return f"{ts}_{digest}"
 
@@ -119,10 +119,17 @@ class FamilyLink:
     def get_time_limits(self, account_id: str | None = None) -> dict:
         """Get applied time limits for a child (today)."""
         aid = account_id or self._ensure_account_id()
-        return self._session.get(
+        r = self._session.get(
             f"{self.BASE_URL}/people/{aid}/appliedTimeLimits",
             headers={"Content-Type": "application/json"},
-        ).json()
+        )
+        if r.status_code in (401, 403):
+            raise SessionExpiredError(
+                f"HTTP {r.status_code} — session expired. "
+                "Re-export: familylink export-cookies --base64"
+            )
+        r.raise_for_status()
+        return r.json()
 
     def print_usage(self) -> None:
         """Print usage for all family members."""
