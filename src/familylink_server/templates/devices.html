@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Devices{% endblock %}
+{% block content %}
+<h2>Devices</h2>
+<div class="grid">
+  {% for device in devices %}
+    {% include "partials/device_card.html" %}
+  {% endfor %}
+  {% if not devices %}
+    <p>No devices found.</p>
+  {% endif %}
+</div>
+{% endblock %}

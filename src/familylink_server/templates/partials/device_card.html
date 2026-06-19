@@ -1,0 +1,27 @@
+<div id="device-{{ device.device_id }}" class="card">
+  <header>
+    <strong>{{ device.friendly_name or device.device_id }}</strong>
+    {% if device.is_locked %}
+      <span class="badge" style="color:var(--pico-color-red-500)">locked</span>
+    {% else %}
+      <span class="badge" style="color:var(--pico-color-green-500)">unlocked</span>
+    {% endif %}
+  </header>
+  <footer>
+    {% if device.is_locked %}
+      <form hx-post="/devices/{{ device.device_id }}/unlock"
+            hx-target="#device-{{ device.device_id }}"
+            hx-swap="outerHTML">
+        <input type="hidden" name="child_id" value="{{ device.child_id }}">
+        <button type="submit">Unlock</button>
+      </form>
+    {% else %}
+      <form hx-post="/devices/{{ device.device_id }}/lock"
+            hx-target="#device-{{ device.device_id }}"
+            hx-swap="outerHTML">
+        <input type="hidden" name="child_id" value="{{ device.child_id }}">
+        <button type="submit" class="secondary">Lock</button>
+      </form>
+    {% endif %}
+  </footer>
+</div>
