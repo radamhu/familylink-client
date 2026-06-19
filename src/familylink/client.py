@@ -1,33 +1,15 @@
-"""Family Link API client.
+"""Family Link API client."""
 
-Auth priority (first match wins):
-  1. FAMILYLINK_COOKIES_B64  — base64-encoded cookies.txt content (cloud-native, no filesystem)
-  2. FAMILYLINK_SAPISID      — raw SAPISID value (cookie jar will be empty but often sufficient)
-  3. FAMILYLINK_COOKIE_FILE  — path to a Netscape/Mozilla cookies.txt file
-  4. browser="txt"           — cookie_file_path arg or ./cookies.txt
-  5. Per-profile sapisid.txt / cookies.txt (when FAMILYLINK_PROFILES_DIR is set)
-  6. browser_cookie3         — local browser extraction (host-only, not available in containers)
-"""
-
-import base64
 import hashlib
 import json
 import logging
-import os
-import tempfile
 import time
 from pathlib import Path
 
 import httpx
 
-try:
-    import browser_cookie3  # optional; unavailable in Docker (no DBus/keychain)
-except Exception:
-    browser_cookie3 = None
-
-from http.cookiejar import CookieJar, MozillaCookieJar
-
 from familylink import parsers
+from familylink.auth import CookieResolver
 from familylink.models import AppUsage, MembersResponse
 
 logger = logging.getLogger(__name__)
@@ -36,32 +18,15 @@ logger = logging.getLogger(__name__)
 class SessionExpiredError(RuntimeError):
     """Google session has expired or been invalidated.
 
-    Re-export cookies and update FAMILYLINK_COOKIES_B64 (or FAMILYLINK_COOKIE_FILE).
+    Re-export cookies and update FAMILYLINK_COOKIES_B64 or FAMILYLINK_COOKIE_FILE.
     Run: familylink export-cookies --base64
     """
 
 
 def _generate_sapisidhash(sapisid: str, origin: str) -> str:
-    """Generate the SAPISIDHASH value for Authorization header.
-    Format: f"{timestamp} {sha1(f'{timestamp} {sapisid} {origin}')}"
-    """
-    # ts = int(time.time())
-    # to_hash = f"{ts} {sapisid} {origin}".encode("utf-8")
-    # digest = hashlib.sha1(to_hash).hexdigest()
-    # return f"{ts}_{digest}"  # underscore is accepted by many Google backends
-
-    ts = int(time.time() * 1000)  # milliseconds
+    ts = int(time.time() * 1000)
     digest = hashlib.sha1(f"{ts} {sapisid} {origin}".encode()).hexdigest()
-    return f"{ts}_{digest}"  # underscore, not space
-
-    # ts = int(time.time() * 1000)
-    # digest = hashlib.sha1(f"{ts} {sapisid} {origin}".encode()).hexdigest()
-    # return f"{ts}_{digest}"
-
-    # ts = int(time.time())
-    # msg = f"{ts} {sapisid} {origin}".encode("utf-8")
-    # digest = hashlib.sha1(msg).hexdigest()
-    # return f"{ts} {digest}"  # <— space, not underscore
+    return f"{ts}_{digest}"
 
 
 class FamilyLink:
@@ -75,181 +40,29 @@ class FamilyLink:
         account_id: str | None = None,
         browser: str = "firefox",
         cookie_file_path: Path | None = None,
-    ):
-        """Initialize the Family Link client.
-
-        Args:
-            account_id: The Google account ID to manage
-            browser: The browser to get cookies from if sapisid not provided
-            cookie_file_path: Optional path to a cookie file to load
-        """
+    ) -> None:
         self.account_id = account_id
-
-        # --- Environment & profile context ---
-        env_browser = os.getenv("FAMILYLINK_BROWSER")
-        browser = (env_browser or browser or "chrome").lower()
-
-        profiles_dir = os.getenv("FAMILYLINK_PROFILES_DIR", "").strip()
-        cwd = os.getcwd()
-        in_profiles_dir = bool(profiles_dir and cwd.startswith(profiles_dir))
-
-        # Per-profile authuser (account index)
-        authuser = os.getenv("FAMILYLINK_AUTHUSER", "").strip()
-        if in_profiles_dir and not authuser:
-            p = Path("authuser.txt")
-            if p.exists() and p.is_file():
-                authuser = p.read_text(encoding="utf-8").strip()
-        if not authuser:
-            authuser = "0"
-
-        # --- Cookie/SAPISID sources ---
-        sapisid = os.getenv("FAMILYLINK_SAPISID", "").strip() or None
-        cookies_jar: CookieJar | None = None
-
-        # Cloud-native: base64-encoded cookies.txt stored as a single env var / secret.
-        # Usage: FAMILYLINK_COOKIES_B64=$(base64 < cookies.txt)
-        cookies_b64 = os.getenv("FAMILYLINK_COOKIES_B64", "").strip()
-        if cookies_b64:
-            try:
-                raw = base64.b64decode(cookies_b64).decode("utf-8")
-                cj = MozillaCookieJar()
-                # MozillaCookieJar.load() only accepts a file path, so we write to a
-                # temporary in-memory buffer via a tiny workaround: use the internal
-                # _really_load() parser on a StringIO-like object isn't available, so
-                # we write to a temp file and delete it immediately.
-                with tempfile.NamedTemporaryFile(
-                    mode="w", suffix=".txt", delete=False, encoding="utf-8"
-                ) as tmp:
-                    tmp.write(raw)
-                    tmp_path = tmp.name
-                cj.load(tmp_path, ignore_discard=True, ignore_expires=True)
-                os.unlink(tmp_path)
-                cookies_jar = cj
-                logger.debug("Loaded cookies from FAMILYLINK_COOKIES_B64")
-            except Exception as e:
-                raise ValueError(f"Failed to decode FAMILYLINK_COOKIES_B64: {e}") from e
-
-        # ENV cookie file overrides
-        env_cookie_file = os.getenv("FAMILYLINK_COOKIE_FILE", "").strip()
-        if env_cookie_file and not cookies_jar:
-            cookie_file_path = Path(env_cookie_file)
-
-        # browser="txt": cookies from file only (no browser sync; e.g. Home Assistant)
-        if browser == "txt" and not cookies_jar:
-            p = Path(cookie_file_path) if cookie_file_path else Path("./cookies.txt")
-            if not p.exists() or not p.is_file():
-                raise ValueError(f"Cookie file not found: {p}")
-            cj = MozillaCookieJar()
-            cj.load(str(p.resolve()), ignore_discard=True, ignore_expires=True)
-            cookies_jar = cj
-
-        # If running under profile dir, first try local sapisid/cookies files
-        if not cookies_jar and in_profiles_dir and not sapisid and browser != "txt":
-            # a) sapisid.txt or SAPISID file (raw value)
-            for fname in ("sapisid.txt", "SAPISID"):
-                p = Path(fname)
-                if p.exists() and p.is_file():
-                    val = p.read_text(encoding="utf-8").strip()
-                    if val:
-                        sapisid = val
-                        break
-
-        # Always try cookies.txt if present (even if sapisid already set)
-        if not cookies_jar and in_profiles_dir:
-            p = Path("cookies.txt")
-            if p.exists() and p.is_file():
-                try:
-                    cj = MozillaCookieJar()
-                    cj.load(str(p), ignore_discard=True, ignore_expires=True)
-                    cookies_jar = cj
-                except Exception as e:
-                    logger.debug("Failed to load cookies.txt: %s", e)
-
-        # Fallback: explicit cookie file
-        if not cookies_jar and cookie_file_path:
-            if not cookie_file_path.exists():
-                raise ValueError(f"Cookie file not found: {cookie_file_path}")
-            if not cookie_file_path.is_file():
-                raise ValueError(f"Cookie file is not a file: {cookie_file_path}")
-            try:
-                cj = MozillaCookieJar()
-                cj.load(
-                    str(cookie_file_path.resolve()),
-                    ignore_discard=True,
-                    ignore_expires=True,
-                )
-                cookies_jar = cj
-            except Exception as e:
-                logger.debug("Failed to load cookie_file_path: %s", e)
-
-        # Last resort: read from local browser (only when not in container profile dir)
-        if not sapisid and not cookies_jar:
-            if in_profiles_dir:
-                raise RuntimeError(
-                    "No cached SAPISID/cookies found in profile dir and browser access is disabled in container. "
-                    "Provide sapisid.txt or cookies.txt under the profile folder, or set FAMILYLINK_SAPISID/FAMILYLINK_COOKIE_FILE."
-                )
-            if browser_cookie3 is None:
-                raise RuntimeError(
-                    "browser_cookie3 not available and no cached session found"
-                )
-            cookie_kwargs = {}
-            if cookie_file_path:
-                cookie_kwargs["cookie_file"] = str(cookie_file_path.resolve())
-            cookies_jar = getattr(browser_cookie3, browser)(**cookie_kwargs)
-
-        # Extract SAPISID from whatever cookie jar we have (if not from sapisid.txt)
-        if not sapisid and cookies_jar is not None:
-            for cookie in cookies_jar:
-                if cookie.name == "SAPISID" and cookie.domain == ".google.com":
-                    sapisid = cookie.value
-                    break
-
-        if not sapisid:
-            raise ValueError(
-                "Could not find SAPISID. "
-                "On host: ensure you’re signed in (Chrome/Firefox) or pass FAMILYLINK_COOKIE_FILE. "
-                "In Docker: put sapisid.txt (with the raw SAPISID value) or cookies.txt in the profile folder, "
-                "or set FAMILYLINK_SAPISID."
-            )
-
-        # --- Build headers/session ---
-        sapisidhash = _generate_sapisidhash(sapisid, self.ORIGIN)
-
-        # self._headers = {
-        #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0",
-        #     "Origin": self.ORIGIN,
-        #     "Content-Type": "application/json+protobuf",
-        #     "X-Goog-Api-Key": "AIzaSyAQb1gupaJhY3CXQy2xmTwJMcjmot3M2hw",
-        #     "Authorization": authorization,
-        #     "X-Goog-AuthUser": authuser,
-        # }
-
+        sapisid, cookies_jar = CookieResolver(browser, cookie_file_path).resolve()
         self._headers = {
             "User-Agent": "Mozilla/5.0",
-            "Origin": "https://familylink.google.com",  # match working request
-            # no Referer
-            # no X-Goog-AuthUser
+            "Origin": self.ORIGIN,
             "Content-Type": "application/json+protobuf",
             "X-Goog-Api-Key": "AIzaSyAQb1gupaJhY3CXQy2xmTwJMcjmot3M2hw",
-            "Authorization": f"SAPISIDHASH {_generate_sapisidhash(sapisid, 'https://familylink.google.com')}",
+            "Authorization": f"SAPISIDHASH {_generate_sapisidhash(sapisid, self.ORIGIN)}",
         }
-
         self._cookies = cookies_jar
         self._session = httpx.Client(
             headers=self._headers, cookies=self._cookies, timeout=30
         )
-        self._app_names = {}
 
-    # ----------------- minimal API methods -----------------
-    def _get(self, path: str, params: dict | None = None) -> httpx.Response:
-        url = f"{self.BASE_URL}{path}"
-        r = self._session.get(url, params=params)
+    # ── HTTP helpers ──────────────────────────────────────────────────────────
+
+    def _get(self, path: str, params: list | dict | None = None) -> httpx.Response:
+        r = self._session.get(f"{self.BASE_URL}{path}", params=params)
         if r.status_code in (401, 403):
             raise SessionExpiredError(
-                f"HTTP {r.status_code} — Google session expired or invalid. "
-                "Re-export cookies and update FAMILYLINK_COOKIES_B64 or FAMILYLINK_COOKIE_FILE. "
-                "Run: familylink export-cookies --base64"
+                f"HTTP {r.status_code} — session expired. "
+                "Re-export: familylink export-cookies --base64"
             )
         r.raise_for_status()
         return r
@@ -258,9 +71,8 @@ class FamilyLink:
         r = self._session.post(f"{self.BASE_URL}{path}", content=content)
         if r.status_code in (401, 403):
             raise SessionExpiredError(
-                f"HTTP {r.status_code} — Google session expired or invalid. "
-                "Re-export cookies and update FAMILYLINK_COOKIES_B64 or FAMILYLINK_COOKIE_FILE. "
-                "Run: familylink export-cookies --base64"
+                f"HTTP {r.status_code} — session expired. "
+                "Re-export: familylink export-cookies --base64"
             )
         r.raise_for_status()
         return r
@@ -268,8 +80,7 @@ class FamilyLink:
     def _ensure_account_id(self) -> str:
         if self.account_id:
             return self.account_id
-        m = self.get_members()
-        for mem in m.members:
+        for mem in self.get_members().members:
             if (
                 mem.member_supervision_info
                 and mem.member_supervision_info.is_supervised_member
@@ -277,57 +88,49 @@ class FamilyLink:
                 return mem.user_id
         raise ValueError("No supervised account found; set account_id explicitly")
 
+    # ── Read API ──────────────────────────────────────────────────────────────
+
     def get_members(self) -> MembersResponse:
         """List family members for the authenticated parent."""
-        resp = self._get("/families/mine/members")
-        data = resp.json()
+        data = self._get("/families/mine/members").json()
         if isinstance(data, list):
             data = parsers.parse_members_response(data)
-        return MembersResponse(**data)
-
-    # Optional helper to print usage if your models implement it differently
-    def print_usage(self) -> None:
-        members = self.get_members().members
-        for m in members:
-            p = getattr(m, "profile", None)
-            if not p:
-                continue
-            print(
-                f"- {getattr(p,'display_name',None)} | {getattr(p,'email',None)} | user_id={getattr(m,'user_id',None)}"
-            )
+        return MembersResponse.model_validate(data)
 
     def get_apps_and_usage(self, child_id: str) -> AppUsage:
-        path = f"/people/{child_id}/appsandusage"
+        """Get apps and usage information for a child."""
         params = [
             ("capabilities", "CAPABILITY_APP_USAGE_SESSION"),
             ("capabilities", "CAPABILITY_SUPERVISION_CAPABILITIES"),
         ]
-        r = self._session.get(f"{self.BASE_URL}{path}", params=params)
-        r.raise_for_status()
-        data = r.json()
+        data = self._get(f"/people/{child_id}/appsandusage", params).json()
         if isinstance(data, list):
             data = parsers.parse_apps_and_usage(data)
-        return AppUsage(**data)
+        return AppUsage.model_validate(data)
 
     def get_time_limit(self, child_id: str) -> dict:
-        r = self._session.get(f"{self.BASE_URL}/people/{child_id}/timeLimit")
-        r.raise_for_status()
-        return r.json()
+        """Get time limit for a child."""
+        return self._get(f"/people/{child_id}/timeLimit").json()
 
     def get_applied_time_limits(self, child_id: str) -> dict:
-        r = self._session.get(f"{self.BASE_URL}/people/{child_id}/appliedTimeLimits")
-        r.raise_for_status()
-        return r.json()
+        """Get applied time limits for a child."""
+        return self._get(f"/people/{child_id}/appliedTimeLimits").json()
 
     def get_time_limits(self, account_id: str | None = None) -> dict:
         """Get applied time limits for a child (today)."""
         aid = account_id or self._ensure_account_id()
-        r = self._session.get(
+        return self._session.get(
             f"{self.BASE_URL}/people/{aid}/appliedTimeLimits",
             headers={"Content-Type": "application/json"},
-        )
-        r.raise_for_status()
-        return r.json()
+        ).json()
+
+    def print_usage(self) -> None:
+        """Print usage for all family members."""
+        for m in self.get_members().members:
+            p = m.profile
+            print(f"- {p.display_name} | {p.email} | user_id={m.user_id}")  # noqa: T201
+
+    # ── Device operations ─────────────────────────────────────────────────────
 
     def set_time_limits_device(
         self,
@@ -356,13 +159,14 @@ class FamilyLink:
                         None,
                         None,
                         [2, time_in_minutes, period_id],
-                    ],
+                    ]
                 ],
                 [1],
             ]
         )
-        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
-        return r.json()
+        return self._post(
+            f"/people/{aid}/timeLimitOverrides:batchCreate", payload
+        ).json()
 
     def disable_time_limits_device(
         self,
@@ -391,13 +195,14 @@ class FamilyLink:
                         None,
                         None,
                         [1, time_in_minutes, period_id],
-                    ],
+                    ]
                 ],
                 [1],
             ]
         )
-        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
-        return r.json()
+        return self._post(
+            f"/people/{aid}/timeLimitOverrides:batchCreate", payload
+        ).json()
 
     def enable_time_limits_device(
         self,
@@ -406,76 +211,26 @@ class FamilyLink:
         period_id: str = "",
         time_in_minutes: int = 0,
     ) -> dict:
-        """Re-enable previous time limits for a device (calls set_time_limits_device)."""
+        """Re-enable previous time limits for a device."""
         return self.set_time_limits_device(
             account_id, device_id, period_id, time_in_minutes
         )
 
-    def lock_device(
-        self,
-        account_id: str | None = None,
-        device_id: str = "",
-    ) -> dict:
+    def lock_device(self, account_id: str | None = None, device_id: str = "") -> dict:
         """Lock a device."""
         aid = account_id or self._ensure_account_id()
-        payload = json.dumps([None, aid, [[None, None, 1, device_id]], [1]])
-        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
-        return r.json()
+        return self._post(
+            f"/people/{aid}/timeLimitOverrides:batchCreate",
+            json.dumps([None, aid, [[None, None, 1, device_id]], [1]]),
+        ).json()
 
-    def unlock_device(
-        self,
-        account_id: str | None = None,
-        device_id: str = "",
-    ) -> dict:
+    def unlock_device(self, account_id: str | None = None, device_id: str = "") -> dict:
         """Unlock a device."""
         aid = account_id or self._ensure_account_id()
-        payload = json.dumps([None, aid, [[None, None, 4, device_id]], [1]])
-        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
-        return r.json()
-
-    def disable_downtime_device(
-        self,
-        account_id: str | None = None,
-        device_id: str = "",
-        start_hour: int = 0,
-        start_minute: int = 0,
-        end_hour: int = 0,
-        end_minute: int = 0,
-        period_id: str = "",
-    ) -> dict:
-        """Disable downtime for a device (today)."""
-        aid = account_id or self._ensure_account_id()
-        payload = json.dumps(
-            [
-                None,
-                aid,
-                [
-                    [
-                        None,
-                        None,
-                        9,
-                        None,
-                        None,
-                        None,
-                        None,
-                        None,
-                        None,
-                        None,
-                        None,
-                        None,
-                        [
-                            1,
-                            [start_hour, end_minute],
-                            [end_hour, end_minute],
-                            period_id,
-                        ],
-                    ],
-                ],
-                [1],
-            ]
-        )
-        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
-        return r.json()
+        return self._post(
+            f"/people/{aid}/timeLimitOverrides:batchCreate",
+            json.dumps([None, aid, [[None, None, 4, device_id]], [1]]),
+        ).json()
 
     def enable_downtime_device(
         self,
@@ -509,14 +264,60 @@ class FamilyLink:
                         None,
                         [
                             2,
-                            [start_hour, end_minute],
+                            [start_hour, start_minute],
                             [end_hour, end_minute],
                             period_id,
                         ],
-                    ],
+                    ]
                 ],
                 [1],
             ]
         )
-        r = self._post(f"/people/{aid}/timeLimitOverrides:batchCreate", payload)
-        return r.json()
+        return self._post(
+            f"/people/{aid}/timeLimitOverrides:batchCreate", payload
+        ).json()
+
+    def disable_downtime_device(
+        self,
+        account_id: str | None = None,
+        device_id: str = "",
+        start_hour: int = 0,
+        start_minute: int = 0,
+        end_hour: int = 0,
+        end_minute: int = 0,
+        period_id: str = "",
+    ) -> dict:
+        """Disable downtime for a device (today)."""
+        aid = account_id or self._ensure_account_id()
+        payload = json.dumps(
+            [
+                None,
+                aid,
+                [
+                    [
+                        None,
+                        None,
+                        9,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                        [
+                            1,
+                            [start_hour, start_minute],
+                            [end_hour, end_minute],
+                            period_id,
+                        ],
+                    ]
+                ],
+                [1],
+            ]
+        )
+        return self._post(
+            f"/people/{aid}/timeLimitOverrides:batchCreate", payload
+        ).json()
