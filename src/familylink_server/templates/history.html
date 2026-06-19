@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}History{% endblock %}
+{% block content %}
+<h2>Audit Log</h2>
+<table>
+  <thead>
+    <tr>
+      <th>When</th><th>Action</th><th>Target</th><th>Old</th><th>New</th>
+    </tr>
+  </thead>
+  <tbody id="audit-rows">
+    {% for log in logs %}
+    <tr>
+      <td>{{ log.occurred_at.strftime("%Y-%m-%d %H:%M") }}</td>
+      <td>{{ log.action }}</td>
+      <td>{{ log.target }}</td>
+      <td>{{ log.old_value or "—" }}</td>
+      <td>{{ log.new_value or "—" }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">No audit entries yet.</td></tr>
+    {% endfor %}
+    {% if has_more %}
+    <tr id="load-more"
+        hx-get="/history?page={{ page + 1 }}"
+        hx-trigger="revealed"
+        hx-target="#audit-rows"
+        hx-swap="beforeend"
+        hx-select="tbody tr">
+      <td colspan="5" style="text-align:center;color:var(--pico-muted-color)">Loading…</td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+{% endblock %}

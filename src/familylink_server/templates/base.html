@@ -1,7 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head><title>{% block title %}FamilyLink{% endblock %}</title></head>
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Family Link{% endblock %} — Family Link</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
+</head>
 <body>
-{% block content %}{% endblock %}
+  <header class="container">
+    <nav>
+      <ul><li><strong>Family Link</strong></li></ul>
+      <ul>
+        <li><a href="/">Dashboard</a></li>
+        <li><a href="/apps">Apps</a></li>
+        <li><a href="/devices">Devices</a></li>
+        <li><a href="/history">History</a></li>
+        <li><a href="/auth/logout" class="secondary">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
 </body>
 </html>

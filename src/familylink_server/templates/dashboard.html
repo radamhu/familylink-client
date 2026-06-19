@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div hx-get="/" hx-trigger="every 5m" hx-target="main" hx-swap="innerHTML">
+  {% for child in children %}
+    <section>
+      <h2>{{ child.display_name }}</h2>
+      <p>Today: <strong>{{ (child.total_seconds // 3600) }}h {{ ((child.total_seconds % 3600) // 60) }}m</strong></p>
+
+      <h3>Top apps today</h3>
+      {% set max_secs = child.top5[0].seconds if child.top5 else 1 %}
+      {% for app in child.top5 %}
+        <div style="margin-bottom:0.5rem">
+          <span style="display:inline-block;width:12rem">{{ app.title }}</span>
+          <span style="display:inline-block;background:var(--pico-primary);height:1rem;width:{{ (app.seconds / max_secs * 200) | int }}px;vertical-align:middle"></span>
+          <span style="font-size:0.8rem;color:var(--pico-muted-color)">
+            {{ app.seconds // 60 }}m
+          </span>
+        </div>
+      {% endfor %}
+
+      <h3>Devices</h3>
+      <div class="grid">
+        {% for device in child.devices %}
+          <div class="card">
+            <p>{{ device.friendly_name or device.device_id }}</p>
+            {% if device.is_locked %}
+              <span style="color:var(--pico-color-red-500)">Locked</span>
+            {% else %}
+              <span style="color:var(--pico-color-green-500)">Unlocked</span>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% else %}
+    <p>No supervised children found.</p>
+  {% endfor %}
+</div>
+{% endblock %}
