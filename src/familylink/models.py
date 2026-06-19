@@ -2,8 +2,7 @@
 
 from enum import Enum
 
-from pydantic.v1 import BaseModel, Field
-from typing import Optional
+from pydantic import BaseModel, ConfigDict, Field
 
 
 # === Apps ===
@@ -45,11 +44,15 @@ class AlwaysAllowedState(str, Enum):
 class AlwaysAllowedAppInfo(BaseModel):
     """Information about always-allowed status of an app."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     always_allowed_state: AlwaysAllowedState = Field(alias="alwaysAllowedState")
 
 
 class UsageLimit(BaseModel):
     """Usage limit settings for an app."""
+
+    model_config = ConfigDict(populate_by_name=True)
 
     daily_usage_limit_mins: int = Field(alias="dailyUsageLimitMins")
     enabled: bool
@@ -57,6 +60,8 @@ class UsageLimit(BaseModel):
 
 class SupervisionSetting(BaseModel):
     """Supervision settings for an app."""
+
+    model_config = ConfigDict(populate_by_name=True)
 
     hidden: bool = False
     hidden_set_explicitly: bool = Field(False, alias="hiddenSetExplicitly")
@@ -71,6 +76,8 @@ class SupervisionSetting(BaseModel):
 
 class App(BaseModel):
     """Information about an app."""
+
+    model_config = ConfigDict(populate_by_name=True)
 
     package_name: str = Field(alias="packageName")
     title: str
@@ -90,6 +97,8 @@ class App(BaseModel):
 class AppId(BaseModel):
     """Identifier for an app."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     android_app_package_name: str = Field(alias="androidAppPackageName")
 
 
@@ -104,6 +113,8 @@ class UsageDate(BaseModel):
 class AppUsageSession(BaseModel):
     """Usage session information for an app."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     usage: str  # Duration in seconds with decimal places
     app_id: AppId = Field(alias="appId")
     device_mud_id: str = Field(alias="deviceMudId")
@@ -114,6 +125,8 @@ class AppUsageSession(BaseModel):
 class DeviceDisplayInfo(BaseModel):
     """Display information for a device."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     model: str
     friendly_name: str = Field(alias="friendlyName")
     last_activity_time_millis: str = Field(alias="lastActivityTimeMillis")
@@ -122,11 +135,15 @@ class DeviceDisplayInfo(BaseModel):
 class DeviceCapabilityInfo(BaseModel):
     """Capability information for a device."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     capabilities: list[str]
 
 
 class DeviceInfo(BaseModel):
     """Information about a device."""
+
+    model_config = ConfigDict(populate_by_name=True)
 
     device_id: str = Field(alias="deviceId")
     display_info: DeviceDisplayInfo = Field(alias="displayInfo")
@@ -136,11 +153,15 @@ class DeviceInfo(BaseModel):
 class ApiHeader(BaseModel):
     """API response header."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     server_timestamp_millis: str = Field(alias="serverTimestampMillis")
 
 
 class AppUsage(BaseModel):
     """App usage response model."""
+
+    model_config = ConfigDict(populate_by_name=True)
 
     api_header: ApiHeader = Field(alias="apiHeader")
     apps: list[App]
@@ -169,13 +190,15 @@ class Birthday(BaseModel):
 class Profile(BaseModel):
     """User profile information."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     display_name: str = Field(alias="displayName")
     profile_image_url: str = Field(alias="profileImageUrl")
     email: str
     family_name: str = Field(alias="familyName")
     given_name: str = Field(alias="givenName")
-    #standard_gender: str = Field(alias="standardGender")
-    standard_gender: Optional[str] = Field(default=None, alias="standardGender")
+    # standard_gender: str = Field(alias="standardGender")
+    standard_gender: str | None = Field(default=None, alias="standardGender")
     birthday: Birthday | None = None
     default_profile_image_url: str = Field(alias="defaultProfileImageUrl")
 
@@ -183,12 +206,16 @@ class Profile(BaseModel):
 class MemberSupervisionInfo(BaseModel):
     """Supervision information for a member."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     is_supervised_member: bool = Field(alias="isSupervisedMember")
     is_guardian_linked_account: bool = Field(alias="isGuardianLinkedAccount")
 
 
 class MemberAttributes(BaseModel):
     """Member attributes."""
+
+    model_config = ConfigDict(populate_by_name=True)
 
     show_parental_password_reset: bool | None = Field(
         None, alias="showParentalPasswordReset"
@@ -198,6 +225,8 @@ class MemberAttributes(BaseModel):
 class UiCustomizations(BaseModel):
     """UI customization settings."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     settings_group: list[str] = Field(alias="settingsGroup")
     privacy_policy_url: str | None = Field(None, alias="privacyPolicyUrl")
     supervised_user_type: str | None = Field(None, alias="supervisedUserType")
@@ -206,6 +235,8 @@ class UiCustomizations(BaseModel):
 # === Members ===
 class Member(BaseModel):
     """Member of the family."""
+
+    model_config = ConfigDict(populate_by_name=True)
 
     user_id: str = Field(alias="userId")
     role: str
@@ -221,6 +252,8 @@ class Member(BaseModel):
 
 class MembersResponse(BaseModel):
     """Response from the members API endpoint."""
+
+    model_config = ConfigDict(populate_by_name=True)
 
     members: list[Member]
     api_header: ApiHeader = Field(alias="apiHeader")
