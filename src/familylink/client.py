@@ -1,29 +1,45 @@
-"""Family Link API client (patched for Docker profile-based auth).
+"""Family Link API client.
 
-- Supports per-profile `sapisid.txt`, `cookies.txt`, and `authuser.txt`.
-- Avoids browser_cookie3 in containers (no DBus/keychain).
-- Still works on host with browser_cookie3 if not in a profiles dir.
+Auth priority (first match wins):
+  1. FAMILYLINK_COOKIES_B64  — base64-encoded cookies.txt content (cloud-native, no filesystem)
+  2. FAMILYLINK_SAPISID      — raw SAPISID value (cookie jar will be empty but often sufficient)
+  3. FAMILYLINK_COOKIE_FILE  — path to a Netscape/Mozilla cookies.txt file
+  4. browser="txt"           — cookie_file_path arg or ./cookies.txt
+  5. Per-profile sapisid.txt / cookies.txt (when FAMILYLINK_PROFILES_DIR is set)
+  6. browser_cookie3         — local browser extraction (host-only, not available in containers)
 """
 
+import base64
 import hashlib
 import json
 import logging
 import os
+import tempfile
 import time
 from pathlib import Path
 
 import httpx
 
 try:
-    import browser_cookie3  # may be unavailable in Docker
+    import browser_cookie3  # optional; unavailable in Docker (no DBus/keychain)
 except Exception:
     browser_cookie3 = None
 
 from http.cookiejar import CookieJar, MozillaCookieJar
 
-from familylink.models import MembersResponse
+from familylink import parsers
+from familylink.models import AppUsage, MembersResponse
 
 logger = logging.getLogger(__name__)
+
+
+class SessionExpiredError(RuntimeError):
+    """Google session has expired or been invalidated.
+
+    Re-export cookies and update FAMILYLINK_COOKIES_B64 (or FAMILYLINK_COOKIE_FILE).
+    Run: familylink export-cookies --base64
+    """
+
 
 def _generate_sapisidhash(sapisid: str, origin: str) -> str:
     """Generate the SAPISIDHASH value for Authorization header.
@@ -46,6 +62,7 @@ def _generate_sapisidhash(sapisid: str, origin: str) -> str:
     # msg = f"{ts} {sapisid} {origin}".encode("utf-8")
     # digest = hashlib.sha1(msg).hexdigest()
     # return f"{ts} {digest}"  # <— space, not underscore
+
 
 class FamilyLink:
     """Client to interact with Google Family Link."""
@@ -89,13 +106,36 @@ class FamilyLink:
         sapisid = os.getenv("FAMILYLINK_SAPISID", "").strip() or None
         cookies_jar: CookieJar | None = None
 
+        # Cloud-native: base64-encoded cookies.txt stored as a single env var / secret.
+        # Usage: FAMILYLINK_COOKIES_B64=$(base64 < cookies.txt)
+        cookies_b64 = os.getenv("FAMILYLINK_COOKIES_B64", "").strip()
+        if cookies_b64:
+            try:
+                raw = base64.b64decode(cookies_b64).decode("utf-8")
+                cj = MozillaCookieJar()
+                # MozillaCookieJar.load() only accepts a file path, so we write to a
+                # temporary in-memory buffer via a tiny workaround: use the internal
+                # _really_load() parser on a StringIO-like object isn't available, so
+                # we write to a temp file and delete it immediately.
+                with tempfile.NamedTemporaryFile(
+                    mode="w", suffix=".txt", delete=False, encoding="utf-8"
+                ) as tmp:
+                    tmp.write(raw)
+                    tmp_path = tmp.name
+                cj.load(tmp_path, ignore_discard=True, ignore_expires=True)
+                os.unlink(tmp_path)
+                cookies_jar = cj
+                logger.debug("Loaded cookies from FAMILYLINK_COOKIES_B64")
+            except Exception as e:
+                raise ValueError(f"Failed to decode FAMILYLINK_COOKIES_B64: {e}") from e
+
         # ENV cookie file overrides
         env_cookie_file = os.getenv("FAMILYLINK_COOKIE_FILE", "").strip()
-        if env_cookie_file:
+        if env_cookie_file and not cookies_jar:
             cookie_file_path = Path(env_cookie_file)
 
         # browser="txt": cookies from file only (no browser sync; e.g. Home Assistant)
-        if browser == "txt":
+        if browser == "txt" and not cookies_jar:
             p = Path(cookie_file_path) if cookie_file_path else Path("./cookies.txt")
             if not p.exists() or not p.is_file():
                 raise ValueError(f"Cookie file not found: {p}")
@@ -133,7 +173,11 @@ class FamilyLink:
                 raise ValueError(f"Cookie file is not a file: {cookie_file_path}")
             try:
                 cj = MozillaCookieJar()
-                cj.load(str(cookie_file_path.resolve()), ignore_discard=True, ignore_expires=True)
+                cj.load(
+                    str(cookie_file_path.resolve()),
+                    ignore_discard=True,
+                    ignore_expires=True,
+                )
                 cookies_jar = cj
             except Exception as e:
                 logger.debug("Failed to load cookie_file_path: %s", e)
@@ -146,7 +190,9 @@ class FamilyLink:
                     "Provide sapisid.txt or cookies.txt under the profile folder, or set FAMILYLINK_SAPISID/FAMILYLINK_COOKIE_FILE."
                 )
             if browser_cookie3 is None:
-                raise RuntimeError("browser_cookie3 not available and no cached session found")
+                raise RuntimeError(
+                    "browser_cookie3 not available and no cached session found"
+                )
             cookie_kwargs = {}
             if cookie_file_path:
                 cookie_kwargs["cookie_file"] = str(cookie_file_path.resolve())
@@ -190,18 +236,32 @@ class FamilyLink:
         }
 
         self._cookies = cookies_jar
-        self._session = httpx.Client(headers=self._headers, cookies=self._cookies, timeout=30)
+        self._session = httpx.Client(
+            headers=self._headers, cookies=self._cookies, timeout=30
+        )
         self._app_names = {}
 
     # ----------------- minimal API methods -----------------
     def _get(self, path: str, params: dict | None = None) -> httpx.Response:
         url = f"{self.BASE_URL}{path}"
         r = self._session.get(url, params=params)
+        if r.status_code in (401, 403):
+            raise SessionExpiredError(
+                f"HTTP {r.status_code} — Google session expired or invalid. "
+                "Re-export cookies and update FAMILYLINK_COOKIES_B64 or FAMILYLINK_COOKIE_FILE. "
+                "Run: familylink export-cookies --base64"
+            )
         r.raise_for_status()
         return r
 
     def _post(self, path: str, content: str) -> httpx.Response:
         r = self._session.post(f"{self.BASE_URL}{path}", content=content)
+        if r.status_code in (401, 403):
+            raise SessionExpiredError(
+                f"HTTP {r.status_code} — Google session expired or invalid. "
+                "Re-export cookies and update FAMILYLINK_COOKIES_B64 or FAMILYLINK_COOKIE_FILE. "
+                "Run: familylink export-cookies --base64"
+            )
         r.raise_for_status()
         return r
 
@@ -210,14 +270,19 @@ class FamilyLink:
             return self.account_id
         m = self.get_members()
         for mem in m.members:
-            if mem.user_id != m.my_user_id:
+            if (
+                mem.member_supervision_info
+                and mem.member_supervision_info.is_supervised_member
+            ):
                 return mem.user_id
-        raise ValueError("No child account; set account_id explicitly")
+        raise ValueError("No supervised account found; set account_id explicitly")
 
     def get_members(self) -> MembersResponse:
         """List family members for the authenticated parent."""
         resp = self._get("/families/mine/members")
         data = resp.json()
+        if isinstance(data, list):
+            data = parsers.parse_members_response(data)
         return MembersResponse(**data)
 
     # Optional helper to print usage if your models implement it differently
@@ -227,10 +292,11 @@ class FamilyLink:
             p = getattr(m, "profile", None)
             if not p:
                 continue
-            print(f"- {getattr(p,'display_name',None)} | {getattr(p,'email',None)} | user_id={getattr(m,'user_id',None)}")
+            print(
+                f"- {getattr(p,'display_name',None)} | {getattr(p,'email',None)} | user_id={getattr(m,'user_id',None)}"
+            )
 
-    def get_apps_and_usage(self, child_id: str) -> dict:
-        # Minimal GET; our session already has the right headers (Origin, SAPISIDHASH, etc.)
+    def get_apps_and_usage(self, child_id: str) -> AppUsage:
         path = f"/people/{child_id}/appsandusage"
         params = [
             ("capabilities", "CAPABILITY_APP_USAGE_SESSION"),
@@ -238,7 +304,10 @@ class FamilyLink:
         ]
         r = self._session.get(f"{self.BASE_URL}{path}", params=params)
         r.raise_for_status()
-        return r.json()
+        data = r.json()
+        if isinstance(data, list):
+            data = parsers.parse_apps_and_usage(data)
+        return AppUsage(**data)
 
     def get_time_limit(self, child_id: str) -> dict:
         r = self._session.get(f"{self.BASE_URL}/people/{child_id}/timeLimit")
