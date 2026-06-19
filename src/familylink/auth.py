@@ -63,8 +63,6 @@ class CookieResolver:
                 raise ValueError(f"Failed to decode FAMILYLINK_COOKIES_B64: {e}") from e
 
         env_cookie_file = os.getenv("FAMILYLINK_COOKIE_FILE", "").strip()
-        if env_cookie_file and not cookies_jar:
-            self._cookie_file_path = Path(env_cookie_file)
 
         if self._browser == "txt" and not cookies_jar:
             if self._cookie_file_path:
@@ -105,15 +103,21 @@ class CookieResolver:
                 except Exception as e:
                     logger.debug("Failed to load cookies.txt: %s", e)
 
-        if not cookies_jar and self._cookie_file_path:
-            if not self._cookie_file_path.exists():
-                raise ValueError(f"Cookie file not found: {self._cookie_file_path}")
-            if not self._cookie_file_path.is_file():
-                raise ValueError(f"Cookie file is not a file: {self._cookie_file_path}")
+        # Fallback: FAMILYLINK_COOKIE_FILE set via env var when browser != "txt"
+        # (browser="txt" path already handled above; this fires when in_profiles_dir is False
+        # or profiles dir cookies.txt didn't load)
+        fallback_cookie_file = (
+            Path(env_cookie_file) if env_cookie_file else self._cookie_file_path
+        )
+        if not cookies_jar and fallback_cookie_file:
+            if not fallback_cookie_file.exists():
+                raise ValueError(f"Cookie file not found: {fallback_cookie_file}")
+            if not fallback_cookie_file.is_file():
+                raise ValueError(f"Cookie file is not a file: {fallback_cookie_file}")
             try:
                 cj = MozillaCookieJar()
                 cj.load(
-                    str(self._cookie_file_path.resolve()),
+                    str(fallback_cookie_file.resolve()),
                     ignore_discard=True,
                     ignore_expires=True,
                 )
