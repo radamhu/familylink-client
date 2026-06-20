@@ -13,7 +13,7 @@ from rich.console import Console
 from rich.logging import RichHandler
 from rich.theme import Theme
 
-from familylink import FamilyLink, SessionExpiredError
+from familylink import FamilyLink, SessionExpiredError, parsers
 from familylink.models import AlwaysAllowedState
 
 try:
@@ -195,7 +195,7 @@ def _cmd_fetch_config(argv: list[str]) -> None:
                 f"{client.BASE_URL}/people/{child.user_id}/timeLimit"
             )
             if r.is_success:
-                schedule = FamilyLink._parse_time_limit(r.json())
+                schedule = parsers.parse_time_limit(r.json())
         except Exception:
             pass
 

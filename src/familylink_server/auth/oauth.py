@@ -82,5 +82,5 @@ async def callback(request: Request) -> RedirectResponse:
 async def logout() -> RedirectResponse:
     """Clear the session cookie and redirect to the login page."""
     response = RedirectResponse(url="/auth/login")
-    response.delete_cookie(_COOKIE_NAME)
+    response.delete_cookie(_COOKIE_NAME, httponly=True, secure=True, samesite="lax")
     return response

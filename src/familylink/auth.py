@@ -132,6 +132,8 @@ class CookieResolver:
                     "disabled in container. Provide sapisid.txt or cookies.txt under the "
                     "profile folder, or set FAMILYLINK_SAPISID/FAMILYLINK_COOKIE_FILE."
                 )
+            if self._browser == "txt":
+                raise RuntimeError("browser='txt' specified but no cookie file found")
             if browser_cookie3 is None:
                 raise RuntimeError(
                     "browser_cookie3 not available and no cached session found"

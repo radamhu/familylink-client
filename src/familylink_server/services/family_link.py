@@ -64,19 +64,28 @@ class FamilyLinkService:
         await asyncio.to_thread(
             self._client.set_app_limit, package_name, minutes, child_id
         )
-        self._usage_cache.pop(child_id or "", None)
+        if child_id:
+            self._usage_cache.pop(child_id, None)
+        else:
+            self._usage_cache.clear()
 
     async def block_app(self, package_name: str, child_id: str | None = None) -> None:
         """Block an app and invalidate the usage cache."""
         await asyncio.to_thread(self._client.block_app, package_name, child_id)
-        self._usage_cache.pop(child_id or "", None)
+        if child_id:
+            self._usage_cache.pop(child_id, None)
+        else:
+            self._usage_cache.clear()
 
     async def always_allow_app(
         self, package_name: str, child_id: str | None = None
     ) -> None:
         """Always-allow an app and invalidate the usage cache."""
         await asyncio.to_thread(self._client.always_allow_app, package_name, child_id)
-        self._usage_cache.pop(child_id or "", None)
+        if child_id:
+            self._usage_cache.pop(child_id, None)
+        else:
+            self._usage_cache.clear()
 
 
 _service: FamilyLinkService | None = None
