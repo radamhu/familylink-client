@@ -1,0 +1,4 @@
+httpx>=0.28.1
+pydantic>=1.8.2
+rich>=13.7.0
+# browser-cookie3>=0.19.1  # host-only (needs DBus/keychain); install via: pip install familylink[browser]
