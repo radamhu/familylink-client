@@ -2,10 +2,23 @@
 {% block title %}Apps{% endblock %}
 {% block content %}
 <h2>Apps</h2>
+{% if children | length > 1 %}
+<nav>
+  {% for c in children %}
+    <a href="/apps?child={{ c.user_id }}&filter={{ filter }}"
+       {% if c.user_id == active_child_id %}aria-current="page"{% endif %}>{{ c.display_name }}</a>
+  {% endfor %}
+</nav>
+{% endif %}
 <nav>
   {% for f in ["all", "allowed", "limited", "blocked"] %}
+    {% if children | length > 1 %}
+    <a href="/apps?child={{ active_child_id }}&filter={{ f }}"
+       {% if filter == f %}aria-current="page"{% endif %}>{{ f | capitalize }}</a>
+    {% else %}
     <a href="/apps?filter={{ f }}"
        {% if filter == f %}aria-current="page"{% endif %}>{{ f | capitalize }}</a>
+    {% endif %}
   {% endfor %}
 </nav>
 <table>

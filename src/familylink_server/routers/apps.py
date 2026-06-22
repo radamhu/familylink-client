@@ -41,30 +41,46 @@ def _app_state(app) -> dict:
 async def apps_page(
     request: Request,
     filter: str = "all",
+    child: str = "",
     _email: str = require_user,  # type: ignore[assignment]
     svc: FamilyLinkService = Depends(get_service),  # noqa: B008
 ) -> HTMLResponse:
-    """Render the apps page listing all supervised apps with inline edit controls."""
+    """Render the apps page with a per-child tab strip and inline edit controls."""
     members = await svc.get_members()
-    children = [
+    supervised = [
         m
         for m in members.members
         if m.member_supervision_info and m.member_supervision_info.is_supervised_member
     ]
-    child = children[0] if children else None
+    children = [
+        {"user_id": m.user_id, "display_name": m.profile.display_name}
+        for m in supervised
+    ]
+
+    child_ids = {c["user_id"] for c in children}
+    active_child_id = (
+        child if child in child_ids else (children[0]["user_id"] if children else "")
+    )
+
     apps = []
-    if child:
-        usage = await svc.get_apps_and_usage(child.user_id)
+    if active_child_id:
+        usage = await svc.get_apps_and_usage(active_child_id)
         apps = [
-            dict(_app_state(a), child_id=child.user_id)
+            dict(_app_state(a), child_id=active_child_id)
             for a in sorted(usage.apps, key=lambda x: x.title.lower())
         ]
         if filter != "all":
             apps = [a for a in apps if a["state"] == filter]
+
     return templates.TemplateResponse(
         request,
         "apps.html",
-        {"apps": apps, "child_id": child.user_id if child else "", "filter": filter},
+        {
+            "apps": apps,
+            "children": children,
+            "active_child_id": active_child_id,
+            "filter": filter,
+        },
     )
 
 
@@ -88,9 +104,7 @@ async def set_limit(
         "child_id": child_id,
     }
     return templates.TemplateResponse(
-        request,
-        "partials/app_row.html",
-        {"app": app_data},
+        request, "partials/app_row.html", {"app": app_data}
     )
 
 
@@ -113,9 +127,7 @@ async def block_app(
         "child_id": child_id,
     }
     return templates.TemplateResponse(
-        request,
-        "partials/app_row.html",
-        {"app": app_data},
+        request, "partials/app_row.html", {"app": app_data}
     )
 
 
@@ -138,7 +150,5 @@ async def allow_app(
         "child_id": child_id,
     }
     return templates.TemplateResponse(
-        request,
-        "partials/app_row.html",
-        {"app": app_data},
+        request, "partials/app_row.html", {"app": app_data}
     )
