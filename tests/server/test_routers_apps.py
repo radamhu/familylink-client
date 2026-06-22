@@ -221,7 +221,7 @@ def test_apps_page_invalid_child_falls_back_to_first():
 
 
 def test_apps_page_single_child_no_tab_links():
-    """With one child the response contains no child= tab links."""
+    """With one child the response contains no child tab navigation."""
     mock_svc = MagicMock()
     mock_svc.get_members = AsyncMock(
         return_value=MagicMock(members=[_make_member("child1", "Emma")])
@@ -241,4 +241,9 @@ def test_apps_page_single_child_no_tab_links():
     finally:
         app.dependency_overrides.pop(get_service, None)
     assert resp.status_code == 200
-    assert 'href="/apps?child=child1' not in resp.text
+    # The child tab navigation should not render for single child
+    # but filter links still include child= parameter
+    assert "Emma</a>" not in resp.text  # No child name links (tab nav)
+    assert (
+        'href="/apps?child=child1&filter=all' in resp.text
+    )  # Filter nav includes child=

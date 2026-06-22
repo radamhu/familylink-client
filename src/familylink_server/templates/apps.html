@@ -1,34 +1,41 @@
 {% extends "base.html" %}
 {% block title %}Apps{% endblock %}
 {% block content %}
-<h2>Apps</h2>
-{% if children | length > 1 %}
-<nav>
-  {% for c in children %}
-    <a href="/apps?child={{ c.user_id }}&filter={{ filter }}"
-       {% if c.user_id == active_child_id %}aria-current="page"{% endif %}>{{ c.display_name }}</a>
-  {% endfor %}
-</nav>
-{% endif %}
-<nav>
-  {% for f in ["all", "allowed", "limited", "blocked"] %}
-    {% if children | length > 1 %}
-    <a href="/apps?child={{ active_child_id }}&filter={{ f }}"
-       {% if filter == f %}aria-current="page"{% endif %}>{{ f | capitalize }}</a>
-    {% else %}
-    <a href="/apps?filter={{ f }}"
-       {% if filter == f %}aria-current="page"{% endif %}>{{ f | capitalize }}</a>
-    {% endif %}
-  {% endfor %}
-</nav>
-<table>
-  <thead><tr><th>App</th><th>Status</th><th>Actions</th></tr></thead>
-  <tbody>
-    {% for app in apps %}
-      {% include "partials/app_row.html" %}
-    {% else %}
-      <tr><td colspan="3">No apps found.</td></tr>
+<div hx-get="/apps?child={{ active_child_id }}&filter={{ filter }}"
+     hx-trigger="every 5m"
+     hx-target="main"
+     hx-swap="innerHTML">
+
+  <h2>Apps</h2>
+
+  {% if children | length > 1 %}
+  <nav>
+    {% for c in children %}
+      <a href="/apps?child={{ c.user_id }}&filter={{ filter }}"
+         {% if c.user_id == active_child_id %}aria-current="page"{% endif %}>
+        {{ c.display_name }}
+      </a>
     {% endfor %}
-  </tbody>
-</table>
+  </nav>
+  {% endif %}
+
+  <nav>
+    {% for f in ["all", "allowed", "limited", "blocked"] %}
+      <a href="/apps?child={{ active_child_id }}&filter={{ f }}"
+         {% if filter == f %}aria-current="page"{% endif %}>{{ f | capitalize }}</a>
+    {% endfor %}
+  </nav>
+
+  <table>
+    <thead><tr><th>App</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+      {% for app in apps %}
+        {% include "partials/app_row.html" %}
+      {% else %}
+        <tr><td colspan="3">No apps found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
 {% endblock %}
