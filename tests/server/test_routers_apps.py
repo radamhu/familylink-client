@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from itsdangerous import URLSafeSerializer
 
 from familylink_server.config import settings
+from familylink_server.db import get_session
 
 
 def _cookie():
@@ -79,10 +80,14 @@ def test_set_limit_returns_partial(monkeypatch):
     """POST /apps/{package}/limit calls set_app_limit with int minutes and returns 200."""
     mock_svc = MagicMock()
     mock_svc.set_app_limit = AsyncMock(return_value=None)
+    mock_session = AsyncMock()
+    mock_session.add = MagicMock()
+    mock_session.commit = AsyncMock()
     from familylink_server.main import app
     from familylink_server.services.family_link import get_service
 
     app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: mock_session
     try:
         client = TestClient(app)
         resp = client.post(
@@ -92,6 +97,7 @@ def test_set_limit_returns_partial(monkeypatch):
         )
     finally:
         app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     mock_svc.set_app_limit.assert_called_once_with(
         "com.google.android.youtube", 45, child_id="child1"
@@ -102,10 +108,14 @@ def test_block_app_returns_partial():
     """POST /apps/{package}/block calls block_app and returns 200 with partial HTML."""
     mock_svc = MagicMock()
     mock_svc.block_app = AsyncMock(return_value=None)
+    mock_session = AsyncMock()
+    mock_session.add = MagicMock()
+    mock_session.commit = AsyncMock()
     from familylink_server.main import app
     from familylink_server.services.family_link import get_service
 
     app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: mock_session
     try:
         client = TestClient(app)
         resp = client.post(
@@ -115,6 +125,7 @@ def test_block_app_returns_partial():
         )
     finally:
         app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     mock_svc.block_app.assert_called_once_with(
         "com.google.android.youtube", child_id="child1"

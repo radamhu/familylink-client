@@ -1,16 +1,28 @@
 """Router for the /apps HTML page and HTMX limit/block/allow endpoints."""
 
+from datetime import UTC, datetime
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from familylink_server.auth.oauth import require_user
+from familylink_server.db import AuditLog, get_session
+from familylink_server.services.discord_notifier import get_notifier
 from familylink_server.services.family_link import FamilyLinkService, get_service
 
 router = APIRouter(tags=["apps"])
 templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
+
+
+async def _child_name(svc: FamilyLinkService, child_id: str) -> str:
+    members = await svc.get_members()
+    return next(
+        (m.profile.display_name for m in members.members if m.user_id == child_id),
+        child_id,
+    )
 
 
 def _app_state(app) -> dict:
@@ -92,9 +104,26 @@ async def set_limit(
     minutes: int = Form(...),
     _email: str = require_user,  # type: ignore[assignment]
     svc: FamilyLinkService = Depends(get_service),  # noqa: B008
+    session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> HTMLResponse:
     """Set a daily usage limit for an app and return the updated row partial."""
     await svc.set_app_limit(package, minutes, child_id=child_id)
+    notifier = get_notifier()
+    if notifier:
+        name = await _child_name(svc, child_id)
+        await notifier.notify_change(
+            "set_limit", name, f"{package} ({minutes} min)", "web UI"
+        )
+    session.add(
+        AuditLog(
+            child_id=child_id,
+            action="set_limit",
+            target=package,
+            new_value=str(minutes),
+            occurred_at=datetime.now(UTC),
+        )
+    )
+    await session.commit()
     app_data = {
         "package_name": package,
         "title": package,
@@ -115,9 +144,23 @@ async def block_app(
     child_id: str = Form(...),
     _email: str = require_user,  # type: ignore[assignment]
     svc: FamilyLinkService = Depends(get_service),  # noqa: B008
+    session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> HTMLResponse:
     """Block an app and return the updated row partial."""
     await svc.block_app(package, child_id=child_id)
+    notifier = get_notifier()
+    if notifier:
+        name = await _child_name(svc, child_id)
+        await notifier.notify_change("block", name, package, "web UI")
+    session.add(
+        AuditLog(
+            child_id=child_id,
+            action="block",
+            target=package,
+            occurred_at=datetime.now(UTC),
+        )
+    )
+    await session.commit()
     app_data = {
         "package_name": package,
         "title": package,
@@ -138,9 +181,23 @@ async def allow_app(
     child_id: str = Form(...),
     _email: str = require_user,  # type: ignore[assignment]
     svc: FamilyLinkService = Depends(get_service),  # noqa: B008
+    session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> HTMLResponse:
     """Always-allow an app and return the updated row partial."""
     await svc.always_allow_app(package, child_id=child_id)
+    notifier = get_notifier()
+    if notifier:
+        name = await _child_name(svc, child_id)
+        await notifier.notify_change("always_allow", name, package, "web UI")
+    session.add(
+        AuditLog(
+            child_id=child_id,
+            action="always_allow",
+            target=package,
+            occurred_at=datetime.now(UTC),
+        )
+    )
+    await session.commit()
     app_data = {
         "package_name": package,
         "title": package,

@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from itsdangerous import URLSafeSerializer
 
 from familylink_server.config import settings
+from familylink_server.db import get_session
 
 
 def _cookie():
@@ -55,7 +56,11 @@ def test_lock_device_returns_partial_html():
 
     mock_svc = MagicMock()
     mock_svc.lock_device = AsyncMock(return_value=None)
+    mock_session = AsyncMock()
+    mock_session.add = MagicMock()
+    mock_session.commit = AsyncMock()
     app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: mock_session
     try:
         client = TestClient(app)
         resp = client.post(
@@ -65,5 +70,6 @@ def test_lock_device_returns_partial_html():
         )
     finally:
         app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     assert "locked" in resp.text.lower()
