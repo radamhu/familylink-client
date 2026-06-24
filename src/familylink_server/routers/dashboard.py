@@ -1,5 +1,6 @@
 """Router for the main dashboard page."""
 
+from datetime import date
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, Request
@@ -20,6 +21,7 @@ async def dashboard(
     svc: FamilyLinkService = Depends(get_service),  # noqa: B008
 ) -> HTMLResponse:
     """Render the dashboard with per-child usage summaries."""
+    today = date.today()
     members = await svc.get_members()
     children = [
         m
@@ -29,9 +31,16 @@ async def dashboard(
     child_data = []
     for child in children:
         usage = await svc.get_apps_and_usage(child.user_id)
-        total_seconds = sum(int(float(s.usage)) for s in usage.app_usage_sessions)
+        today_sessions = [
+            s
+            for s in usage.app_usage_sessions
+            if s.date.year == today.year
+            and s.date.month == today.month
+            and s.date.day == today.day
+        ]
+        total_seconds = sum(int(float(s.usage)) for s in today_sessions)
         top_apps: dict[str, int] = {}
-        for s in usage.app_usage_sessions:
+        for s in today_sessions:
             pkg = s.app_id.android_app_package_name
             top_apps[pkg] = top_apps.get(pkg, 0) + int(float(s.usage))
         top5 = sorted(top_apps.items(), key=lambda x: x[1], reverse=True)[:5]

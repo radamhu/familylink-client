@@ -11,7 +11,7 @@ def parse_members_response(data: list) -> dict:
         if len(pl) > 7 and pl[7] and isinstance(pl[7], list):
             b = pl[7]
             birthday = {"day": b[0], "month": b[1], "year": b[2]}
-        sup = m[11] if len(m) > 11 and m[11] and isinstance(m[11], list) else None
+        sup = m[7] if len(m) > 7 and m[7] and isinstance(m[7], list) else None
         supervision_info = None
         if sup:
             supervision_info = {

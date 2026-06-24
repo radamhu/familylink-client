@@ -40,12 +40,13 @@ def _summary_embed(
     """Build a daily summary embed."""
     import datetime
 
-    today = datetime.date.today().strftime("%A %-d %b")
+    today = datetime.date.today()
+    today_str = f"{today.strftime('%A')} {today.day} {today.strftime('%b')}"
     h, rem = divmod(total_seconds, 3600)
     m = rem // 60
     total_str = f"{h}h {m:02d}m" if h else f"{m}m"
     embed = discord.Embed(
-        title=f"📊 Daily Summary — {child_name}  ·  {today}",
+        title=f"📊 Daily Summary — {child_name}  ·  {today_str}",
         description=f"Total screen time: **{total_str}**",
         color=discord.Color.blurple(),
     )

@@ -16,42 +16,25 @@ A non-official Python package to interact with Google Family Link, to manage you
 * 📅 Per-application usage breakdown
 * 🔄 Multi-device support
 
+## Two modes of operation
+
+This project ships two independent ways to manage Family Link:
+
+|                               | CLI                                           | Web server                                      |
+| ----------------------------- | --------------------------------------------- | ----------------------------------------------- |
+| **Config storage**      | `config.csv` (declarative, file-based)      | PostgreSQL (`app_configs` table)              |
+| **Workflow**            | Run as a cron job; pushes diffs to the API    | Interactive web UI; changes applied immediately |
+| **Auth**                | Browser cookies or `FAMILYLINK_COOKIES_B64` | Same cookie auth + Google OAuth login           |
+| **History / audit log** | None                                          | `usage_snapshots`, `audit_log` tables       |
+| **When to use**         | Scripted or headless enforcement              | Always-on dashboard with persistent history     |
+
+If you run the server, you do not need `config.csv`. Limit rules are managed through the web UI and stored in the database. The only CLI commands that remain useful in a server deployment are `export-cookies` (to refresh the Google session) and `fetch-config` (to export current API state as a CSV snapshot).
+
 ## Prerequisites
 
 1. Have a Google Family Link family set up (parent + child)
 2. Be signed into Chrome or Firefox as the **parent** account
 3. Visit **[https://familylink.google.com](https://familylink.google.com)** at least once in that browser (this establishes the necessary session)
-
-### First-time setup
-
-```bash
-# Default: reads cookies from Firefox
-familylink --dry-run config.csv
-
-# If you use Chrome:
-familylink --browser chrome --dry-run config.csv
-```
-
-If you see `Could not find SAPISID`, the tool couldn't find the cookie in your browser. Try:
-
-- **Specify your browser:** `familylink --browser chrome config.csv`
-- **Export cookies to a file** (e.g. with the "Get cookies.txt" Chrome extension), then: `familylink --cookie-file /path/to/cookies.txt config.csv`
-- **Set the SAPISID value directly** (find it in DevTools > Application > Cookies > `.google.com` > `SAPISID`):
-  ```
-  export FAMILYLINK_SAPISID=your_sapisid_value_here
-  familylink config.csv
-  ```
-
-### Environment variables
-
-| Variable                    | Purpose                                                                                     |
-| --------------------------- | ------------------------------------------------------------------------------------------- |
-| `FAMILYLINK_COOKIES_B64`  | Base64-encoded `cookies.txt` content — preferred for cloud/Docker (no filesystem needed) |
-| `FAMILYLINK_COOKIE_FILE`  | Path to a Netscape-format cookies file                                                      |
-| `FAMILYLINK_SAPISID`      | Raw SAPISID cookie value only (not recommended — session cookies also required)            |
-| `FAMILYLINK_BROWSER`      | `firefox`, `chrome`, or `txt` (cookie file only)                                      |
-| `FAMILYLINK_PROFILES_DIR` | When cwd is under this directory, per-profile auth is used                                  |
-| `FAMILYLINK_AUTHUSER`     | Google account index (`0`, `1`, `2`...) for multi-account setups                      |
 
 ### Usage as a CLI
 
@@ -133,6 +116,55 @@ pre-commit install
 
 > **Note:** `direnv allow` re-activates the venv whenever you `cd` into the project.
 
+### Makefile
+
+Common development tasks are available via `make`:
+
+**Local development**
+
+| Command              | When to use                                                                        |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| `make install`     | First-time setup — creates `.venv`, installs all deps and pre-commit hooks      |
+| `make dev`         | Start the uvicorn dev server locally with hot reload (`http://localhost:8000`)   |
+| `make migrate`     | After pulling changes that add Alembic migrations — applies them to your local DB |
+| `make test`        | Run the full test suite before committing                                          |
+| `make test-unit`   | Fast feedback loop — unit tests only, no DB required                              |
+| `make test-server` | Server/integration tests (requires DB env vars from `.env`)                      |
+| `make lint`        | Check code style without changing files                                            |
+| `make lint-fix`    | Auto-fix lint issues in place                                                      |
+| `make format`      | Format all source files with ruff                                                  |
+| `make typecheck`   | Run mypy static type checking                                                      |
+| `make clean`       | Wipe `.venv`, caches, and build artifacts for a clean slate                      |
+
+**Docker (local stack)**
+
+| Command                  | When to use                                                                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `make docker-up`       | Start the stack (db + web) using the**current image** — use when the image is already up to date and you just need the containers running     |
+| `make docker-deploy`   | **Standard deploy** — refreshes cookies in `.env`, rebuilds the `web` image, and restarts the container; run this after every code change |
+| `make docker-restart`  | Same as `docker-deploy`; prefer `docker-deploy` for clarity                                                                                      |
+| `make docker-build`    | Refresh cookies and rebuild the `web` image without restarting (pre-warm before `docker-up`)                                                     |
+| `make refresh-cookies` | Manually refresh `FAMILYLINK_COOKIES_B64` in `.env` from Chrome without rebuilding — useful when only the session has expired                   |
+| `make docker-down`     | Stop all services cleanly                                                                                                                            |
+| `make docker-logs`     | Tail live logs from all services                                                                                                                     |
+| `make docker-clean`    | Stop services and delete containers + volumes (resets the database)                                                                                  |
+| `make docker-purge`    | Nuclear option — removes all images, volumes, and Docker cache                                                                                      |
+
+> **Cookie refresh:** `docker-deploy`, `docker-restart`, and `docker-build` all automatically run
+> `familylink export-cookies --browser chrome --base64` first, which updates `FAMILYLINK_COOKIES_B64`
+> in `.env`. Google sessions expire on sign-out or password change — the rebuild step ensures
+> the container always starts with a fresh cookie.
+>
+> **Important:** `docker-up` alone does **not** refresh cookies or rebuild the image.
+> Always run `make docker-deploy` after code changes or when the session may have expired.
+
+Quick start with Makefile:
+
+```bash
+make install
+direnv allow
+```
+
 ## Server Deployment
 
 ### Prerequisites
@@ -168,15 +200,16 @@ This outputs both a `cookies.txt` file and a base64-encoded string. Copy the bas
 
 In your deployment platform's dashboard, set these environment variables (see `.env.example` for details):
 
-| Variable | Description |
-| -------- | ----------- |
-| `DATABASE_URL` | PostgreSQL connection string: `postgresql+asyncpg://user:password@host/dbname` |
-| `SECRET_KEY` | Random 32-byte hex (generate: `python -c "import secrets; print(secrets.token_hex(32))"`) |
-| `GOOGLE_CLIENT_ID` | From Google OAuth credentials |
-| `GOOGLE_CLIENT_SECRET` | From Google OAuth credentials |
-| `FAMILYLINK_GOOGLE_EMAIL` | Parent's Gmail address |
-| `FAMILYLINK_COOKIES_B64` | Base64 output from `familylink export-cookies --base64` |
-| `CACHE_TTL_SECONDS` | Cache duration in seconds (default: `900`) |
+| Variable                    | Description                                                                                             |
+| --------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`            | PostgreSQL connection string:`postgresql+asyncpg://user:password@host/dbname`                         |
+| `SECRET_KEY`              | Random 32-byte hex (generate:`python -c "import secrets; print(secrets.token_hex(32))"`)              |
+| `GOOGLE_CLIENT_ID`        | From Google OAuth credentials                                                                           |
+| `GOOGLE_CLIENT_SECRET`    | From Google OAuth credentials                                                                           |
+| `FAMILYLINK_GOOGLE_EMAIL` | Parent's Gmail address                                                                                  |
+| `FAMILYLINK_COOKIES_B64`  | Base64 output from `familylink export-cookies --base64`                                               |
+| `CACHE_TTL_SECONDS`       | Cache duration in seconds (default:`900`)                                                             |
+| `DEBUG`                   | Set to `true` to disable `Secure` flag on the session cookie — required for local HTTP (see below) |
 
 ### Step 4: Run database migrations
 
@@ -198,8 +231,50 @@ web: uvicorn familylink_server.main:app --host 0.0.0.0 --port $PORT
 
 Your platform will read this and start the server on the port it provides via the `$PORT` environment variable.
 
+### Local Docker development
+
+Running the server locally via `docker compose up` requires two extra steps because Google OAuth sets a `Secure` session cookie that browsers silently drop over plain HTTP.
+
+**1. Add `DEBUG=true` to your `.env`**
+
+```env
+DEBUG=true
+```
+
+This disables the `Secure` flag on the `fl_session` cookie so it works over `http://localhost`.
+Never set this in production — without `Secure`, the cookie can be sent over unencrypted connections.
+
+**2. Register the local redirect URI in Google Cloud Console**
+
+Go to [APIs &amp; Services → Credentials](https://console.cloud.google.com/apis/credentials), edit your OAuth 2.0 Client ID, and add the following under **Authorized redirect URIs**:
+
+```
+http://localhost:8000/auth/callback
+```
+
+Then start the stack (this also refreshes your Google session cookies automatically):
+
+```bash
+make docker-deploy
+```
+
+The app will be available at `http://localhost:8000`.
+
+> If your Google session expires later (sign-out, password change), run `make docker-deploy` again
+> or `make refresh-cookies` if you only need to update the cookie without a full rebuild.
+
+**Authentication flow:**
+
+1. Open **http://localhost:8000/auth/login** in your browser
+2. You'll be redirected to Google's OAuth consent screen — sign in with the parent Google account matching `FAMILYLINK_GOOGLE_EMAIL`
+3. After authorizing, Google redirects back to `/auth/callback`; the server verifies the email and sets a session cookie (`fl_session`)
+4. You're redirected to the home page — you're now authenticated
+
+If you see a `401` error at `http://localhost:8000/`, you haven't logged in yet — just go to `/auth/login`.
+
 ### Troubleshooting
 
 - **Database connection fails**: Verify `DATABASE_URL` format and that your database is reachable from the deployment platform
 - **"Could not find SAPISID"**: The cookies have expired — re-run `familylink export-cookies --base64` and update `FAMILYLINK_COOKIES_B64`
 - **OAuth redirect fails**: Check that the redirect URI in Google Cloud Console exactly matches your deployed URL
+- **Login succeeds but every page redirects back to `/auth/login`**: The session cookie is being dropped. If running locally over HTTP, set `DEBUG=true` in `.env` (see above)

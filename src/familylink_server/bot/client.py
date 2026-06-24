@@ -125,7 +125,7 @@ class FamilyLinkBot(commands.Bot):
             ]
             for child in supervised:
                 usage = await self.service.get_apps_and_usage(child.user_id)
-                top_apps = sorted(
+                all_apps_with_usage = sorted(
                     [
                         {"title": app.title, "seconds": app.usage_today_seconds}
                         for app in usage.apps
@@ -134,8 +134,9 @@ class FamilyLinkBot(commands.Bot):
                     ],
                     key=lambda x: x["seconds"],
                     reverse=True,
-                )[:5]
-                total_seconds = sum(a["seconds"] for a in top_apps)
+                )
+                total_seconds = sum(a["seconds"] for a in all_apps_with_usage)
+                top_apps = all_apps_with_usage[:5]
                 device_id = (
                     usage.device_info[0].device_id if usage.device_info else None
                 )

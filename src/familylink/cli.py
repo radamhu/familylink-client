@@ -115,6 +115,23 @@ def _cmd_export_cookies(argv: list[str]) -> None:
             "[dim]Re-run this command when Google invalidates the session (sign-out, password change).[/dim]"
         )
 
+        env_path = Path(".env")
+        line = f"FAMILYLINK_COOKIES_B64={encoded}"
+        if env_path.exists():
+            lines = env_path.read_text().splitlines()
+            found = False
+            for i, ln in enumerate(lines):
+                if ln.strip().startswith("FAMILYLINK_COOKIES_B64"):
+                    lines[i] = line
+                    found = True
+                    break
+            if not found:
+                lines.append(line)
+            env_path.write_text("\n".join(lines) + "\n")
+        else:
+            env_path.write_text(line + "\n")
+        console.print(f"[success]Updated {env_path}[/success]")
+
 
 def _mins_to_hhmm(mins: int) -> str:
     return f"{mins // 60}:{mins % 60:02d}"
