@@ -98,3 +98,83 @@ async def test_resolve_child_explicit_id():
 
     result = await resolve_child(svc, "uid-1")
     assert result == ("uid-1", "Emma")
+
+
+async def test_apps_block_calls_service():
+    """Test that /apps block calls block_app on the service."""
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+    group = AppsGroup(svc, notifier)
+
+    # Single child, no child_id needed
+    m = MagicMock()
+    m.user_id = "uid-1"
+    m.profile.display_name = "Emma"
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    interaction = _make_interaction(["Parent"])
+    await group.block.callback(group, interaction, package="com.tiktok", child="uid-1")
+
+    svc.block_app.assert_awaited_once_with("com.tiktok", child_id="uid-1")
+    interaction.response.send_message.assert_awaited_once()
+
+
+async def test_apps_limit_calls_service():
+    """Test that /apps limit calls set_app_limit on the service."""
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+    group = AppsGroup(svc, notifier)
+
+    m = MagicMock()
+    m.user_id = "uid-1"
+    m.profile.display_name = "Emma"
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    interaction = _make_interaction(["Parent"])
+    await group.limit.callback(
+        group, interaction, package="com.youtube", minutes=60, child="uid-1"
+    )
+
+    svc.set_app_limit.assert_awaited_once_with("com.youtube", 60, child_id="uid-1")
+
+
+async def test_apps_allow_calls_service():
+    """Test that /apps allow calls always_allow_app on the service."""
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+    group = AppsGroup(svc, notifier)
+
+    m = MagicMock()
+    m.user_id = "uid-1"
+    m.profile.display_name = "Emma"
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    interaction = _make_interaction(["Parent"])
+    await group.allow.callback(group, interaction, package="com.youtube", child="uid-1")
+
+    svc.always_allow_app.assert_awaited_once_with("com.youtube", child_id="uid-1")
+
+
+async def test_apps_block_unauthorized():
+    """Test that /apps block is rejected when the caller lacks the required role."""
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+    group = AppsGroup(svc, notifier)
+
+    interaction = _make_interaction(["Member"])
+    await group.block.callback(group, interaction, package="com.tiktok", child="uid-1")
+
+    svc.block_app.assert_not_awaited()
+    msg = interaction.response.send_message.call_args.kwargs
+    assert msg.get("ephemeral") is True
