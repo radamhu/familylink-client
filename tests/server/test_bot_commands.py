@@ -178,3 +178,44 @@ async def test_apps_block_unauthorized():
     svc.block_app.assert_not_awaited()
     msg = interaction.response.send_message.call_args.kwargs
     assert msg.get("ephemeral") is True
+
+
+async def test_devices_lock_calls_service():
+    """Test that /devices lock calls lock_device on the service."""
+    from familylink_server.bot.commands.devices import DevicesGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+    group = DevicesGroup(svc, notifier)
+
+    m = MagicMock()
+    m.user_id = "uid-1"
+    m.profile.display_name = "Emma"
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    interaction = _make_interaction(["Parent"])
+    await group.lock.callback(group, interaction, device="d-1", child="uid-1")
+
+    svc.lock_device.assert_awaited_once_with("d-1", child_id="uid-1")
+    interaction.response.send_message.assert_awaited_once()
+
+
+async def test_devices_unlock_calls_service():
+    """Test that /devices unlock calls unlock_device on the service."""
+    from familylink_server.bot.commands.devices import DevicesGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+    group = DevicesGroup(svc, notifier)
+
+    m = MagicMock()
+    m.user_id = "uid-1"
+    m.profile.display_name = "Emma"
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    interaction = _make_interaction(["Parent"])
+    await group.unlock.callback(group, interaction, device="d-1", child="uid-1")
+
+    svc.unlock_device.assert_awaited_once_with("d-1", child_id="uid-1")
