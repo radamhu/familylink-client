@@ -48,3 +48,18 @@ def test_auth_login_route_exists(mock_init_service):
         client = TestClient(app)
         resp = client.get("/auth/login", follow_redirects=False)
     assert resp.status_code in (302, 307)
+
+
+async def test_bot_not_started_when_discord_disabled():
+    """Lifespan should not create a bot task when Discord vars are absent."""
+    from familylink_server.main import app, lifespan
+
+    with (
+        patch("familylink_server.main.init_service"),
+        patch("familylink_server.main.settings") as mock_settings,
+        patch("familylink_server.main.asyncio.create_task") as mock_create_task,
+    ):
+        mock_settings.discord_enabled = False
+        async with lifespan(app):
+            pass
+        mock_create_task.assert_not_called()
