@@ -219,3 +219,66 @@ async def test_devices_unlock_calls_service():
     await group.unlock.callback(group, interaction, device="d-1", child="uid-1")
 
     svc.unlock_device.assert_awaited_once_with("d-1", child_id="uid-1")
+
+
+async def test_usage_today_calls_service():
+    """Test that /usage today calls get_apps_and_usage and sends a message."""
+    from familylink_server.bot.commands.usage import UsageGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+    group = UsageGroup(svc, notifier)
+
+    m = MagicMock()
+    m.user_id = "uid-1"
+    m.profile.display_name = "Emma"
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    app_mock = MagicMock()
+    app_mock.title = "YouTube"
+    app_mock.usage_today_seconds = 3600
+    svc.get_apps_and_usage.return_value = MagicMock(apps=[app_mock])
+
+    interaction = _make_interaction(["Parent"])
+    await group.today.callback(group, interaction, child="uid-1")
+
+    svc.get_apps_and_usage.assert_awaited_once_with("uid-1")
+    interaction.response.send_message.assert_awaited_once()
+
+
+async def test_status_calls_service():
+    """Test that /status calls get_members and sends an embed."""
+    from familylink_server.bot.commands.usage import make_status_command
+
+    svc = AsyncMock()
+    cmd = make_status_command(svc)
+
+    m = MagicMock()
+    m.user_id = "uid-1"
+    m.profile.display_name = "Emma"
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+    svc.get_apps_and_usage.return_value = MagicMock(apps=[], device_info=[])
+
+    interaction = _make_interaction(["Parent"])
+    await cmd.callback(interaction)
+
+    interaction.response.send_message.assert_awaited_once()
+
+
+async def test_refresh_clears_cache():
+    """Test that /refresh sets _members_cache to None and empties _usage_cache."""
+    from familylink_server.bot.commands.usage import make_refresh_command
+
+    svc = AsyncMock()
+    svc._members_cache = object()
+    svc._usage_cache = {"uid-1": object()}
+    cmd = make_refresh_command(svc)
+
+    interaction = _make_interaction(["Parent"])
+    await cmd.callback(interaction)
+
+    assert svc._members_cache is None
+    assert svc._usage_cache == {}
+    interaction.response.send_message.assert_awaited_once()
