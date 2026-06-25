@@ -16,7 +16,11 @@ from familylink_server.auth.oauth import require_user
 from familylink_server.db import AuditLog, get_session
 from familylink_server.db.models import LinuxMachine, LinuxUsageSnapshot
 from familylink_server.services.family_link import FamilyLinkService, get_service
-from familylink_server.services.linux_ssh import lock_session, poweroff_machine
+from familylink_server.services.linux_ssh import (
+    lock_session,
+    poweroff_machine,
+    unlock_session,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -47,13 +51,25 @@ def _machine_context(
     machine: LinuxMachine, snapshot: LinuxUsageSnapshot | None
 ) -> dict:
     active_mins = (snapshot.active_seconds // 60) if snapshot else 0
+    bonus_mins = snapshot.bonus_mins if snapshot else 0
     if snapshot and snapshot.poweroff_at:
         status = "powered_off"
     elif snapshot and snapshot.locked_at:
         status = "locked"
     else:
         status = "active"
-    return {"machine": machine, "active_mins": active_mins, "status": status}
+    effective_limit_mins = (
+        machine.daily_limit_mins + bonus_mins
+        if machine.daily_limit_mins is not None
+        else None
+    )
+    return {
+        "machine": machine,
+        "active_mins": active_mins,
+        "bonus_mins": bonus_mins,
+        "effective_limit_mins": effective_limit_mins,
+        "status": status,
+    }
 
 
 async def _child_names(svc: FamilyLinkService) -> dict[str, str]:
@@ -325,6 +341,69 @@ async def poweroff_machine_endpoint(
             child_id=machine.child_id,
             action="poweroff_linux",
             target=machine.friendly_name,
+            occurred_at=datetime.now(UTC),
+        )
+    )
+    await session.commit()
+    children = await _child_names(svc)
+    ctx = _machine_context(machine, snapshot)
+    ctx["child_name"] = children.get(machine.child_id, machine.child_id)
+    return templates.TemplateResponse(request, "partials/linux_machine_card.html", ctx)
+
+
+@router.post("/linux-machines/{machine_id}/bonus", response_class=HTMLResponse)
+async def bonus_machine(
+    machine_id: int,
+    request: Request,
+    minutes: int = Form(...),
+    _email: str = require_user,  # type: ignore[assignment]
+    svc: FamilyLinkService = Depends(get_service),  # noqa: B008
+    session: AsyncSession = Depends(get_session),  # noqa: B008
+) -> HTMLResponse:
+    """Grant bonus minutes to a machine, unlocking it if currently locked."""
+    machine = await _get_machine_or_404(machine_id, session)
+    snapshot = await _today_snapshot(machine_id, session)
+    now = datetime.now(UTC)
+    if snapshot is None:
+        snapshot = LinuxUsageSnapshot(
+            machine_id=machine_id,
+            date=date.today(),
+            active_seconds=0,
+            updated_at=now,
+        )
+        session.add(snapshot)
+        try:
+            await session.flush()
+        except IntegrityError:
+            await session.rollback()
+            snapshot = (
+                await session.execute(
+                    select(LinuxUsageSnapshot).where(
+                        LinuxUsageSnapshot.machine_id == machine_id,
+                        LinuxUsageSnapshot.date == date.today(),
+                    )
+                )
+            ).scalar_one()
+            now = datetime.now(UTC)
+    snapshot.bonus_mins += minutes
+    if snapshot.locked_at is not None and snapshot.poweroff_at is None:
+        try:
+            await unlock_session(
+                machine.hostname,
+                machine.ssh_port,
+                machine.ssh_user,
+                machine.ssh_private_key,
+            )
+            snapshot.locked_at = None
+        except Exception:
+            logger.warning("unlock_session failed for %s", machine.friendly_name)
+    snapshot.updated_at = datetime.now(UTC)
+    session.add(
+        AuditLog(
+            child_id=machine.child_id,
+            action="bonus_linux",
+            target=machine.friendly_name,
+            new_value=str(minutes),
             occurred_at=datetime.now(UTC),
         )
     )

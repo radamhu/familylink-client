@@ -11,9 +11,9 @@
   </header>
   <p>
     <small>{{ machine.hostname }} &mdash; {{ child_name }}</small><br>
-    {% if machine.daily_limit_mins %}
-      <small>{{ active_mins }} / {{ machine.daily_limit_mins }} min used today</small>
-      <progress value="{{ active_mins }}" max="{{ machine.daily_limit_mins }}"></progress>
+    {% if effective_limit_mins %}
+      <small>{{ active_mins }} / {{ effective_limit_mins }} min used today{% if bonus_mins %} (+{{ bonus_mins }} bonus){% endif %}</small>
+      <progress value="{{ active_mins }}" max="{{ effective_limit_mins }}"></progress>
     {% else %}
       <small>No daily limit</small>
     {% endif %}
@@ -32,6 +32,15 @@
             style="display:inline">
         <button type="submit" class="contrast">Power off</button>
       </form>
+      {% for mins in [15, 30, 60] %}
+        <form hx-post="/linux-machines/{{ machine.id }}/bonus"
+              hx-target="#linux-machine-{{ machine.id }}"
+              hx-swap="outerHTML"
+              style="display:inline">
+          <input type="hidden" name="minutes" value="{{ mins }}">
+          <button type="submit" class="outline">+{{ mins }} min</button>
+        </form>
+      {% endfor %}
     {% endif %}
     <a href="/linux-machines/{{ machine.id }}/edit" role="button" class="outline">Edit</a>
     <button hx-delete="/linux-machines/{{ machine.id }}"

@@ -211,3 +211,97 @@ def test_generate_key_requires_auth():
     client = TestClient(app)
     resp = client.post("/linux-machines/generate-key")
     assert resp.status_code == 401
+
+
+def test_bonus_adds_minutes_and_returns_card():
+    """POST /linux-machines/{id}/bonus with minutes=15 returns 200 with card HTML."""
+    from unittest.mock import patch
+
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    mock_machine = MagicMock()
+    mock_machine.id = 1
+    mock_machine.hostname = "host"
+    mock_machine.ssh_port = 22
+    mock_machine.ssh_user = "user"
+    mock_machine.ssh_private_key = "key"
+    mock_machine.friendly_name = "Gaming PC"
+    mock_machine.child_id = "child1"
+    mock_machine.daily_limit_mins = 60
+    mock_machine.grace_period_mins = 5
+
+    app.dependency_overrides[get_service] = lambda: _mock_svc()
+    app.dependency_overrides[get_session] = lambda: _mock_session(machine=mock_machine)
+    try:
+        client = TestClient(app)
+        with patch(
+            "familylink_server.routers.linux_machines.unlock_session", AsyncMock()
+        ):
+            resp = client.post(
+                "/linux-machines/1/bonus",
+                data={"minutes": "15"},
+                cookies={"fl_session": _cookie()},
+            )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 200
+    assert "Gaming PC" in resp.text
+
+
+def test_bonus_on_locked_machine_calls_unlock():
+    """POST /bonus on locked machine calls unlock_session and resets locked_at."""
+    from unittest.mock import patch
+
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    mock_machine = MagicMock()
+    mock_machine.id = 1
+    mock_machine.hostname = "host"
+    mock_machine.ssh_port = 22
+    mock_machine.ssh_user = "user"
+    mock_machine.ssh_private_key = "key"
+    mock_machine.friendly_name = "Gaming PC"
+    mock_machine.child_id = "child1"
+    mock_machine.daily_limit_mins = 60
+    mock_machine.grace_period_mins = 5
+
+    import datetime
+
+    locked_snap = MagicMock()
+    locked_snap.active_seconds = 3600
+    locked_snap.bonus_mins = 0
+    locked_snap.locked_at = datetime.datetime.now(datetime.UTC)
+    locked_snap.poweroff_at = None
+    locked_snap.updated_at = None
+
+    mock_s = AsyncMock()
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalars.return_value.all.return_value = []
+    mock_exec_result.scalar_one_or_none.return_value = locked_snap
+    mock_s.execute = AsyncMock(return_value=mock_exec_result)
+    mock_s.get = AsyncMock(return_value=mock_machine)
+    mock_s.add = MagicMock()
+    mock_s.flush = AsyncMock()
+    mock_s.commit = AsyncMock()
+
+    mock_unlock = AsyncMock()
+    app.dependency_overrides[get_service] = lambda: _mock_svc()
+    app.dependency_overrides[get_session] = lambda: mock_s
+    try:
+        client = TestClient(app)
+        with patch(
+            "familylink_server.routers.linux_machines.unlock_session", mock_unlock
+        ):
+            resp = client.post(
+                "/linux-machines/1/bonus",
+                data={"minutes": "30"},
+                cookies={"fl_session": _cookie()},
+            )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 200
+    mock_unlock.assert_awaited_once()

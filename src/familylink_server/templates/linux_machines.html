@@ -7,6 +7,8 @@
   {% for row in machines %}
     {% set machine = row.machine %}
     {% set active_mins = row.active_mins %}
+    {% set bonus_mins = row.bonus_mins %}
+    {% set effective_limit_mins = row.effective_limit_mins %}
     {% set status = row.status %}
     {% set child_name = row.child_name %}
     {% include "partials/linux_machine_card.html" %}
