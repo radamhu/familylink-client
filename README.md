@@ -53,11 +53,13 @@ Google Photos,0:10,,                # 10 minutes everyday
 Apps not in the list will be blocked.
 
 ```bash
-familylink --dry-run config.csv              # Preview changes without applying
-familylink config.csv                         # Apply changes
-familylink --browser chrome config.csv        # Use Chrome instead of Firefox
-familylink export-cookies --base64            # Export cookies for cloud deployment
-familylink export-cookies --browser chrome    # Export from Chrome, write cookies.txt
+familylink --dry-run config.csv                                    # Preview changes without applying
+familylink config.csv                                               # Apply changes
+familylink --browser chrome config.csv                             # Use Chrome instead of Firefox
+familylink export-cookies --base64                                  # Export cookies for cloud deployment
+familylink export-cookies --browser chrome                         # Export from Chrome, write cookies.txt
+familylink export-cookies --base64 --coolify                       # Export and sync to Coolify
+familylink export-cookies --base64 --coolify --restart             # Export, sync to Coolify, restart app
 ```
 
 ### Options
@@ -71,11 +73,13 @@ familylink export-cookies --browser chrome    # Export from Chrome, write cookie
 
 ### export-cookies options
 
-| Flag                  | Description                                                |
-| --------------------- | ---------------------------------------------------------- |
-| `--browser`         | `firefox` (default) or `chrome`                        |
-| `--output` / `-o` | Output file path (default:`cookies.txt`)                 |
-| `--base64`          | Also print the base64 value for `FAMILYLINK_COOKIES_B64` |
+| Flag                  | Description                                                                                              |
+| --------------------- | -------------------------------------------------------------------------------------------------------- |
+| `--browser`         | `firefox` (default) or `chrome`                                                                      |
+| `--output` / `-o` | Output file path (default: `cookies.txt`)                                                              |
+| `--base64`          | Also print the base64 value for `FAMILYLINK_COOKIES_B64` and update `.env`                           |
+| `--coolify`         | Push `FAMILYLINK_COOKIES_B64` to the Coolify app after updating `.env`. Requires `--base64`. Reads `COOLIFY_URL`, `COOLIFY_TOKEN`, `COOLIFY_APP_UUID` from env. |
+| `--restart`         | Restart the Coolify app after pushing the env var. Requires `--coolify`.                               |
 
 ## Development setup
 
@@ -203,13 +207,13 @@ In your deployment platform's dashboard, set these environment variables (see `.
 
 | Variable                    | Description                                                                                             |
 | --------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `DATABASE_URL`            | PostgreSQL connection string:`postgresql+asyncpg://user:password@host/dbname`                         |
-| `SECRET_KEY`              | Random 32-byte hex (generate:`python -c "import secrets; print(secrets.token_hex(32))"`)              |
+| `DATABASE_URL`            | PostgreSQL connection string: `postgresql+asyncpg://user:password@host/dbname`                        |
+| `SECRET_KEY`              | Random 32-byte hex (generate: `python -c "import secrets; print(secrets.token_hex(32))"`)             |
 | `GOOGLE_CLIENT_ID`        | From Google OAuth credentials                                                                           |
 | `GOOGLE_CLIENT_SECRET`    | From Google OAuth credentials                                                                           |
 | `FAMILYLINK_GOOGLE_EMAIL` | Parent's Gmail address                                                                                  |
 | `FAMILYLINK_COOKIES_B64`  | Base64 output from `familylink export-cookies --base64`                                               |
-| `CACHE_TTL_SECONDS`       | Cache duration in seconds (default:`900`)                                                             |
+| `CACHE_TTL_SECONDS`       | Cache duration in seconds (default: `900`)                                                            |
 | `DEBUG`                   | Set to `true` to disable `Secure` flag on the session cookie — required for local HTTP (see below) |
 
 ### Step 4: Run database migrations
