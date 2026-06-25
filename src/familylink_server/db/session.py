@@ -1,6 +1,7 @@
 """Async SQLAlchemy session factory."""
 
 from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
@@ -17,6 +18,18 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
         async with get_session() as session:
             # use session
 
+    """
+    async with _session_factory() as session:
+        yield session
+
+
+@asynccontextmanager
+async def make_session() -> AsyncGenerator[AsyncSession, None]:
+    """Async context manager for use outside FastAPI dependency injection.
+
+    Use in background tasks and scripts:
+        async with make_session() as session:
+            ...
     """
     async with _session_factory() as session:
         yield session

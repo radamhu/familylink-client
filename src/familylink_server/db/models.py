@@ -2,7 +2,16 @@
 
 from datetime import UTC, date, datetime
 
-from sqlalchemy import Boolean, Date, DateTime, Integer, String, Text, UniqueConstraint
+from sqlalchemy import (
+    Boolean,
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -69,3 +78,61 @@ class AuditLog(Base):
     old_value: Mapped[str | None] = mapped_column(Text, nullable=True)
     new_value: Mapped[str | None] = mapped_column(Text, nullable=True)
     occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+
+
+class LinuxMachine(Base):
+    """Registered Linux machine managed via SSH."""
+
+    __tablename__ = "linux_machines"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    child_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    friendly_name: Mapped[str] = mapped_column(String(256), nullable=False)
+    hostname: Mapped[str] = mapped_column(String(256), nullable=False)
+    ssh_port: Mapped[int] = mapped_column(Integer, default=22)
+    ssh_user: Mapped[str] = mapped_column(String(64), nullable=False)
+    ssh_private_key: Mapped[str] = mapped_column(Text, nullable=False)
+    daily_limit_mins: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    grace_period_mins: Mapped[int] = mapped_column(Integer, default=5)
+    enabled: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False
+    )
+
+    def __init__(self, **kwargs: object) -> None:
+        """Initialise with Python-level defaults for optional columns."""
+        kwargs.setdefault("ssh_port", 22)
+        kwargs.setdefault("grace_period_mins", 5)
+        kwargs.setdefault("enabled", True)
+        kwargs.setdefault("daily_limit_mins", None)
+        super().__init__(**kwargs)
+
+
+class LinuxUsageSnapshot(Base):
+    """Daily active-session accumulator for a Linux machine."""
+
+    __tablename__ = "linux_usage_snapshots"
+    __table_args__ = (UniqueConstraint("machine_id", "date"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    machine_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("linux_machines.id", ondelete="CASCADE"), nullable=False
+    )
+    date: Mapped[date] = mapped_column(Date, nullable=False)
+    active_seconds: Mapped[int] = mapped_column(Integer, default=0)
+    locked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    poweroff_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False
+    )
+
+    def __init__(self, **kwargs: object) -> None:
+        """Initialise with Python-level defaults for optional columns."""
+        kwargs.setdefault("active_seconds", 0)
+        kwargs.setdefault("locked_at", None)
+        kwargs.setdefault("poweroff_at", None)
+        super().__init__(**kwargs)

@@ -5,15 +5,20 @@ from familylink_server.db.models import (
     AuditLog,
     Base,
     DeviceSnapshot,
+    LinuxMachine,
+    LinuxUsageSnapshot,
     UsageSnapshot,
 )
-from familylink_server.db.session import get_session
+from familylink_server.db.session import get_session, make_session
 
 __all__ = [
     "AppConfig",
     "AuditLog",
     "Base",
     "DeviceSnapshot",
+    "LinuxMachine",
+    "LinuxUsageSnapshot",
     "UsageSnapshot",
     "get_session",
+    "make_session",
 ]

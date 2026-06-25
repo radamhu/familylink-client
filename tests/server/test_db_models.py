@@ -92,3 +92,39 @@ async def test_audit_log_insert(db_session):
     db_session.add(log)
     await db_session.commit()
     assert log.id is not None
+
+
+def test_linux_machine_model_attributes():
+    """LinuxMachine has expected columns with correct defaults."""
+    from familylink_server.db.models import LinuxMachine
+
+    m = LinuxMachine(
+        child_id="child1",
+        friendly_name="Gaming PC",
+        hostname="192.168.1.10",
+        ssh_user="kid",
+        ssh_private_key="-----BEGIN RSA PRIVATE KEY-----\nfake\n-----END RSA PRIVATE KEY-----",
+        created_at=__import__("datetime").datetime.now(
+            __import__("datetime").timezone.utc
+        ),
+    )
+    assert m.ssh_port == 22
+    assert m.grace_period_mins == 5
+    assert m.enabled is True
+    assert m.daily_limit_mins is None
+
+
+def test_linux_usage_snapshot_model_attributes():
+    """LinuxUsageSnapshot has expected columns."""
+    from familylink_server.db.models import LinuxUsageSnapshot
+
+    snap = LinuxUsageSnapshot(
+        machine_id=1,
+        date=__import__("datetime").date.today(),
+        active_seconds=120,
+        updated_at=__import__("datetime").datetime.now(
+            __import__("datetime").timezone.utc
+        ),
+    )
+    assert snap.locked_at is None
+    assert snap.poweroff_at is None

@@ -30,6 +30,7 @@ server = [
     "jinja2>=3.1",
     "python-multipart>=0.0.12",
     "discord.py>=2.4",
+    "asyncssh>=2.14",
 ]
 dev = [
     "pre-commit>=4.0.1",
