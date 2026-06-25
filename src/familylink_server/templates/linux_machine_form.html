@@ -52,7 +52,7 @@
       btn.textContent = 'Generating…';
       try {
         const resp = await fetch('/linux-machines/generate-key', {method: 'POST'});
-        if (!resp.ok) { alert('Key generation failed'); return; }
+        if (!resp.ok) { alert('Key generation failed'); btn.textContent = 'Generate key pair'; return; }
         const data = await resp.json();
         document.getElementById('ssh_private_key').value = data.private_key;
         document.getElementById('pubkey-out').value = data.public_key;
