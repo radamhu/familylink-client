@@ -35,9 +35,34 @@
   </label>
   <label>
     SSH private key (PEM){% if machine %} — leave blank to keep existing{% endif %}
-    <textarea name="ssh_private_key" rows="8"
-      placeholder="-----BEGIN RSA PRIVATE KEY-----&#10;...">{% if not machine %}{% endif %}</textarea>
+    <textarea id="ssh_private_key" name="ssh_private_key" rows="8"
+      placeholder="-----BEGIN OPENSSH PRIVATE KEY-----&#10;...">{% if not machine %}{% endif %}</textarea>
   </label>
+  <button type="button" id="gen-key-btn">Generate key pair</button>
+  <div id="pubkey-box" style="display:none">
+    <label>
+      Public key — add this to <code>~/.ssh/authorized_keys</code> on the child machine
+      <textarea id="pubkey-out" rows="3" readonly onclick="this.select()"></textarea>
+    </label>
+  </div>
+  <script>
+    document.getElementById('gen-key-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('gen-key-btn');
+      btn.disabled = true;
+      btn.textContent = 'Generating…';
+      try {
+        const resp = await fetch('/linux-machines/generate-key', {method: 'POST'});
+        if (!resp.ok) { alert('Key generation failed'); return; }
+        const data = await resp.json();
+        document.getElementById('ssh_private_key').value = data.private_key;
+        document.getElementById('pubkey-out').value = data.public_key;
+        document.getElementById('pubkey-box').style.display = '';
+        btn.textContent = 'Regenerate key pair';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
   <div class="grid">
     <label>
       Daily limit (minutes, leave blank for no limit)
