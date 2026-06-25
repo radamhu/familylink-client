@@ -141,9 +141,9 @@ async def generate_key_pair(
 ) -> JSONResponse:
     """Generate an ed25519 SSH key pair and return both halves as strings."""
     key = asyncssh.generate_private_key("ssh-ed25519")
-    private_pem = key.export_private_key("openssh").decode()
+    private_openssh = key.export_private_key("openssh").decode()
     public_openssh = key.export_public_key("openssh").decode().strip()
-    return JSONResponse({"private_key": private_pem, "public_key": public_openssh})
+    return JSONResponse({"private_key": private_openssh, "public_key": public_openssh})
 
 
 @router.get("/linux-machines/{machine_id}/edit", response_class=HTMLResponse)
