@@ -7,10 +7,12 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
+from familylink import SessionExpiredError
 from familylink_server.auth.oauth import router as auth_router
 from familylink_server.config import settings
 from familylink_server.routers.apps import router as apps_router
@@ -65,6 +67,38 @@ app = FastAPI(
 )
 
 app.add_middleware(SessionMiddleware, secret_key=settings.secret_key)
+
+
+@app.exception_handler(SessionExpiredError)
+async def session_expired_handler(
+    request: Request, exc: SessionExpiredError
+) -> HTMLResponse:
+    """Return a 503 page with re-export instructions when Google cookies expire."""
+    return HTMLResponse(
+        status_code=503,
+        content="""<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Session Expired — Family Link</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+  <main class="container" style="max-width:600px;margin-top:4rem">
+    <article>
+      <header><strong>Google session expired</strong></header>
+      <p>The Family Link cookies have expired. Re-export them and update
+      <code>FAMILYLINK_COOKIES_B64</code> in your deployment.</p>
+      <pre>familylink export-cookies --base64</pre>
+      <p>Then paste the output as the <code>FAMILYLINK_COOKIES_B64</code> environment
+      variable in Coolify and redeploy.</p>
+    </article>
+  </main>
+</body>
+</html>""",
+    )
+
 
 app.include_router(auth_router)
 app.include_router(dashboard_router)
