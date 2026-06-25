@@ -187,3 +187,27 @@ def test_delete_machine_returns_empty():
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     assert resp.text == ""
+
+
+def test_generate_key_returns_key_pair():
+    """POST /linux-machines/generate-key returns private and public key strings."""
+    from familylink_server.main import app
+
+    client = TestClient(app)
+    resp = client.post(
+        "/linux-machines/generate-key",
+        cookies={"fl_session": _cookie()},
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["private_key"].startswith("-----BEGIN OPENSSH PRIVATE KEY-----")
+    assert "ssh-ed25519" in data["public_key"]
+
+
+def test_generate_key_requires_auth():
+    """POST /linux-machines/generate-key without auth returns 401."""
+    from familylink_server.main import app
+
+    client = TestClient(app)
+    resp = client.post("/linux-machines/generate-key")
+    assert resp.status_code == 401

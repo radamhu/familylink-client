@@ -4,8 +4,9 @@ import logging
 from datetime import UTC, date, datetime
 from pathlib import Path
 
+import asyncssh
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -132,6 +133,17 @@ async def create_machine(
     )
     await session.commit()
     return RedirectResponse("/linux-machines", status_code=303)
+
+
+@router.post("/linux-machines/generate-key")
+async def generate_key_pair(
+    _email: str = require_user,  # type: ignore[assignment]
+) -> JSONResponse:
+    """Generate an ed25519 SSH key pair and return both halves as strings."""
+    key = asyncssh.generate_private_key("ssh-ed25519")
+    private_pem = key.export_private_key("openssh").decode()
+    public_openssh = key.export_public_key("openssh").decode().strip()
+    return JSONResponse({"private_key": private_pem, "public_key": public_openssh})
 
 
 @router.get("/linux-machines/{machine_id}/edit", response_class=HTMLResponse)
