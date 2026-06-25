@@ -186,7 +186,7 @@ async def test_poll_machine_powers_off_after_grace_period():
 
 
 async def test_poll_machine_skips_when_already_powered_off():
-    """No SSH calls after poweroff_at is set for today."""
+    """No SSH calls when poweroff_at is already set for today (early exit)."""
     from familylink_server.services.linux_poller import poll_machine
 
     machine = _make_machine()
@@ -204,7 +204,7 @@ async def test_poll_machine_skips_when_already_powered_off():
     ):
         await poll_machine(machine)
 
-    mock_check.assert_awaited_once()  # called to detect active, but then returns early
+    mock_check.assert_not_awaited()  # early exit before SSH — check_session never called
 
 
 async def test_poll_machine_logs_warning_on_ssh_failure():
@@ -212,8 +212,18 @@ async def test_poll_machine_logs_warning_on_ssh_failure():
     from familylink_server.services.linux_poller import poll_machine
 
     machine = _make_machine()
-    with patch(
-        "familylink_server.services.linux_poller.check_session",
-        AsyncMock(side_effect=ConnectionError("timeout")),
+    # No poweroff_at on existing snapshot → poll proceeds to SSH
+    snapshot = _make_snapshot(active_seconds=0)
+    mock_ctx, _ = _make_session_ctx(snapshot)
+
+    with (
+        patch(
+            "familylink_server.services.linux_poller.check_session",
+            AsyncMock(side_effect=ConnectionError("timeout")),
+        ),
+        patch(
+            "familylink_server.services.linux_poller.make_session",
+            return_value=mock_ctx,
+        ),
     ):
         await poll_machine(machine)  # must not raise

@@ -5,6 +5,7 @@ import logging
 from datetime import UTC, date, datetime
 
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 
 from familylink_server.db.models import LinuxMachine, LinuxUsageSnapshot
 from familylink_server.db.session import make_session
@@ -20,12 +21,22 @@ POLL_INTERVAL = 60
 
 
 async def poll_machine(machine: LinuxMachine) -> None:
-    """Poll one machine: accumulate active seconds and enforce soft/hard limits.
+    """Poll one machine: skip if powered off, accumulate active seconds, enforce limits.
 
     Args:
         machine: The LinuxMachine ORM instance to poll.
     """
     today = date.today()
+
+    # Early exit without SSH if already powered off today
+    async with make_session() as session:
+        stmt = select(LinuxUsageSnapshot).where(
+            LinuxUsageSnapshot.machine_id == machine.id,
+            LinuxUsageSnapshot.date == today,
+        )
+        existing = (await session.execute(stmt)).scalar_one_or_none()
+        if existing is not None and existing.poweroff_at is not None:
+            return
 
     try:
         active = await check_session(
@@ -53,10 +64,11 @@ async def poll_machine(machine: LinuxMachine) -> None:
                 updated_at=datetime.now(UTC),
             )
             session.add(snapshot)
-            await session.flush()
-
-        if snapshot.poweroff_at is not None:
-            return
+            try:
+                await session.flush()
+            except IntegrityError:
+                await session.rollback()
+                snapshot = (await session.execute(stmt)).scalar_one()
 
         if active:
             snapshot.active_seconds += POLL_INTERVAL
@@ -92,7 +104,13 @@ async def poll_machine(machine: LinuxMachine) -> None:
                     snapshot.poweroff_at = datetime.now(UTC)
                     logger.info("Hard poweroff applied to %s", machine.friendly_name)
                 except Exception:
-                    logger.warning("Poweroff failed for %s", machine.friendly_name)
+                    # Mark failed poweroff attempts so the loop doesn't retry forever.
+                    # The machine will be re-attempted next day when poweroff_at resets.
+                    snapshot.poweroff_at = datetime.now(UTC)
+                    logger.warning(
+                        "Poweroff failed for %s — marking as powered off to stop retries",
+                        machine.friendly_name,
+                    )
 
         await session.commit()
 

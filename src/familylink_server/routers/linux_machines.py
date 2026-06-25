@@ -1,5 +1,6 @@
 """Router for /linux-machines CRUD and HTMX action endpoints."""
 
+import logging
 from datetime import UTC, date, datetime
 from pathlib import Path
 
@@ -7,13 +8,16 @@ from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from familylink_server.auth.oauth import require_user
-from familylink_server.db import get_session
+from familylink_server.db import AuditLog, get_session
 from familylink_server.db.models import LinuxMachine, LinuxUsageSnapshot
 from familylink_server.services.family_link import FamilyLinkService, get_service
 from familylink_server.services.linux_ssh import lock_session, poweroff_machine
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["linux_machines"])
 templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
@@ -202,9 +206,18 @@ async def lock_machine(
 ) -> HTMLResponse:
     """Lock the machine immediately and return the updated card partial."""
     machine = await _get_machine_or_404(machine_id, session)
-    await lock_session(
-        machine.hostname, machine.ssh_port, machine.ssh_user, machine.ssh_private_key
-    )
+    try:
+        await lock_session(
+            machine.hostname,
+            machine.ssh_port,
+            machine.ssh_user,
+            machine.ssh_private_key,
+        )
+    except Exception:
+        logger.warning("lock_session failed for %s", machine.friendly_name)
+        return HTMLResponse(
+            "<p>SSH connection failed. Is the machine online?</p>", status_code=502
+        )
     snapshot = await _today_snapshot(machine_id, session)
     now = datetime.now(UTC)
     if snapshot is None:
@@ -215,9 +228,30 @@ async def lock_machine(
             updated_at=now,
         )
         session.add(snapshot)
+        try:
+            await session.flush()
+        except IntegrityError:
+            await session.rollback()
+            snapshot = (
+                await session.execute(
+                    select(LinuxUsageSnapshot).where(
+                        LinuxUsageSnapshot.machine_id == machine_id,
+                        LinuxUsageSnapshot.date == date.today(),
+                    )
+                )
+            ).scalar_one()
+            now = datetime.now(UTC)
     if snapshot.locked_at is None:
         snapshot.locked_at = now
         snapshot.updated_at = now
+    session.add(
+        AuditLog(
+            child_id=machine.child_id,
+            action="lock_linux",
+            target=machine.friendly_name,
+            occurred_at=datetime.now(UTC),
+        )
+    )
     await session.commit()
     children = await _child_names(svc)
     ctx = _machine_context(machine, snapshot)
@@ -235,9 +269,18 @@ async def poweroff_machine_endpoint(
 ) -> HTMLResponse:
     """Power off the machine immediately and return the updated card partial."""
     machine = await _get_machine_or_404(machine_id, session)
-    await poweroff_machine(
-        machine.hostname, machine.ssh_port, machine.ssh_user, machine.ssh_private_key
-    )
+    try:
+        await poweroff_machine(
+            machine.hostname,
+            machine.ssh_port,
+            machine.ssh_user,
+            machine.ssh_private_key,
+        )
+    except Exception:
+        logger.warning("poweroff_machine failed for %s", machine.friendly_name)
+        return HTMLResponse(
+            "<p>SSH connection failed. Is the machine online?</p>", status_code=502
+        )
     snapshot = await _today_snapshot(machine_id, session)
     now = datetime.now(UTC)
     if snapshot is None:
@@ -248,10 +291,31 @@ async def poweroff_machine_endpoint(
             updated_at=now,
         )
         session.add(snapshot)
+        try:
+            await session.flush()
+        except IntegrityError:
+            await session.rollback()
+            snapshot = (
+                await session.execute(
+                    select(LinuxUsageSnapshot).where(
+                        LinuxUsageSnapshot.machine_id == machine_id,
+                        LinuxUsageSnapshot.date == date.today(),
+                    )
+                )
+            ).scalar_one()
+            now = datetime.now(UTC)
     if snapshot.locked_at is None:
         snapshot.locked_at = now
     snapshot.poweroff_at = now
     snapshot.updated_at = now
+    session.add(
+        AuditLog(
+            child_id=machine.child_id,
+            action="poweroff_linux",
+            target=machine.friendly_name,
+            occurred_at=datetime.now(UTC),
+        )
+    )
     await session.commit()
     children = await _child_names(svc)
     ctx = _machine_context(machine, snapshot)
