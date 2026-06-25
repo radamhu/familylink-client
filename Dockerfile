@@ -31,4 +31,4 @@ COPY logging_config.json .
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "alembic upgrade head && uvicorn familylink_server.main:app --host 0.0.0.0 --port 8000 --log-config logging_config.json"]
+CMD ["sh", "-c", "alembic upgrade head && uvicorn familylink_server.main:app --host 0.0.0.0 --port 8000 --log-config logging_config.json --proxy-headers --forwarded-allow-ips='*'"]
