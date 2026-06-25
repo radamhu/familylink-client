@@ -57,12 +57,12 @@ def test_linux_machines_page_returns_200():
 
 
 def test_linux_machines_page_requires_auth():
-    """GET /linux-machines without auth redirects."""
+    """GET /linux-machines without auth returns 401."""
     from familylink_server.main import app
 
     client = TestClient(app, follow_redirects=False)
     resp = client.get("/linux-machines")
-    assert resp.status_code in (302, 307)
+    assert resp.status_code == 401
 
 
 def test_create_machine_redirects():

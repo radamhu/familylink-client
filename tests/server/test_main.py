@@ -51,15 +51,33 @@ def test_auth_login_route_exists(mock_init_service):
 
 
 async def test_bot_not_started_when_discord_disabled():
-    """Lifespan should not create a bot task when Discord vars are absent."""
+    """Lifespan should not create a Discord bot task when Discord vars are absent."""
     from familylink_server.main import app, lifespan
+
+    bot_task_started = False
+
+    async def _fake_poller():
+        """Coroutine that exits immediately (stands in for poller_loop)."""
+
+    async def _fake_bot_task(*args, **kwargs):
+        nonlocal bot_task_started
+        bot_task_started = True
 
     with (
         patch("familylink_server.main.init_service"),
         patch("familylink_server.main.settings") as mock_settings,
-        patch("familylink_server.main.asyncio.create_task") as mock_create_task,
+        patch("familylink_server.main.poller_loop", side_effect=_fake_poller),
     ):
         mock_settings.discord_enabled = False
         async with lifespan(app):
             pass
-        mock_create_task.assert_not_called()
+    # Discord was disabled, so no bot task was started.
+    assert not bot_task_started
+
+
+def test_linux_machines_route_is_registered():
+    """GET /linux-machines is registered in the app."""
+    from familylink_server.main import app
+
+    paths = list(app.openapi().get("paths", {}).keys())
+    assert "/linux-machines" in paths

@@ -19,9 +19,11 @@ from familylink_server.routers.apps import router as apps_router
 from familylink_server.routers.dashboard import router as dashboard_router
 from familylink_server.routers.devices import router as devices_router
 from familylink_server.routers.history import router as history_router
+from familylink_server.routers.linux_machines import router as linux_machines_router
 from familylink_server.routers.members import router as members_router
 from familylink_server.routers.usage import router as usage_router
 from familylink_server.services.family_link import get_service, init_service
+from familylink_server.services.linux_poller import poller_loop
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +54,14 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
             "Discord bot disabled (DISCORD_BOT_TOKEN / GUILD_ID / CHANNEL_ID not set)"
         )
 
+    poller_task = asyncio.create_task(poller_loop())
+    logger.info("Linux machine poller started")
+
     yield
+
+    poller_task.cancel()
+    with contextlib.suppress(asyncio.CancelledError):
+        await poller_task
 
     if bot_task is not None:
         bot_task.cancel()
@@ -107,6 +116,7 @@ app.include_router(apps_router)
 app.include_router(members_router)
 app.include_router(usage_router)
 app.include_router(devices_router)
+app.include_router(linux_machines_router)
 
 _static = Path(__file__).parent / "static"
 if _static.exists():
