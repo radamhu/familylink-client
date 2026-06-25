@@ -1,0 +1,43 @@
+<div id="linux-machine-{{ machine.id }}" class="card">
+  <header>
+    <strong>{{ machine.friendly_name }}</strong>
+    {% if status == 'powered_off' %}
+      <span class="badge" style="color:var(--pico-color-red-700)">powered off</span>
+    {% elif status == 'locked' %}
+      <span class="badge" style="color:var(--pico-color-orange-500)">locked</span>
+    {% else %}
+      <span class="badge" style="color:var(--pico-color-green-500)">active</span>
+    {% endif %}
+  </header>
+  <p>
+    <small>{{ machine.hostname }} &mdash; {{ child_name }}</small><br>
+    {% if machine.daily_limit_mins %}
+      <small>{{ active_mins }} / {{ machine.daily_limit_mins }} min used today</small>
+      <progress value="{{ active_mins }}" max="{{ machine.daily_limit_mins }}"></progress>
+    {% else %}
+      <small>No daily limit</small>
+    {% endif %}
+  </p>
+  <footer>
+    {% if status != 'powered_off' %}
+      <form hx-post="/linux-machines/{{ machine.id }}/lock"
+            hx-target="#linux-machine-{{ machine.id }}"
+            hx-swap="outerHTML"
+            style="display:inline">
+        <button type="submit" class="secondary">Lock now</button>
+      </form>
+      <form hx-post="/linux-machines/{{ machine.id }}/poweroff"
+            hx-target="#linux-machine-{{ machine.id }}"
+            hx-swap="outerHTML"
+            style="display:inline">
+        <button type="submit" class="contrast">Power off</button>
+      </form>
+    {% endif %}
+    <a href="/linux-machines/{{ machine.id }}/edit" role="button" class="outline">Edit</a>
+    <button hx-delete="/linux-machines/{{ machine.id }}"
+            hx-target="#linux-machine-{{ machine.id }}"
+            hx-swap="outerHTML"
+            hx-confirm="Delete {{ machine.friendly_name }}?"
+            class="outline secondary">Delete</button>
+  </footer>
+</div>

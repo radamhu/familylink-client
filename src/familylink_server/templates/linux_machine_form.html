@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{% if machine %}Edit{% else %}Add{% endif %} Linux Machine{% endblock %}
+{% block content %}
+<h2>{% if machine %}Edit{% else %}Add{% endif %} Linux Machine</h2>
+<form method="post"
+      action="{% if machine %}/linux-machines/{{ machine.id }}/edit{% else %}/linux-machines{% endif %}">
+  <label>
+    Friendly name
+    <input name="friendly_name" value="{{ machine.friendly_name if machine else '' }}" required>
+  </label>
+  <label>
+    Child
+    <select name="child_id">
+      {% for user_id, display_name in children.items() %}
+        <option value="{{ user_id }}"
+          {% if machine and machine.child_id == user_id %}selected{% endif %}>
+          {{ display_name }}
+        </option>
+      {% endfor %}
+    </select>
+  </label>
+  <div class="grid">
+    <label>
+      Hostname / IP
+      <input name="hostname" value="{{ machine.hostname if machine else '' }}" required>
+    </label>
+    <label>
+      SSH port
+      <input name="ssh_port" type="number" value="{{ machine.ssh_port if machine else 22 }}" required>
+    </label>
+  </div>
+  <label>
+    SSH user
+    <input name="ssh_user" value="{{ machine.ssh_user if machine else '' }}" required>
+  </label>
+  <label>
+    SSH private key (PEM){% if machine %} — leave blank to keep existing{% endif %}
+    <textarea name="ssh_private_key" rows="8"
+      placeholder="-----BEGIN RSA PRIVATE KEY-----&#10;...">{% if not machine %}{% endif %}</textarea>
+  </label>
+  <div class="grid">
+    <label>
+      Daily limit (minutes, leave blank for no limit)
+      <input name="daily_limit_mins" type="number" min="1"
+             value="{{ machine.daily_limit_mins if machine and machine.daily_limit_mins else '' }}">
+    </label>
+    <label>
+      Grace period before poweroff (minutes)
+      <input name="grace_period_mins" type="number" min="1"
+             value="{{ machine.grace_period_mins if machine else 5 }}" required>
+    </label>
+  </div>
+  <label>
+    <input name="enabled" type="checkbox" role="switch"
+           {% if not machine or machine.enabled %}checked{% endif %}>
+    Enabled
+  </label>
+  <button type="submit">{% if machine %}Save{% else %}Add machine{% endif %}</button>
+  <a href="/linux-machines">Cancel</a>
+</form>
+{% endblock %}

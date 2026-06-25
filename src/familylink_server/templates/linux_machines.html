@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Linux Machines{% endblock %}
+{% block content %}
+<h2>Linux Machines</h2>
+<p><a href="/linux-machines/new" role="button">Add machine</a></p>
+<div class="grid">
+  {% for row in machines %}
+    {% set machine = row.machine %}
+    {% set active_mins = row.active_mins %}
+    {% set status = row.status %}
+    {% set child_name = row.child_name %}
+    {% include "partials/linux_machine_card.html" %}
+  {% else %}
+    <p>No Linux machines registered yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}
