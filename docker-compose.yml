@@ -27,9 +27,14 @@ services:
       - traefik.http.middlewares.gzip.compress=true
       - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
       - traefik.http.routers.http-0-cha67f8p0xtt7y1mv464yu43.entryPoints=http
-      - traefik.http.routers.http-0-cha67f8p0xtt7y1mv464yu43.middlewares=gzip
-      - traefik.http.routers.http-0-cha67f8p0xtt7y1mv464yu43.rule=Host(`pcw4cckcsoc4o8kog00s0kgg.192.168.0.22.sslip.io`) && PathPrefix(`/`)
+      - traefik.http.routers.http-0-cha67f8p0xtt7y1mv464yu43.middlewares=redirect-to-https
+      - traefik.http.routers.http-0-cha67f8p0xtt7y1mv464yu43.rule=Host(`cha67f8p0xtt7y1mv464yu43.192.168.0.22.sslip.io`)
       - traefik.http.routers.http-0-cha67f8p0xtt7y1mv464yu43.service=http-0-cha67f8p0xtt7y1mv464yu43
+      - traefik.http.routers.https-0-cha67f8p0xtt7y1mv464yu43.entryPoints=https
+      - traefik.http.routers.https-0-cha67f8p0xtt7y1mv464yu43.middlewares=gzip
+      - traefik.http.routers.https-0-cha67f8p0xtt7y1mv464yu43.rule=Host(`cha67f8p0xtt7y1mv464yu43.192.168.0.22.sslip.io`)
+      - traefik.http.routers.https-0-cha67f8p0xtt7y1mv464yu43.tls=true
+      - traefik.http.routers.https-0-cha67f8p0xtt7y1mv464yu43.service=http-0-cha67f8p0xtt7y1mv464yu43
       - traefik.http.services.http-0-cha67f8p0xtt7y1mv464yu43.loadbalancer.server.port=8000
 
 volumes:
