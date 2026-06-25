@@ -1,8 +1,11 @@
 """Background asyncio task that polls Linux machines and enforces screen-time limits."""
 
+from __future__ import annotations
+
 import asyncio
 import logging
 from datetime import UTC, date, datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -15,20 +18,25 @@ from familylink_server.services.linux_ssh import (
     poweroff_machine,
 )
 
+if TYPE_CHECKING:
+    from familylink_server.services.discord_notifier import DiscordNotifier
+
 logger = logging.getLogger(__name__)
 
 POLL_INTERVAL = 60
 
 
-async def poll_machine(machine: LinuxMachine) -> None:
+async def poll_machine(
+    machine: LinuxMachine, notifier: DiscordNotifier | None = None
+) -> None:
     """Poll one machine: skip if powered off, accumulate active seconds, enforce limits.
 
     Args:
         machine: The LinuxMachine ORM instance to poll.
+        notifier: Optional Discord notifier; posts on lock/poweroff when provided.
     """
     today = date.today()
 
-    # Early exit without SSH if already powered off today
     async with make_session() as session:
         stmt = select(LinuxUsageSnapshot).where(
             LinuxUsageSnapshot.machine_id == machine.id,
@@ -74,9 +82,15 @@ async def poll_machine(machine: LinuxMachine) -> None:
             snapshot.active_seconds += POLL_INTERVAL
             snapshot.updated_at = datetime.now(UTC)
 
+        effective_limit_secs = (
+            (machine.daily_limit_mins + snapshot.bonus_mins) * 60
+            if machine.daily_limit_mins is not None
+            else None
+        )
+
         if (
-            machine.daily_limit_mins is not None
-            and snapshot.active_seconds >= machine.daily_limit_mins * 60
+            effective_limit_secs is not None
+            and snapshot.active_seconds >= effective_limit_secs
             and snapshot.locked_at is None
         ):
             try:
@@ -88,6 +102,10 @@ async def poll_machine(machine: LinuxMachine) -> None:
                 )
                 snapshot.locked_at = datetime.now(UTC)
                 logger.info("Soft lock applied to %s", machine.friendly_name)
+                if notifier:
+                    await notifier.notify_change(
+                        "lock_linux", machine.child_id, machine.friendly_name, "poller"
+                    )
             except Exception:
                 logger.warning("Lock failed for %s", machine.friendly_name)
 
@@ -103,9 +121,14 @@ async def poll_machine(machine: LinuxMachine) -> None:
                     )
                     snapshot.poweroff_at = datetime.now(UTC)
                     logger.info("Hard poweroff applied to %s", machine.friendly_name)
+                    if notifier:
+                        await notifier.notify_change(
+                            "poweroff_linux",
+                            machine.child_id,
+                            machine.friendly_name,
+                            "poller",
+                        )
                 except Exception:
-                    # Mark failed poweroff attempts so the loop doesn't retry forever.
-                    # The machine will be re-attempted next day when poweroff_at resets.
                     snapshot.poweroff_at = datetime.now(UTC)
                     logger.warning(
                         "Poweroff failed for %s — marking as powered off to stop retries",
@@ -115,8 +138,12 @@ async def poll_machine(machine: LinuxMachine) -> None:
         await session.commit()
 
 
-async def poller_loop() -> None:
-    """Main poll loop — iterates all enabled machines every POLL_INTERVAL seconds."""
+async def poller_loop(notifier: DiscordNotifier | None = None) -> None:
+    """Main poll loop — iterates all enabled machines every POLL_INTERVAL seconds.
+
+    Args:
+        notifier: Optional Discord notifier passed down to each poll_machine call.
+    """
     while True:
         try:
             async with make_session() as session:
@@ -126,7 +153,7 @@ async def poller_loop() -> None:
                 machines = result.scalars().all()
 
             await asyncio.gather(
-                *[poll_machine(m) for m in machines],
+                *[poll_machine(m, notifier=notifier) for m in machines],
                 return_exceptions=True,
             )
         except Exception:

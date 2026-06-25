@@ -229,3 +229,106 @@ async def test_poll_machine_logs_warning_on_ssh_failure():
         ),
     ):
         await poll_machine(machine)  # must not raise
+
+
+async def test_poll_machine_respects_bonus_mins_in_effective_limit():
+    """Bonus mins extend the limit — machine is not locked when under effective threshold."""
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine(daily_limit_mins=1)  # 60 s limit
+    # bonus_mins=1 → effective limit = 2 min = 120 s; active=59 s + 60 poll = 119 s → below threshold
+    snapshot = _make_snapshot(active_seconds=59, bonus_mins=1)
+    mock_ctx, _ = _make_session_ctx(snapshot)
+
+    mock_lock = AsyncMock()
+    with (
+        patch(
+            "familylink_server.services.linux_poller.check_session",
+            AsyncMock(return_value=True),
+        ),
+        patch("familylink_server.services.linux_poller.lock_session", mock_lock),
+        patch(
+            "familylink_server.services.linux_poller.make_session",
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine)
+
+    mock_lock.assert_not_awaited()
+
+
+async def test_poll_machine_notifies_on_soft_lock():
+    """notify_change called with 'lock_linux' when soft lock is applied."""
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine(daily_limit_mins=1)
+    snapshot = _make_snapshot(active_seconds=60, bonus_mins=0)
+    mock_ctx, _ = _make_session_ctx(snapshot)
+
+    mock_notifier = AsyncMock()
+    with (
+        patch(
+            "familylink_server.services.linux_poller.check_session",
+            AsyncMock(return_value=True),
+        ),
+        patch("familylink_server.services.linux_poller.lock_session", AsyncMock()),
+        patch(
+            "familylink_server.services.linux_poller.make_session",
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine, notifier=mock_notifier)
+
+    mock_notifier.notify_change.assert_awaited_once_with(
+        "lock_linux", machine.child_id, machine.friendly_name, "poller"
+    )
+
+
+async def test_poll_machine_notifies_on_poweroff():
+    """notify_change called with 'poweroff_linux' when poweroff is applied."""
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine(daily_limit_mins=1, grace_period_mins=5)
+    locked_ts = datetime.datetime.now(datetime.UTC) - datetime.timedelta(minutes=6)
+    snapshot = _make_snapshot(active_seconds=120, locked_at=locked_ts, bonus_mins=0)
+    mock_ctx, _ = _make_session_ctx(snapshot)
+
+    mock_notifier = AsyncMock()
+    with (
+        patch(
+            "familylink_server.services.linux_poller.check_session",
+            AsyncMock(return_value=False),
+        ),
+        patch("familylink_server.services.linux_poller.poweroff_machine", AsyncMock()),
+        patch(
+            "familylink_server.services.linux_poller.make_session",
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine, notifier=mock_notifier)
+
+    mock_notifier.notify_change.assert_awaited_once_with(
+        "poweroff_linux", machine.child_id, machine.friendly_name, "poller"
+    )
+
+
+async def test_poll_machine_no_crash_when_notifier_is_none():
+    """poll_machine does not crash when notifier=None and lock is applied."""
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine(daily_limit_mins=1)
+    snapshot = _make_snapshot(active_seconds=60, bonus_mins=0)
+    mock_ctx, _ = _make_session_ctx(snapshot)
+
+    with (
+        patch(
+            "familylink_server.services.linux_poller.check_session",
+            AsyncMock(return_value=True),
+        ),
+        patch("familylink_server.services.linux_poller.lock_session", AsyncMock()),
+        patch(
+            "familylink_server.services.linux_poller.make_session",
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine, notifier=None)  # must not raise
