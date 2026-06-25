@@ -4,6 +4,7 @@ import argparse
 import base64
 import csv
 import logging
+import os
 import sys
 from datetime import datetime
 from http.cookiejar import MozillaCookieJar
@@ -121,7 +122,38 @@ def _cmd_export_cookies(argv: list[str]) -> None:
         action="store_true",
         help="Also print the base64-encoded value for FAMILYLINK_COOKIES_B64",
     )
+    parser.add_argument(
+        "--coolify",
+        action="store_true",
+        help="Push FAMILYLINK_COOKIES_B64 to the Coolify app after updating .env. Requires --base64.",
+    )
+    parser.add_argument(
+        "--restart",
+        action="store_true",
+        help="Restart the Coolify app after pushing the env var. Requires --coolify.",
+    )
     args = parser.parse_args(argv)
+
+    if args.coolify and not args.base64:
+        console.print("[error]--coolify requires --base64[/error]")
+        sys.exit(1)
+    if args.restart and not args.coolify:
+        console.print("[error]--restart requires --coolify[/error]")
+        sys.exit(1)
+
+    coolify_url = coolify_token = coolify_app_uuid = None
+    if args.coolify:
+        coolify_url = os.environ.get("COOLIFY_URL")
+        coolify_token = os.environ.get("COOLIFY_TOKEN")
+        coolify_app_uuid = os.environ.get("COOLIFY_APP_UUID")
+        for name, val in [
+            ("COOLIFY_URL", coolify_url),
+            ("COOLIFY_TOKEN", coolify_token),
+            ("COOLIFY_APP_UUID", coolify_app_uuid),
+        ]:
+            if not val:
+                console.print(f"[error]{name} is not set.[/error]")
+                sys.exit(1)
 
     if browser_cookie3 is None:
         console.print(
@@ -174,6 +206,15 @@ def _cmd_export_cookies(argv: list[str]) -> None:
         else:
             env_path.write_text(line + "\n")
         console.print(f"[success]Updated {env_path}[/success]")
+
+        if args.coolify:
+            _push_to_coolify(
+                encoded,
+                coolify_url,
+                coolify_token,
+                coolify_app_uuid,
+                restart=args.restart,
+            )
 
 
 def _mins_to_hhmm(mins: int) -> str:
