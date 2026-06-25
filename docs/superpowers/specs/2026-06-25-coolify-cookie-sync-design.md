@@ -17,7 +17,7 @@ Three variables configure the Coolify integration. All three must be present whe
 | `COOLIFY_TOKEN` | `1|EWfPB7l6...` | Bearer token for the Coolify API |
 | `COOLIFY_APP_UUID` | `ou4t4la0sfos78d8z3aytvah` | UUID of the `familylink-client` application |
 
-These are added to `.env.example` (commented, with explanatory text) and `.env`.
+These are added to `.env.example` (commented, with explanatory text) and `.env`. In the CLI they are read with `os.environ.get()` — the CLI does not use `pydantic-settings` or import anything from `familylink_server`.
 
 ## CLI changes
 

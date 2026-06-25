@@ -34,7 +34,7 @@ def change_embed(
     """Return an embed describing a single Family Link write action."""
     title, color = _ACTION_MAP.get(
         action,
-        (f'ℹ️ {action.replace("_", " ").title()}', discord.Color.blurple()),
+        (f"ℹ️ {action.replace('_', ' ').title()}", discord.Color.blurple()),
     )
     embed = discord.Embed(title=title, color=color)
     embed.add_field(name="Child", value=child_name, inline=True)
@@ -96,7 +96,7 @@ def usage_today_embed(
     for app in top_apps[:10]:
         embed.add_field(
             name=app["title"],
-            value=f'`{_bar(app["seconds"], max_s)}` {_fmt(app["seconds"])}',
+            value=f"`{_bar(app['seconds'], max_s)}` {_fmt(app['seconds'])}",
             inline=False,
         )
     return embed
@@ -114,7 +114,7 @@ def usage_history_embed(
     for day in daily_totals:
         embed.add_field(
             name=day["date"],
-            value=f'`{_bar(day["seconds"], max_s)}` {_fmt(day["seconds"])}',
+            value=f"`{_bar(day['seconds'], max_s)}` {_fmt(day['seconds'])}",
             inline=False,
         )
     return embed
@@ -124,10 +124,10 @@ def status_embed(children_data: list[dict]) -> discord.Embed:
     """Return a dashboard overview embed covering all children."""
     embed = discord.Embed(title="🏠 Family Status", color=discord.Color.blurple())
     for child in children_data:
-        devices = f'{child["device_count"]} device(s)'
+        devices = f"{child['device_count']} device(s)"
         embed.add_field(
             name=child["name"],
-            value=f'{_fmt(child["total_seconds"])} today · {devices}',
+            value=f"{_fmt(child['total_seconds'])} today · {devices}",
             inline=False,
         )
     return embed
@@ -151,7 +151,7 @@ def daily_summary_embed(
     for app in top_apps[:5]:
         embed.add_field(
             name=app["title"],
-            value=f'`{_bar(app["seconds"], max_s)}` {_fmt(app["seconds"])}',
+            value=f"`{_bar(app['seconds'], max_s)}` {_fmt(app['seconds'])}",
             inline=False,
         )
     return embed
