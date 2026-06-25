@@ -9,6 +9,7 @@ from datetime import datetime
 from http.cookiejar import MozillaCookieJar
 from pathlib import Path
 
+import httpx
 from rich.console import Console
 from rich.logging import RichHandler
 from rich.theme import Theme
@@ -50,6 +51,48 @@ logging.basicConfig(
 # Set httpx logging to WARNING by default to hide request logs
 logging.getLogger("httpx").setLevel(logging.WARNING)
 _logger = logging.getLogger(__name__)
+
+
+def _push_to_coolify(
+    base64_value: str, url: str, token: str, app_uuid: str, *, restart: bool
+) -> None:
+    """Push FAMILYLINK_COOKIES_B64 to Coolify and optionally restart the app."""
+    headers = {"Authorization": f"Bearer {token}"}
+    try:
+        resp = httpx.patch(
+            f"{url}/api/v1/applications/{app_uuid}/envs",
+            headers=headers,
+            json={
+                "key": "FAMILYLINK_COOKIES_B64",
+                "value": base64_value,
+                "is_preview": False,
+            },
+        )
+    except httpx.RequestError as exc:
+        console.print(f"[error]Coolify network error:[/error] {exc}")
+        sys.exit(1)
+    if not resp.is_success:
+        console.print(
+            f"[error]Coolify API error {resp.status_code}:[/error] {resp.text}"
+        )
+        sys.exit(1)
+    console.print("[success]Updated FAMILYLINK_COOKIES_B64 in Coolify[/success]")
+
+    if restart:
+        try:
+            resp = httpx.get(
+                f"{url}/api/v1/applications/{app_uuid}/restart",
+                headers=headers,
+            )
+        except httpx.RequestError as exc:
+            console.print(f"[error]Coolify restart network error:[/error] {exc}")
+            sys.exit(1)
+        if not resp.is_success:
+            console.print(
+                f"[error]Coolify restart error {resp.status_code}:[/error] {resp.text}"
+            )
+            sys.exit(1)
+        console.print("[success]Restarted familylink-client in Coolify[/success]")
 
 
 def _cmd_export_cookies(argv: list[str]) -> None:
