@@ -120,6 +120,7 @@ class LinuxUsageSnapshot(Base):
     )
     date: Mapped[date] = mapped_column(Date, nullable=False)
     active_seconds: Mapped[int] = mapped_column(Integer, default=0)
+    bonus_mins: Mapped[int] = mapped_column(Integer, default=0)
     locked_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
@@ -133,6 +134,7 @@ class LinuxUsageSnapshot(Base):
     def __init__(self, **kwargs: object) -> None:
         """Initialise with Python-level defaults for optional columns."""
         kwargs.setdefault("active_seconds", 0)
+        kwargs.setdefault("bonus_mins", 0)
         kwargs.setdefault("locked_at", None)
         kwargs.setdefault("poweroff_at", None)
         super().__init__(**kwargs)

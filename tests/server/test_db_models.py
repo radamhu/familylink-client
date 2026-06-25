@@ -128,3 +128,34 @@ def test_linux_usage_snapshot_model_attributes():
     )
     assert snap.locked_at is None
     assert snap.poweroff_at is None
+
+
+def test_linux_usage_snapshot_has_bonus_mins_defaulting_to_zero():
+    """LinuxUsageSnapshot.bonus_mins defaults to 0."""
+    import datetime
+
+    from familylink_server.db.models import LinuxUsageSnapshot
+
+    snap = LinuxUsageSnapshot(
+        machine_id=1,
+        date=datetime.date.today(),
+        active_seconds=0,
+        updated_at=datetime.datetime.now(datetime.UTC),
+    )
+    assert snap.bonus_mins == 0
+
+
+def test_linux_usage_snapshot_bonus_mins_stores_value():
+    """LinuxUsageSnapshot.bonus_mins stores an explicit value."""
+    import datetime
+
+    from familylink_server.db.models import LinuxUsageSnapshot
+
+    snap = LinuxUsageSnapshot(
+        machine_id=1,
+        date=datetime.date.today(),
+        active_seconds=0,
+        bonus_mins=30,
+        updated_at=datetime.datetime.now(datetime.UTC),
+    )
+    assert snap.bonus_mins == 30

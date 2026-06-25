@@ -30,11 +30,13 @@ def _make_snapshot(
     active_seconds: int = 0,
     locked_at: datetime.datetime | None = None,
     poweroff_at: datetime.datetime | None = None,
+    bonus_mins: int = 0,
 ) -> MagicMock:
     snap = MagicMock()
     snap.active_seconds = active_seconds
     snap.locked_at = locked_at
     snap.poweroff_at = poweroff_at
+    snap.bonus_mins = bonus_mins
     snap.updated_at = None
     return snap
 
