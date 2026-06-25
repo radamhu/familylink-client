@@ -183,6 +183,7 @@ direnv allow
    - Railway: `https://<your-app>.railway.app/auth/callback`
    - Render: `https://<your-app>.onrender.com/auth/callback`
    - Fly.io: `https://<your-app>.fly.dev/auth/callback`
+   - Coolify: `https://<your-coolify-domain>/auth/callback`
 6. Copy your **Client ID** and **Client Secret**
 
 ### Step 2: Export Family Link cookies
@@ -231,6 +232,31 @@ web: uvicorn familylink_server.main:app --host 0.0.0.0 --port $PORT
 
 Your platform will read this and start the server on the port it provides via the `$PORT` environment variable.
 
+### Coolify deployment
+
+Coolify uses Traefik as its reverse proxy, which terminates TLS and forwards requests to the container over plain HTTP internally. Without special configuration uvicorn would generate `http://` OAuth callback URLs, causing a `redirect_uri_mismatch` error from Google.
+
+The `Dockerfile` `CMD` already includes the required flags:
+
+```
+--proxy-headers --forwarded-allow-ips='*'
+```
+
+This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that `request.url_for()` generates `https://` URLs. The `*` is safe here because only Traefik can reach the container — it is not internet-exposed directly.
+
+**Deployment steps:**
+
+1. Create a new Coolify service from this repository (Docker Compose or Dockerfile).
+2. Set all required environment variables in the Coolify service settings (see table above).
+3. Register `https://<your-coolify-domain>/auth/callback` as an authorized redirect URI in Google Cloud Console.
+4. Deploy. On first visit you will see `{"detail":"Not authenticated"}` — this is expected. Navigate to `/auth/login` to start the OAuth flow.
+
+**Traefik labels** are already present in `docker-compose.yml` and configure:
+- HTTP → HTTPS redirect
+- TLS termination
+- Gzip compression
+- Port routing to the uvicorn process on `8000`
+
 ### Local Docker development
 
 Running the server locally via `docker compose up` requires two extra steps because Google OAuth sets a `Secure` session cookie that browsers silently drop over plain HTTP.
@@ -276,5 +302,7 @@ If you see a `401` error at `http://localhost:8000/`, you haven't logged in yet 
 
 - **Database connection fails**: Verify `DATABASE_URL` format and that your database is reachable from the deployment platform
 - **"Could not find SAPISID"**: The cookies have expired — re-run `familylink export-cookies --base64` and update `FAMILYLINK_COOKIES_B64`
-- **OAuth redirect fails**: Check that the redirect URI in Google Cloud Console exactly matches your deployed URL
+- **OAuth redirect fails / `redirect_uri_mismatch`**: Check that the redirect URI in Google Cloud Console exactly matches your deployed URL (scheme included — `https://` not `http://`)
+- **Behind a reverse proxy, OAuth callback URL is `http://` instead of `https://`**: The app must run with `--proxy-headers --forwarded-allow-ips='*'` so uvicorn trusts the `X-Forwarded-Proto` header from the proxy. This is already set in the `Dockerfile` `CMD`. If deploying via `Procfile` or another mechanism, add the flags there too.
+- **`{"detail":"Not authenticated"}` on first visit**: You haven't logged in yet — navigate to `/auth/login`
 - **Login succeeds but every page redirects back to `/auth/login`**: The session cookie is being dropped. If running locally over HTTP, set `DEBUG=true` in `.env` (see above)
