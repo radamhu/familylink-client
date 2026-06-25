@@ -71,3 +71,24 @@ async def poweroff_machine(hostname: str, port: int, user: str, key_text: str) -
         connect_timeout=10,
     ) as conn:
         await conn.run("systemctl poweroff", check=False)
+
+
+async def unlock_session(hostname: str, port: int, user: str, key_text: str) -> None:
+    """Unlock all sessions on the machine.
+
+    Args:
+        hostname: The SSH host to connect to.
+        port: The SSH port number.
+        user: The SSH username.
+        key_text: PEM-encoded private key as a string.
+    """
+    key = asyncssh.import_private_key(key_text)
+    async with asyncssh.connect(
+        hostname,
+        port=port,
+        username=user,
+        client_keys=[key],
+        known_hosts=None,
+        connect_timeout=10,
+    ) as conn:
+        await conn.run("loginctl unlock-sessions", check=False)

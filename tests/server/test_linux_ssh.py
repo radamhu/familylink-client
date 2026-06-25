@@ -122,3 +122,22 @@ async def test_poweroff_machine_runs_systemctl():
     ):
         await poweroff_machine("host", 22, "user", "fake-pem")
     mock_conn.run.assert_awaited_once_with("systemctl poweroff", check=False)
+
+
+async def test_unlock_session_runs_loginctl_unlock():
+    """unlock_session issues loginctl unlock-sessions over SSH."""
+    from familylink_server.services.linux_ssh import unlock_session
+
+    mock_conn, mock_cm = _make_ssh_mock("")
+    with (
+        patch(
+            "familylink_server.services.linux_ssh.asyncssh.import_private_key",
+            return_value=MagicMock(),
+        ),
+        patch(
+            "familylink_server.services.linux_ssh.asyncssh.connect",
+            return_value=mock_cm,
+        ),
+    ):
+        await unlock_session("host", 22, "user", "fake-pem")
+    mock_conn.run.assert_awaited_once_with("loginctl unlock-sessions", check=False)
