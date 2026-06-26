@@ -32,6 +32,31 @@
           </div>
         {% endfor %}
       </div>
+
+      {% if child.linux_machines %}
+        <h3>Linux Machines</h3>
+        {% for lm in child.linux_machines %}
+          <div style="margin-bottom:0.5rem">
+            <span style="display:inline-block;width:12rem">{{ lm.friendly_name }}</span>
+            {% if lm.effective_limit_mins %}
+              <progress value="{{ lm.active_mins }}" max="{{ lm.effective_limit_mins }}"
+                        style="display:inline-block;width:8rem;vertical-align:middle"></progress>
+              <span style="font-size:0.8rem;color:var(--pico-muted-color)">
+                {{ lm.active_mins }} / {{ lm.effective_limit_mins }} min
+              </span>
+            {% else %}
+              <span style="font-size:0.8rem;color:var(--pico-muted-color)">no limit</span>
+            {% endif %}
+            {% if lm.status == 'powered_off' %}
+              <span style="color:var(--pico-color-red-700);font-size:0.8rem">🔴 powered off</span>
+            {% elif lm.status == 'locked' %}
+              <span style="color:var(--pico-color-orange-500);font-size:0.8rem">🟠 locked</span>
+            {% else %}
+              <span style="color:var(--pico-color-green-500);font-size:0.8rem">🟢 active</span>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endif %}
     </section>
   {% else %}
     <p>No supervised children found.</p>
