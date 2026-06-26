@@ -149,6 +149,75 @@ def make_status_command(
     return status
 
 
+def make_summary_command(
+    service: FamilyLinkService,
+    notifier: DiscordNotifier,
+    make_session: Callable[[], AbstractAsyncContextManager[AsyncSession]],
+) -> app_commands.Command:
+    """Factory: return a /summary app_commands.Command that posts the daily summary now."""
+
+    @app_commands.command(
+        name="summary",
+        description="Post the daily usage summary to the channel right now",
+    )
+    async def summary(interaction: discord.Interaction) -> None:
+        if not require_discord_role(interaction):
+            await interaction.response.send_message(
+                "Insufficient permissions.", ephemeral=True
+            )
+            return
+        await interaction.response.defer(ephemeral=True)
+        try:
+            from familylink_server.bot.client import _fetch_linux_rows
+            from familylink_server.bot.views import SummaryView
+
+            members = await service.get_members()
+            supervised = [
+                m
+                for m in members.members
+                if m.member_supervision_info
+                and m.member_supervision_info.is_supervised_member
+            ]
+            for child in supervised:
+                usage = await service.get_apps_and_usage(child.user_id)
+                all_apps = sorted(
+                    [
+                        {"title": a.title, "seconds": a.usage_today_seconds}
+                        for a in usage.apps
+                        if hasattr(a, "usage_today_seconds") and a.usage_today_seconds
+                    ],
+                    key=lambda x: x["seconds"],
+                    reverse=True,
+                )
+                total = sum(a["seconds"] for a in all_apps)
+                top_apps = all_apps[:5]
+                device_id = (
+                    usage.device_info[0].device_id if usage.device_info else None
+                )
+                linux_rows = await _fetch_linux_rows(child.user_id, make_session)
+                view = SummaryView(
+                    service,
+                    notifier,
+                    child.user_id,
+                    child.profile.display_name,
+                    device_id,
+                )
+                await notifier.post_daily_summary(
+                    child.profile.display_name,
+                    top_apps,
+                    total,
+                    linux_machines=linux_rows,
+                    view=view,
+                )
+            await interaction.followup.send(
+                f"✅ Summary posted for {len(supervised)} child(ren).", ephemeral=True
+            )
+        except Exception as exc:
+            await interaction.followup.send(f"❌ Failed: {exc}", ephemeral=True)
+
+    return summary
+
+
 def make_refresh_command(service: FamilyLinkService) -> app_commands.Command:
     """Factory: return a /refresh app_commands.Command bound to service."""
 

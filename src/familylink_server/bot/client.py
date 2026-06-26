@@ -120,6 +120,7 @@ class FamilyLinkBot(commands.Bot):
                 UsageGroup,
                 make_refresh_command,
                 make_status_command,
+                make_summary_command,
             )
 
             self.tree.add_command(AppsGroup(self.service, self.notifier), guild=guild)
@@ -134,6 +135,10 @@ class FamilyLinkBot(commands.Bot):
                 make_status_command(self.service, self._make_session), guild=guild
             )
             self.tree.add_command(make_refresh_command(self.service), guild=guild)
+            self.tree.add_command(
+                make_summary_command(self.service, self.notifier, self._make_session),
+                guild=guild,
+            )
         except ImportError:
             logger.warning(
                 "Bot command modules not yet available — skipping command registration"
