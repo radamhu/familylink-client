@@ -305,3 +305,63 @@ def test_bonus_on_locked_machine_calls_unlock():
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     mock_unlock.assert_awaited_once()
+
+
+def test_bonus_rejects_zero_minutes():
+    """POST /bonus with minutes=0 returns 422 validation error."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    app.dependency_overrides[get_service] = lambda: _mock_svc()
+    app.dependency_overrides[get_session] = lambda: _mock_session()
+    try:
+        client = TestClient(app)
+        resp = client.post(
+            "/linux-machines/1/bonus",
+            data={"minutes": "0"},
+            cookies={"fl_session": _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 422
+
+
+def test_bonus_rejects_negative_minutes():
+    """POST /bonus with minutes=-60 returns 422 validation error."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    app.dependency_overrides[get_service] = lambda: _mock_svc()
+    app.dependency_overrides[get_session] = lambda: _mock_session()
+    try:
+        client = TestClient(app)
+        resp = client.post(
+            "/linux-machines/1/bonus",
+            data={"minutes": "-60"},
+            cookies={"fl_session": _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 422
+
+
+def test_bonus_rejects_excessive_minutes():
+    """POST /bonus with minutes=999 returns 422 validation error."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    app.dependency_overrides[get_service] = lambda: _mock_svc()
+    app.dependency_overrides[get_session] = lambda: _mock_session()
+    try:
+        client = TestClient(app)
+        resp = client.post(
+            "/linux-machines/1/bonus",
+            data={"minutes": "999"},
+            cookies={"fl_session": _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 422

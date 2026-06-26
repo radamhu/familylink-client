@@ -355,7 +355,7 @@ async def poweroff_machine_endpoint(
 async def bonus_machine(
     machine_id: int,
     request: Request,
-    minutes: int = Form(...),
+    minutes: int = Form(..., ge=1, le=480),
     _email: str = require_user,  # type: ignore[assignment]
     svc: FamilyLinkService = Depends(get_service),  # noqa: B008
     session: AsyncSession = Depends(get_session),  # noqa: B008
