@@ -20,6 +20,11 @@ from familylink_server.bot.embeds import (
 )
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+    from contextlib import AbstractAsyncContextManager
+
+    from sqlalchemy.ext.asyncio import AsyncSession
+
     from familylink_server.services.discord_notifier import DiscordNotifier
     from familylink_server.services.family_link import FamilyLinkService
 
@@ -99,8 +104,11 @@ class UsageGroup(app_commands.Group, name="usage", description="View usage stati
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
-def make_status_command(service: FamilyLinkService) -> app_commands.Command:
-    """Factory: return a /status app_commands.Command bound to service."""
+def make_status_command(
+    service: FamilyLinkService,
+    make_session: Callable[[], AbstractAsyncContextManager[AsyncSession]],
+) -> app_commands.Command:
+    """Factory: return a /status app_commands.Command bound to service and make_session."""
 
     @app_commands.command(
         name="status",
@@ -109,7 +117,8 @@ def make_status_command(service: FamilyLinkService) -> app_commands.Command:
     async def status(interaction: discord.Interaction) -> None:
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                "You do not have permission to use this command.",
+                ephemeral=True,
             )
             return
         members = await service.get_members()
@@ -123,11 +132,15 @@ def make_status_command(service: FamilyLinkService) -> app_commands.Command:
         for child in supervised:
             usage = await service.get_apps_and_usage(child.user_id)
             total = sum(getattr(a, "usage_today_seconds", 0) or 0 for a in usage.apps)
+            from familylink_server.bot.client import _fetch_linux_rows
+
+            linux_rows = await _fetch_linux_rows(child.user_id, make_session)
             children_data.append(
                 {
                     "name": child.profile.display_name,
                     "total_seconds": total,
                     "device_count": len(usage.device_info),
+                    "linux_machines": linux_rows,
                 }
             )
         embed = status_embed(children_data)

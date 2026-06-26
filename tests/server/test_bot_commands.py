@@ -249,10 +249,22 @@ async def test_usage_today_calls_service():
 
 async def test_status_calls_service():
     """Test that /status calls get_members and sends an embed."""
+    from contextlib import asynccontextmanager
+
     from familylink_server.bot.commands.usage import make_status_command
 
     svc = AsyncMock()
-    cmd = make_status_command(svc)
+
+    # Dummy make_session that returns no machines
+    @asynccontextmanager
+    async def _dummy_make_session():
+        session = AsyncMock()
+        result = MagicMock()
+        result.scalars.return_value.all.return_value = []
+        session.execute = AsyncMock(return_value=result)
+        yield session
+
+    cmd = make_status_command(svc, _dummy_make_session)
 
     m = MagicMock()
     m.user_id = "uid-1"

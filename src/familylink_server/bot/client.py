@@ -4,23 +4,88 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from datetime import date
 from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
 from discord.ext import commands, tasks
+from sqlalchemy import select
 
 from familylink_server.bot.embeds import (
-    daily_summary_embed,  # noqa: F401 (imported for re-use by callers)
+    daily_summary_embed,  # noqa: F401
 )
+from familylink_server.db.models import LinuxMachine, LinuxUsageSnapshot
 
 if TYPE_CHECKING:
-    import datetime
+    import datetime as dt
+    from collections.abc import Callable
+    from contextlib import AbstractAsyncContextManager
+
+    from sqlalchemy.ext.asyncio import AsyncSession
 
     from familylink_server.services.discord_notifier import DiscordNotifier
     from familylink_server.services.family_link import FamilyLinkService
 
 logger = logging.getLogger(__name__)
+
+
+def _linux_rows_for_child(
+    machines: list,
+    snapshots: dict,
+) -> list[dict]:
+    """Build linux_machines list for a child given ORM machine objects and snap map."""
+    rows = []
+    for m in machines:
+        snap = snapshots.get(m.id)
+        active_mins = (snap.active_seconds // 60) if snap else 0
+        bonus_mins = snap.bonus_mins if snap else 0
+        effective_limit_mins = (
+            m.daily_limit_mins + bonus_mins if m.daily_limit_mins is not None else None
+        )
+        if snap and snap.poweroff_at:
+            lm_status = "powered_off"
+        elif snap and snap.locked_at:
+            lm_status = "locked"
+        else:
+            lm_status = "active"
+        rows.append(
+            {
+                "friendly_name": m.friendly_name,
+                "active_mins": active_mins,
+                "effective_limit_mins": effective_limit_mins,
+                "status": lm_status,
+            }
+        )
+    return rows
+
+
+async def _fetch_linux_rows(
+    child_id: str,
+    make_session: Callable[[], AbstractAsyncContextManager[AsyncSession]],
+) -> list[dict]:
+    """Query Linux machines + today's snapshots for one child."""
+    today = date.today()
+    async with make_session() as session:
+        result = await session.execute(
+            select(LinuxMachine).where(
+                LinuxMachine.child_id == child_id,
+                LinuxMachine.enabled.is_(True),
+            )
+        )
+        machines = result.scalars().all()
+        snap_map: dict[int, object] = {}
+        for m in machines:
+            snap_result = await session.execute(
+                select(LinuxUsageSnapshot).where(
+                    LinuxUsageSnapshot.machine_id == m.id,
+                    LinuxUsageSnapshot.date == today,
+                )
+            )
+            snap = snap_result.scalar_one_or_none()
+            if snap:
+                snap_map[m.id] = snap
+    return _linux_rows_for_child(machines, snap_map)
 
 
 class FamilyLinkBot(commands.Bot):
@@ -31,7 +96,8 @@ class FamilyLinkBot(commands.Bot):
         service: FamilyLinkService,
         notifier: DiscordNotifier,
         guild_id: int,
-        summary_time: datetime.time,
+        summary_time: dt.time,
+        make_session: Callable[[], AbstractAsyncContextManager[AsyncSession]],
     ) -> None:
         intents = discord.Intents.default()
         super().__init__(command_prefix="!", intents=intents)
@@ -39,6 +105,7 @@ class FamilyLinkBot(commands.Bot):
         self.notifier = notifier
         self.guild_id = guild_id
         self._summary_time = summary_time
+        self._make_session = make_session
         self.daily_summary_task: tasks.Loop | None = None
 
     async def setup_hook(self) -> None:
@@ -48,6 +115,7 @@ class FamilyLinkBot(commands.Bot):
         try:
             from familylink_server.bot.commands.apps import AppsGroup
             from familylink_server.bot.commands.devices import DevicesGroup
+            from familylink_server.bot.commands.linux import LinuxGroup
             from familylink_server.bot.commands.usage import (
                 UsageGroup,
                 make_refresh_command,
@@ -59,7 +127,12 @@ class FamilyLinkBot(commands.Bot):
                 DevicesGroup(self.service, self.notifier), guild=guild
             )
             self.tree.add_command(UsageGroup(self.service, self.notifier), guild=guild)
-            self.tree.add_command(make_status_command(self.service), guild=guild)
+            self.tree.add_command(
+                LinuxGroup(make_session=self._make_session), guild=guild
+            )
+            self.tree.add_command(
+                make_status_command(self.service, self._make_session), guild=guild
+            )
             self.tree.add_command(make_refresh_command(self.service), guild=guild)
         except ImportError:
             logger.warning(
@@ -140,6 +213,7 @@ class FamilyLinkBot(commands.Bot):
                 device_id = (
                     usage.device_info[0].device_id if usage.device_info else None
                 )
+                linux_rows = await _fetch_linux_rows(child.user_id, self._make_session)
                 view = None
                 if SummaryView is not None:
                     view = SummaryView(
@@ -153,6 +227,7 @@ class FamilyLinkBot(commands.Bot):
                     child.profile.display_name,
                     top_apps,
                     total_seconds,
+                    linux_machines=linux_rows,
                     view=view,
                 )
         except Exception:

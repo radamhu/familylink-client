@@ -33,6 +33,9 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
     """Initialize services at startup; shut down cleanly."""
     init_service()
 
+    from familylink_server.db.session import make_session as _make_session
+
+    notifier = None
     bot_task: asyncio.Task | None = None
     if settings.discord_enabled:
         from familylink_server.bot.client import FamilyLinkBot, _bot_task_with_restart
@@ -44,6 +47,7 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
             notifier=notifier,
             guild_id=settings.discord_guild_id,  # type: ignore[arg-type]
             summary_time=settings.discord_summary_time_parsed,
+            make_session=_make_session,
         )
         bot_task = asyncio.create_task(
             _bot_task_with_restart(bot, settings.discord_bot_token)  # type: ignore[arg-type]
@@ -54,7 +58,7 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
             "Discord bot disabled (DISCORD_BOT_TOKEN / GUILD_ID / CHANNEL_ID not set)"
         )
 
-    poller_task = asyncio.create_task(poller_loop())
+    poller_task = asyncio.create_task(poller_loop(notifier=notifier))
     logger.info("Linux machine poller started")
 
     yield

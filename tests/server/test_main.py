@@ -81,3 +81,13 @@ def test_linux_machines_route_is_registered():
 
     paths = list(app.openapi().get("paths", {}).keys())
     assert "/linux-machines" in paths
+
+
+def test_poller_loop_accepts_notifier_kwarg():
+    """poller_loop signature accepts a notifier keyword argument."""
+    import inspect
+
+    from familylink_server.services.linux_poller import poller_loop
+
+    sig = inspect.signature(poller_loop)
+    assert "notifier" in sig.parameters
