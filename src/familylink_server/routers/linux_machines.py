@@ -287,6 +287,48 @@ async def lock_machine(
     return templates.TemplateResponse(request, "partials/linux_machine_card.html", ctx)
 
 
+@router.post("/linux-machines/{machine_id}/unlock", response_class=HTMLResponse)
+async def unlock_machine(
+    machine_id: int,
+    request: Request,
+    _email: str = require_user,  # type: ignore[assignment]
+    svc: FamilyLinkService = Depends(get_service),  # noqa: B008
+    session: AsyncSession = Depends(get_session),  # noqa: B008
+) -> HTMLResponse:
+    """Unlock the machine immediately and return the updated card partial."""
+    machine = await _get_machine_or_404(machine_id, session)
+    try:
+        await unlock_session(
+            machine.hostname,
+            machine.ssh_port,
+            machine.ssh_user,
+            machine.ssh_private_key,
+        )
+    except Exception:
+        logger.warning("unlock_session failed for %s", machine.friendly_name)
+        return HTMLResponse(
+            "<p>SSH connection failed. Is the machine online?</p>", status_code=502
+        )
+    snapshot = await _today_snapshot(machine_id, session)
+    now = datetime.now(UTC)
+    if snapshot is not None and snapshot.locked_at is not None:
+        snapshot.locked_at = None
+        snapshot.updated_at = now
+    session.add(
+        AuditLog(
+            child_id=machine.child_id,
+            action="unlock_linux",
+            target=machine.friendly_name,
+            occurred_at=now,
+        )
+    )
+    await session.commit()
+    children = await _child_names(svc)
+    ctx = _machine_context(machine, snapshot)
+    ctx["child_name"] = children.get(machine.child_id, machine.child_id)
+    return templates.TemplateResponse(request, "partials/linux_machine_card.html", ctx)
+
+
 @router.post("/linux-machines/{machine_id}/poweroff", response_class=HTMLResponse)
 async def poweroff_machine_endpoint(
     machine_id: int,

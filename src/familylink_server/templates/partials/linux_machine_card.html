@@ -19,29 +19,38 @@
     {% endif %}
   </p>
   <footer>
-    {% if status != 'powered_off' %}
+    {% if status == 'active' %}
       <form hx-post="/linux-machines/{{ machine.id }}/lock"
             hx-target="#linux-machine-{{ machine.id }}"
             hx-swap="outerHTML"
             style="display:inline">
         <button type="submit" class="secondary">Lock now</button>
       </form>
+    {% elif status == 'locked' %}
+      <form hx-post="/linux-machines/{{ machine.id }}/unlock"
+            hx-target="#linux-machine-{{ machine.id }}"
+            hx-swap="outerHTML"
+            style="display:inline">
+        <button type="submit" class="secondary">Unlock</button>
+      </form>
+    {% endif %}
+    {% if status != 'powered_off' %}
       <form hx-post="/linux-machines/{{ machine.id }}/poweroff"
             hx-target="#linux-machine-{{ machine.id }}"
             hx-swap="outerHTML"
             style="display:inline">
         <button type="submit" class="contrast">Power off</button>
       </form>
-      {% for mins in [15, 30, 60] %}
-        <form hx-post="/linux-machines/{{ machine.id }}/bonus"
-              hx-target="#linux-machine-{{ machine.id }}"
-              hx-swap="outerHTML"
-              style="display:inline">
-          <input type="hidden" name="minutes" value="{{ mins }}">
-          <button type="submit" class="outline">+{{ mins }} min</button>
-        </form>
-      {% endfor %}
     {% endif %}
+    {% for mins in [15, 30, 60] %}
+      <form hx-post="/linux-machines/{{ machine.id }}/bonus"
+            hx-target="#linux-machine-{{ machine.id }}"
+            hx-swap="outerHTML"
+            style="display:inline">
+        <input type="hidden" name="minutes" value="{{ mins }}">
+        <button type="submit" class="outline">+{{ mins }} min</button>
+      </form>
+    {% endfor %}
     <a href="/linux-machines/{{ machine.id }}/edit" role="button" class="outline">Edit</a>
     <button hx-delete="/linux-machines/{{ machine.id }}"
             hx-target="#linux-machine-{{ machine.id }}"

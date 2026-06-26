@@ -37,15 +37,6 @@ async def poll_machine(
     """
     today = date.today()
 
-    async with make_session() as session:
-        stmt = select(LinuxUsageSnapshot).where(
-            LinuxUsageSnapshot.machine_id == machine.id,
-            LinuxUsageSnapshot.date == today,
-        )
-        existing = (await session.execute(stmt)).scalar_one_or_none()
-        if existing is not None and existing.poweroff_at is not None:
-            return
-
     try:
         active = await check_session(
             machine.hostname,
@@ -77,6 +68,13 @@ async def poll_machine(
             except IntegrityError:
                 await session.rollback()
                 snapshot = (await session.execute(stmt)).scalar_one()
+
+        if snapshot.poweroff_at is not None:
+            snapshot.poweroff_at = None
+            snapshot.locked_at = None
+            logger.info(
+                "Machine %s back online — cleared poweroff state", machine.friendly_name
+            )
 
         if active:
             snapshot.active_seconds += POLL_INTERVAL
