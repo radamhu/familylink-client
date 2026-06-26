@@ -35,7 +35,10 @@ def _change_embed(
 
 
 def _summary_embed(
-    child_name: str, top_apps: list[dict], total_seconds: int
+    child_name: str,
+    top_apps: list[dict],
+    total_seconds: int,
+    linux_machines: list[dict] | None = None,
 ) -> discord.Embed:
     """Build a daily summary embed."""
     import datetime
@@ -58,6 +61,17 @@ def _summary_embed(
         filled = round(app["seconds"] / max_s * 10)
         bar = "█" * filled + "░" * (10 - filled)
         embed.add_field(name=app["title"], value=f"`{bar}` {dur}", inline=False)
+    if linux_machines:
+        lines = []
+        for lm in linux_machines:
+            icon = {"powered_off": "🔴", "locked": "🟠"}.get(lm["status"], "🟢")
+            if lm["effective_limit_mins"]:
+                lines.append(
+                    f"{icon} {lm['friendly_name']} {lm['active_mins']}/{lm['effective_limit_mins']}m"
+                )
+            else:
+                lines.append(f"{icon} {lm['friendly_name']} (no limit)")
+        embed.add_field(name="🖥️ Linux Machines", value="\n".join(lines), inline=False)
     return embed
 
 
@@ -92,12 +106,15 @@ class DiscordNotifier:
         child_name: str,
         top_apps: list[dict],
         total_seconds: int,
+        linux_machines: list[dict] | None = None,
         view: discord.ui.View | None = None,
     ) -> None:
         """Post a daily usage summary embed. No-op if channel not yet ready."""
         if self._channel is None:
             return
-        embed = _summary_embed(child_name, top_apps, total_seconds)
+        embed = _summary_embed(
+            child_name, top_apps, total_seconds, linux_machines=linux_machines
+        )
         await self._channel.send(embed=embed, view=view)
 
 

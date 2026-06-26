@@ -12,6 +12,9 @@ _ACTION_MAP: dict[str, tuple[str, discord.Color]] = {
     "set_limit": ("⏱️ App Limit Set", discord.Color.orange()),
     "lock_device": ("🔒 Device Locked", discord.Color.orange()),
     "unlock_device": ("🔓 Device Unlocked", discord.Color.green()),
+    "lock_linux": ("🔒 Linux Machine Locked", discord.Color.orange()),
+    "poweroff_linux": ("⚡ Linux Machine Powered Off", discord.Color.red()),
+    "bonus_linux": ("⏰ Bonus Time Granted", discord.Color.green()),
 }
 
 
@@ -125,16 +128,24 @@ def status_embed(children_data: list[dict]) -> discord.Embed:
     embed = discord.Embed(title="🏠 Family Status", color=discord.Color.blurple())
     for child in children_data:
         devices = f"{child['device_count']} device(s)"
-        embed.add_field(
-            name=child["name"],
-            value=f"{_fmt(child['total_seconds'])} today · {devices}",
-            inline=False,
-        )
+        lines = [f"{_fmt(child['total_seconds'])} today · {devices}"]
+        for lm in child.get("linux_machines", []):
+            icon = {"powered_off": "🔴", "locked": "🟠"}.get(lm["status"], "🟢")
+            if lm["effective_limit_mins"]:
+                lines.append(
+                    f"{icon} {lm['friendly_name']} {lm['active_mins']}/{lm['effective_limit_mins']}m"
+                )
+            else:
+                lines.append(f"{icon} {lm['friendly_name']} (no limit)")
+        embed.add_field(name=child["name"], value="\n".join(lines), inline=False)
     return embed
 
 
 def daily_summary_embed(
-    child_name: str, top_apps: list[dict], total_seconds: int
+    child_name: str,
+    top_apps: list[dict],
+    total_seconds: int,
+    linux_machines: list[dict] | None = None,
 ) -> discord.Embed:
     """Return a daily summary embed (used by the scheduled task)."""
     today = datetime.date.today().strftime("%A %d %b").lstrip(" ").replace(" ", " ", 1)
@@ -154,4 +165,15 @@ def daily_summary_embed(
             value=f"`{_bar(app['seconds'], max_s)}` {_fmt(app['seconds'])}",
             inline=False,
         )
+    if linux_machines:
+        lines = []
+        for lm in linux_machines:
+            icon = {"powered_off": "🔴", "locked": "🟠"}.get(lm["status"], "🟢")
+            if lm["effective_limit_mins"]:
+                lines.append(
+                    f"{icon} {lm['friendly_name']} {lm['active_mins']}/{lm['effective_limit_mins']}m"
+                )
+            else:
+                lines.append(f"{icon} {lm['friendly_name']} (no limit)")
+        embed.add_field(name="🖥️ Linux Machines", value="\n".join(lines), inline=False)
     return embed

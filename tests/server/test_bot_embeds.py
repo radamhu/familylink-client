@@ -122,3 +122,58 @@ def test_daily_summary_embed_bar():
     assert "Emma" in embed.title
     assert "3h" in embed.description or "2h" in embed.description
     assert any("█" in f.value for f in embed.fields)
+
+
+def test_action_map_has_linux_actions():
+    """_ACTION_MAP contains lock_linux, poweroff_linux, bonus_linux."""
+    from familylink_server.bot.embeds import _ACTION_MAP
+
+    assert "lock_linux" in _ACTION_MAP
+    assert "poweroff_linux" in _ACTION_MAP
+    assert "bonus_linux" in _ACTION_MAP
+
+
+def test_status_embed_includes_linux_machines():
+    """status_embed shows Linux machine info when linux_machines provided."""
+    from familylink_server.bot.embeds import status_embed
+
+    children_data = [
+        {
+            "name": "Alice",
+            "total_seconds": 3600,
+            "device_count": 1,
+            "linux_machines": [
+                {
+                    "friendly_name": "Gaming PC",
+                    "active_mins": 34,
+                    "effective_limit_mins": 90,
+                    "status": "active",
+                }
+            ],
+        }
+    ]
+    embed = status_embed(children_data)
+    field_values = " ".join(f.value for f in embed.fields)
+    assert "Gaming PC" in field_values
+
+
+def test_daily_summary_embed_includes_linux_machines():
+    """daily_summary_embed shows Linux section when linux_machines provided."""
+    from familylink_server.bot.embeds import daily_summary_embed
+
+    embed = daily_summary_embed(
+        "Alice",
+        [{"title": "YouTube", "seconds": 1800}],
+        1800,
+        linux_machines=[
+            {
+                "friendly_name": "Homework PC",
+                "active_mins": 20,
+                "effective_limit_mins": 60,
+                "status": "active",
+            }
+        ],
+    )
+    field_names = " ".join(f.name for f in embed.fields)
+    field_values = " ".join(f.value for f in embed.fields)
+    assert "Linux" in field_names or "Homework PC" in field_values
