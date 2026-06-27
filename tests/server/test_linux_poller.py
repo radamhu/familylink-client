@@ -130,8 +130,13 @@ async def test_poll_machine_applies_soft_lock_when_limit_reached():
     assert snapshot.locked_at is not None
 
 
-async def test_poll_machine_does_not_relock_when_already_locked():
-    """lock_session is NOT called if locked_at is already set."""
+async def test_poll_machine_relocks_when_user_dismisses_lock():
+    """lock_session IS called again on every poll when already locked and still over limit.
+
+    The child can dismiss a D-Bus screensaver lock from the keyboard; the poller
+    must re-apply it on the next tick rather than leaving the machine unguarded.
+    locked_at must NOT be updated so the grace-period timer is preserved.
+    """
     from familylink_server.services.linux_poller import poll_machine
 
     machine = _make_machine(daily_limit_mins=1)
@@ -154,7 +159,8 @@ async def test_poll_machine_does_not_relock_when_already_locked():
     ):
         await poll_machine(machine)
 
-    mock_lock.assert_not_awaited()
+    mock_lock.assert_awaited_once()
+    assert snapshot.locked_at == locked_ts, "locked_at must not change on re-lock"
 
 
 async def test_poll_machine_powers_off_after_grace_period():
@@ -187,16 +193,20 @@ async def test_poll_machine_powers_off_after_grace_period():
     assert snapshot.poweroff_at is not None
 
 
-async def test_poll_machine_skips_when_already_powered_off():
-    """No SSH calls when poweroff_at is already set for today (early exit)."""
+async def test_poll_machine_clears_poweroff_state_on_reboot_detection():
+    """When poweroff_at is set but SSH succeeds, the machine rebooted.
+
+    The poller must clear poweroff_at/locked_at so the normal limit enforcement
+    cycle restarts.  check_session IS called — we need SSH to detect the reboot.
+    """
     from familylink_server.services.linux_poller import poll_machine
 
-    machine = _make_machine()
+    machine = _make_machine(daily_limit_mins=None)
     now = datetime.datetime.now(datetime.UTC)
     snapshot = _make_snapshot(locked_at=now, poweroff_at=now)
     mock_ctx, _ = _make_session_ctx(snapshot)
 
-    mock_check = AsyncMock(return_value=True)
+    mock_check = AsyncMock(return_value=False)  # no active graphical session yet
     with (
         patch("familylink_server.services.linux_poller.check_session", mock_check),
         patch(
@@ -206,7 +216,9 @@ async def test_poll_machine_skips_when_already_powered_off():
     ):
         await poll_machine(machine)
 
-    mock_check.assert_not_awaited()  # early exit before SSH — check_session never called
+    mock_check.assert_awaited_once()
+    assert snapshot.poweroff_at is None
+    assert snapshot.locked_at is None
 
 
 async def test_poll_machine_logs_warning_on_ssh_failure():

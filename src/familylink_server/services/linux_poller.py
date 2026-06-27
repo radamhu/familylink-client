@@ -89,7 +89,7 @@ async def poll_machine(
         if (
             effective_limit_secs is not None
             and snapshot.active_seconds >= effective_limit_secs
-            and snapshot.locked_at is None
+            and snapshot.poweroff_at is None
         ):
             try:
                 await lock_session(
@@ -98,11 +98,20 @@ async def poll_machine(
                     machine.ssh_user,
                     machine.ssh_private_key,
                 )
-                snapshot.locked_at = datetime.now(UTC)
-                logger.info("Soft lock applied to %s", machine.friendly_name)
-                if notifier:
-                    await notifier.notify_change(
-                        "lock_linux", machine.child_id, machine.friendly_name, "poller"
+                if snapshot.locked_at is None:
+                    snapshot.locked_at = datetime.now(UTC)
+                    logger.info("Soft lock applied to %s", machine.friendly_name)
+                    if notifier:
+                        await notifier.notify_change(
+                            "lock_linux",
+                            machine.child_id,
+                            machine.friendly_name,
+                            "poller",
+                        )
+                else:
+                    logger.debug(
+                        "Re-applied lock to %s (user dismissed lock screen)",
+                        machine.friendly_name,
                     )
             except Exception:
                 logger.warning("Lock failed for %s", machine.friendly_name)

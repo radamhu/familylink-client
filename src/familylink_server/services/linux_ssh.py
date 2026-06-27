@@ -85,9 +85,19 @@ async def poweroff_machine(hostname: str, port: int, user: str, key_text: str) -
         known_hosts=None,
         connect_timeout=10,
     ) as conn:
-        # systemctl poweroff requires polkit admin auth without sudo.
-        # A NOPASSWD sudoers rule must be present on the target machine.
-        await conn.run("sudo systemctl poweroff", check=False)
+        # Try D-Bus system bus first: polkit on Bazzite/Fedora allows active
+        # users to call PowerOff without sudo.  Fall back to sudo for distros
+        # that restrict unauthenticated D-Bus poweroff.
+        result = await conn.run(
+            "dbus-send --system --print-reply --dest=org.freedesktop.login1"
+            " /org/freedesktop/login1"
+            " 'org.freedesktop.login1.Manager.PowerOff' boolean:false",
+            check=False,
+        )
+        if result.exit_status != 0:
+            # Requires: suriel ALL=(ALL) NOPASSWD: /usr/bin/systemctl poweroff
+            # in /etc/sudoers.d/familylink-poweroff (chmod 440)
+            await conn.run("sudo systemctl poweroff", check=True)
 
 
 async def unlock_session(hostname: str, port: int, user: str, key_text: str) -> None:
