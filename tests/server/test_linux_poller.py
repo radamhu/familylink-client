@@ -196,19 +196,26 @@ async def test_poll_machine_powers_off_after_grace_period():
 async def test_poll_machine_clears_poweroff_state_on_reboot_detection():
     """When poweroff_at is set but SSH succeeds, the machine rebooted.
 
-    The poller must clear poweroff_at/locked_at so the normal limit enforcement
-    cycle restarts.  check_session IS called — we need SSH to detect the reboot.
+    Only poweroff_at is cleared so the poller can re-attempt shutdown.
+    locked_at is preserved: its elapsed time already exceeds the grace period,
+    so poweroff fires on the same tick — no free window for the child.
+    check_session IS called — we need SSH to detect the reboot.
     """
     from familylink_server.services.linux_poller import poll_machine
 
     machine = _make_machine(daily_limit_mins=None)
     now = datetime.datetime.now(datetime.UTC)
-    snapshot = _make_snapshot(locked_at=now, poweroff_at=now)
+    original_locked_at = now - datetime.timedelta(hours=1)
+    snapshot = _make_snapshot(locked_at=original_locked_at, poweroff_at=now)
     mock_ctx, _ = _make_session_ctx(snapshot)
 
     mock_check = AsyncMock(return_value=False)  # no active graphical session yet
+    mock_poweroff = AsyncMock()
     with (
         patch("familylink_server.services.linux_poller.check_session", mock_check),
+        patch(
+            "familylink_server.services.linux_poller.poweroff_machine", mock_poweroff
+        ),
         patch(
             "familylink_server.services.linux_poller.make_session",
             return_value=mock_ctx,
@@ -217,8 +224,9 @@ async def test_poll_machine_clears_poweroff_state_on_reboot_detection():
         await poll_machine(machine)
 
     mock_check.assert_awaited_once()
-    assert snapshot.poweroff_at is None
-    assert snapshot.locked_at is None
+    # poweroff fires immediately: elapsed (1 h) already exceeds grace period
+    mock_poweroff.assert_awaited_once()
+    assert snapshot.locked_at == original_locked_at  # preserved — no free grace window
 
 
 async def test_poll_machine_logs_warning_on_ssh_failure():

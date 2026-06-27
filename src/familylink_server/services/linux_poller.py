@@ -71,9 +71,9 @@ async def poll_machine(
 
         if snapshot.poweroff_at is not None:
             snapshot.poweroff_at = None
-            snapshot.locked_at = None
             logger.info(
-                "Machine %s back online — cleared poweroff state", machine.friendly_name
+                "Machine %s back online after poweroff — will re-enforce immediately",
+                machine.friendly_name,
             )
 
         if active:
