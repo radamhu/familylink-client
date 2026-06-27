@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 import discord
 from discord import app_commands
 
+from familylink_server.bot.client import _apps_today
 from familylink_server.bot.commands import (
     child_autocomplete,
     require_discord_role,
@@ -59,15 +60,8 @@ class UsageGroup(app_commands.Group, name="usage", description="View usage stati
             return
         child_id, child_name = resolved
         usage = await self._svc.get_apps_and_usage(child_id)
-        top_apps = sorted(
-            [
-                {"title": a.title, "seconds": getattr(a, "usage_today_seconds", 0) or 0}
-                for a in usage.apps
-            ],
-            key=lambda x: x["seconds"],
-            reverse=True,
-        )[:10]
-        total = sum(a["seconds"] for a in top_apps)
+        all_apps, total = _apps_today(usage)
+        top_apps = all_apps[:10]
         embed = usage_today_embed(child_name, top_apps, total)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
@@ -96,7 +90,7 @@ class UsageGroup(app_commands.Group, name="usage", description="View usage stati
             return
         child_id, child_name = resolved
         usage = await self._svc.get_apps_and_usage(child_id)
-        today_total = sum(getattr(a, "usage_today_seconds", 0) or 0 for a in usage.apps)
+        _, today_total = _apps_today(usage)
         daily_totals = [
             {"date": datetime.date.today().isoformat(), "seconds": today_total}
         ]
@@ -131,7 +125,7 @@ def make_status_command(
         children_data = []
         for child in supervised:
             usage = await service.get_apps_and_usage(child.user_id)
-            total = sum(getattr(a, "usage_today_seconds", 0) or 0 for a in usage.apps)
+            _, total = _apps_today(usage)
             from familylink_server.bot.client import _fetch_linux_rows
 
             linux_rows = await _fetch_linux_rows(child.user_id, make_session)
@@ -180,16 +174,7 @@ def make_summary_command(
             ]
             for child in supervised:
                 usage = await service.get_apps_and_usage(child.user_id)
-                all_apps = sorted(
-                    [
-                        {"title": a.title, "seconds": a.usage_today_seconds}
-                        for a in usage.apps
-                        if hasattr(a, "usage_today_seconds") and a.usage_today_seconds
-                    ],
-                    key=lambda x: x["seconds"],
-                    reverse=True,
-                )
-                total = sum(a["seconds"] for a in all_apps)
+                all_apps, total = _apps_today(usage)
                 top_apps = all_apps[:5]
                 device_id = (
                     usage.device_info[0].device_id if usage.device_info else None

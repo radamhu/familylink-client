@@ -24,10 +24,35 @@ if TYPE_CHECKING:
 
     from sqlalchemy.ext.asyncio import AsyncSession
 
+    from familylink.models import AppUsage
     from familylink_server.services.discord_notifier import DiscordNotifier
     from familylink_server.services.family_link import FamilyLinkService
 
 logger = logging.getLogger(__name__)
+
+
+def _apps_today(usage: AppUsage) -> tuple[list[dict], int]:
+    """Aggregate today's app usage from sessions; returns (sorted_apps, total_seconds)."""
+    today = date.today()
+    by_pkg: dict[str, int] = {}
+    for s in usage.app_usage_sessions:
+        if (
+            s.date.year == today.year
+            and s.date.month == today.month
+            and s.date.day == today.day
+        ):
+            pkg = s.app_id.android_app_package_name
+            by_pkg[pkg] = by_pkg.get(pkg, 0) + int(float(s.usage))
+    title_by_pkg = {a.package_name: a.title for a in usage.apps}
+    apps = sorted(
+        [
+            {"title": title_by_pkg.get(pkg, pkg), "seconds": secs}
+            for pkg, secs in by_pkg.items()
+        ],
+        key=lambda x: x["seconds"],
+        reverse=True,
+    )
+    return apps, sum(a["seconds"] for a in apps)
 
 
 def _linux_rows_for_child(
@@ -203,17 +228,7 @@ class FamilyLinkBot(commands.Bot):
             ]
             for child in supervised:
                 usage = await self.service.get_apps_and_usage(child.user_id)
-                all_apps_with_usage = sorted(
-                    [
-                        {"title": app.title, "seconds": app.usage_today_seconds}
-                        for app in usage.apps
-                        if hasattr(app, "usage_today_seconds")
-                        and app.usage_today_seconds
-                    ],
-                    key=lambda x: x["seconds"],
-                    reverse=True,
-                )
-                total_seconds = sum(a["seconds"] for a in all_apps_with_usage)
+                all_apps_with_usage, total_seconds = _apps_today(usage)
                 top_apps = all_apps_with_usage[:5]
                 device_id = (
                     usage.device_info[0].device_id if usage.device_info else None
