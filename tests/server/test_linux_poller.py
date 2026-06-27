@@ -234,8 +234,7 @@ async def test_poll_machine_logs_warning_on_ssh_failure():
     from familylink_server.services.linux_poller import poll_machine
 
     machine = _make_machine()
-    # No poweroff_at on existing snapshot → poll proceeds to SSH
-    snapshot = _make_snapshot(active_seconds=0)
+    snapshot = _make_snapshot(active_seconds=0)  # locked_at=None → no poweroff written
     mock_ctx, _ = _make_session_ctx(snapshot)
 
     with (
@@ -249,6 +248,36 @@ async def test_poll_machine_logs_warning_on_ssh_failure():
         ),
     ):
         await poll_machine(machine)  # must not raise
+
+
+async def test_poll_machine_marks_poweroff_when_locked_and_ssh_fails():
+    """When SSH fails and machine was locked, poweroff_at is set.
+
+    Prevents the UI from showing 'locked' indefinitely when a child bypasses the
+    lock screen by physically holding the power button — a state the poller cannot
+    reach via its normal enforcement path.
+    """
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine()
+    locked_ts = datetime.datetime.now(datetime.UTC) - datetime.timedelta(minutes=2)
+    snapshot = _make_snapshot(locked_at=locked_ts)  # locked but not yet powered off
+    mock_ctx, mock_session = _make_session_ctx(snapshot)
+
+    with (
+        patch(
+            "familylink_server.services.linux_poller.check_session",
+            AsyncMock(side_effect=ConnectionError("timeout")),
+        ),
+        patch(
+            "familylink_server.services.linux_poller.make_session",
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine)
+
+    assert snapshot.poweroff_at is not None
+    mock_session.commit.assert_awaited_once()
 
 
 async def test_poll_machine_respects_bonus_mins_in_effective_limit():

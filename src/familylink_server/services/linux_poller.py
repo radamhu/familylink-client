@@ -37,17 +37,6 @@ async def poll_machine(
     """
     today = date.today()
 
-    try:
-        active = await check_session(
-            machine.hostname,
-            machine.ssh_port,
-            machine.ssh_user,
-            machine.ssh_private_key,
-        )
-    except Exception:
-        logger.warning("SSH poll failed for %s", machine.friendly_name)
-        return
-
     async with make_session() as session:
         stmt = select(LinuxUsageSnapshot).where(
             LinuxUsageSnapshot.machine_id == machine.id,
@@ -68,6 +57,30 @@ async def poll_machine(
             except IntegrityError:
                 await session.rollback()
                 snapshot = (await session.execute(stmt)).scalar_one()
+
+        try:
+            active = await check_session(
+                machine.hostname,
+                machine.ssh_port,
+                machine.ssh_user,
+                machine.ssh_private_key,
+            )
+        except Exception:
+            logger.warning("SSH poll failed for %s", machine.friendly_name)
+            # Machine went offline while locked (e.g. child held the power button).
+            # poweroff_at was never set via the normal enforcement path, so the UI
+            # would show "locked" indefinitely. Mark it as powered off here so the
+            # status reflects reality. On next successful SSH the poller clears
+            # poweroff_at and immediately re-enforces.
+            if snapshot.locked_at is not None and snapshot.poweroff_at is None:
+                snapshot.poweroff_at = datetime.now(UTC)
+                snapshot.updated_at = datetime.now(UTC)
+                logger.info(
+                    "Machine %s unreachable while locked — marking as powered off",
+                    machine.friendly_name,
+                )
+                await session.commit()
+            return
 
         if snapshot.poweroff_at is not None:
             snapshot.poweroff_at = None
