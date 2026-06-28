@@ -16,6 +16,7 @@ from familylink_server.services.linux_ssh import (
     check_session,
     lock_session,
     poweroff_machine,
+    unlock_session,
 )
 
 if TYPE_CHECKING:
@@ -130,30 +131,58 @@ async def poll_machine(
                 logger.warning("Lock failed for %s", machine.friendly_name)
 
         if snapshot.locked_at is not None and snapshot.poweroff_at is None:
-            elapsed = (datetime.now(UTC) - snapshot.locked_at).total_seconds()
-            if elapsed >= machine.grace_period_mins * 60:
+            # If a bonus was granted after the lock, the kid may now be under the
+            # effective limit. Unlock and clear rather than continuing toward poweroff.
+            if (
+                effective_limit_secs is None
+                or snapshot.active_seconds < effective_limit_secs
+            ):
+                # Best-effort unlock; locked_at must be cleared regardless so the
+                # poller doesn't keep counting elapsed time toward poweroff.
                 try:
-                    await poweroff_machine(
+                    await unlock_session(
                         machine.hostname,
                         machine.ssh_port,
                         machine.ssh_user,
                         machine.ssh_private_key,
                     )
-                    snapshot.poweroff_at = datetime.now(UTC)
-                    logger.info("Hard poweroff applied to %s", machine.friendly_name)
-                    if notifier:
-                        await notifier.notify_change(
-                            "poweroff_linux",
-                            machine.child_id,
-                            machine.friendly_name,
-                            "poller",
-                        )
                 except Exception:
-                    snapshot.poweroff_at = datetime.now(UTC)
                     logger.warning(
-                        "Poweroff failed for %s — marking as powered off to stop retries",
+                        "Unlock after bonus failed for %s — lock cleared in DB anyway",
                         machine.friendly_name,
                     )
+                snapshot.locked_at = None
+                logger.info(
+                    "Cleared lock for %s — bonus brought usage back under effective limit",
+                    machine.friendly_name,
+                )
+            else:
+                elapsed = (datetime.now(UTC) - snapshot.locked_at).total_seconds()
+                if elapsed >= machine.grace_period_mins * 60:
+                    try:
+                        await poweroff_machine(
+                            machine.hostname,
+                            machine.ssh_port,
+                            machine.ssh_user,
+                            machine.ssh_private_key,
+                        )
+                        snapshot.poweroff_at = datetime.now(UTC)
+                        logger.info(
+                            "Hard poweroff applied to %s", machine.friendly_name
+                        )
+                        if notifier:
+                            await notifier.notify_change(
+                                "poweroff_linux",
+                                machine.child_id,
+                                machine.friendly_name,
+                                "poller",
+                            )
+                    except Exception:
+                        snapshot.poweroff_at = datetime.now(UTC)
+                        logger.warning(
+                            "Poweroff failed for %s — marking as powered off to stop retries",
+                            machine.friendly_name,
+                        )
 
         await session.commit()
 
