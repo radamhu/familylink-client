@@ -127,3 +127,30 @@ async def dashboard(
         "dashboard.html",
         {"children": child_data, "auth_failed": svc.auth_failed},
     )
+
+
+@router.get("/children/{child_id}/detail", response_class=HTMLResponse)
+async def child_detail(
+    child_id: str,
+    request: Request,
+    _email: str = require_user,  # type: ignore[assignment]
+    svc: FamilyLinkService = Depends(get_service),  # noqa: B008
+    session: AsyncSession = Depends(get_session),  # noqa: B008
+) -> HTMLResponse:
+    """Return expanded child detail partial for HTMX swap."""
+    members = await svc.get_members()
+    supervised = [
+        m
+        for m in members.members
+        if m.member_supervision_info and m.member_supervision_info.is_supervised_member
+    ]
+    idx = next((i for i, m in enumerate(supervised) if m.user_id == child_id), 0)
+    child = next((m for m in supervised if m.user_id == child_id), None)
+    if child is None:
+        return HTMLResponse("", status_code=404)
+    child_data = await _get_child_data(child, idx, svc, session)
+    return templates.TemplateResponse(
+        request,
+        "partials/child_expanded.html",
+        {"child": child_data},
+    )

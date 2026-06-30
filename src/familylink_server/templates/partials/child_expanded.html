@@ -1,0 +1,67 @@
+<div style="display:flex;align-items:center;padding:11px 14px;gap:12px;cursor:pointer;background:#f8fafc;border-left:3px solid {{ child.color }}"
+     hx-get="/children/{{ child.user_id }}/collapse"
+     hx-target="#child-{{ child.user_id }}"
+     hx-swap="innerHTML">
+  <div style="width:36px;height:36px;border-radius:50%;background:{{ child.color }};color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">{{ child.display_name[0] | upper }}</div>
+  <div style="flex:1">
+    <div style="font-weight:600;font-size:13px;color:#1f2937">{{ child.display_name }}</div>
+    <div style="font-size:10px;color:#6b7280;margin-top:1px">📱 {{ child.device_count }} device{{ 's' if child.device_count != 1 else '' }}</div>
+  </div>
+  <div style="text-align:right">
+    <div style="font-size:19px;font-weight:700;color:{{ '#dc2626' if child.is_locked else '#1f2937' }};line-height:1.1">
+      {{ child.total_seconds // 3600 }}h {{ (child.total_seconds % 3600) // 60 }}m
+    </div>
+    <div style="font-size:10px;color:{{ '#ef4444' if child.is_locked else '#22c55e' }};margin-top:2px">
+      ● {{ 'locked' if child.is_locked else 'unlocked' }}
+    </div>
+  </div>
+  <div style="color:{{ child.color }};font-size:12px;margin-left:4px">▼</div>
+</div>
+<div style="padding:0 14px 12px 17px;border-left:3px solid {{ child.color }};background:#f8fafc">
+  {% if child.top5 %}
+    <div style="font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;padding-top:8px">Top apps today</div>
+    {% set max_secs = [child.top5[0].seconds, 1] | max %}
+    {% for app in child.top5 %}
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;margin-bottom:3px">
+        <span style="width:80px;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ app.title }}</span>
+        <div style="flex:1;background:#e5e7eb;border-radius:2px;height:7px">
+          <div style="background:{{ child.color }};height:7px;border-radius:2px;width:{{ (app.seconds / max_secs * 100) | int }}%"></div>
+        </div>
+        <span style="color:#6b7280;width:28px;text-align:right;flex-shrink:0">{{ app.seconds // 60 }}m</span>
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% if child.devices %}
+    <div style="font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px;margin-top:10px">Devices</div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:2px">
+      {% for device in child.devices %}
+        <div style="border-radius:6px;padding:3px 8px;font-size:10px;{% if device.is_locked %}background:#fee2e2;color:#991b1b{% else %}background:#dcfce7;color:#166534{% endif %}">
+          📱 {{ device.friendly_name or device.device_id }} {% if device.is_locked %}🔒{% else %}🔓{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% if child.linux_machines %}
+    <div style="font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px;margin-top:10px">Linux machines</div>
+    {% for lm in child.linux_machines %}
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;margin-bottom:4px">
+        <span style="width:80px;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ lm.friendly_name }}</span>
+        {% if lm.effective_limit_mins %}
+          <div style="flex:1;background:#e5e7eb;border-radius:2px;height:7px">
+            <div style="height:7px;border-radius:2px;width:{{ [[((lm.active_mins / lm.effective_limit_mins) * 100) | int, 0] | max, 100] | min }}%;background:{% if lm.active_mins >= lm.effective_limit_mins %}#ef4444{% elif lm.active_mins >= lm.effective_limit_mins * 0.8 %}#f59e0b{% else %}{{ child.color }}{% endif %}"></div>
+          </div>
+          <span style="color:#6b7280;width:50px;text-align:right;flex-shrink:0;font-size:10px">{{ lm.active_mins }}/{{ lm.effective_limit_mins }}m</span>
+        {% else %}
+          <span style="color:#6b7280;font-size:10px;flex:1">no limit</span>
+        {% endif %}
+        {% if lm.status == 'powered_off' %}
+          <span title="powered off">🔴</span>
+        {% elif lm.status == 'locked' %}
+          <span title="locked">🟠</span>
+        {% else %}
+          <span title="active">🟢</span>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>

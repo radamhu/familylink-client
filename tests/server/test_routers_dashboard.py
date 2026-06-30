@@ -141,3 +141,67 @@ def test_dashboard_strips_show_child_name_and_color():
     assert 'id="child-child1"' in resp.text
     assert "#a855f7" in resp.text  # first child gets purple
     assert 'hx-get="/children/child1/detail"' in resp.text
+
+
+def test_child_detail_returns_expanded_view():
+    """GET /children/{child_id}/detail returns the expanded partial with child name and top apps."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    child = MagicMock()
+    child.user_id = "child1"
+    child.profile.display_name = "Alice"
+    child.member_supervision_info.is_supervised_member = True
+
+    session_mock = MagicMock()
+    session_mock.app_id.android_app_package_name = "com.example"
+    today = __import__("datetime").date.today()
+    session_mock.date = today
+    session_mock.usage = "1800"
+
+    app_mock = MagicMock()
+    app_mock.package_name = "com.example"
+    app_mock.title = "Example App"
+
+    usage = MagicMock()
+    usage.app_usage_sessions = [session_mock]
+    usage.apps = [app_mock]
+    usage.device_info = []
+
+    mock_svc = MagicMock()
+    mock_svc.get_members = AsyncMock(return_value=MagicMock(members=[child]))
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.auth_failed = False
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = _fake_session()
+    try:
+        client = TestClient(app)
+        resp = client.get("/children/child1/detail", cookies={"fl_session": _cookie()})
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 200
+    assert "Alice" in resp.text
+    assert "Example App" in resp.text
+    assert 'hx-get="/children/child1/collapse"' in resp.text
+
+
+def test_child_detail_returns_404_for_unknown_child():
+    """GET /children/{child_id}/detail returns 404 when child_id not found."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    mock_svc = MagicMock()
+    mock_svc.get_members = AsyncMock(return_value=MagicMock(members=[]))
+    mock_svc.auth_failed = False
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = _fake_session()
+    try:
+        client = TestClient(app)
+        resp = client.get("/children/nobody/detail", cookies={"fl_session": _cookie()})
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 404
