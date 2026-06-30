@@ -41,7 +41,7 @@ def test_set_auth_failed_false():
     assert svc.auth_failed is False
 
 
-def test_reinit_with_cookies_creates_new_client(monkeypatch):
+def test_reinit_with_cookies_creates_new_client():
     """reinit_with_cookies should replace _client with a new FamilyLink instance."""
     svc = _make_service()
     old_client = svc._client

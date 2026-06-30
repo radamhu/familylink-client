@@ -99,7 +99,7 @@ async def linux_machines_page(
     return templates.TemplateResponse(
         request,
         "linux_machines.html",
-        {"machines": rows, "children": children},
+        {"machines": rows, "children": children, "auth_failed": svc.auth_failed},
     )
 
 
@@ -114,7 +114,7 @@ async def new_machine_form(
     return templates.TemplateResponse(
         request,
         "linux_machine_form.html",
-        {"machine": None, "children": children},
+        {"machine": None, "children": children, "auth_failed": svc.auth_failed},
     )
 
 
@@ -176,7 +176,7 @@ async def edit_machine_form(
     return templates.TemplateResponse(
         request,
         "linux_machine_form.html",
-        {"machine": machine, "children": children},
+        {"machine": machine, "children": children, "auth_failed": svc.auth_failed},
     )
 
 

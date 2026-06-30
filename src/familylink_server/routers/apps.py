@@ -92,6 +92,7 @@ async def apps_page(
             "children": children,
             "active_child_id": active_child_id,
             "filter": filter,
+            "auth_failed": svc.auth_failed,
         },
     )
 

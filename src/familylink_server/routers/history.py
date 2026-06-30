@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from familylink_server.auth.oauth import require_user
 from familylink_server.db import AuditLog, get_session
+from familylink_server.services.family_link import FamilyLinkService, get_service
 
 router = APIRouter(tags=["history"])
 templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
@@ -21,6 +22,7 @@ async def history_page(
     request: Request,
     page: int = 1,
     _email: str = require_user,  # type: ignore[assignment]
+    svc: FamilyLinkService = Depends(get_service),  # noqa: B008
     session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> HTMLResponse:
     """Render the audit log history page with infinite-scroll pagination."""
@@ -35,5 +37,10 @@ async def history_page(
     return templates.TemplateResponse(
         request,
         "history.html",
-        {"logs": logs, "page": page, "has_more": len(logs) == _PAGE_SIZE},
+        {
+            "logs": logs,
+            "page": page,
+            "has_more": len(logs) == _PAGE_SIZE,
+            "auth_failed": svc.auth_failed,
+        },
     )

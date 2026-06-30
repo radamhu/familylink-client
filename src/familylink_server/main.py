@@ -50,13 +50,17 @@ async def health_check_loop(
                 service.set_auth_failed(False)
                 if notifier:
                     await notifier.notify_session_restored()
-        except Exception as exc:
-            logger.warning("Health check failed: %s", exc)
+        except SessionExpiredError as exc:
+            logger.warning("Health check: session expired — %s", exc)
             if not _alert_active:
                 _alert_active = True
                 service.set_auth_failed(True)
                 if notifier:
                     await notifier.notify_session_expired()
+        except Exception as exc:
+            logger.warning(
+                "Health check probe error (transient, not alerting): %s", exc
+            )
 
 
 @asynccontextmanager

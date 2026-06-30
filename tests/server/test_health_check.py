@@ -110,3 +110,29 @@ async def test_health_check_noop_when_notifier_is_none():
     with patch("asyncio.sleep", new=mock_sleep):
         with pytest.raises(asyncio.CancelledError):
             await health_check_loop(svc, notifier=None, interval=0)
+
+    svc.set_auth_failed.assert_called_with(True)
+
+
+async def test_health_check_no_alert_on_transient_exception():
+    """Transient network errors should not fire Discord alerts."""
+    svc = MagicMock()
+    svc.auth_failed = False
+    svc.set_auth_failed = MagicMock()
+    svc.get_members = AsyncMock(side_effect=ConnectionError("network blip"))
+    notifier = AsyncMock()
+
+    sleep_count = 0
+
+    async def mock_sleep(_):
+        nonlocal sleep_count
+        sleep_count += 1
+        if sleep_count >= 2:
+            raise asyncio.CancelledError()
+
+    with patch("asyncio.sleep", new=mock_sleep):
+        with pytest.raises(asyncio.CancelledError):
+            await health_check_loop(svc, notifier, interval=0)
+
+    notifier.notify_session_expired.assert_not_awaited()
+    svc.set_auth_failed.assert_not_called()
