@@ -48,8 +48,8 @@ def test_dashboard_returns_200():
     assert "Family Link" in resp.text
 
 
-def test_dashboard_shows_linux_machine_for_child():
-    """Dashboard renders Linux machine name when child has a registered machine."""
+def test_dashboard_strips_render_child_with_linux_machine():
+    """Dashboard renders strip for child with a Linux machine; machine name is not in collapsed view."""
     from familylink_server.main import app
     from familylink_server.services.family_link import get_service
 
@@ -83,8 +83,10 @@ def test_dashboard_shows_linux_machine_for_child():
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    # Linux machine details are now hidden in the collapsed view; shown only in detail view (Task 4)
     assert 'id="child-child1"' in resp.text
+    assert (
+        "Gaming PC" not in resp.text
+    )  # detail is in expanded view, not collapsed strip
 
 
 def test_history_returns_200():
