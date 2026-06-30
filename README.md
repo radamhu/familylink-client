@@ -366,6 +366,45 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
 4. An alert shows your SAPISID value — copy it
 5. Paste it into the form and tap **Reconnect** — the server hot-swaps the session immediately
 
+**One-tap reconnect via mobile shortcut:** For a faster flow, configure a shortcut that extracts the SAPISID automatically and POSTs it to the server. You need the `fl_session` cookie value once (it is valid for 30 days) — get it from your browser's developer tools after logging in (`Application → Cookies → fl_session`).
+
+*iOS — Apple Shortcuts:*
+
+1. New Shortcut → add action **"Open URLs"** → `https://www.google.com`
+2. Add action **"Run JavaScript on Web Page"**:
+   ```javascript
+   return document.cookie.match(/SAPISID=([^;]+)/)[1]
+   ```
+3. Add action **"Get Contents of URL"**:
+   - URL: `https://your-server.com/admin/refresh-cookies`
+   - Method: `POST`
+   - Headers: `Content-Type: application/json` and `Cookie: fl_session=PASTE_VALUE_HERE`
+   - Request Body: `{"sapisid": "[JavaScript Result]"}` (use the output from step 2)
+4. Add action **"Show Notification"** → "✅ Reconnected" (run if status is 204)
+5. Add to Home Screen for one-tap access
+
+> The "Run JavaScript on Web Page" action requires Safari to load google.com first (step 1). iOS will show a brief Safari flash before the shortcut continues.
+
+*Android — HTTP Shortcuts app ([Waboodoo](https://play.google.com/store/apps/details?id=ch.rmy.android.http_shortcuts)):*
+
+Chrome on Android does not support `javascript:` URLs, so SAPISID extraction requires a small workaround using the app's built-in scripting:
+
+1. Install **HTTP Shortcuts** → create new shortcut
+2. Method: `POST`, URL: `https://your-server.com/admin/refresh-cookies`
+3. **Headers**: `Content-Type: application/json` + `Cookie: fl_session=PASTE_VALUE_HERE`
+4. **Request Body** (JSON):
+   ```json
+   {"sapisid": "{{sapisid}}"}
+   ```
+5. **Variables** → add `sapisid` → type: **Text Input** → label: "Paste SAPISID"
+6. **Pre-request script** (optional, to auto-open google.com first):
+   ```javascript
+   openApp('https://www.google.com');
+   ```
+7. Save → add to Home Screen
+
+   The shortcut opens Google (if needed), then prompts you to paste the SAPISID, then fires the POST. To get the SAPISID on Android, open google.com in **any browser that supports `javascript:` URLs** (Firefox for Android still supports it): tap the address bar and type `javascript:alert(document.cookie.match(/SAPISID=([^;]+)/)[1])`.
+
 **Refreshing cookies via CLI (requires restart):** Alternatively, re-export from your local browser and push to Coolify:
 
 ```bash
