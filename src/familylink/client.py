@@ -43,16 +43,30 @@ class FamilyLink:
     ) -> None:
         self.account_id = account_id
         sapisid, cookies_jar = CookieResolver(browser, cookie_file_path).resolve()
+        self._sapisid = sapisid
         self._headers = {
             "User-Agent": "Mozilla/5.0",
             "Origin": self.ORIGIN,
             "Content-Type": "application/json+protobuf",
             "X-Goog-Api-Key": "AIzaSyAQb1gupaJhY3CXQy2xmTwJMcjmot3M2hw",
-            "Authorization": f"SAPISIDHASH {_generate_sapisidhash(sapisid, self.ORIGIN)}",
         }
         self._cookies = cookies_jar
+        # When only FAMILYLINK_SAPISID is set (no cookies file/B64), cookies_jar is None.
+        # Google validates SAPISIDHASH against the SAPISID cookie in the same request,
+        # so we must inject it even without a full jar.
+        effective_cookies = (
+            cookies_jar if cookies_jar is not None else {"SAPISID": sapisid}
+        )
         self._session = httpx.Client(
-            headers=self._headers, cookies=self._cookies, timeout=30
+            headers=self._headers,
+            cookies=effective_cookies,
+            timeout=30,
+            event_hooks={"request": [self._refresh_auth]},
+        )
+
+    def _refresh_auth(self, request: httpx.Request) -> None:
+        request.headers["Authorization"] = (
+            f"SAPISIDHASH {_generate_sapisidhash(self._sapisid, self.ORIGIN)}"
         )
 
     # ── HTTP helpers ──────────────────────────────────────────────────────────
