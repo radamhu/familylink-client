@@ -387,23 +387,61 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
 
 *Android — HTTP Shortcuts app ([Waboodoo](https://play.google.com/store/apps/details?id=ch.rmy.android.http_shortcuts)):*
 
-Chrome on Android does not support `javascript:` URLs, so SAPISID extraction requires a small workaround using the app's built-in scripting:
+Install **HTTP Shortcuts** from the Play Store, then follow these steps:
 
-1. Install **HTTP Shortcuts** → create new shortcut
-2. Method: `POST`, URL: `https://your-server.com/admin/refresh-cookies`
-3. **Headers**: `Content-Type: application/json` + `Cookie: fl_session=PASTE_VALUE_HERE`
-4. **Request Body** (JSON):
+**Step 1 — Get your `fl_session` cookie (one-time setup, valid 30 days)**
+
+The reconnect endpoint requires your web-app session cookie. Get it once from a desktop browser:
+1. Log into the Family Link web app in Chrome on your Mac/PC
+2. Open DevTools (F12) → **Application** tab → **Cookies** → select your server's domain
+3. Copy the `fl_session` value — you'll paste it into the shortcut below
+
+**Step 2 — Create the shortcut**
+
+1. Open HTTP Shortcuts → tap **+** → choose **Regular Shortcut**
+2. **Name**: `Reconnect Family Link`
+3. **Method**: `POST`
+4. **URL**: `https://your-server.com/admin/refresh-cookies`
+5. Tap **Headers** → add:
+   - `Content-Type` → `application/json`
+   - `Cookie` → `fl_session=PASTE_FL_SESSION_VALUE_HERE`
+6. Tap **Request Body** → select **Custom text / JSON** → paste:
    ```json
-   {"sapisid": "{{sapisid}}"}
+   {"sapisid": "{sapisid}"}
    ```
-5. **Variables** → add `sapisid` → type: **Text Input** → label: "Paste SAPISID"
-6. **Pre-request script** (optional, to auto-open google.com first):
-   ```javascript
-   openApp('https://www.google.com');
-   ```
-7. Save → add to Home Screen
+   (single curly braces = global variable reference)
+7. Tap **Response Handling** → set **Success message**: `✅ Reconnected!`
 
-   The shortcut opens Google (if needed), then prompts you to paste the SAPISID, then fires the POST. To get the SAPISID on Android, open google.com in **any browser that supports `javascript:` URLs** (Firefox for Android still supports it): tap the address bar and type `javascript:alert(document.cookie.match(/SAPISID=([^;]+)/)[1])`.
+**Step 3 — Add the SAPISID variable**
+
+1. Go back to the main screen → tap **Variables** → **+**
+2. **Name**: `sapisid`
+3. **Type**: Password Input _(hides the value on screen)_
+4. **Title**: `Paste SAPISID`
+5. Save
+
+**Step 4 — Add a pre-request script to open Google first (optional)**
+
+In the shortcut's **Scripting** → **Pre-request script**, add:
+```javascript
+openUrl('https://www.google.com');
+```
+This opens Google in your browser so you can extract the SAPISID before the prompt appears.
+
+**Step 5 — Add to Home Screen**
+
+Long-press the shortcut → **Place on Home Screen**.
+
+**Getting SAPISID on Android:**
+
+Chrome on Android removed support for `javascript:` URLs. Use **Firefox for Android** instead:
+1. Open Firefox → navigate to `google.com` (signed in as the parent account)
+2. Tap the address bar and type:
+   ```
+   javascript:alert(document.cookie.match(/SAPISID=([^;]+)/)[1])
+   ```
+3. An alert shows the SAPISID — long-press to copy it
+4. Tap the Home Screen shortcut → paste when prompted → tap OK
 
 **Refreshing cookies via CLI (requires restart):** Alternatively, re-export from your local browser and push to Coolify:
 
