@@ -2,7 +2,7 @@
 
 import logging
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
@@ -22,7 +22,6 @@ class RefreshCookiesRequest(BaseModel):
 
 @router.get("/reconnect", response_class=HTMLResponse)
 async def reconnect_page(
-    request: Request,
     _email: str = require_user,  # type: ignore[assignment]
 ) -> HTMLResponse:
     """Reconnect page — shows the SAPISID paste form."""
