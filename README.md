@@ -353,7 +353,20 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
 3. Register `https://<your-coolify-domain>/auth/callback` as an authorized redirect URI in Google Cloud Console.
 4. Deploy. On first visit you will see `{"detail":"Not authenticated"}` — this is expected. Navigate to `/auth/login` to start the OAuth flow.
 
-**Refreshing cookies on Coolify:** When Google cookies expire, ops can re-export from their local browser and push the new value to Coolify in one command:
+**Session resilience:** The server monitors the Family Link session in the background. A health check probe runs every 30 minutes; if it fails, the server sets an `auth_failed` flag and posts a Discord alert ("⚠️ Google session expired"). When the session is restored, another alert fires ("✅ Family Link session restored"). While `auth_failed` is set, a red banner appears on every page linking to the reconnect form.
+
+**Reconnecting without a restart:** When the session expires you can restore it from any browser — including mobile — without a CLI or container restart:
+
+1. Open the web UI — you will see either the 503 error page (with the paste form inline) or a red banner linking to `/admin/reconnect`
+2. On your phone, open **google.com** in a browser that is signed into the parent Google account
+3. Tap the address bar and type (then press Go):
+   ```
+   javascript:alert(document.cookie.match(/SAPISID=([^;]+)/)[1])
+   ```
+4. An alert shows your SAPISID value — copy it
+5. Paste it into the form and tap **Reconnect** — the server hot-swaps the session immediately
+
+**Refreshing cookies via CLI (requires restart):** Alternatively, re-export from your local browser and push to Coolify:
 
 ```bash
 familylink export-cookies --browser chrome --base64 --coolify --restart
@@ -379,7 +392,7 @@ The following environment variables must be set in your **local** `.env` before 
 ### Troubleshooting
 
 - **Database connection fails**: Verify `DATABASE_URL` format and that your database is reachable from the deployment platform
-- **"Could not find SAPISID"**: The cookies have expired — re-run `familylink export-cookies --base64` and update `FAMILYLINK_COOKIES_B64`
+- **"Could not find SAPISID" / 503 "Google session expired"**: The cookies have expired. Quickest fix (no restart): open the web UI, use the SAPISID paste form on the 503 page or navigate to `/admin/reconnect` (see *Reconnecting without a restart* above). CLI alternative: re-run `familylink export-cookies --base64 --coolify --restart`
 - **OAuth redirect fails / `redirect_uri_mismatch`**: Check that the redirect URI in Google Cloud Console exactly matches your deployed URL (scheme included — `https://` not `http://`)
 - **Behind a reverse proxy, OAuth callback URL is `http://` instead of `https://`**: The app must run with `--proxy-headers --forwarded-allow-ips='*'` so uvicorn trusts the `X-Forwarded-Proto` header from the proxy. This is already set in the `Dockerfile` `CMD`. If deploying via `Procfile` or another mechanism, add the flags there too.
 - **`{"detail":"Not authenticated"}` on first visit**: You haven't logged in yet — navigate to `/auth/login`
