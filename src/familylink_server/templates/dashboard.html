@@ -18,4 +18,16 @@
     <p>No supervised children found.</p>
   {% endif %}
 </div>
+<script>
+htmx.on("htmx:afterSwap", function(e) {
+  if (!e.detail.target.id || !e.detail.target.id.startsWith("child-")) return;
+  if (!e.detail.target.querySelector("[data-state=expanded]")) return;
+  document.querySelectorAll("[data-state=expanded]").forEach(function(el) {
+    var wrapper = el.closest("[id^='child-']");
+    if (wrapper && wrapper !== e.detail.target) {
+      htmx.ajax("GET", "/children/" + wrapper.id.slice(6) + "/collapse", {target: "#" + wrapper.id, swap: "innerHTML"});
+    }
+  });
+});
+</script>
 {% endblock %}

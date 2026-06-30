@@ -11,14 +11,13 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from familylink_server.auth.oauth import require_user
+from familylink_server.constants import CHILD_COLORS
 from familylink_server.db import get_session
 from familylink_server.db.models import LinuxMachine, LinuxUsageSnapshot
 from familylink_server.services.family_link import FamilyLinkService, get_service
 
 router = APIRouter(tags=["dashboard"])
 templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
-
-CHILD_COLORS = ["#a855f7", "#3b82f6", "#10b981", "#f59e0b", "#ef4444"]
 
 
 async def _get_child_data(

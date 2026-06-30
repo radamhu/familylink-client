@@ -1,4 +1,4 @@
-<div style="display:flex;align-items:center;padding:11px 14px;gap:12px;cursor:pointer;background:#f8fafc;border-left:3px solid {{ child.color }}"
+<div data-state="expanded" style="display:flex;align-items:center;padding:11px 14px;gap:12px;cursor:pointer;background:#f8fafc;border-left:3px solid {{ child.color }}"
      hx-get="/children/{{ child.user_id }}/collapse"
      hx-target="#child-{{ child.user_id }}"
      hx-swap="innerHTML">

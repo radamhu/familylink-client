@@ -9,14 +9,13 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from familylink_server.auth.oauth import require_user
+from familylink_server.constants import CHILD_COLORS
 from familylink_server.db import AuditLog, get_session
 from familylink_server.services.discord_notifier import get_notifier
 from familylink_server.services.family_link import FamilyLinkService, get_service
 
 router = APIRouter(tags=["apps"])
 templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
-
-CHILD_COLORS = ["#a855f7", "#3b82f6", "#10b981", "#f59e0b", "#ef4444"]
 
 
 async def _child_name(svc: FamilyLinkService, child_id: str) -> str:
