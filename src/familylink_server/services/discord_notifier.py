@@ -117,6 +117,31 @@ class DiscordNotifier:
         )
         await self._channel.send(embed=embed, view=view)
 
+    async def notify_session_expired(self) -> None:
+        """Post a session-expired alert. No-op if channel not ready."""
+        if self._channel is None:
+            return
+        embed = discord.Embed(
+            title="⚠️ Google session expired",
+            description=(
+                "Family Link cookies have expired. "
+                "Open the web UI and paste a fresh SAPISID to restore access."
+            ),
+            color=discord.Color.red(),
+        )
+        await self._channel.send(embed=embed)
+
+    async def notify_session_restored(self) -> None:
+        """Post a session-restored confirmation. No-op if channel not ready."""
+        if self._channel is None:
+            return
+        embed = discord.Embed(
+            title="✅ Family Link session restored",
+            description="The Google session is active again. All features are back online.",
+            color=discord.Color.green(),
+        )
+        await self._channel.send(embed=embed)
+
 
 _notifier: DiscordNotifier | None = None
 

@@ -51,7 +51,9 @@ async def devices_page(
                     "is_locked": False,
                 }
             )
-    return templates.TemplateResponse(request, "devices.html", {"devices": devices})
+    return templates.TemplateResponse(
+        request, "devices.html", {"devices": devices, "auth_failed": svc.auth_failed}
+    )
 
 
 @router.post("/devices/{device_id}/lock", response_class=HTMLResponse)

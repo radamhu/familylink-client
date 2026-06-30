@@ -6,6 +6,11 @@ import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from familylink_server.services.discord_notifier import DiscordNotifier
+    from familylink_server.services.family_link import FamilyLinkService
 
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
@@ -15,6 +20,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from familylink import SessionExpiredError
 from familylink_server.auth.oauth import router as auth_router
 from familylink_server.config import settings
+from familylink_server.routers.admin import router as admin_router
 from familylink_server.routers.apps import router as apps_router
 from familylink_server.routers.dashboard import router as dashboard_router
 from familylink_server.routers.devices import router as devices_router
@@ -26,6 +32,35 @@ from familylink_server.services.family_link import get_service, init_service
 from familylink_server.services.linux_poller import poller_loop
 
 logger = logging.getLogger(__name__)
+
+
+async def health_check_loop(
+    service: "FamilyLinkService",
+    notifier: "DiscordNotifier | None",
+    interval: int = 1800,
+) -> None:
+    """Probe the Family Link API every `interval` seconds; alert Discord on failure."""
+    _alert_active = False
+    while True:
+        await asyncio.sleep(interval)
+        try:
+            await service.get_members()
+            if _alert_active:
+                _alert_active = False
+                service.set_auth_failed(False)
+                if notifier:
+                    await notifier.notify_session_restored()
+        except SessionExpiredError as exc:
+            logger.warning("Health check: session expired — %s", exc)
+            if not _alert_active:
+                _alert_active = True
+                service.set_auth_failed(True)
+                if notifier:
+                    await notifier.notify_session_expired()
+        except Exception as exc:
+            logger.warning(
+                "Health check probe error (transient, not alerting): %s", exc
+            )
 
 
 @asynccontextmanager
@@ -61,11 +96,18 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
     poller_task = asyncio.create_task(poller_loop(notifier=notifier))
     logger.info("Linux machine poller started")
 
+    health_task = asyncio.create_task(health_check_loop(get_service(), notifier))
+    logger.info("Health check task started (interval=1800s)")
+
     yield
 
     poller_task.cancel()
     with contextlib.suppress(asyncio.CancelledError):
         await poller_task
+
+    health_task.cancel()
+    with contextlib.suppress(asyncio.CancelledError):
+        await health_task
 
     if bot_task is not None:
         bot_task.cancel()
@@ -101,11 +143,44 @@ async def session_expired_handler(
   <main class="container" style="max-width:600px;margin-top:4rem">
     <article>
       <header><strong>Google session expired</strong></header>
-      <p>The Family Link cookies have expired. Re-export them and update
-      <code>FAMILYLINK_COOKIES_B64</code> in your deployment.</p>
-      <pre>familylink export-cookies --base64</pre>
-      <p>Then paste the output as the <code>FAMILYLINK_COOKIES_B64</code> environment
-      variable in Coolify and redeploy.</p>
+      <p>The Family Link session has expired. Paste a fresh <code>SAPISID</code> cookie below to restore access — works from any browser, no restart needed.</p>
+
+      <form id="reconnect-form" onsubmit="submitForm(event)">
+        <label for="sapisid">SAPISID cookie value</label>
+        <input id="sapisid" name="sapisid" type="password"
+               placeholder="Paste SAPISID here" required autocomplete="off">
+        <button type="submit">Reconnect</button>
+      </form>
+      <p id="error" style="color:red"></p>
+      <script>
+      async function submitForm(e) {
+        e.preventDefault();
+        const sapisid = document.getElementById('sapisid').value;
+        const resp = await fetch('/admin/refresh-cookies', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({sapisid})
+        });
+        if (resp.ok) window.location.href = '/';
+        else document.getElementById('error').textContent = 'Failed: ' + resp.status;
+      }
+      </script>
+
+      <details style="margin-top:1rem">
+        <summary>How to get your SAPISID on mobile</summary>
+        <ol>
+          <li>Open <strong>google.com</strong> in your phone browser (must be logged in to your Google account)</li>
+          <li>Tap the address bar and type exactly:<br>
+              <code>javascript:alert(document.cookie.match(/SAPISID=([^;]+)/)[1])</code></li>
+          <li>Press Go — an alert box shows your SAPISID value</li>
+          <li>Copy it and paste above</li>
+        </ol>
+      </details>
+
+      <details>
+        <summary>Desktop fallback (CLI, requires restart)</summary>
+        <pre>familylink export-cookies --browser chrome --base64 --coolify --restart</pre>
+      </details>
     </article>
   </main>
 </body>
@@ -114,6 +189,7 @@ async def session_expired_handler(
 
 
 app.include_router(auth_router)
+app.include_router(admin_router)
 app.include_router(dashboard_router)
 app.include_router(history_router)
 app.include_router(apps_router)

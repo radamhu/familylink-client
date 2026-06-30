@@ -2,6 +2,7 @@
 
 import asyncio
 import logging
+import os
 from datetime import UTC, datetime
 
 from familylink import FamilyLink
@@ -19,6 +20,25 @@ class FamilyLinkService:
         self._ttl = settings.cache_ttl_seconds
         self._members_cache: tuple[MembersResponse, datetime] | None = None
         self._usage_cache: dict[str, tuple[AppUsage, datetime]] = {}
+        self._auth_failed: bool = False
+
+    @property
+    def auth_failed(self) -> bool:
+        """Return True if the last Google API call failed due to auth."""
+        return self._auth_failed
+
+    def set_auth_failed(self, failed: bool) -> None:
+        """Set or clear the auth-failed flag."""
+        self._auth_failed = failed
+
+    def reinit_with_cookies(self, sapisid: str) -> None:
+        """Hot-swap the FamilyLink client with a fresh SAPISID. No restart needed."""
+        os.environ["FAMILYLINK_SAPISID"] = sapisid
+        self._client = FamilyLink()
+        self._members_cache = None
+        self._usage_cache.clear()
+        self._auth_failed = False
+        logger.info("FamilyLink client reinitialized with fresh SAPISID")
 
     def _is_fresh(self, ts: datetime) -> bool:
         return (datetime.now(UTC) - ts).total_seconds() < self._ttl

@@ -353,7 +353,95 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
 3. Register `https://<your-coolify-domain>/auth/callback` as an authorized redirect URI in Google Cloud Console.
 4. Deploy. On first visit you will see `{"detail":"Not authenticated"}` — this is expected. Navigate to `/auth/login` to start the OAuth flow.
 
-**Refreshing cookies on Coolify:** When Google cookies expire, ops can re-export from their local browser and push the new value to Coolify in one command:
+**Session resilience:** The server monitors the Family Link session in the background. A health check probe runs every 30 minutes; if it fails, the server sets an `auth_failed` flag and posts a Discord alert ("⚠️ Google session expired"). When the session is restored, another alert fires ("✅ Family Link session restored"). While `auth_failed` is set, a red banner appears on every page linking to the reconnect form.
+
+**Reconnecting without a restart:** When the session expires you can restore it from any browser — including mobile — without a CLI or container restart:
+
+1. Open the web UI — you will see either the 503 error page (with the paste form inline) or a red banner linking to `/admin/reconnect`
+2. On your phone, open **google.com** in a browser that is signed into the parent Google account
+3. Tap the address bar and type (then press Go):
+   ```
+   javascript:alert(document.cookie.match(/SAPISID=([^;]+)/)[1])
+   ```
+4. An alert shows your SAPISID value — copy it
+5. Paste it into the form and tap **Reconnect** — the server hot-swaps the session immediately
+
+**One-tap reconnect via mobile shortcut:** For a faster flow, configure a shortcut that extracts the SAPISID automatically and POSTs it to the server. You need the `fl_session` cookie value once (it is valid for 30 days) — get it from your browser's developer tools after logging in (`Application → Cookies → fl_session`).
+
+*iOS — Apple Shortcuts:*
+
+1. New Shortcut → add action **"Open URLs"** → `https://www.google.com`
+2. Add action **"Run JavaScript on Web Page"**:
+   ```javascript
+   return document.cookie.match(/SAPISID=([^;]+)/)[1]
+   ```
+3. Add action **"Get Contents of URL"**:
+   - URL: `https://your-server.com/admin/refresh-cookies`
+   - Method: `POST`
+   - Headers: `Content-Type: application/json` and `Cookie: fl_session=PASTE_VALUE_HERE`
+   - Request Body: `{"sapisid": "[JavaScript Result]"}` (use the output from step 2)
+4. Add action **"Show Notification"** → "✅ Reconnected" (run if status is 204)
+5. Add to Home Screen for one-tap access
+
+> The "Run JavaScript on Web Page" action requires Safari to load google.com first (step 1). iOS will show a brief Safari flash before the shortcut continues.
+
+*Android — HTTP Shortcuts app ([Waboodoo](https://play.google.com/store/apps/details?id=ch.rmy.android.http_shortcuts)):*
+
+Install **HTTP Shortcuts** from the Play Store. The flow is: copy SAPISID in Firefox → tap the home screen shortcut → done.
+
+**Step 1 — Get your `fl_session` cookie (one-time setup, valid 30 days)**
+
+`fl_session` is the Family Link web app's own login cookie — it is **not** a Google cookie. Get it from a desktop browser after logging into your server:
+
+1. Open the Family Link web app (your Coolify URL) in Chrome and log in
+2. Press **F12** → **Application** tab → **Cookies** → expand the left panel and click **your server's domain** (e.g. `https://familylink.yourdomain.com`) — not google.com
+3. Find the row named `fl_session` and copy its **Value**
+
+This value goes into the shortcut's Cookie header and does not change unless you log out or the 30-day TTL expires.
+
+**Step 2 — Create the shortcut**
+
+1. Open HTTP Shortcuts → tap **+** → choose **Regular Shortcut**
+2. **Name**: `Reconnect Family Link`
+3. **Method**: `POST`
+4. **URL**: `https://your-server.com/admin/refresh-cookies`
+5. Tap **Headers** → add two entries:
+   - Name `Content-Type` → Value `application/json`
+   - Name `Cookie` → Value `fl_session=PASTE_FL_SESSION_HERE`
+6. Tap **Request Body** → select **Custom text / JSON** → paste:
+   ```json
+   {"sapisid": "{sapisid}"}
+   ```
+7. Tap **Response Handling** → **Success output** → set message: `✅ Session restored`
+8. Save
+
+**Step 3 — Add the SAPISID variable**
+
+1. Main screen → **Variables** → **+**
+2. **Name**: `sapisid` _(must match exactly what's in the request body above)_
+3. **Type**: **Clipboard Content** ← reads whatever you copied last, no prompt needed
+4. Save
+
+> **Why Clipboard Content?** You will copy the SAPISID from Firefox right before tapping the shortcut, so reading from clipboard is the smoothest one-tap flow. If you prefer to paste manually into a dialog instead, use **Password Input** as the type and set **Title** to `Paste SAPISID` — the shortcut will prompt you each time.
+
+**Step 4 — Add to Home Screen**
+
+In the app, long-press the shortcut → **Place on Home Screen**.
+
+**Every time you need to reconnect — the full flow:**
+
+1. Open **Firefox for Android** → go to `google.com` (signed in as the parent account)
+2. Tap the address bar, type the following, and press Go:
+   ```
+   javascript:alert(document.cookie.match(/SAPISID=([^;]+)/)[1])
+   ```
+3. An alert shows your SAPISID — tap and hold the value to copy it
+4. Go to your home screen and tap **Reconnect Family Link**
+5. The shortcut reads the SAPISID from your clipboard and POSTs it — you'll see "✅ Session restored"
+
+> Chrome on Android does not support `javascript:` URLs — use Firefox for Android for step 2.
+
+**Refreshing cookies via CLI (requires restart):** Alternatively, re-export from your local browser and push to Coolify:
 
 ```bash
 familylink export-cookies --browser chrome --base64 --coolify --restart
@@ -379,7 +467,7 @@ The following environment variables must be set in your **local** `.env` before 
 ### Troubleshooting
 
 - **Database connection fails**: Verify `DATABASE_URL` format and that your database is reachable from the deployment platform
-- **"Could not find SAPISID"**: The cookies have expired — re-run `familylink export-cookies --base64` and update `FAMILYLINK_COOKIES_B64`
+- **"Could not find SAPISID" / 503 "Google session expired"**: The cookies have expired. Quickest fix (no restart): open the web UI, use the SAPISID paste form on the 503 page or navigate to `/admin/reconnect` (see *Reconnecting without a restart* above). CLI alternative: re-run `familylink export-cookies --base64 --coolify --restart`
 - **OAuth redirect fails / `redirect_uri_mismatch`**: Check that the redirect URI in Google Cloud Console exactly matches your deployed URL (scheme included — `https://` not `http://`)
 - **Behind a reverse proxy, OAuth callback URL is `http://` instead of `https://`**: The app must run with `--proxy-headers --forwarded-allow-ips='*'` so uvicorn trusts the `X-Forwarded-Proto` header from the proxy. This is already set in the `Dockerfile` `CMD`. If deploying via `Procfile` or another mechanism, add the flags there too.
 - **`{"detail":"Not authenticated"}` on first visit**: You haven't logged in yet — navigate to `/auth/login`

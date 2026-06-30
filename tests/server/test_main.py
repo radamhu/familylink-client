@@ -63,10 +63,17 @@ async def test_bot_not_started_when_discord_disabled():
         nonlocal bot_task_started
         bot_task_started = True
 
+    async def _fake_health_check(*args, **kwargs):
+        """Coroutine that exits immediately (stands in for health_check_loop)."""
+
     with (
         patch("familylink_server.main.init_service"),
+        patch("familylink_server.main.get_service"),
         patch("familylink_server.main.settings") as mock_settings,
         patch("familylink_server.main.poller_loop", side_effect=_fake_poller),
+        patch(
+            "familylink_server.main.health_check_loop", side_effect=_fake_health_check
+        ),
     ):
         mock_settings.discord_enabled = False
         async with lifespan(app):

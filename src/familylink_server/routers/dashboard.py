@@ -113,5 +113,5 @@ async def dashboard(
     return templates.TemplateResponse(
         request,
         "dashboard.html",
-        {"children": child_data},
+        {"children": child_data, "auth_failed": svc.auth_failed},
     )
