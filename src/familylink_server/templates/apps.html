@@ -12,7 +12,9 @@
   <nav>
     {% for c in children %}
       <a href="/apps?child={{ c.user_id }}&filter={{ filter }}"
-         {% if c.user_id == active_child_id %}aria-current="page"{% endif %}>
+         {% if c.user_id == active_child_id %}aria-current="page"{% endif %}
+         style="display:inline-flex;align-items:center;gap:5px;text-decoration:none">
+        <span style="width:18px;height:18px;border-radius:50%;background:{{ c.color }};color:white;font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">{{ c.display_name[0] | upper }}</span>
         {{ c.display_name }}
       </a>
     {% endfor %}

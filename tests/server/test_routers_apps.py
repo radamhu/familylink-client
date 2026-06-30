@@ -258,3 +258,39 @@ def test_apps_page_single_child_no_tab_links():
     assert (
         'href="/apps?child=child1&filter=all' in resp.text
     )  # Filter nav includes child=
+
+
+def test_apps_page_kid_switcher_shows_avatar():
+    """Apps page kid switcher renders colored avatar initial when multiple children exist."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    child1 = MagicMock()
+    child1.user_id = "c1"
+    child1.profile.display_name = "Alice"
+    child1.member_supervision_info.is_supervised_member = True
+
+    child2 = MagicMock()
+    child2.user_id = "c2"
+    child2.profile.display_name = "Bob"
+    child2.member_supervision_info.is_supervised_member = True
+
+    usage = MagicMock()
+    usage.app_usage_sessions = []
+    usage.apps = []
+    usage.device_info = []
+
+    mock_svc = MagicMock()
+    mock_svc.get_members = AsyncMock(return_value=MagicMock(members=[child1, child2]))
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.auth_failed = False
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    try:
+        client = TestClient(app)
+        resp = client.get("/apps", cookies={"fl_session": _cookie()})
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+    assert resp.status_code == 200
+    assert "#a855f7" in resp.text  # first child color
+    assert "#3b82f6" in resp.text  # second child color

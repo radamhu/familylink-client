@@ -16,6 +16,8 @@ from familylink_server.services.family_link import FamilyLinkService, get_servic
 router = APIRouter(tags=["apps"])
 templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
 
+CHILD_COLORS = ["#a855f7", "#3b82f6", "#10b981", "#f59e0b", "#ef4444"]
+
 
 async def _child_name(svc: FamilyLinkService, child_id: str) -> str:
     members = await svc.get_members()
@@ -65,8 +67,12 @@ async def apps_page(
         if m.member_supervision_info and m.member_supervision_info.is_supervised_member
     ]
     children = [
-        {"user_id": m.user_id, "display_name": m.profile.display_name}
-        for m in supervised
+        {
+            "user_id": m.user_id,
+            "display_name": m.profile.display_name,
+            "color": CHILD_COLORS[i % len(CHILD_COLORS)],
+        }
+        for i, m in enumerate(supervised)
     ]
 
     child_ids = {c["user_id"] for c in children}
