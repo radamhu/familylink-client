@@ -2,64 +2,20 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 <div hx-get="/" hx-trigger="every 5m" hx-target="main" hx-swap="innerHTML">
-  {% for child in children %}
-    <section>
-      <h2>{{ child.display_name }}</h2>
-      <p>Today: <strong>{{ (child.total_seconds // 3600) }}h {{ ((child.total_seconds % 3600) // 60) }}m</strong></p>
-
-      <h3>Top apps today</h3>
-      {% set max_secs = child.top5[0].seconds if child.top5 else 1 %}
-      {% for app in child.top5 %}
-        <div style="margin-bottom:0.5rem">
-          <span style="display:inline-block;width:12rem">{{ app.title }}</span>
-          <span style="display:inline-block;background:var(--pico-primary);height:1rem;width:{{ (app.seconds / max_secs * 200) | int }}px;vertical-align:middle"></span>
-          <span style="font-size:0.8rem;color:var(--pico-muted-color)">
-            {{ app.seconds // 60 }}m
-          </span>
+  {% if children %}
+    <div style="background:white;border-radius:10px;overflow:hidden;border:1px solid #e5e7eb;margin-bottom:0.5rem">
+      {% for child in children %}
+        {% if not loop.first %}
+          <div style="height:1px;background:#f3f4f6;margin:0 14px"></div>
+        {% endif %}
+        <div id="child-{{ child.user_id }}">
+          {% include "partials/child_strip.html" %}
         </div>
       {% endfor %}
-
-      <h3>Devices</h3>
-      <div class="grid">
-        {% for device in child.devices %}
-          <div class="card">
-            <p>{{ device.friendly_name or device.device_id }}</p>
-            {% if device.is_locked %}
-              <span style="color:var(--pico-color-red-500)">Locked</span>
-            {% else %}
-              <span style="color:var(--pico-color-green-500)">Unlocked</span>
-            {% endif %}
-          </div>
-        {% endfor %}
-      </div>
-
-      {% if child.linux_machines %}
-        <h3>Linux Machines</h3>
-        {% for lm in child.linux_machines %}
-          <div style="margin-bottom:0.5rem">
-            <span style="display:inline-block;width:12rem">{{ lm.friendly_name }}</span>
-            {% if lm.effective_limit_mins %}
-              <progress value="{{ lm.active_mins }}" max="{{ lm.effective_limit_mins }}"
-                        style="display:inline-block;width:8rem;vertical-align:middle"></progress>
-              <span style="font-size:0.8rem;color:var(--pico-muted-color)">
-                {{ lm.active_mins }} / {{ lm.effective_limit_mins }} min
-              </span>
-            {% else %}
-              <span style="font-size:0.8rem;color:var(--pico-muted-color)">no limit</span>
-            {% endif %}
-            {% if lm.status == 'powered_off' %}
-              <span style="color:var(--pico-color-red-700);font-size:0.8rem">🔴 powered off</span>
-            {% elif lm.status == 'locked' %}
-              <span style="color:var(--pico-color-orange-500);font-size:0.8rem">🟠 locked</span>
-            {% else %}
-              <span style="color:var(--pico-color-green-500);font-size:0.8rem">🟢 active</span>
-            {% endif %}
-          </div>
-        {% endfor %}
-      {% endif %}
-    </section>
+    </div>
+    <p style="font-size:0.75rem;color:var(--pico-muted-color);text-align:center;margin:0">auto-refreshes every 5 min</p>
   {% else %}
     <p>No supervised children found.</p>
-  {% endfor %}
+  {% endif %}
 </div>
 {% endblock %}

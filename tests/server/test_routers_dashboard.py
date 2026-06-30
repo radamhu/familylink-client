@@ -83,7 +83,8 @@ def test_dashboard_shows_linux_machine_for_child():
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    assert "Gaming PC" in resp.text
+    # Linux machine details are now hidden in the collapsed view; shown only in detail view (Task 4)
+    assert 'id="child-child1"' in resp.text
 
 
 def test_history_returns_200():
@@ -103,3 +104,38 @@ def test_history_returns_200():
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
+
+
+def test_dashboard_strips_show_child_name_and_color():
+    """Dashboard renders a strip per child with colored avatar and name."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    child = MagicMock()
+    child.user_id = "child1"
+    child.profile.display_name = "Alice"
+    child.member_supervision_info.is_supervised_member = True
+
+    usage = MagicMock()
+    usage.app_usage_sessions = []
+    usage.apps = []
+    usage.device_info = []
+
+    mock_svc = MagicMock()
+    mock_svc.get_members = AsyncMock(return_value=MagicMock(members=[child]))
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.auth_failed = False
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = _fake_session()
+    try:
+        client = TestClient(app)
+        resp = client.get("/", cookies={"fl_session": _cookie()})
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 200
+    assert "Alice" in resp.text
+    assert 'id="child-child1"' in resp.text
+    assert "#a855f7" in resp.text  # first child gets purple
+    assert 'hx-get="/children/child1/detail"' in resp.text

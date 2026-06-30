@@ -1,0 +1,19 @@
+<div style="display:flex;align-items:center;padding:11px 14px;gap:12px;cursor:pointer"
+     hx-get="/children/{{ child.user_id }}/detail"
+     hx-target="#child-{{ child.user_id }}"
+     hx-swap="innerHTML">
+  <div style="width:36px;height:36px;border-radius:50%;background:{{ child.color }};color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">{{ child.display_name[0] | upper }}</div>
+  <div style="flex:1">
+    <div style="font-weight:600;font-size:13px;color:#1f2937">{{ child.display_name }}</div>
+    <div style="font-size:10px;color:#6b7280;margin-top:1px">📱 {{ child.device_count }} device{{ 's' if child.device_count != 1 else '' }}</div>
+  </div>
+  <div style="text-align:right">
+    <div style="font-size:19px;font-weight:700;color:{{ '#dc2626' if child.is_locked else '#1f2937' }};line-height:1.1">
+      {{ child.total_seconds // 3600 }}h {{ (child.total_seconds % 3600) // 60 }}m
+    </div>
+    <div style="font-size:10px;color:{{ '#ef4444' if child.is_locked else '#22c55e' }};margin-top:2px">
+      ● {{ 'locked' if child.is_locked else 'unlocked' }}
+    </div>
+  </div>
+  <div style="color:#d1d5db;font-size:12px;margin-left:4px">▶</div>
+</div>
