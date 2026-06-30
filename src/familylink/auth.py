@@ -149,6 +149,16 @@ class CookieResolver:
                     sapisid = cookie.value
                     break
 
+        # Keep the jar's SAPISID cookie in sync with the resolved value so that
+        # the SAPISIDHASH header and the cookie Google validates it against match.
+        # This matters when FAMILYLINK_SAPISID is set alongside a stale
+        # FAMILYLINK_COOKIES_B64 jar (e.g. after a hot-reload via /admin/reconnect).
+        if sapisid and cookies_jar is not None:
+            for cookie in cookies_jar:
+                if cookie.name == "SAPISID" and cookie.domain == ".google.com":
+                    cookie.value = sapisid
+                    break
+
         if not sapisid:
             raise ValueError(
                 "Could not find SAPISID. "
