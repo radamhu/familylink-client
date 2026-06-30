@@ -139,11 +139,44 @@ async def session_expired_handler(
   <main class="container" style="max-width:600px;margin-top:4rem">
     <article>
       <header><strong>Google session expired</strong></header>
-      <p>The Family Link cookies have expired. Re-export them and update
-      <code>FAMILYLINK_COOKIES_B64</code> in your deployment.</p>
-      <pre>familylink export-cookies --base64</pre>
-      <p>Then paste the output as the <code>FAMILYLINK_COOKIES_B64</code> environment
-      variable in Coolify and redeploy.</p>
+      <p>The Family Link session has expired. Paste a fresh <code>SAPISID</code> cookie below to restore access — works from any browser, no restart needed.</p>
+
+      <form id="reconnect-form" onsubmit="submitForm(event)">
+        <label for="sapisid">SAPISID cookie value</label>
+        <input id="sapisid" name="sapisid" type="password"
+               placeholder="Paste SAPISID here" required autocomplete="off">
+        <button type="submit">Reconnect</button>
+      </form>
+      <p id="error" style="color:red"></p>
+      <script>
+      async function submitForm(e) {
+        e.preventDefault();
+        const sapisid = document.getElementById('sapisid').value;
+        const resp = await fetch('/admin/refresh-cookies', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({sapisid})
+        });
+        if (resp.ok) window.location.href = '/';
+        else document.getElementById('error').textContent = 'Failed: ' + resp.status;
+      }
+      </script>
+
+      <details style="margin-top:1rem">
+        <summary>How to get your SAPISID on mobile</summary>
+        <ol>
+          <li>Open <strong>google.com</strong> in your phone browser (must be logged in to your Google account)</li>
+          <li>Tap the address bar and type exactly:<br>
+              <code>javascript:alert(document.cookie.match(/SAPISID=([^;]+)/)[1])</code></li>
+          <li>Press Go — an alert box shows your SAPISID value</li>
+          <li>Copy it and paste above</li>
+        </ol>
+      </details>
+
+      <details>
+        <summary>Desktop fallback (CLI, requires restart)</summary>
+        <pre>familylink export-cookies --browser chrome --base64 --coolify --restart</pre>
+      </details>
     </article>
   </main>
 </body>
