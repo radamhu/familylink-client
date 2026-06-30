@@ -6,6 +6,11 @@ import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from familylink_server.services.discord_notifier import DiscordNotifier
+    from familylink_server.services.family_link import FamilyLinkService
 
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
@@ -27,6 +32,31 @@ from familylink_server.services.family_link import get_service, init_service
 from familylink_server.services.linux_poller import poller_loop
 
 logger = logging.getLogger(__name__)
+
+
+async def health_check_loop(
+    service: "FamilyLinkService",
+    notifier: "DiscordNotifier | None",
+    interval: int = 1800,
+) -> None:
+    """Probe the Family Link API every `interval` seconds; alert Discord on failure."""
+    _alert_active = False
+    while True:
+        await asyncio.sleep(interval)
+        try:
+            await service.get_members()
+            if _alert_active:
+                _alert_active = False
+                service.set_auth_failed(False)
+                if notifier:
+                    await notifier.notify_session_restored()
+        except Exception as exc:
+            logger.warning("Health check failed: %s", exc)
+            if not _alert_active:
+                _alert_active = True
+                service.set_auth_failed(True)
+                if notifier:
+                    await notifier.notify_session_expired()
 
 
 @asynccontextmanager
@@ -62,11 +92,18 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
     poller_task = asyncio.create_task(poller_loop(notifier=notifier))
     logger.info("Linux machine poller started")
 
+    health_task = asyncio.create_task(health_check_loop(get_service(), notifier))
+    logger.info("Health check task started (interval=1800s)")
+
     yield
 
     poller_task.cancel()
     with contextlib.suppress(asyncio.CancelledError):
         await poller_task
+
+    health_task.cancel()
+    with contextlib.suppress(asyncio.CancelledError):
+        await health_task
 
     if bot_task is not None:
         bot_task.cancel()
