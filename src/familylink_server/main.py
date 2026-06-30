@@ -15,6 +15,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from familylink import SessionExpiredError
 from familylink_server.auth.oauth import router as auth_router
 from familylink_server.config import settings
+from familylink_server.routers.admin import router as admin_router
 from familylink_server.routers.apps import router as apps_router
 from familylink_server.routers.dashboard import router as dashboard_router
 from familylink_server.routers.devices import router as devices_router
@@ -114,6 +115,7 @@ async def session_expired_handler(
 
 
 app.include_router(auth_router)
+app.include_router(admin_router)
 app.include_router(dashboard_router)
 app.include_router(history_router)
 app.include_router(apps_router)
