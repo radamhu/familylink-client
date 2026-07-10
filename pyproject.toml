@@ -82,10 +82,13 @@ select = [
     'PYI063', # flake8-pyi
     'PYI066', # flake8-pyi
 ]
-ignore = ['D105', 'D107', 'D205', 'D415', 'E501', 'B011', 'B028', 'B904']
-flake8-quotes = {inline-quotes = 'single', multiline-quotes = 'double'}
+ignore = ['D105', 'D107', 'D205', 'D415', 'E501', 'B011', 'B028', 'B904', 'Q000', 'Q003']
+flake8-quotes = {inline-quotes = 'double', multiline-quotes = 'double'}
 isort = { known-first-party = ['familylink'] }
 pydocstyle = { convention = 'google' }
+
+[tool.ruff.format]
+quote-style = 'double'
 
 [tool.ruff.lint.per-file-ignores]
 'src/familylink/__init__.py' = ['D104']
