@@ -1,5 +1,7 @@
 """Tests for the cookie-refresher sidecar app."""
 
+from unittest.mock import patch
+
 from fastapi.testclient import TestClient
 
 
@@ -59,3 +61,66 @@ def test_health_endpoint():
     resp = client.get('/health')
     assert resp.status_code == 200
     assert resp.json() == {'status': 'ok'}
+
+
+def test_refresh_missing_password(monkeypatch):
+    """POST /refresh should return 400 when FAMILYLINK_GOOGLE_PASSWORD is unset."""
+    monkeypatch.delenv('FAMILYLINK_GOOGLE_PASSWORD', raising=False)
+    monkeypatch.setenv('FAMILYLINK_GOOGLE_EMAIL', 'test@gmail.com')
+    monkeypatch.setenv('FAMILYLINK_TOTP_SECRET', 'JBSWY3DPEHPK3PXP')
+    from familylink_server.cookie_refresher_app import app
+
+    client = TestClient(app)
+    resp = client.post('/refresh')
+    assert resp.status_code == 400
+    assert 'FAMILYLINK_GOOGLE_PASSWORD' in resp.json()['detail']
+
+
+def test_refresh_missing_totp(monkeypatch):
+    """POST /refresh should return 400 when FAMILYLINK_TOTP_SECRET is unset."""
+    monkeypatch.setenv('FAMILYLINK_GOOGLE_EMAIL', 'test@gmail.com')
+    monkeypatch.setenv('FAMILYLINK_GOOGLE_PASSWORD', 'secret')
+    monkeypatch.delenv('FAMILYLINK_TOTP_SECRET', raising=False)
+    from familylink_server.cookie_refresher_app import app
+
+    client = TestClient(app)
+    resp = client.post('/refresh')
+    assert resp.status_code == 400
+
+
+def test_refresh_success(monkeypatch):
+    """POST /refresh should return cookies_b64 when _get_cookies_b64 succeeds."""
+    monkeypatch.setenv('FAMILYLINK_GOOGLE_EMAIL', 'test@gmail.com')
+    monkeypatch.setenv('FAMILYLINK_GOOGLE_PASSWORD', 'secret')
+    monkeypatch.setenv('FAMILYLINK_TOTP_SECRET', 'JBSWY3DPEHPK3PXP')
+
+    with patch(
+        'familylink_server.cookie_refresher_app._get_cookies_b64',
+        return_value='dGVzdA==',
+    ):
+        from familylink_server.cookie_refresher_app import app
+
+        client = TestClient(app)
+        resp = client.post('/refresh')
+
+    assert resp.status_code == 200
+    assert resp.json() == {'cookies_b64': 'dGVzdA=='}
+
+
+def test_refresh_playwright_error(monkeypatch):
+    """POST /refresh should return 500 when Playwright login fails."""
+    monkeypatch.setenv('FAMILYLINK_GOOGLE_EMAIL', 'test@gmail.com')
+    monkeypatch.setenv('FAMILYLINK_GOOGLE_PASSWORD', 'secret')
+    monkeypatch.setenv('FAMILYLINK_TOTP_SECRET', 'JBSWY3DPEHPK3PXP')
+
+    with patch(
+        'familylink_server.cookie_refresher_app._get_cookies_b64',
+        side_effect=RuntimeError('CAPTCHA detected'),
+    ):
+        from familylink_server.cookie_refresher_app import app
+
+        client = TestClient(app)
+        resp = client.post('/refresh')
+
+    assert resp.status_code == 500
+    assert 'CAPTCHA' in resp.json()['detail']
