@@ -381,6 +381,8 @@ In your deployment platform's dashboard, set these environment variables (see `.
 | `FAMILYLINK_COOKIES_B64`  | Base64 output from`familylink export-cookies --base64`                                               |
 | `CACHE_TTL_SECONDS`       | Cache duration in seconds (default:`900`)                                                            |
 | `DEBUG`                   | Set to`true` to disable `Secure` flag on the session cookie — required for local HTTP (see below) |
+| `COOKIE_REFRESHER_URL`    | Internal URL of the cookie-refresher sidecar, e.g. `http://cookie-refresher:8080` — enables auto-refresh on session expiry (optional) |
+| `REFRESHER_API_KEY`       | Shared secret sent as `X-Api-Key` to the sidecar — must match the sidecar's own `REFRESHER_API_KEY` (optional but recommended) |
 | `COOLIFY_URL`             | _(ops workstation only)_ Base URL of your Coolify instance — used by `export-cookies --coolify`   |
 | `COOLIFY_TOKEN`           | _(ops workstation only)_ Coolify API token — used by `export-cookies --coolify`                    |
 | `COOLIFY_APP_UUID`        | _(ops workstation only)_ UUID of the Coolify app to update — used by `export-cookies --coolify`   |
@@ -426,7 +428,35 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
 
 **Session resilience:** The server monitors the Family Link session in the background. A health check probe runs every 30 minutes; if it fails, the server sets an `auth_failed` flag and posts a Discord alert ("⚠️ Google session expired"). When the session is restored, another alert fires ("✅ Family Link session restored"). While `auth_failed` is set, a red banner appears on every page linking to the reconnect form.
 
-**Reconnecting without a restart:** When the session expires you can restore it from any browser — including mobile — without a CLI or container restart:
+**Auto-refresh sidecar (recommended):** A separate Docker service (`cookie-refresher`) can restore the session fully automatically — no human action required. When the health check detects expiry, the main server calls the sidecar's `POST /refresh` endpoint. The sidecar launches headless Chromium, logs into Google with stored credentials + TOTP, extracts a fresh full cookie jar, and returns it. The main server hot-reloads immediately. A "✅ restored" Discord notification fires on success; if the sidecar is unreachable or login fails, the manual reconnect flow remains available as fallback.
+
+**Deploying the sidecar in Coolify:**
+
+1. Add a second service to your Coolify project pointing at the same repo, but set **Dockerfile** to `Dockerfile.refresher`
+2. Set the sidecar's environment variables:
+
+   | Variable | Description |
+   |---|---|
+   | `FAMILYLINK_GOOGLE_EMAIL` | Parent Google account email |
+   | `FAMILYLINK_GOOGLE_PASSWORD` | Parent Google account password |
+   | `FAMILYLINK_TOTP_SECRET` | Base32 TOTP seed — get it by re-enrolling 2FA at myaccount.google.com → Security → 2-Step Verification (shows QR + seed) |
+   | `REFRESHER_API_KEY` | Shared secret the main server must send as `X-Api-Key`; protects the endpoint from other internal callers (optional but recommended) |
+
+3. Note the sidecar's **internal** Coolify service URL (e.g. `http://cookie-refresher:8080`)
+4. On the **main server** service, add:
+
+   | Variable | Description |
+   |---|---|
+   | `COOKIE_REFRESHER_URL` | Internal URL of the sidecar, e.g. `http://cookie-refresher:8080` |
+   | `REFRESHER_API_KEY` | Same value as set on the sidecar |
+
+5. Deploy both services. Smoke-test: `curl -X POST -H "X-Api-Key: <key>" http://<sidecar-internal>:8080/refresh` should return `{"cookies_b64": "..."}` within ~30 seconds.
+
+> **TOTP clock sync:** The sidecar generates time-based codes against the system clock. The container must be NTP-synced (true by default on most Linux hosts). A clock skew of more than ±15 seconds will cause Google to reject the 2FA code.
+
+> **Google may block headless Chrome.** If Google serves a CAPTCHA or "verify it's you" challenge, the sidecar returns 500 and the manual reconnect flow is used instead. This is rare for established accounts but can happen after credential changes or suspicious-login detection.
+
+**Reconnecting without a restart:** When the session expires and no sidecar is configured (or the sidecar fails), you can restore it from any browser — including mobile — without a CLI or container restart:
 
 1. Open the web UI — you will see either the 503 error page (with the paste form inline) or a red banner linking to `/admin/reconnect`
 2. On your phone, open **google.com** in a browser that is signed into the parent Google account
