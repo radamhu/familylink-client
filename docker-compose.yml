@@ -14,11 +14,24 @@ services:
       timeout: 5s
       retries: 10
 
+  cookie-refresher:
+    build:
+      context: .
+      dockerfile: Dockerfile.refresher
+    restart: unless-stopped
+    environment:
+      FAMILYLINK_GOOGLE_EMAIL: ${FAMILYLINK_GOOGLE_EMAIL:-}
+      FAMILYLINK_GOOGLE_PASSWORD: ${FAMILYLINK_GOOGLE_PASSWORD:-}
+      FAMILYLINK_TOTP_SECRET: ${FAMILYLINK_TOTP_SECRET:-}
+      REFRESHER_API_KEY: ${REFRESHER_API_KEY:-}
+
   web:
     build: .
     restart: unless-stopped
     environment:
       DATABASE_URL: postgresql+asyncpg://familylink:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}@db/familylink
+      COOKIE_REFRESHER_URL: http://cookie-refresher:8080
+      REFRESHER_API_KEY: ${REFRESHER_API_KEY:-}
     depends_on:
       db:
         condition: service_healthy
