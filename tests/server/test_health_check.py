@@ -15,7 +15,7 @@ def _make_service(*, fail=False):
     svc.auth_failed = False
     svc.set_auth_failed = MagicMock()
     if fail:
-        svc.get_members = AsyncMock(side_effect=SessionExpiredError("expired"))
+        svc.get_members = AsyncMock(side_effect=SessionExpiredError('expired'))
     else:
         svc.get_members = AsyncMock(return_value=MagicMock())
     return svc
@@ -34,7 +34,7 @@ async def test_health_check_alerts_on_first_failure():
         if sleep_count >= 2:
             raise asyncio.CancelledError()
 
-    with patch("asyncio.sleep", new=mock_sleep):
+    with patch('asyncio.sleep', new=mock_sleep):
         with pytest.raises(asyncio.CancelledError):
             await health_check_loop(svc, notifier, interval=0)
 
@@ -55,7 +55,7 @@ async def test_health_check_no_duplicate_alerts():
         if sleep_count >= 4:
             raise asyncio.CancelledError()
 
-    with patch("asyncio.sleep", new=mock_sleep):
+    with patch('asyncio.sleep', new=mock_sleep):
         with pytest.raises(asyncio.CancelledError):
             await health_check_loop(svc, notifier, interval=0)
 
@@ -75,7 +75,7 @@ async def test_health_check_restored_alert_on_recovery():
         nonlocal call_count
         call_count += 1
         if call_count == 1:
-            raise SessionExpiredError("expired")
+            raise SessionExpiredError('expired')
 
     svc.get_members = get_members_side
 
@@ -87,7 +87,7 @@ async def test_health_check_restored_alert_on_recovery():
         if sleep_count >= 4:
             raise asyncio.CancelledError()
 
-    with patch("asyncio.sleep", new=mock_sleep):
+    with patch('asyncio.sleep', new=mock_sleep):
         with pytest.raises(asyncio.CancelledError):
             await health_check_loop(svc, notifier, interval=0)
 
@@ -107,7 +107,7 @@ async def test_health_check_noop_when_notifier_is_none():
         if sleep_count >= 2:
             raise asyncio.CancelledError()
 
-    with patch("asyncio.sleep", new=mock_sleep):
+    with patch('asyncio.sleep', new=mock_sleep):
         with pytest.raises(asyncio.CancelledError):
             await health_check_loop(svc, notifier=None, interval=0)
 
@@ -119,7 +119,7 @@ async def test_health_check_no_alert_on_transient_exception():
     svc = MagicMock()
     svc.auth_failed = False
     svc.set_auth_failed = MagicMock()
-    svc.get_members = AsyncMock(side_effect=ConnectionError("network blip"))
+    svc.get_members = AsyncMock(side_effect=ConnectionError('network blip'))
     notifier = AsyncMock()
 
     sleep_count = 0
@@ -130,7 +130,7 @@ async def test_health_check_no_alert_on_transient_exception():
         if sleep_count >= 2:
             raise asyncio.CancelledError()
 
-    with patch("asyncio.sleep", new=mock_sleep):
+    with patch('asyncio.sleep', new=mock_sleep):
         with pytest.raises(asyncio.CancelledError):
             await health_check_loop(svc, notifier, interval=0)
 

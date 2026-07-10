@@ -46,13 +46,13 @@ def _apps_today(usage: AppUsage) -> tuple[list[dict], int]:
     title_by_pkg = {a.package_name: a.title for a in usage.apps}
     apps = sorted(
         [
-            {"title": title_by_pkg.get(pkg, pkg), "seconds": secs}
+            {'title': title_by_pkg.get(pkg, pkg), 'seconds': secs}
             for pkg, secs in by_pkg.items()
         ],
-        key=lambda x: x["seconds"],
+        key=lambda x: x['seconds'],
         reverse=True,
     )
-    return apps, sum(a["seconds"] for a in apps)
+    return apps, sum(a['seconds'] for a in apps)
 
 
 def _linux_rows_for_child(
@@ -69,17 +69,17 @@ def _linux_rows_for_child(
             m.daily_limit_mins + bonus_mins if m.daily_limit_mins is not None else None
         )
         if snap and snap.poweroff_at:
-            lm_status = "powered_off"
+            lm_status = 'powered_off'
         elif snap and snap.locked_at:
-            lm_status = "locked"
+            lm_status = 'locked'
         else:
-            lm_status = "active"
+            lm_status = 'active'
         rows.append(
             {
-                "friendly_name": m.friendly_name,
-                "active_mins": active_mins,
-                "effective_limit_mins": effective_limit_mins,
-                "status": lm_status,
+                'friendly_name': m.friendly_name,
+                'active_mins': active_mins,
+                'effective_limit_mins': effective_limit_mins,
+                'status': lm_status,
             }
         )
     return rows
@@ -125,7 +125,7 @@ class FamilyLinkBot(commands.Bot):
         make_session: Callable[[], AbstractAsyncContextManager[AsyncSession]],
     ) -> None:
         intents = discord.Intents.default()
-        super().__init__(command_prefix="!", intents=intents)
+        super().__init__(command_prefix='!', intents=intents)
         self.service = service
         self.notifier = notifier
         self.guild_id = guild_id
@@ -166,7 +166,7 @@ class FamilyLinkBot(commands.Bot):
             )
         except ImportError:
             logger.warning(
-                "Bot command modules not yet available — skipping command registration"
+                'Bot command modules not yet available — skipping command registration'
             )
 
         self.daily_summary_task = tasks.loop(time=self._summary_time)(
@@ -180,18 +180,18 @@ class FamilyLinkBot(commands.Bot):
         ) -> None:
             if isinstance(error, app_commands.CheckFailure):
                 await interaction.response.send_message(
-                    "You do not have permission to use this command.",
+                    'You do not have permission to use this command.',
                     ephemeral=True,
                 )
             else:
-                logger.exception("Unhandled app command error", exc_info=error)
+                logger.exception('Unhandled app command error', exc_info=error)
 
     async def on_ready(self) -> None:
         """Sync command tree, resolve channel, start summary task."""
         guild = discord.Object(id=self.guild_id)
         await self.tree.sync(guild=guild)
         logger.info(
-            "Discord bot ready as %s — commands synced to guild %s",
+            'Discord bot ready as %s — commands synced to guild %s',
             self.user,
             self.guild_id,
         )
@@ -201,7 +201,7 @@ class FamilyLinkBot(commands.Bot):
             self.notifier.set_channel(channel)
         else:
             logger.warning(
-                "Discord channel %s not found or not a text channel",
+                'Discord channel %s not found or not a text channel',
                 self.notifier._channel_id,
             )
 
@@ -251,7 +251,7 @@ class FamilyLinkBot(commands.Bot):
                     view=view,
                 )
         except Exception:
-            logger.exception("Error posting daily summary")
+            logger.exception('Error posting daily summary')
 
 
 async def _bot_task_with_restart(bot: FamilyLinkBot, token: str) -> None:
@@ -263,5 +263,5 @@ async def _bot_task_with_restart(bot: FamilyLinkBot, token: str) -> None:
             await bot.close()
             return
         except Exception:
-            logger.exception("Discord bot crashed — restarting in 30 s")
+            logger.exception('Discord bot crashed — restarting in 30 s')
             await asyncio.sleep(30)

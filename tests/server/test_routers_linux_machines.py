@@ -10,8 +10,8 @@ from familylink_server.db import get_session
 
 
 def _cookie() -> str:
-    s = URLSafeSerializer(settings.secret_key, salt="fl-session")
-    return s.dumps({"email": settings.familylink_google_email})
+    s = URLSafeSerializer(settings.secret_key, salt='fl-session')
+    return s.dumps({'email': settings.familylink_google_email})
 
 
 def _mock_svc(children: list | None = None) -> MagicMock:
@@ -49,7 +49,7 @@ def test_linux_machines_page_returns_200():
     app.dependency_overrides[get_session] = lambda: _mock_session()
     try:
         client = TestClient(app)
-        resp = client.get("/linux-machines", cookies={"fl_session": _cookie()})
+        resp = client.get('/linux-machines', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
@@ -61,7 +61,7 @@ def test_linux_machines_page_requires_auth():
     from familylink_server.main import app
 
     client = TestClient(app, follow_redirects=False)
-    resp = client.get("/linux-machines")
+    resp = client.get('/linux-machines')
     assert resp.status_code == 401
 
 
@@ -75,23 +75,23 @@ def test_create_machine_redirects():
     try:
         client = TestClient(app, follow_redirects=False)
         resp = client.post(
-            "/linux-machines",
+            '/linux-machines',
             data={
-                "friendly_name": "Test PC",
-                "child_id": "child1",
-                "hostname": "192.168.1.10",
-                "ssh_port": "22",
-                "ssh_user": "kid",
-                "ssh_private_key": "-----BEGIN RSA PRIVATE KEY-----\nfake\n-----END RSA PRIVATE KEY-----",
-                "grace_period_mins": "5",
+                'friendly_name': 'Test PC',
+                'child_id': 'child1',
+                'hostname': '192.168.1.10',
+                'ssh_port': '22',
+                'ssh_user': 'kid',
+                'ssh_private_key': '-----BEGIN RSA PRIVATE KEY-----\nfake\n-----END RSA PRIVATE KEY-----',
+                'grace_period_mins': '5',
             },
-            cookies={"fl_session": _cookie()},
+            cookies={'fl_session': _cookie()},
         )
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 303
-    assert resp.headers["location"] == "/linux-machines"
+    assert resp.headers['location'] == '/linux-machines'
 
 
 def test_lock_machine_returns_partial_html():
@@ -103,12 +103,12 @@ def test_lock_machine_returns_partial_html():
 
     mock_machine = MagicMock()
     mock_machine.id = 1
-    mock_machine.hostname = "host"
+    mock_machine.hostname = 'host'
     mock_machine.ssh_port = 22
-    mock_machine.ssh_user = "user"
-    mock_machine.ssh_private_key = "key"
-    mock_machine.friendly_name = "Test PC"
-    mock_machine.child_id = "child1"
+    mock_machine.ssh_user = 'user'
+    mock_machine.ssh_private_key = 'key'
+    mock_machine.friendly_name = 'Test PC'
+    mock_machine.child_id = 'child1'
     mock_machine.daily_limit_mins = 60
     mock_machine.grace_period_mins = 5
 
@@ -117,17 +117,17 @@ def test_lock_machine_returns_partial_html():
     try:
         client = TestClient(app)
         with patch(
-            "familylink_server.routers.linux_machines.lock_session", AsyncMock()
+            'familylink_server.routers.linux_machines.lock_session', AsyncMock()
         ):
             resp = client.post(
-                "/linux-machines/1/lock",
-                cookies={"fl_session": _cookie()},
+                '/linux-machines/1/lock',
+                cookies={'fl_session': _cookie()},
             )
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    assert "locked" in resp.text.lower()
+    assert 'locked' in resp.text.lower()
 
 
 def test_poweroff_machine_returns_partial_html():
@@ -139,12 +139,12 @@ def test_poweroff_machine_returns_partial_html():
 
     mock_machine = MagicMock()
     mock_machine.id = 1
-    mock_machine.hostname = "host"
+    mock_machine.hostname = 'host'
     mock_machine.ssh_port = 22
-    mock_machine.ssh_user = "user"
-    mock_machine.ssh_private_key = "key"
-    mock_machine.friendly_name = "Test PC"
-    mock_machine.child_id = "child1"
+    mock_machine.ssh_user = 'user'
+    mock_machine.ssh_private_key = 'key'
+    mock_machine.friendly_name = 'Test PC'
+    mock_machine.child_id = 'child1'
     mock_machine.daily_limit_mins = 60
     mock_machine.grace_period_mins = 5
 
@@ -153,17 +153,17 @@ def test_poweroff_machine_returns_partial_html():
     try:
         client = TestClient(app)
         with patch(
-            "familylink_server.routers.linux_machines.poweroff_machine", AsyncMock()
+            'familylink_server.routers.linux_machines.poweroff_machine', AsyncMock()
         ):
             resp = client.post(
-                "/linux-machines/1/poweroff",
-                cookies={"fl_session": _cookie()},
+                '/linux-machines/1/poweroff',
+                cookies={'fl_session': _cookie()},
             )
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    assert "powered" in resp.text.lower()
+    assert 'powered' in resp.text.lower()
 
 
 def test_delete_machine_returns_empty():
@@ -179,14 +179,14 @@ def test_delete_machine_returns_empty():
     try:
         client = TestClient(app)
         resp = client.delete(
-            "/linux-machines/1",
-            cookies={"fl_session": _cookie()},
+            '/linux-machines/1',
+            cookies={'fl_session': _cookie()},
         )
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    assert resp.text == ""
+    assert resp.text == ''
 
 
 def test_generate_key_returns_key_pair():
@@ -195,13 +195,13 @@ def test_generate_key_returns_key_pair():
 
     client = TestClient(app)
     resp = client.post(
-        "/linux-machines/generate-key",
-        cookies={"fl_session": _cookie()},
+        '/linux-machines/generate-key',
+        cookies={'fl_session': _cookie()},
     )
     assert resp.status_code == 200
     data = resp.json()
-    assert data["private_key"].startswith("-----BEGIN OPENSSH PRIVATE KEY-----")
-    assert "ssh-ed25519" in data["public_key"]
+    assert data['private_key'].startswith('-----BEGIN OPENSSH PRIVATE KEY-----')
+    assert 'ssh-ed25519' in data['public_key']
 
 
 def test_generate_key_requires_auth():
@@ -209,7 +209,7 @@ def test_generate_key_requires_auth():
     from familylink_server.main import app
 
     client = TestClient(app)
-    resp = client.post("/linux-machines/generate-key")
+    resp = client.post('/linux-machines/generate-key')
     assert resp.status_code == 401
 
 
@@ -222,12 +222,12 @@ def test_bonus_adds_minutes_and_returns_card():
 
     mock_machine = MagicMock()
     mock_machine.id = 1
-    mock_machine.hostname = "host"
+    mock_machine.hostname = 'host'
     mock_machine.ssh_port = 22
-    mock_machine.ssh_user = "user"
-    mock_machine.ssh_private_key = "key"
-    mock_machine.friendly_name = "Gaming PC"
-    mock_machine.child_id = "child1"
+    mock_machine.ssh_user = 'user'
+    mock_machine.ssh_private_key = 'key'
+    mock_machine.friendly_name = 'Gaming PC'
+    mock_machine.child_id = 'child1'
     mock_machine.daily_limit_mins = 60
     mock_machine.grace_period_mins = 5
 
@@ -236,18 +236,18 @@ def test_bonus_adds_minutes_and_returns_card():
     try:
         client = TestClient(app)
         with patch(
-            "familylink_server.routers.linux_machines.unlock_session", AsyncMock()
+            'familylink_server.routers.linux_machines.unlock_session', AsyncMock()
         ):
             resp = client.post(
-                "/linux-machines/1/bonus",
-                data={"minutes": "15"},
-                cookies={"fl_session": _cookie()},
+                '/linux-machines/1/bonus',
+                data={'minutes': '15'},
+                cookies={'fl_session': _cookie()},
             )
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    assert "Gaming PC" in resp.text
+    assert 'Gaming PC' in resp.text
 
 
 def test_bonus_on_locked_machine_calls_unlock():
@@ -259,12 +259,12 @@ def test_bonus_on_locked_machine_calls_unlock():
 
     mock_machine = MagicMock()
     mock_machine.id = 1
-    mock_machine.hostname = "host"
+    mock_machine.hostname = 'host'
     mock_machine.ssh_port = 22
-    mock_machine.ssh_user = "user"
-    mock_machine.ssh_private_key = "key"
-    mock_machine.friendly_name = "Gaming PC"
-    mock_machine.child_id = "child1"
+    mock_machine.ssh_user = 'user'
+    mock_machine.ssh_private_key = 'key'
+    mock_machine.friendly_name = 'Gaming PC'
+    mock_machine.child_id = 'child1'
     mock_machine.daily_limit_mins = 60
     mock_machine.grace_period_mins = 5
 
@@ -293,12 +293,12 @@ def test_bonus_on_locked_machine_calls_unlock():
     try:
         client = TestClient(app)
         with patch(
-            "familylink_server.routers.linux_machines.unlock_session", mock_unlock
+            'familylink_server.routers.linux_machines.unlock_session', mock_unlock
         ):
             resp = client.post(
-                "/linux-machines/1/bonus",
-                data={"minutes": "30"},
-                cookies={"fl_session": _cookie()},
+                '/linux-machines/1/bonus',
+                data={'minutes': '30'},
+                cookies={'fl_session': _cookie()},
             )
     finally:
         app.dependency_overrides.pop(get_service, None)
@@ -317,9 +317,9 @@ def test_bonus_rejects_zero_minutes():
     try:
         client = TestClient(app)
         resp = client.post(
-            "/linux-machines/1/bonus",
-            data={"minutes": "0"},
-            cookies={"fl_session": _cookie()},
+            '/linux-machines/1/bonus',
+            data={'minutes': '0'},
+            cookies={'fl_session': _cookie()},
         )
     finally:
         app.dependency_overrides.pop(get_service, None)
@@ -337,9 +337,9 @@ def test_bonus_rejects_negative_minutes():
     try:
         client = TestClient(app)
         resp = client.post(
-            "/linux-machines/1/bonus",
-            data={"minutes": "-60"},
-            cookies={"fl_session": _cookie()},
+            '/linux-machines/1/bonus',
+            data={'minutes': '-60'},
+            cookies={'fl_session': _cookie()},
         )
     finally:
         app.dependency_overrides.pop(get_service, None)
@@ -357,9 +357,9 @@ def test_bonus_rejects_excessive_minutes():
     try:
         client = TestClient(app)
         resp = client.post(
-            "/linux-machines/1/bonus",
-            data={"minutes": "999"},
-            cookies={"fl_session": _cookie()},
+            '/linux-machines/1/bonus',
+            data={'minutes': '999'},
+            cookies={'fl_session': _cookie()},
         )
     finally:
         app.dependency_overrides.pop(get_service, None)

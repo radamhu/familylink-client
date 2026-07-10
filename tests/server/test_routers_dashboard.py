@@ -10,8 +10,8 @@ from familylink_server.db import get_session
 
 
 def _cookie():
-    s = URLSafeSerializer(settings.secret_key, salt="fl-session")
-    return s.dumps({"email": settings.familylink_google_email})
+    s = URLSafeSerializer(settings.secret_key, salt='fl-session')
+    return s.dumps({'email': settings.familylink_google_email})
 
 
 def _fake_session(machines=None):
@@ -40,12 +40,12 @@ def test_dashboard_returns_200():
     app.dependency_overrides[get_session] = _fake_session()
     try:
         client = TestClient(app)
-        resp = client.get("/", cookies={"fl_session": _cookie()})
+        resp = client.get('/', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    assert "Family Link" in resp.text
+    assert 'Family Link' in resp.text
 
 
 def test_dashboard_strips_render_child_with_linux_machine():
@@ -55,14 +55,14 @@ def test_dashboard_strips_render_child_with_linux_machine():
 
     mock_machine = MagicMock()
     mock_machine.id = 1
-    mock_machine.child_id = "child1"
-    mock_machine.friendly_name = "Gaming PC"
+    mock_machine.child_id = 'child1'
+    mock_machine.friendly_name = 'Gaming PC'
     mock_machine.daily_limit_mins = 60
     mock_machine.enabled = True
 
     child = MagicMock()
-    child.user_id = "child1"
-    child.profile.display_name = "Alice"
+    child.user_id = 'child1'
+    child.profile.display_name = 'Alice'
     child.member_supervision_info.is_supervised_member = True
 
     usage = MagicMock()
@@ -78,14 +78,14 @@ def test_dashboard_strips_render_child_with_linux_machine():
     app.dependency_overrides[get_session] = _fake_session(machines=[mock_machine])
     try:
         client = TestClient(app)
-        resp = client.get("/", cookies={"fl_session": _cookie()})
+        resp = client.get('/', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     assert 'id="child-child1"' in resp.text
     assert (
-        "Gaming PC" not in resp.text
+        'Gaming PC' not in resp.text
     )  # detail is in expanded view, not collapsed strip
 
 
@@ -101,7 +101,7 @@ def test_history_returns_200():
     app.dependency_overrides[get_session] = _fake_session()
     try:
         client = TestClient(app)
-        resp = client.get("/history", cookies={"fl_session": _cookie()})
+        resp = client.get('/history', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
@@ -114,8 +114,8 @@ def test_dashboard_strips_show_child_name_and_color():
     from familylink_server.services.family_link import get_service
 
     child = MagicMock()
-    child.user_id = "child1"
-    child.profile.display_name = "Alice"
+    child.user_id = 'child1'
+    child.profile.display_name = 'Alice'
     child.member_supervision_info.is_supervised_member = True
 
     usage = MagicMock()
@@ -132,14 +132,14 @@ def test_dashboard_strips_show_child_name_and_color():
     app.dependency_overrides[get_session] = _fake_session()
     try:
         client = TestClient(app)
-        resp = client.get("/", cookies={"fl_session": _cookie()})
+        resp = client.get('/', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    assert "Alice" in resp.text
+    assert 'Alice' in resp.text
     assert 'id="child-child1"' in resp.text
-    assert "#a855f7" in resp.text  # first child gets purple
+    assert '#a855f7' in resp.text  # first child gets purple
     assert 'hx-get="/children/child1/detail"' in resp.text
 
 
@@ -149,19 +149,19 @@ def test_child_detail_returns_expanded_view():
     from familylink_server.services.family_link import get_service
 
     child = MagicMock()
-    child.user_id = "child1"
-    child.profile.display_name = "Alice"
+    child.user_id = 'child1'
+    child.profile.display_name = 'Alice'
     child.member_supervision_info.is_supervised_member = True
 
     session_mock = MagicMock()
-    session_mock.app_id.android_app_package_name = "com.example"
-    today = __import__("datetime").date.today()
+    session_mock.app_id.android_app_package_name = 'com.example'
+    today = __import__('datetime').date.today()
     session_mock.date = today
-    session_mock.usage = "1800"
+    session_mock.usage = '1800'
 
     app_mock = MagicMock()
-    app_mock.package_name = "com.example"
-    app_mock.title = "Example App"
+    app_mock.package_name = 'com.example'
+    app_mock.title = 'Example App'
 
     usage = MagicMock()
     usage.app_usage_sessions = [session_mock]
@@ -177,13 +177,13 @@ def test_child_detail_returns_expanded_view():
     app.dependency_overrides[get_session] = _fake_session()
     try:
         client = TestClient(app)
-        resp = client.get("/children/child1/detail", cookies={"fl_session": _cookie()})
+        resp = client.get('/children/child1/detail', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    assert "Alice" in resp.text
-    assert "Example App" in resp.text
+    assert 'Alice' in resp.text
+    assert 'Example App' in resp.text
     assert 'hx-get="/children/child1/collapse"' in resp.text
 
 
@@ -200,7 +200,7 @@ def test_child_detail_returns_404_for_unknown_child():
     app.dependency_overrides[get_session] = _fake_session()
     try:
         client = TestClient(app)
-        resp = client.get("/children/nobody/detail", cookies={"fl_session": _cookie()})
+        resp = client.get('/children/nobody/detail', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
@@ -213,8 +213,8 @@ def test_child_collapse_returns_strip():
     from familylink_server.services.family_link import get_service
 
     child = MagicMock()
-    child.user_id = "child1"
-    child.profile.display_name = "Alice"
+    child.user_id = 'child1'
+    child.profile.display_name = 'Alice'
     child.member_supervision_info.is_supervised_member = True
 
     usage = MagicMock()
@@ -232,12 +232,12 @@ def test_child_collapse_returns_strip():
     try:
         client = TestClient(app)
         resp = client.get(
-            "/children/child1/collapse", cookies={"fl_session": _cookie()}
+            '/children/child1/collapse', cookies={'fl_session': _cookie()}
         )
     finally:
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    assert "Alice" in resp.text
+    assert 'Alice' in resp.text
     assert 'hx-get="/children/child1/detail"' in resp.text
-    assert "▶" in resp.text
+    assert '▶' in resp.text

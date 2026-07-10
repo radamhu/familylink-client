@@ -14,8 +14,8 @@ from familylink_server.db import AuditLog, get_session
 from familylink_server.services.discord_notifier import get_notifier
 from familylink_server.services.family_link import FamilyLinkService, get_service
 
-router = APIRouter(tags=["apps"])
-templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
+router = APIRouter(tags=['apps'])
+templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / 'templates'))
 
 
 async def _child_name(svc: FamilyLinkService, child_id: str) -> str:
@@ -29,32 +29,32 @@ async def _child_name(svc: FamilyLinkService, child_id: str) -> str:
 def _app_state(app) -> dict:
     sup = app.supervision_setting
     if sup.hidden:
-        state, state_label = "blocked", "Blocked"
+        state, state_label = 'blocked', 'Blocked'
     elif sup.usage_limit:
         state, state_label = (
-            "limited",
-            f"Limited {sup.usage_limit.daily_usage_limit_mins} min",
+            'limited',
+            f'Limited {sup.usage_limit.daily_usage_limit_mins} min',
         )
     elif sup.always_allowed_app_info:
-        state, state_label = "allowed", "Always allowed"
+        state, state_label = 'allowed', 'Always allowed'
     else:
-        state, state_label = "unmanaged", "Unmanaged"
+        state, state_label = 'unmanaged', 'Unmanaged'
     return {
-        "package_name": app.package_name,
-        "title": app.title,
-        "state": state,
-        "state_label": state_label,
-        "limit_mins": sup.usage_limit.daily_usage_limit_mins
+        'package_name': app.package_name,
+        'title': app.title,
+        'state': state,
+        'state_label': state_label,
+        'limit_mins': sup.usage_limit.daily_usage_limit_mins
         if sup.usage_limit
         else None,
     }
 
 
-@router.get("/apps", response_class=HTMLResponse)
+@router.get('/apps', response_class=HTMLResponse)
 async def apps_page(
     request: Request,
-    filter: str = "all",
-    child: str = "",
+    filter: str = 'all',
+    child: str = '',
     _email: str = require_user,  # type: ignore[assignment]
     svc: FamilyLinkService = Depends(get_service),  # noqa: B008
 ) -> HTMLResponse:
@@ -67,16 +67,16 @@ async def apps_page(
     ]
     children = [
         {
-            "user_id": m.user_id,
-            "display_name": m.profile.display_name,
-            "color": CHILD_COLORS[i % len(CHILD_COLORS)],
+            'user_id': m.user_id,
+            'display_name': m.profile.display_name,
+            'color': CHILD_COLORS[i % len(CHILD_COLORS)],
         }
         for i, m in enumerate(supervised)
     ]
 
-    child_ids = {c["user_id"] for c in children}
+    child_ids = {c['user_id'] for c in children}
     active_child_id = (
-        child if child in child_ids else (children[0]["user_id"] if children else "")
+        child if child in child_ids else (children[0]['user_id'] if children else '')
     )
 
     apps = []
@@ -86,23 +86,23 @@ async def apps_page(
             dict(_app_state(a), child_id=active_child_id)
             for a in sorted(usage.apps, key=lambda x: x.title.lower())
         ]
-        if filter != "all":
-            apps = [a for a in apps if a["state"] == filter]
+        if filter != 'all':
+            apps = [a for a in apps if a['state'] == filter]
 
     return templates.TemplateResponse(
         request,
-        "apps.html",
+        'apps.html',
         {
-            "apps": apps,
-            "children": children,
-            "active_child_id": active_child_id,
-            "filter": filter,
-            "auth_failed": svc.auth_failed,
+            'apps': apps,
+            'children': children,
+            'active_child_id': active_child_id,
+            'filter': filter,
+            'auth_failed': svc.auth_failed,
         },
     )
 
 
-@router.post("/apps/{package}/limit", response_class=HTMLResponse)
+@router.post('/apps/{package}/limit', response_class=HTMLResponse)
 async def set_limit(
     package: str,
     request: Request,
@@ -118,12 +118,12 @@ async def set_limit(
     if notifier:
         name = await _child_name(svc, child_id)
         await notifier.notify_change(
-            "set_limit", name, f"{package} ({minutes} min)", "web UI"
+            'set_limit', name, f'{package} ({minutes} min)', 'web UI'
         )
     session.add(
         AuditLog(
             child_id=child_id,
-            action="set_limit",
+            action='set_limit',
             target=package,
             new_value=str(minutes),
             occurred_at=datetime.now(UTC),
@@ -131,19 +131,19 @@ async def set_limit(
     )
     await session.commit()
     app_data = {
-        "package_name": package,
-        "title": package,
-        "state": "limited",
-        "state_label": f"Limited {minutes} min",
-        "limit_mins": minutes,
-        "child_id": child_id,
+        'package_name': package,
+        'title': package,
+        'state': 'limited',
+        'state_label': f'Limited {minutes} min',
+        'limit_mins': minutes,
+        'child_id': child_id,
     }
     return templates.TemplateResponse(
-        request, "partials/app_row.html", {"app": app_data}
+        request, 'partials/app_row.html', {'app': app_data}
     )
 
 
-@router.post("/apps/{package}/block", response_class=HTMLResponse)
+@router.post('/apps/{package}/block', response_class=HTMLResponse)
 async def block_app(
     package: str,
     request: Request,
@@ -157,30 +157,30 @@ async def block_app(
     notifier = get_notifier()
     if notifier:
         name = await _child_name(svc, child_id)
-        await notifier.notify_change("block", name, package, "web UI")
+        await notifier.notify_change('block', name, package, 'web UI')
     session.add(
         AuditLog(
             child_id=child_id,
-            action="block",
+            action='block',
             target=package,
             occurred_at=datetime.now(UTC),
         )
     )
     await session.commit()
     app_data = {
-        "package_name": package,
-        "title": package,
-        "state": "blocked",
-        "state_label": "Blocked",
-        "limit_mins": None,
-        "child_id": child_id,
+        'package_name': package,
+        'title': package,
+        'state': 'blocked',
+        'state_label': 'Blocked',
+        'limit_mins': None,
+        'child_id': child_id,
     }
     return templates.TemplateResponse(
-        request, "partials/app_row.html", {"app": app_data}
+        request, 'partials/app_row.html', {'app': app_data}
     )
 
 
-@router.post("/apps/{package}/allow", response_class=HTMLResponse)
+@router.post('/apps/{package}/allow', response_class=HTMLResponse)
 async def allow_app(
     package: str,
     request: Request,
@@ -194,24 +194,24 @@ async def allow_app(
     notifier = get_notifier()
     if notifier:
         name = await _child_name(svc, child_id)
-        await notifier.notify_change("always_allow", name, package, "web UI")
+        await notifier.notify_change('always_allow', name, package, 'web UI')
     session.add(
         AuditLog(
             child_id=child_id,
-            action="always_allow",
+            action='always_allow',
             target=package,
             occurred_at=datetime.now(UTC),
         )
     )
     await session.commit()
     app_data = {
-        "package_name": package,
-        "title": package,
-        "state": "allowed",
-        "state_label": "Always allowed",
-        "limit_mins": None,
-        "child_id": child_id,
+        'package_name': package,
+        'title': package,
+        'state': 'allowed',
+        'state_label': 'Always allowed',
+        'limit_mins': None,
+        'child_id': child_id,
     }
     return templates.TemplateResponse(
-        request, "partials/app_row.html", {"app": app_data}
+        request, 'partials/app_row.html', {'app': app_data}
     )

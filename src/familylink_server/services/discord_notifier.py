@@ -18,19 +18,19 @@ def _change_embed(
 ) -> discord.Embed:
     """Build a change-alert embed.  Full embed builder lives in bot.embeds once that module exists."""
     action_map = {
-        "block": ("🔒 App Blocked", discord.Color.red()),
-        "always_allow": ("✅ App Always Allowed", discord.Color.green()),
-        "set_limit": ("⏱️ App Limit Set", discord.Color.orange()),
-        "lock_device": ("🔒 Device Locked", discord.Color.orange()),
-        "unlock_device": ("🔓 Device Unlocked", discord.Color.green()),
+        'block': ('🔒 App Blocked', discord.Color.red()),
+        'always_allow': ('✅ App Always Allowed', discord.Color.green()),
+        'set_limit': ('⏱️ App Limit Set', discord.Color.orange()),
+        'lock_device': ('🔒 Device Locked', discord.Color.orange()),
+        'unlock_device': ('🔓 Device Unlocked', discord.Color.green()),
     }
     title, color = action_map.get(
-        action, (f"ℹ️ {action.replace('_', ' ').title()}", discord.Color.blurple())
+        action, (f'ℹ️ {action.replace("_", " ").title()}', discord.Color.blurple())
     )
     embed = discord.Embed(title=title, color=color)
-    embed.add_field(name="Child", value=child_name, inline=True)
-    embed.add_field(name="Target", value=target, inline=True)
-    embed.add_field(name="By", value=source, inline=True)
+    embed.add_field(name='Child', value=child_name, inline=True)
+    embed.add_field(name='Target', value=target, inline=True)
+    embed.add_field(name='By', value=source, inline=True)
     return embed
 
 
@@ -44,34 +44,34 @@ def _summary_embed(
     import datetime
 
     today = datetime.date.today()
-    today_str = f"{today.strftime('%A')} {today.day} {today.strftime('%b')}"
+    today_str = f'{today.strftime("%A")} {today.day} {today.strftime("%b")}'
     h, rem = divmod(total_seconds, 3600)
     m = rem // 60
-    total_str = f"{h}h {m:02d}m" if h else f"{m}m"
+    total_str = f'{h}h {m:02d}m' if h else f'{m}m'
     embed = discord.Embed(
-        title=f"📊 Daily Summary — {child_name}  ·  {today_str}",
-        description=f"Total screen time: **{total_str}**",
+        title=f'📊 Daily Summary — {child_name}  ·  {today_str}',
+        description=f'Total screen time: **{total_str}**',
         color=discord.Color.blurple(),
     )
-    max_s = max((a["seconds"] for a in top_apps), default=1)
+    max_s = max((a['seconds'] for a in top_apps), default=1)
     for app in top_apps[:5]:
-        ah, ar = divmod(app["seconds"], 3600)
+        ah, ar = divmod(app['seconds'], 3600)
         am = ar // 60
-        dur = f"{ah}h {am:02d}m" if ah else f"{am}m"
-        filled = round(app["seconds"] / max_s * 10)
-        bar = "█" * filled + "░" * (10 - filled)
-        embed.add_field(name=app["title"], value=f"`{bar}` {dur}", inline=False)
+        dur = f'{ah}h {am:02d}m' if ah else f'{am}m'
+        filled = round(app['seconds'] / max_s * 10)
+        bar = '█' * filled + '░' * (10 - filled)
+        embed.add_field(name=app['title'], value=f'`{bar}` {dur}', inline=False)
     if linux_machines:
         lines = []
         for lm in linux_machines:
-            icon = {"powered_off": "🔴", "locked": "🟠"}.get(lm["status"], "🟢")
-            if lm["effective_limit_mins"]:
+            icon = {'powered_off': '🔴', 'locked': '🟠'}.get(lm['status'], '🟢')
+            if lm['effective_limit_mins']:
                 lines.append(
-                    f"{icon} {lm['friendly_name']} {lm['active_mins']}/{lm['effective_limit_mins']}m"
+                    f'{icon} {lm["friendly_name"]} {lm["active_mins"]}/{lm["effective_limit_mins"]}m'
                 )
             else:
-                lines.append(f"{icon} {lm['friendly_name']} (no limit)")
-        embed.add_field(name="🖥️ Linux Machines", value="\n".join(lines), inline=False)
+                lines.append(f'{icon} {lm["friendly_name"]} (no limit)')
+        embed.add_field(name='🖥️ Linux Machines', value='\n'.join(lines), inline=False)
     return embed
 
 
@@ -85,7 +85,7 @@ class DiscordNotifier:
     def set_channel(self, channel: discord.TextChannel) -> None:
         """Called by the bot's on_ready once the channel is resolved."""
         self._channel = channel
-        logger.info("Discord notification channel set: #%s", channel.name)
+        logger.info('Discord notification channel set: #%s', channel.name)
 
     async def notify_change(
         self,
@@ -122,10 +122,10 @@ class DiscordNotifier:
         if self._channel is None:
             return
         embed = discord.Embed(
-            title="⚠️ Google session expired",
+            title='⚠️ Google session expired',
             description=(
-                "Family Link cookies have expired. "
-                "Open the web UI and paste a fresh SAPISID to restore access."
+                'Family Link cookies have expired. '
+                'Open the web UI and paste a fresh SAPISID to restore access.'
             ),
             color=discord.Color.red(),
         )
@@ -136,8 +136,8 @@ class DiscordNotifier:
         if self._channel is None:
             return
         embed = discord.Embed(
-            title="✅ Family Link session restored",
-            description="The Google session is active again. All features are back online.",
+            title='✅ Family Link session restored',
+            description='The Google session is active again. All features are back online.',
             color=discord.Color.green(),
         )
         await self._channel.send(embed=embed)

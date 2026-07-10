@@ -8,11 +8,11 @@ def _make_machine(
     machine_id: int = 1,
     daily_limit_mins: int | None = 60,
     grace_period_mins: int = 5,
-    hostname: str = "host",
+    hostname: str = 'host',
     ssh_port: int = 22,
-    ssh_user: str = "user",
-    ssh_private_key: str = "key",
-    friendly_name: str = "Test PC",
+    ssh_user: str = 'user',
+    ssh_private_key: str = 'key',
+    friendly_name: str = 'Test PC',
 ) -> MagicMock:
     m = MagicMock()
     m.id = machine_id
@@ -67,11 +67,11 @@ async def test_poll_machine_increments_active_seconds_when_session_active():
 
     with (
         patch(
-            "familylink_server.services.linux_poller.check_session",
+            'familylink_server.services.linux_poller.check_session',
             AsyncMock(return_value=True),
         ),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):
@@ -91,11 +91,11 @@ async def test_poll_machine_does_not_increment_when_session_idle():
 
     with (
         patch(
-            "familylink_server.services.linux_poller.check_session",
+            'familylink_server.services.linux_poller.check_session',
             AsyncMock(return_value=False),
         ),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):
@@ -115,12 +115,12 @@ async def test_poll_machine_applies_soft_lock_when_limit_reached():
     mock_lock = AsyncMock()
     with (
         patch(
-            "familylink_server.services.linux_poller.check_session",
+            'familylink_server.services.linux_poller.check_session',
             AsyncMock(return_value=True),
         ),
-        patch("familylink_server.services.linux_poller.lock_session", mock_lock),
+        patch('familylink_server.services.linux_poller.lock_session', mock_lock),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):
@@ -147,20 +147,20 @@ async def test_poll_machine_relocks_when_user_dismisses_lock():
     mock_lock = AsyncMock()
     with (
         patch(
-            "familylink_server.services.linux_poller.check_session",
+            'familylink_server.services.linux_poller.check_session',
             AsyncMock(return_value=True),
         ),
-        patch("familylink_server.services.linux_poller.lock_session", mock_lock),
-        patch("familylink_server.services.linux_poller.poweroff_machine", AsyncMock()),
+        patch('familylink_server.services.linux_poller.lock_session', mock_lock),
+        patch('familylink_server.services.linux_poller.poweroff_machine', AsyncMock()),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):
         await poll_machine(machine)
 
     mock_lock.assert_awaited_once()
-    assert snapshot.locked_at == locked_ts, "locked_at must not change on re-lock"
+    assert snapshot.locked_at == locked_ts, 'locked_at must not change on re-lock'
 
 
 async def test_poll_machine_powers_off_after_grace_period():
@@ -176,14 +176,14 @@ async def test_poll_machine_powers_off_after_grace_period():
     mock_poweroff = AsyncMock()
     with (
         patch(
-            "familylink_server.services.linux_poller.check_session",
+            'familylink_server.services.linux_poller.check_session',
             AsyncMock(return_value=False),
         ),
         patch(
-            "familylink_server.services.linux_poller.poweroff_machine", mock_poweroff
+            'familylink_server.services.linux_poller.poweroff_machine', mock_poweroff
         ),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):
@@ -212,12 +212,12 @@ async def test_poll_machine_clears_poweroff_state_on_reboot_detection():
     mock_check = AsyncMock(return_value=False)  # no active graphical session yet
     mock_poweroff = AsyncMock()
     with (
-        patch("familylink_server.services.linux_poller.check_session", mock_check),
+        patch('familylink_server.services.linux_poller.check_session', mock_check),
         patch(
-            "familylink_server.services.linux_poller.poweroff_machine", mock_poweroff
+            'familylink_server.services.linux_poller.poweroff_machine', mock_poweroff
         ),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):
@@ -239,11 +239,11 @@ async def test_poll_machine_logs_warning_on_ssh_failure():
 
     with (
         patch(
-            "familylink_server.services.linux_poller.check_session",
-            AsyncMock(side_effect=ConnectionError("timeout")),
+            'familylink_server.services.linux_poller.check_session',
+            AsyncMock(side_effect=ConnectionError('timeout')),
         ),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):
@@ -266,11 +266,11 @@ async def test_poll_machine_marks_poweroff_when_locked_and_ssh_fails():
 
     with (
         patch(
-            "familylink_server.services.linux_poller.check_session",
-            AsyncMock(side_effect=ConnectionError("timeout")),
+            'familylink_server.services.linux_poller.check_session',
+            AsyncMock(side_effect=ConnectionError('timeout')),
         ),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):
@@ -292,12 +292,12 @@ async def test_poll_machine_respects_bonus_mins_in_effective_limit():
     mock_lock = AsyncMock()
     with (
         patch(
-            "familylink_server.services.linux_poller.check_session",
+            'familylink_server.services.linux_poller.check_session',
             AsyncMock(return_value=True),
         ),
-        patch("familylink_server.services.linux_poller.lock_session", mock_lock),
+        patch('familylink_server.services.linux_poller.lock_session', mock_lock),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):
@@ -317,19 +317,19 @@ async def test_poll_machine_notifies_on_soft_lock():
     mock_notifier = AsyncMock()
     with (
         patch(
-            "familylink_server.services.linux_poller.check_session",
+            'familylink_server.services.linux_poller.check_session',
             AsyncMock(return_value=True),
         ),
-        patch("familylink_server.services.linux_poller.lock_session", AsyncMock()),
+        patch('familylink_server.services.linux_poller.lock_session', AsyncMock()),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):
         await poll_machine(machine, notifier=mock_notifier)
 
     mock_notifier.notify_change.assert_awaited_once_with(
-        "lock_linux", machine.child_id, machine.friendly_name, "poller"
+        'lock_linux', machine.child_id, machine.friendly_name, 'poller'
     )
 
 
@@ -345,19 +345,19 @@ async def test_poll_machine_notifies_on_poweroff():
     mock_notifier = AsyncMock()
     with (
         patch(
-            "familylink_server.services.linux_poller.check_session",
+            'familylink_server.services.linux_poller.check_session',
             AsyncMock(return_value=False),
         ),
-        patch("familylink_server.services.linux_poller.poweroff_machine", AsyncMock()),
+        patch('familylink_server.services.linux_poller.poweroff_machine', AsyncMock()),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):
         await poll_machine(machine, notifier=mock_notifier)
 
     mock_notifier.notify_change.assert_awaited_once_with(
-        "poweroff_linux", machine.child_id, machine.friendly_name, "poller"
+        'poweroff_linux', machine.child_id, machine.friendly_name, 'poller'
     )
 
 
@@ -371,12 +371,12 @@ async def test_poll_machine_no_crash_when_notifier_is_none():
 
     with (
         patch(
-            "familylink_server.services.linux_poller.check_session",
+            'familylink_server.services.linux_poller.check_session',
             AsyncMock(return_value=True),
         ),
-        patch("familylink_server.services.linux_poller.lock_session", AsyncMock()),
+        patch('familylink_server.services.linux_poller.lock_session', AsyncMock()),
         patch(
-            "familylink_server.services.linux_poller.make_session",
+            'familylink_server.services.linux_poller.make_session',
             return_value=mock_ctx,
         ),
     ):

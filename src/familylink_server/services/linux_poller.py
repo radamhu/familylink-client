@@ -67,7 +67,7 @@ async def poll_machine(
                 machine.ssh_private_key,
             )
         except Exception:
-            logger.warning("SSH poll failed for %s", machine.friendly_name)
+            logger.warning('SSH poll failed for %s', machine.friendly_name)
             # Machine went offline while locked (e.g. child held the power button).
             # poweroff_at was never set via the normal enforcement path, so the UI
             # would show "locked" indefinitely. Mark it as powered off here so the
@@ -77,7 +77,7 @@ async def poll_machine(
                 snapshot.poweroff_at = datetime.now(UTC)
                 snapshot.updated_at = datetime.now(UTC)
                 logger.info(
-                    "Machine %s unreachable while locked — marking as powered off",
+                    'Machine %s unreachable while locked — marking as powered off',
                     machine.friendly_name,
                 )
                 await session.commit()
@@ -86,7 +86,7 @@ async def poll_machine(
         if snapshot.poweroff_at is not None:
             snapshot.poweroff_at = None
             logger.info(
-                "Machine %s back online after poweroff — will re-enforce immediately",
+                'Machine %s back online after poweroff — will re-enforce immediately',
                 machine.friendly_name,
             )
 
@@ -114,21 +114,21 @@ async def poll_machine(
                 )
                 if snapshot.locked_at is None:
                     snapshot.locked_at = datetime.now(UTC)
-                    logger.info("Soft lock applied to %s", machine.friendly_name)
+                    logger.info('Soft lock applied to %s', machine.friendly_name)
                     if notifier:
                         await notifier.notify_change(
-                            "lock_linux",
+                            'lock_linux',
                             machine.child_id,
                             machine.friendly_name,
-                            "poller",
+                            'poller',
                         )
                 else:
                     logger.debug(
-                        "Re-applied lock to %s (user dismissed lock screen)",
+                        'Re-applied lock to %s (user dismissed lock screen)',
                         machine.friendly_name,
                     )
             except Exception:
-                logger.warning("Lock failed for %s", machine.friendly_name)
+                logger.warning('Lock failed for %s', machine.friendly_name)
 
         if snapshot.locked_at is not None and snapshot.poweroff_at is None:
             # If a bonus was granted after the lock, the kid may now be under the
@@ -148,12 +148,12 @@ async def poll_machine(
                     )
                 except Exception:
                     logger.warning(
-                        "Unlock after bonus failed for %s — lock cleared in DB anyway",
+                        'Unlock after bonus failed for %s — lock cleared in DB anyway',
                         machine.friendly_name,
                     )
                 snapshot.locked_at = None
                 logger.info(
-                    "Cleared lock for %s — bonus brought usage back under effective limit",
+                    'Cleared lock for %s — bonus brought usage back under effective limit',
                     machine.friendly_name,
                 )
             else:
@@ -168,19 +168,19 @@ async def poll_machine(
                         )
                         snapshot.poweroff_at = datetime.now(UTC)
                         logger.info(
-                            "Hard poweroff applied to %s", machine.friendly_name
+                            'Hard poweroff applied to %s', machine.friendly_name
                         )
                         if notifier:
                             await notifier.notify_change(
-                                "poweroff_linux",
+                                'poweroff_linux',
                                 machine.child_id,
                                 machine.friendly_name,
-                                "poller",
+                                'poller',
                             )
                     except Exception:
                         snapshot.poweroff_at = datetime.now(UTC)
                         logger.warning(
-                            "Poweroff failed for %s — marking as powered off to stop retries",
+                            'Poweroff failed for %s — marking as powered off to stop retries',
                             machine.friendly_name,
                         )
 
@@ -206,5 +206,5 @@ async def poller_loop(notifier: DiscordNotifier | None = None) -> None:
                 return_exceptions=True,
             )
         except Exception:
-            logger.exception("Poller cycle failed")
+            logger.exception('Poller cycle failed')
         await asyncio.sleep(POLL_INTERVAL)

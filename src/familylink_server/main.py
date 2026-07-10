@@ -35,8 +35,8 @@ logger = logging.getLogger(__name__)
 
 
 async def health_check_loop(
-    service: "FamilyLinkService",
-    notifier: "DiscordNotifier | None",
+    service: 'FamilyLinkService',
+    notifier: 'DiscordNotifier | None',
     interval: int = 1800,
 ) -> None:
     """Probe the Family Link API every `interval` seconds; alert Discord on failure."""
@@ -51,7 +51,7 @@ async def health_check_loop(
                 if notifier:
                     await notifier.notify_session_restored()
         except SessionExpiredError as exc:
-            logger.warning("Health check: session expired — %s", exc)
+            logger.warning('Health check: session expired — %s', exc)
             if not _alert_active:
                 _alert_active = True
                 service.set_auth_failed(True)
@@ -59,7 +59,7 @@ async def health_check_loop(
                     await notifier.notify_session_expired()
         except Exception as exc:
             logger.warning(
-                "Health check probe error (transient, not alerting): %s", exc
+                'Health check probe error (transient, not alerting): %s', exc
             )
 
 
@@ -87,17 +87,17 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
         bot_task = asyncio.create_task(
             _bot_task_with_restart(bot, settings.discord_bot_token)  # type: ignore[arg-type]
         )
-        logger.info("Discord bot task started")
+        logger.info('Discord bot task started')
     else:
         logger.info(
-            "Discord bot disabled (DISCORD_BOT_TOKEN / GUILD_ID / CHANNEL_ID not set)"
+            'Discord bot disabled (DISCORD_BOT_TOKEN / GUILD_ID / CHANNEL_ID not set)'
         )
 
     poller_task = asyncio.create_task(poller_loop(notifier=notifier))
-    logger.info("Linux machine poller started")
+    logger.info('Linux machine poller started')
 
     health_task = asyncio.create_task(health_check_loop(get_service(), notifier))
-    logger.info("Health check task started (interval=1800s)")
+    logger.info('Health check task started (interval=1800s)')
 
     yield
 
@@ -116,8 +116,8 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
 
 
 app = FastAPI(
-    title="FamilyLink",
-    description="Google Family Link management web service",
+    title='FamilyLink',
+    description='Google Family Link management web service',
     lifespan=lifespan,
 )
 
@@ -198,6 +198,6 @@ app.include_router(usage_router)
 app.include_router(devices_router)
 app.include_router(linux_machines_router)
 
-_static = Path(__file__).parent / "static"
+_static = Path(__file__).parent / 'static'
 if _static.exists():
-    app.mount("/static", StaticFiles(directory=str(_static)), name="static")
+    app.mount('/static', StaticFiles(directory=str(_static)), name='static')

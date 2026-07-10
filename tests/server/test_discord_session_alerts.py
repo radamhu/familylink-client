@@ -18,7 +18,7 @@ def notifier():
 def channel():
     """Create a mock Discord TextChannel."""
     ch = AsyncMock(spec=discord.TextChannel)
-    ch.name = "family-alerts"
+    ch.name = 'family-alerts'
     return ch
 
 
@@ -27,8 +27,8 @@ async def test_notify_session_expired_posts_embed(notifier, channel):
     notifier.set_channel(channel)
     await notifier.notify_session_expired()
     channel.send.assert_awaited_once()
-    embed = channel.send.call_args.kwargs["embed"]
-    assert "expired" in embed.title.lower()
+    embed = channel.send.call_args.kwargs['embed']
+    assert 'expired' in embed.title.lower()
 
 
 async def test_notify_session_restored_posts_embed(notifier, channel):
@@ -36,8 +36,8 @@ async def test_notify_session_restored_posts_embed(notifier, channel):
     notifier.set_channel(channel)
     await notifier.notify_session_restored()
     channel.send.assert_awaited_once()
-    embed = channel.send.call_args.kwargs["embed"]
-    assert "restored" in embed.title.lower()
+    embed = channel.send.call_args.kwargs['embed']
+    assert 'restored' in embed.title.lower()
 
 
 async def test_session_alerts_noop_without_channel(notifier):

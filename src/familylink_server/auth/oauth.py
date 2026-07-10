@@ -7,23 +7,23 @@ from itsdangerous import BadSignature, URLSafeSerializer
 
 from familylink_server.config import settings
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix='/auth', tags=['auth'])
 
 _oauth = OAuth()
 _oauth.register(
-    name="google",
+    name='google',
     client_id=settings.google_client_id,
     client_secret=settings.google_client_secret,
-    server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
-    client_kwargs={"scope": "openid email profile"},
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs={'scope': 'openid email profile'},
 )
 
-_signer = URLSafeSerializer(settings.secret_key, salt="fl-session")
-_COOKIE_NAME = "fl_session"
+_signer = URLSafeSerializer(settings.secret_key, salt='fl-session')
+_COOKIE_NAME = 'fl_session'
 
 
 def _make_session(email: str) -> str:
-    return _signer.dumps({"email": email})
+    return _signer.dumps({'email': email})
 
 
 def _read_session(token: str) -> dict | None:
@@ -36,13 +36,13 @@ def _read_session(token: str) -> dict | None:
 async def _require_user(fl_session: str | None = Cookie(default=None)) -> str:
     """FastAPI dependency — returns authenticated user email or raises HTTP 401/403."""
     if not fl_session:
-        raise HTTPException(status_code=401, detail="Not authenticated")
+        raise HTTPException(status_code=401, detail='Not authenticated')
     payload = _read_session(fl_session)
     if payload is None:
-        raise HTTPException(status_code=401, detail="Invalid session")
-    email = payload.get("email", "")
+        raise HTTPException(status_code=401, detail='Invalid session')
+    email = payload.get('email', '')
     if email != settings.familylink_google_email:
-        raise HTTPException(status_code=403, detail="Access denied")
+        raise HTTPException(status_code=403, detail='Access denied')
     return email
 
 
@@ -51,38 +51,38 @@ async def _require_user(fl_session: str | None = Cookie(default=None)) -> str:
 require_user = Depends(_require_user)
 
 
-@router.get("/login")
+@router.get('/login')
 async def login(request: Request) -> RedirectResponse:
     """Redirect the browser to Google's OAuth 2.0 authorization page."""
-    redirect_uri = str(request.url_for("auth_callback"))
+    redirect_uri = str(request.url_for('auth_callback'))
     return await _oauth.google.authorize_redirect(request, redirect_uri)
 
 
-@router.get("/callback", name="auth_callback")
+@router.get('/callback', name='auth_callback')
 async def callback(request: Request) -> RedirectResponse:
     """Handle the OAuth 2.0 callback, set the session cookie, and redirect home."""
     token = await _oauth.google.authorize_access_token(request)
-    user_info = token.get("userinfo") or {}
-    email = user_info.get("email", "")
+    user_info = token.get('userinfo') or {}
+    email = user_info.get('email', '')
     if email != settings.familylink_google_email:
-        raise HTTPException(status_code=403, detail="Access denied")
-    response = RedirectResponse(url="/")
+        raise HTTPException(status_code=403, detail='Access denied')
+    response = RedirectResponse(url='/')
     response.set_cookie(
         _COOKIE_NAME,
         _make_session(email),
         httponly=True,
         secure=not settings.debug,
-        samesite="lax",
+        samesite='lax',
         max_age=60 * 60 * 24 * 30,  # 30 days
     )
     return response
 
 
-@router.get("/logout")
+@router.get('/logout')
 async def logout() -> RedirectResponse:
     """Clear the session cookie and redirect to the login page."""
-    response = RedirectResponse(url="/auth/login")
+    response = RedirectResponse(url='/auth/login')
     response.delete_cookie(
-        _COOKIE_NAME, httponly=True, secure=not settings.debug, samesite="lax"
+        _COOKIE_NAME, httponly=True, secure=not settings.debug, samesite='lax'
     )
     return response

@@ -39,18 +39,18 @@ class AppBlockView(discord.ui.View):
         """Handle Unblock button press."""
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         await self._svc.always_allow_app(self._package, child_id=self._child_id)
         await self._notifier.notify_change(
-            "always_allow",
+            'always_allow',
             self._child_name,
             self._package,
             interaction.user.display_name,
         )
         await interaction.response.send_message(
-            f"✅ {self._package} unblocked for {self._child_name}.", ephemeral=True
+            f'✅ {self._package} unblocked for {self._child_name}.', ephemeral=True
         )
         self.stop()
 
@@ -60,28 +60,28 @@ class AppBlockView(discord.ui.View):
         """Handle Always Allow button press."""
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         await self._svc.always_allow_app(self._package, child_id=self._child_id)
         await self._notifier.notify_change(
-            "always_allow",
+            'always_allow',
             self._child_name,
             self._package,
             interaction.user.display_name,
         )
         await interaction.response.send_message(
-            f"✅ {self._package} always allowed for {self._child_name}.", ephemeral=True
+            f'✅ {self._package} always allowed for {self._child_name}.', ephemeral=True
         )
         self.stop()
 
-    @discord.ui.button(label="Unblock", style=discord.ButtonStyle.success)
+    @discord.ui.button(label='Unblock', style=discord.ButtonStyle.success)
     async def _unblock_btn(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ) -> None:
         await self._unblock(interaction, button)
 
-    @discord.ui.button(label="Always Allow", style=discord.ButtonStyle.primary)
+    @discord.ui.button(label='Always Allow', style=discord.ButtonStyle.primary)
     async def _always_allow_btn(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ) -> None:
@@ -112,22 +112,22 @@ class AppLimitView(discord.ui.View):
         """Handle Undo button press."""
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         await self._svc.always_allow_app(self._package, child_id=self._child_id)
         await self._notifier.notify_change(
-            "always_allow",
+            'always_allow',
             self._child_name,
             self._package,
             interaction.user.display_name,
         )
         await interaction.response.send_message(
-            f"↩️ Limit removed for {self._package}.", ephemeral=True
+            f'↩️ Limit removed for {self._package}.', ephemeral=True
         )
         self.stop()
 
-    @discord.ui.button(label="Undo", style=discord.ButtonStyle.secondary)
+    @discord.ui.button(label='Undo', style=discord.ButtonStyle.secondary)
     async def _undo_btn(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ) -> None:
@@ -158,20 +158,20 @@ class AppAllowView(discord.ui.View):
         """Handle Remove button press."""
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         await self._svc.block_app(self._package, child_id=self._child_id)
         await self._notifier.notify_change(
-            "block", self._child_name, self._package, interaction.user.display_name
+            'block', self._child_name, self._package, interaction.user.display_name
         )
         await interaction.response.send_message(
-            f"\U0001f512 {self._package} blocked for {self._child_name}.",
+            f'\U0001f512 {self._package} blocked for {self._child_name}.',
             ephemeral=True,
         )
         self.stop()
 
-    @discord.ui.button(label="Remove", style=discord.ButtonStyle.danger)
+    @discord.ui.button(label='Remove', style=discord.ButtonStyle.danger)
     async def _remove_btn(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ) -> None:
@@ -202,22 +202,22 @@ class DeviceLockView(discord.ui.View):
         """Handle Unlock button press."""
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         await self._svc.unlock_device(self._device_id, child_id=self._child_id)
         await self._notifier.notify_change(
-            "unlock_device",
+            'unlock_device',
             self._child_name,
             self._device_id,
             interaction.user.display_name,
         )
         await interaction.response.send_message(
-            "\U0001f513 Device unlocked.", ephemeral=True
+            '\U0001f513 Device unlocked.', ephemeral=True
         )
         self.stop()
 
-    @discord.ui.button(label="Unlock", style=discord.ButtonStyle.success)
+    @discord.ui.button(label='Unlock', style=discord.ButtonStyle.success)
     async def _unlock_btn(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ) -> None:
@@ -248,22 +248,22 @@ class DeviceUnlockView(discord.ui.View):
         """Handle Lock button press."""
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         await self._svc.lock_device(self._device_id, child_id=self._child_id)
         await self._notifier.notify_change(
-            "lock_device",
+            'lock_device',
             self._child_name,
             self._device_id,
             interaction.user.display_name,
         )
         await interaction.response.send_message(
-            "\U0001f512 Device locked.", ephemeral=True
+            '\U0001f512 Device locked.', ephemeral=True
         )
         self.stop()
 
-    @discord.ui.button(label="Lock", style=discord.ButtonStyle.danger)
+    @discord.ui.button(label='Lock', style=discord.ButtonStyle.danger)
     async def _lock_btn(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ) -> None:
@@ -294,27 +294,27 @@ class SummaryView(discord.ui.View):
         """Handle Lock Device button press."""
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         if not self._device_id:
             await interaction.response.send_message(
-                "No device found for this child.", ephemeral=True
+                'No device found for this child.', ephemeral=True
             )
             return
         await self._svc.lock_device(self._device_id, child_id=self._child_id)
         await self._notifier.notify_change(
-            "lock_device",
+            'lock_device',
             self._child_name,
             self._device_id,
             interaction.user.display_name,
         )
         await interaction.response.send_message(
-            "\U0001f512 Device locked.", ephemeral=True
+            '\U0001f512 Device locked.', ephemeral=True
         )
         self.stop()
 
-    @discord.ui.button(label="Lock Device", style=discord.ButtonStyle.danger)
+    @discord.ui.button(label='Lock Device', style=discord.ButtonStyle.danger)
     async def _lock_device_btn(
         self, interaction: discord.Interaction, button: discord.ui.Button
     ) -> None:

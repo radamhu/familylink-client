@@ -30,7 +30,7 @@ if TYPE_CHECKING:
     from familylink_server.services.family_link import FamilyLinkService
 
 
-class UsageGroup(app_commands.Group, name="usage", description="View usage statistics"):
+class UsageGroup(app_commands.Group, name='usage', description='View usage statistics'):
     """Slash command group: /usage today | history."""
 
     def __init__(self, service: FamilyLinkService, notifier: DiscordNotifier) -> None:
@@ -39,9 +39,9 @@ class UsageGroup(app_commands.Group, name="usage", description="View usage stati
         self._notifier = notifier
 
     @app_commands.command(
-        name="today", description="Show today's app usage for a child"
+        name='today', description="Show today's app usage for a child"
     )
-    @app_commands.describe(child="Which child")
+    @app_commands.describe(child='Which child')
     @app_commands.autocomplete(child=child_autocomplete)
     async def today(
         self, interaction: discord.Interaction, child: str | None = None
@@ -49,13 +49,13 @@ class UsageGroup(app_commands.Group, name="usage", description="View usage stati
         """Show today's usage."""
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         resolved = await resolve_child(self._svc, child)
         if resolved is None:
             await interaction.response.send_message(
-                "Please specify a child with the `child` parameter.", ephemeral=True
+                'Please specify a child with the `child` parameter.', ephemeral=True
             )
             return
         child_id, child_name = resolved
@@ -66,9 +66,9 @@ class UsageGroup(app_commands.Group, name="usage", description="View usage stati
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(
-        name="history", description="Show daily usage totals for the last N days"
+        name='history', description='Show daily usage totals for the last N days'
     )
-    @app_commands.describe(child="Which child", days="Number of days (default 7)")
+    @app_commands.describe(child='Which child', days='Number of days (default 7)')
     @app_commands.autocomplete(child=child_autocomplete)
     async def history(
         self,
@@ -79,20 +79,20 @@ class UsageGroup(app_commands.Group, name="usage", description="View usage stati
         """Show usage history."""
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         resolved = await resolve_child(self._svc, child)
         if resolved is None:
             await interaction.response.send_message(
-                "Please specify a child with the `child` parameter.", ephemeral=True
+                'Please specify a child with the `child` parameter.', ephemeral=True
             )
             return
         child_id, child_name = resolved
         usage = await self._svc.get_apps_and_usage(child_id)
         _, today_total = _apps_today(usage)
         daily_totals = [
-            {"date": datetime.date.today().isoformat(), "seconds": today_total}
+            {'date': datetime.date.today().isoformat(), 'seconds': today_total}
         ]
         embed = usage_history_embed(child_name, daily_totals, days)
         await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -105,13 +105,13 @@ def make_status_command(
     """Factory: return a /status app_commands.Command bound to service and make_session."""
 
     @app_commands.command(
-        name="status",
-        description="Show a dashboard overview of all children and devices",
+        name='status',
+        description='Show a dashboard overview of all children and devices',
     )
     async def status(interaction: discord.Interaction) -> None:
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "You do not have permission to use this command.",
+                'You do not have permission to use this command.',
                 ephemeral=True,
             )
             return
@@ -131,10 +131,10 @@ def make_status_command(
             linux_rows = await _fetch_linux_rows(child.user_id, make_session)
             children_data.append(
                 {
-                    "name": child.profile.display_name,
-                    "total_seconds": total,
-                    "device_count": len(usage.device_info),
-                    "linux_machines": linux_rows,
+                    'name': child.profile.display_name,
+                    'total_seconds': total,
+                    'device_count': len(usage.device_info),
+                    'linux_machines': linux_rows,
                 }
             )
         embed = status_embed(children_data)
@@ -151,13 +151,13 @@ def make_summary_command(
     """Factory: return a /summary app_commands.Command that posts the daily summary now."""
 
     @app_commands.command(
-        name="summary",
-        description="Post the daily usage summary to the channel right now",
+        name='summary',
+        description='Post the daily usage summary to the channel right now',
     )
     async def summary(interaction: discord.Interaction) -> None:
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         await interaction.response.defer(ephemeral=True)
@@ -195,10 +195,10 @@ def make_summary_command(
                     view=view,
                 )
             await interaction.followup.send(
-                f"✅ Summary posted for {len(supervised)} child(ren).", ephemeral=True
+                f'✅ Summary posted for {len(supervised)} child(ren).', ephemeral=True
             )
         except Exception as exc:
-            await interaction.followup.send(f"❌ Failed: {exc}", ephemeral=True)
+            await interaction.followup.send(f'❌ Failed: {exc}', ephemeral=True)
 
     return summary
 
@@ -207,18 +207,18 @@ def make_refresh_command(service: FamilyLinkService) -> app_commands.Command:
     """Factory: return a /refresh app_commands.Command bound to service."""
 
     @app_commands.command(
-        name="refresh", description="Invalidate the cache for all children"
+        name='refresh', description='Invalidate the cache for all children'
     )
     async def refresh(interaction: discord.Interaction) -> None:
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         service._members_cache = None
         service._usage_cache = {}
         await interaction.response.send_message(
-            "♻️ Cache cleared — next request will fetch fresh data.", ephemeral=True
+            '♻️ Cache cleared — next request will fetch fresh data.', ephemeral=True
         )
 
     return refresh

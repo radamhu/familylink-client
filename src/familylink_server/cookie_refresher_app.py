@@ -1,10 +1,8 @@
 """Sidecar: headless Chrome cookie refresher service."""
 
-import base64
 import logging
-import os
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 
 logger = logging.getLogger(__name__)
 

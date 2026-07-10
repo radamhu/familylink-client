@@ -12,13 +12,13 @@ from familylink_server.db.models import (
 from familylink_server.db.session import get_session, make_session
 
 __all__ = [
-    "AppConfig",
-    "AuditLog",
-    "Base",
-    "DeviceSnapshot",
-    "LinuxMachine",
-    "LinuxUsageSnapshot",
-    "UsageSnapshot",
-    "get_session",
-    "make_session",
+    'AppConfig',
+    'AuditLog',
+    'Base',
+    'DeviceSnapshot',
+    'LinuxMachine',
+    'LinuxUsageSnapshot',
+    'UsageSnapshot',
+    'get_session',
+    'make_session',
 ]

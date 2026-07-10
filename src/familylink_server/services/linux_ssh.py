@@ -54,10 +54,10 @@ async def lock_session(hostname: str, port: int, user: str, key_text: str) -> No
         # loginctl lock-sessions requires polkit interactive auth over SSH and fails
         # silently (exit 0) on Bazzite/Fedora. Use the session D-Bus directly instead.
         await conn.run(
-            "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus "
-            "dbus-send --session --type=method_call "
-            "--dest=org.freedesktop.ScreenSaver /ScreenSaver "
-            "org.freedesktop.ScreenSaver.Lock",
+            'DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus '
+            'dbus-send --session --type=method_call '
+            '--dest=org.freedesktop.ScreenSaver /ScreenSaver '
+            'org.freedesktop.ScreenSaver.Lock',
             check=True,
         )
 
@@ -89,15 +89,15 @@ async def poweroff_machine(hostname: str, port: int, user: str, key_text: str) -
         # users to call PowerOff without sudo.  Fall back to sudo for distros
         # that restrict unauthenticated D-Bus poweroff.
         result = await conn.run(
-            "dbus-send --system --print-reply --dest=org.freedesktop.login1"
-            " /org/freedesktop/login1"
+            'dbus-send --system --print-reply --dest=org.freedesktop.login1'
+            ' /org/freedesktop/login1'
             " 'org.freedesktop.login1.Manager.PowerOff' boolean:false",
             check=False,
         )
         if result.exit_status != 0:
             # Requires: suriel ALL=(ALL) NOPASSWD: /usr/bin/systemctl poweroff
             # in /etc/sudoers.d/familylink-poweroff (chmod 440)
-            await conn.run("sudo systemctl poweroff", check=True)
+            await conn.run('sudo systemctl poweroff', check=True)
 
 
 async def unlock_session(hostname: str, port: int, user: str, key_text: str) -> None:
@@ -121,4 +121,4 @@ async def unlock_session(hostname: str, port: int, user: str, key_text: str) -> 
         # loginctl unlock-sessions has the same polkit issue as lock-sessions.
         # Kill the KDE screen locker process directly to dismiss the lock screen.
         # -f is required because kscreenlocker_greet exceeds pkill's 15-char limit.
-        await conn.run("pkill -f kscreenlocker_greet || true", check=False)
+        await conn.run('pkill -f kscreenlocker_greet || true', check=False)

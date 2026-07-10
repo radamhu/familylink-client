@@ -9,17 +9,17 @@ def test_to_netscape_subdomain_flag():
 
     cookies = [
         {
-            "name": "SAPISID",
-            "value": "abc/def",
-            "domain": ".google.com",
-            "path": "/",
-            "expires": 1234567890.0,
-            "secure": True,
+            'name': 'SAPISID',
+            'value': 'abc/def',
+            'domain': '.google.com',
+            'path': '/',
+            'expires': 1234567890.0,
+            'secure': True,
         }
     ]
     result = _to_netscape(cookies)
-    assert result.startswith("# Netscape HTTP Cookie File\n")
-    assert ".google.com\tTRUE\t/\tTRUE\t1234567890\tSAPISID\tabc/def" in result
+    assert result.startswith('# Netscape HTTP Cookie File\n')
+    assert '.google.com\tTRUE\t/\tTRUE\t1234567890\tSAPISID\tabc/def' in result
 
 
 def test_to_netscape_non_subdomain():
@@ -28,16 +28,16 @@ def test_to_netscape_non_subdomain():
 
     cookies = [
         {
-            "name": "SESSION",
-            "value": "xyz",
-            "domain": "accounts.google.com",
-            "path": "/",
-            "expires": 0,
-            "secure": False,
+            'name': 'SESSION',
+            'value': 'xyz',
+            'domain': 'accounts.google.com',
+            'path': '/',
+            'expires': 0,
+            'secure': False,
         }
     ]
     result = _to_netscape(cookies)
-    assert "accounts.google.com\tFALSE\t/\tFALSE\t0\tSESSION\txyz" in result
+    assert 'accounts.google.com\tFALSE\t/\tFALSE\t0\tSESSION\txyz' in result
 
 
 def test_to_netscape_missing_expires():
@@ -45,10 +45,10 @@ def test_to_netscape_missing_expires():
     from familylink_server.cookie_refresher_app import _to_netscape
 
     cookies = [
-        {"name": "X", "value": "y", "domain": ".g.com", "path": "/", "secure": False}
+        {'name': 'X', 'value': 'y', 'domain': '.g.com', 'path': '/', 'secure': False}
     ]
     result = _to_netscape(cookies)
-    assert "\t0\tX\ty" in result
+    assert '\t0\tX\ty' in result
 
 
 def test_health_endpoint():
@@ -56,6 +56,6 @@ def test_health_endpoint():
     from familylink_server.cookie_refresher_app import app
 
     client = TestClient(app)
-    resp = client.get("/health")
+    resp = client.get('/health')
     assert resp.status_code == 200
-    assert resp.json() == {"status": "ok"}
+    assert resp.json() == {'status': 'ok'}

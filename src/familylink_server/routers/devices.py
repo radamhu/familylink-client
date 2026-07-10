@@ -13,8 +13,8 @@ from familylink_server.db import AuditLog, get_session
 from familylink_server.services.discord_notifier import get_notifier
 from familylink_server.services.family_link import FamilyLinkService, get_service
 
-router = APIRouter(tags=["devices"])
-templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
+router = APIRouter(tags=['devices'])
+templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / 'templates'))
 
 
 async def _child_name(svc: FamilyLinkService, child_id: str) -> str:
@@ -25,7 +25,7 @@ async def _child_name(svc: FamilyLinkService, child_id: str) -> str:
     )
 
 
-@router.get("/devices", response_class=HTMLResponse)
+@router.get('/devices', response_class=HTMLResponse)
 async def devices_page(
     request: Request,
     _email: str = require_user,  # type: ignore[assignment]
@@ -44,19 +44,19 @@ async def devices_page(
         for d in usage.device_info:
             devices.append(
                 {
-                    "device_id": d.device_id,
-                    "child_id": child.user_id,
-                    "friendly_name": d.display_info.friendly_name,
-                    "model": getattr(d.display_info, "model", None),
-                    "is_locked": False,
+                    'device_id': d.device_id,
+                    'child_id': child.user_id,
+                    'friendly_name': d.display_info.friendly_name,
+                    'model': getattr(d.display_info, 'model', None),
+                    'is_locked': False,
                 }
             )
     return templates.TemplateResponse(
-        request, "devices.html", {"devices": devices, "auth_failed": svc.auth_failed}
+        request, 'devices.html', {'devices': devices, 'auth_failed': svc.auth_failed}
     )
 
 
-@router.post("/devices/{device_id}/lock", response_class=HTMLResponse)
+@router.post('/devices/{device_id}/lock', response_class=HTMLResponse)
 async def lock_device(
     device_id: str,
     request: Request,
@@ -70,11 +70,11 @@ async def lock_device(
     notifier = get_notifier()
     if notifier:
         name = await _child_name(svc, child_id)
-        await notifier.notify_change("lock_device", name, device_id, "web UI")
+        await notifier.notify_change('lock_device', name, device_id, 'web UI')
     session.add(
         AuditLog(
             child_id=child_id,
-            action="lock_device",
+            action='lock_device',
             target=device_id,
             occurred_at=datetime.now(UTC),
         )
@@ -82,19 +82,19 @@ async def lock_device(
     await session.commit()
     return templates.TemplateResponse(
         request,
-        "partials/device_card.html",
+        'partials/device_card.html',
         {
-            "device": {
-                "device_id": device_id,
-                "child_id": child_id,
-                "friendly_name": None,
-                "is_locked": True,
+            'device': {
+                'device_id': device_id,
+                'child_id': child_id,
+                'friendly_name': None,
+                'is_locked': True,
             },
         },
     )
 
 
-@router.post("/devices/{device_id}/unlock", response_class=HTMLResponse)
+@router.post('/devices/{device_id}/unlock', response_class=HTMLResponse)
 async def unlock_device(
     device_id: str,
     request: Request,
@@ -108,11 +108,11 @@ async def unlock_device(
     notifier = get_notifier()
     if notifier:
         name = await _child_name(svc, child_id)
-        await notifier.notify_change("unlock_device", name, device_id, "web UI")
+        await notifier.notify_change('unlock_device', name, device_id, 'web UI')
     session.add(
         AuditLog(
             child_id=child_id,
-            action="unlock_device",
+            action='unlock_device',
             target=device_id,
             occurred_at=datetime.now(UTC),
         )
@@ -120,13 +120,13 @@ async def unlock_device(
     await session.commit()
     return templates.TemplateResponse(
         request,
-        "partials/device_card.html",
+        'partials/device_card.html',
         {
-            "device": {
-                "device_id": device_id,
-                "child_id": child_id,
-                "friendly_name": None,
-                "is_locked": False,
+            'device': {
+                'device_id': device_id,
+                'child_id': child_id,
+                'friendly_name': None,
+                'is_locked': False,
             },
         },
     )

@@ -10,22 +10,22 @@ def _make_interaction(has_role: bool = True) -> MagicMock:
     interaction.guild = MagicMock()
     member = MagicMock(spec=discord.Member)
     allowed_role = MagicMock()
-    allowed_role.name = "FamilyAdmin"
+    allowed_role.name = 'FamilyAdmin'
     member.roles = [allowed_role] if has_role else []
     interaction.user = member
     interaction.response = AsyncMock()
     return interaction
 
 
-def _make_machine(machine_id: int = 1, friendly_name: str = "Gaming PC") -> MagicMock:
+def _make_machine(machine_id: int = 1, friendly_name: str = 'Gaming PC') -> MagicMock:
     m = MagicMock()
     m.id = machine_id
-    m.child_id = "child1"
+    m.child_id = 'child1'
     m.friendly_name = friendly_name
-    m.hostname = "host"
+    m.hostname = 'host'
     m.ssh_port = 22
-    m.ssh_user = "user"
-    m.ssh_private_key = "key"
+    m.ssh_user = 'user'
+    m.ssh_private_key = 'key'
     m.daily_limit_mins = 60
     m.enabled = True
     return m
@@ -65,15 +65,15 @@ async def test_linux_bonus_grants_minutes():
     interaction = _make_interaction()
 
     with patch(
-        "familylink_server.bot.commands.linux.require_discord_role", return_value=True
+        'familylink_server.bot.commands.linux.require_discord_role', return_value=True
     ):
-        await group.bonus.callback(group, interaction, machine="1", minutes=15)
+        await group.bonus.callback(group, interaction, machine='1', minutes=15)
 
     assert snap.bonus_mins == 15
     interaction.response.send_message.assert_awaited_once()
     msg = interaction.response.send_message.call_args[0][0]
-    assert "+15" in msg
-    assert "Gaming PC" in msg
+    assert '+15' in msg
+    assert 'Gaming PC' in msg
 
 
 async def test_linux_bonus_unlocks_when_locked():
@@ -98,16 +98,16 @@ async def test_linux_bonus_unlocks_when_locked():
     mock_unlock = AsyncMock()
     with (
         patch(
-            "familylink_server.bot.commands.linux.require_discord_role",
+            'familylink_server.bot.commands.linux.require_discord_role',
             return_value=True,
         ),
-        patch("familylink_server.bot.commands.linux.unlock_session", mock_unlock),
+        patch('familylink_server.bot.commands.linux.unlock_session', mock_unlock),
     ):
-        await group.bonus.callback(group, interaction, machine="1", minutes=30)
+        await group.bonus.callback(group, interaction, machine='1', minutes=30)
 
     mock_unlock.assert_awaited_once()
     msg = interaction.response.send_message.call_args[0][0]
-    assert "unlocked" in msg.lower()
+    assert 'unlocked' in msg.lower()
 
 
 async def test_linux_bonus_requires_role():
@@ -119,12 +119,12 @@ async def test_linux_bonus_requires_role():
     interaction = _make_interaction(has_role=False)
 
     with patch(
-        "familylink_server.bot.commands.linux.require_discord_role", return_value=False
+        'familylink_server.bot.commands.linux.require_discord_role', return_value=False
     ):
-        await group.bonus.callback(group, interaction, machine="1", minutes=15)
+        await group.bonus.callback(group, interaction, machine='1', minutes=15)
 
     msg = (
-        interaction.response.send_message.call_args[1].get("content")
+        interaction.response.send_message.call_args[1].get('content')
         or interaction.response.send_message.call_args[0][0]
     )
-    assert "permission" in msg.lower() or "insufficient" in msg.lower()
+    assert 'permission' in msg.lower() or 'insufficient' in msg.lower()

@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 _PAGE_SIZE = 10
 
 
-class AppsGroup(app_commands.Group, name="apps", description="Manage supervised apps"):
+class AppsGroup(app_commands.Group, name='apps', description='Manage supervised apps'):
     """Slash command group: /apps list | limit | block | allow."""
 
     def __init__(self, service: FamilyLinkService, notifier: DiscordNotifier) -> None:
@@ -30,11 +30,11 @@ class AppsGroup(app_commands.Group, name="apps", description="Manage supervised 
         self._notifier = notifier
 
     @app_commands.command(
-        name="list", description="List apps and their current state for a child"
+        name='list', description='List apps and their current state for a child'
     )
     @app_commands.describe(
-        child="Which child (required when supervising multiple children)",
-        page="Page number",
+        child='Which child (required when supervising multiple children)',
+        page='Page number',
     )
     @app_commands.autocomplete(child=child_autocomplete)
     async def list(
@@ -43,13 +43,13 @@ class AppsGroup(app_commands.Group, name="apps", description="Manage supervised 
         """List paginated apps."""
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         resolved = await resolve_child(self._svc, child)
         if resolved is None:
             await interaction.response.send_message(
-                "Please specify a child with the `child` parameter.", ephemeral=True
+                'Please specify a child with the `child` parameter.', ephemeral=True
             )
             return
         child_id, child_name = resolved
@@ -57,34 +57,34 @@ class AppsGroup(app_commands.Group, name="apps", description="Manage supervised 
         all_apps = sorted(
             [
                 {
-                    "title": a.title,
-                    "package_name": a.package_name,
-                    "state": "blocked"
+                    'title': a.title,
+                    'package_name': a.package_name,
+                    'state': 'blocked'
                     if a.supervision_setting.hidden
                     else (
-                        "limited"
+                        'limited'
                         if a.supervision_setting.usage_limit
                         else (
-                            "allowed"
+                            'allowed'
                             if a.supervision_setting.always_allowed_app_info
-                            else "unmanaged"
+                            else 'unmanaged'
                         )
                     ),
-                    "state_label": "Blocked"
+                    'state_label': 'Blocked'
                     if a.supervision_setting.hidden
                     else (
-                        f"Limited {a.supervision_setting.usage_limit.daily_usage_limit_mins} min"
+                        f'Limited {a.supervision_setting.usage_limit.daily_usage_limit_mins} min'
                         if a.supervision_setting.usage_limit
                         else (
-                            "Always allowed"
+                            'Always allowed'
                             if a.supervision_setting.always_allowed_app_info
-                            else "Unmanaged"
+                            else 'Unmanaged'
                         )
                     ),
                 }
                 for a in usage.apps
             ],
-            key=lambda x: x["title"].lower(),
+            key=lambda x: x['title'].lower(),
         )
         total_pages = max(1, (len(all_apps) + _PAGE_SIZE - 1) // _PAGE_SIZE)
         page = max(1, min(page, total_pages))
@@ -92,11 +92,11 @@ class AppsGroup(app_commands.Group, name="apps", description="Manage supervised 
         embed = apps_list_embed(page_apps, child_name, page, total_pages)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @app_commands.command(name="limit", description="Set a daily time limit for an app")
+    @app_commands.command(name='limit', description='Set a daily time limit for an app')
     @app_commands.describe(
-        package="App package name (e.g. com.zhiliaoapp.musically)",
-        minutes="Daily limit in minutes",
-        child="Which child",
+        package='App package name (e.g. com.zhiliaoapp.musically)',
+        minutes='Daily limit in minutes',
+        child='Which child',
     )
     @app_commands.autocomplete(child=child_autocomplete)
     async def limit(
@@ -111,32 +111,32 @@ class AppsGroup(app_commands.Group, name="apps", description="Manage supervised 
 
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         resolved = await resolve_child(self._svc, child)
         if resolved is None:
             await interaction.response.send_message(
-                "Please specify a child with the `child` parameter.", ephemeral=True
+                'Please specify a child with the `child` parameter.', ephemeral=True
             )
             return
         child_id, child_name = resolved
         await self._svc.set_app_limit(package, minutes, child_id=child_id)
         await self._notifier.notify_change(
-            "set_limit",
+            'set_limit',
             child_name,
-            f"{package} ({minutes} min)",
+            f'{package} ({minutes} min)',
             interaction.user.display_name,
         )
         view = AppLimitView(self._svc, self._notifier, package, child_id, child_name)
         await interaction.response.send_message(
-            f"⏱️ Limit set: **{minutes} min/day** for `{package}` ({child_name}).",
+            f'⏱️ Limit set: **{minutes} min/day** for `{package}` ({child_name}).',
             view=view,
             ephemeral=True,
         )
 
-    @app_commands.command(name="block", description="Block an app for a child")
-    @app_commands.describe(package="App package name", child="Which child")
+    @app_commands.command(name='block', description='Block an app for a child')
+    @app_commands.describe(package='App package name', child='Which child')
     @app_commands.autocomplete(child=child_autocomplete)
     async def block(
         self, interaction: discord.Interaction, package: str, child: str | None = None
@@ -146,29 +146,29 @@ class AppsGroup(app_commands.Group, name="apps", description="Manage supervised 
 
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         resolved = await resolve_child(self._svc, child)
         if resolved is None:
             await interaction.response.send_message(
-                "Please specify a child with the `child` parameter.", ephemeral=True
+                'Please specify a child with the `child` parameter.', ephemeral=True
             )
             return
         child_id, child_name = resolved
         await self._svc.block_app(package, child_id=child_id)
         await self._notifier.notify_change(
-            "block", child_name, package, interaction.user.display_name
+            'block', child_name, package, interaction.user.display_name
         )
         view = AppBlockView(self._svc, self._notifier, package, child_id, child_name)
         await interaction.response.send_message(
-            f"\U0001f512 `{package}` blocked for {child_name}.",
+            f'\U0001f512 `{package}` blocked for {child_name}.',
             view=view,
             ephemeral=True,
         )
 
-    @app_commands.command(name="allow", description="Always allow an app for a child")
-    @app_commands.describe(package="App package name", child="Which child")
+    @app_commands.command(name='allow', description='Always allow an app for a child')
+    @app_commands.describe(package='App package name', child='Which child')
     @app_commands.autocomplete(child=child_autocomplete)
     async def allow(
         self, interaction: discord.Interaction, package: str, child: str | None = None
@@ -178,23 +178,23 @@ class AppsGroup(app_commands.Group, name="apps", description="Manage supervised 
 
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         resolved = await resolve_child(self._svc, child)
         if resolved is None:
             await interaction.response.send_message(
-                "Please specify a child with the `child` parameter.", ephemeral=True
+                'Please specify a child with the `child` parameter.', ephemeral=True
             )
             return
         child_id, child_name = resolved
         await self._svc.always_allow_app(package, child_id=child_id)
         await self._notifier.notify_change(
-            "always_allow", child_name, package, interaction.user.display_name
+            'always_allow', child_name, package, interaction.user.display_name
         )
         view = AppAllowView(self._svc, self._notifier, package, child_id, child_name)
         await interaction.response.send_message(
-            f"✅ `{package}` always allowed for {child_name}.",
+            f'✅ `{package}` always allowed for {child_name}.',
             view=view,
             ephemeral=True,
         )

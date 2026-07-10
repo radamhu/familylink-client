@@ -16,8 +16,8 @@ from familylink_server.db import get_session
 from familylink_server.db.models import LinuxMachine, LinuxUsageSnapshot
 from familylink_server.services.family_link import FamilyLinkService, get_service
 
-router = APIRouter(tags=["dashboard"])
-templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
+router = APIRouter(tags=['dashboard'])
+templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / 'templates'))
 
 
 async def _get_child_data(
@@ -44,13 +44,13 @@ async def _get_child_data(
     top5 = sorted(top_apps.items(), key=lambda x: x[1], reverse=True)[:5]
     title_by_pkg = {a.package_name: a.title for a in usage.apps}
     top5_named = [
-        {"title": title_by_pkg.get(pkg, pkg), "seconds": secs} for pkg, secs in top5
+        {'title': title_by_pkg.get(pkg, pkg), 'seconds': secs} for pkg, secs in top5
     ]
     devices = [
         {
-            "device_id": d.device_id,
-            "friendly_name": d.display_info.friendly_name,
-            "is_locked": False,
+            'device_id': d.device_id,
+            'friendly_name': d.display_info.friendly_name,
+            'is_locked': False,
         }
         for d in usage.device_info
     ]
@@ -76,34 +76,34 @@ async def _get_child_data(
             m.daily_limit_mins + bonus_mins if m.daily_limit_mins is not None else None
         )
         if snap and snap.poweroff_at:
-            lm_status = "powered_off"
+            lm_status = 'powered_off'
         elif snap and snap.locked_at:
-            lm_status = "locked"
+            lm_status = 'locked'
         else:
-            lm_status = "active"
+            lm_status = 'active'
         linux_rows.append(
             {
-                "friendly_name": m.friendly_name,
-                "active_mins": active_mins,
-                "effective_limit_mins": effective_limit_mins,
-                "status": lm_status,
+                'friendly_name': m.friendly_name,
+                'active_mins': active_mins,
+                'effective_limit_mins': effective_limit_mins,
+                'status': lm_status,
             }
         )
-    is_locked = any(d["is_locked"] for d in devices)
+    is_locked = any(d['is_locked'] for d in devices)
     return {
-        "display_name": child.profile.display_name,
-        "user_id": child.user_id,
-        "color": CHILD_COLORS[idx % len(CHILD_COLORS)],
-        "total_seconds": total_seconds,
-        "top5": top5_named,
-        "devices": devices,
-        "linux_machines": linux_rows,
-        "is_locked": is_locked,
-        "device_count": len(devices),
+        'display_name': child.profile.display_name,
+        'user_id': child.user_id,
+        'color': CHILD_COLORS[idx % len(CHILD_COLORS)],
+        'total_seconds': total_seconds,
+        'top5': top5_named,
+        'devices': devices,
+        'linux_machines': linux_rows,
+        'is_locked': is_locked,
+        'device_count': len(devices),
     }
 
 
-@router.get("/", response_class=HTMLResponse)
+@router.get('/', response_class=HTMLResponse)
 async def dashboard(
     request: Request,
     _email: str = require_user,  # type: ignore[assignment]
@@ -123,12 +123,12 @@ async def dashboard(
     ]
     return templates.TemplateResponse(
         request,
-        "dashboard.html",
-        {"children": child_data, "auth_failed": svc.auth_failed},
+        'dashboard.html',
+        {'children': child_data, 'auth_failed': svc.auth_failed},
     )
 
 
-@router.get("/children/{child_id}/detail", response_class=HTMLResponse)
+@router.get('/children/{child_id}/detail', response_class=HTMLResponse)
 async def child_detail(
     child_id: str,
     request: Request,
@@ -146,16 +146,16 @@ async def child_detail(
     idx = next((i for i, m in enumerate(supervised) if m.user_id == child_id), 0)
     child = next((m for m in supervised if m.user_id == child_id), None)
     if child is None:
-        return HTMLResponse("", status_code=404)
+        return HTMLResponse('', status_code=404)
     child_data = await _get_child_data(child, idx, svc, session)
     return templates.TemplateResponse(
         request,
-        "partials/child_expanded.html",
-        {"child": child_data},
+        'partials/child_expanded.html',
+        {'child': child_data},
     )
 
 
-@router.get("/children/{child_id}/collapse", response_class=HTMLResponse)
+@router.get('/children/{child_id}/collapse', response_class=HTMLResponse)
 async def child_collapse(
     child_id: str,
     request: Request,
@@ -173,10 +173,10 @@ async def child_collapse(
     idx = next((i for i, m in enumerate(supervised) if m.user_id == child_id), 0)
     child = next((m for m in supervised if m.user_id == child_id), None)
     if child is None:
-        return HTMLResponse("", status_code=404)
+        return HTMLResponse('', status_code=404)
     child_data = await _get_child_data(child, idx, svc, session)
     return templates.TemplateResponse(
         request,
-        "partials/child_strip.html",
-        {"child": child_data},
+        'partials/child_strip.html',
+        {'child': child_data},
     )

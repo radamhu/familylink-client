@@ -9,10 +9,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from familylink_server.auth.oauth import require_user
 from familylink_server.db import UsageSnapshot, get_session
 
-router = APIRouter(prefix="/api", tags=["api"])
+router = APIRouter(prefix='/api', tags=['api'])
 
 
-@router.get("/usage/today")
+@router.get('/usage/today')
 async def get_usage_today(
     _email: str = require_user,  # type: ignore[assignment]
     session: AsyncSession = Depends(get_session),  # noqa: B008
@@ -22,7 +22,7 @@ async def get_usage_today(
     q = (
         select(
             UsageSnapshot.app_package,
-            func.sum(UsageSnapshot.usage_seconds).label("total"),
+            func.sum(UsageSnapshot.usage_seconds).label('total'),
         )
         .where(UsageSnapshot.date == today)
         .group_by(UsageSnapshot.app_package)
@@ -30,4 +30,4 @@ async def get_usage_today(
         .limit(10)
     )
     rows = (await session.execute(q)).all()
-    return [{"package": r.app_package, "seconds": r.total} for r in rows]
+    return [{'package': r.app_package, 'seconds': r.total} for r in rows]

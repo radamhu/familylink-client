@@ -33,12 +33,12 @@ class FamilyLinkService:
 
     def reinit_with_cookies(self, sapisid: str) -> None:
         """Hot-swap the FamilyLink client with a fresh SAPISID. No restart needed."""
-        os.environ["FAMILYLINK_SAPISID"] = sapisid
+        os.environ['FAMILYLINK_SAPISID'] = sapisid
         self._client = FamilyLink()
         self._members_cache = None
         self._usage_cache.clear()
         self._auth_failed = False
-        logger.info("FamilyLink client reinitialized with fresh SAPISID")
+        logger.info('FamilyLink client reinitialized with fresh SAPISID')
 
     def reinit_with_cookies_b64(self, cookies_b64: str) -> None:
         """Hot-swap the FamilyLink client with a full fresh cookie jar."""
@@ -56,7 +56,7 @@ class FamilyLinkService:
     async def get_members(self) -> MembersResponse:
         """Return family members, using the cache when still fresh."""
         members_cache: tuple[MembersResponse, datetime] | None = getattr(
-            self, "_members_cache", None
+            self, '_members_cache', None
         )
         if members_cache and self._is_fresh(members_cache[1]):
             return members_cache[0]
@@ -66,7 +66,7 @@ class FamilyLinkService:
 
     async def get_apps_and_usage(self, child_id: str) -> AppUsage:
         """Return app usage for a child, using the cache when still fresh."""
-        if not hasattr(self, "_usage_cache"):
+        if not hasattr(self, '_usage_cache'):
             self._usage_cache: dict[str, tuple[AppUsage, datetime]] = {}
         cached = self._usage_cache.get(child_id)
         if cached and self._is_fresh(cached[1]):
@@ -132,6 +132,6 @@ def get_service() -> FamilyLinkService:
     """FastAPI dependency — returns the singleton."""
     if _service is None:
         raise RuntimeError(
-            "FamilyLinkService not initialised — call init_service() in lifespan"
+            'FamilyLinkService not initialised — call init_service() in lifespan'
         )
     return _service

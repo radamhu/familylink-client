@@ -12,12 +12,12 @@ from familylink_server.auth.oauth import require_user
 from familylink_server.db import AuditLog, get_session
 from familylink_server.services.family_link import FamilyLinkService, get_service
 
-router = APIRouter(tags=["history"])
-templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
+router = APIRouter(tags=['history'])
+templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / 'templates'))
 _PAGE_SIZE = 25
 
 
-@router.get("/history", response_class=HTMLResponse)
+@router.get('/history', response_class=HTMLResponse)
 async def history_page(
     request: Request,
     page: int = 1,
@@ -36,11 +36,11 @@ async def history_page(
     logs = (await session.execute(q)).scalars().all()
     return templates.TemplateResponse(
         request,
-        "history.html",
+        'history.html',
         {
-            "logs": logs,
-            "page": page,
-            "has_more": len(logs) == _PAGE_SIZE,
-            "auth_failed": svc.auth_failed,
+            'logs': logs,
+            'page': page,
+            'has_more': len(logs) == _PAGE_SIZE,
+            'auth_failed': svc.auth_failed,
         },
     )

@@ -25,68 +25,68 @@ class SessionExpiredError(RuntimeError):
 
 def _generate_sapisidhash(sapisid: str, origin: str) -> str:
     ts = int(time.time() * 1000)  # milliseconds
-    digest = hashlib.sha1(f"{ts} {sapisid} {origin}".encode()).hexdigest()
-    return f"{ts}_{digest}"
+    digest = hashlib.sha1(f'{ts} {sapisid} {origin}'.encode()).hexdigest()
+    return f'{ts}_{digest}'
 
 
 class FamilyLink:
     """Client to interact with Google Family Link."""
 
-    BASE_URL = "https://kidsmanagement-pa.clients6.google.com/kidsmanagement/v1"
-    ORIGIN = "https://familylink.google.com"
+    BASE_URL = 'https://kidsmanagement-pa.clients6.google.com/kidsmanagement/v1'
+    ORIGIN = 'https://familylink.google.com'
 
     def __init__(
         self,
         account_id: str | None = None,
-        browser: str = "firefox",
+        browser: str = 'firefox',
         cookie_file_path: Path | None = None,
     ) -> None:
         self.account_id = account_id
         sapisid, cookies_jar = CookieResolver(browser, cookie_file_path).resolve()
         self._sapisid = sapisid
         self._headers = {
-            "User-Agent": "Mozilla/5.0",
-            "Origin": self.ORIGIN,
-            "Content-Type": "application/json+protobuf",
-            "X-Goog-Api-Key": "AIzaSyAQb1gupaJhY3CXQy2xmTwJMcjmot3M2hw",
+            'User-Agent': 'Mozilla/5.0',
+            'Origin': self.ORIGIN,
+            'Content-Type': 'application/json+protobuf',
+            'X-Goog-Api-Key': 'AIzaSyAQb1gupaJhY3CXQy2xmTwJMcjmot3M2hw',
         }
         self._cookies = cookies_jar
         # When only FAMILYLINK_SAPISID is set (no cookies file/B64), cookies_jar is None.
         # Google validates SAPISIDHASH against the SAPISID cookie in the same request,
         # so we must inject it even without a full jar.
         effective_cookies = (
-            cookies_jar if cookies_jar is not None else {"SAPISID": sapisid}
+            cookies_jar if cookies_jar is not None else {'SAPISID': sapisid}
         )
         self._session = httpx.Client(
             headers=self._headers,
             cookies=effective_cookies,
             timeout=30,
-            event_hooks={"request": [self._refresh_auth]},
+            event_hooks={'request': [self._refresh_auth]},
         )
 
     def _refresh_auth(self, request: httpx.Request) -> None:
-        request.headers["Authorization"] = (
-            f"SAPISIDHASH {_generate_sapisidhash(self._sapisid, self.ORIGIN)}"
+        request.headers['Authorization'] = (
+            f'SAPISIDHASH {_generate_sapisidhash(self._sapisid, self.ORIGIN)}'
         )
 
     # ── HTTP helpers ──────────────────────────────────────────────────────────
 
     def _get(self, path: str, params: list | dict | None = None) -> httpx.Response:
-        r = self._session.get(f"{self.BASE_URL}{path}", params=params)
+        r = self._session.get(f'{self.BASE_URL}{path}', params=params)
         if r.status_code in (401, 403):
             raise SessionExpiredError(
-                f"HTTP {r.status_code} — session expired. "
-                "Re-export: familylink export-cookies --base64"
+                f'HTTP {r.status_code} — session expired. '
+                'Re-export: familylink export-cookies --base64'
             )
         r.raise_for_status()
         return r
 
     def _post(self, path: str, content: str) -> httpx.Response:
-        r = self._session.post(f"{self.BASE_URL}{path}", content=content)
+        r = self._session.post(f'{self.BASE_URL}{path}', content=content)
         if r.status_code in (401, 403):
             raise SessionExpiredError(
-                f"HTTP {r.status_code} — session expired. "
-                "Re-export: familylink export-cookies --base64"
+                f'HTTP {r.status_code} — session expired. '
+                'Re-export: familylink export-cookies --base64'
             )
         r.raise_for_status()
         return r
@@ -100,13 +100,13 @@ class FamilyLink:
                 and mem.member_supervision_info.is_supervised_member
             ):
                 return mem.user_id
-        raise ValueError("No supervised account found; set account_id explicitly")
+        raise ValueError('No supervised account found; set account_id explicitly')
 
     # ── Read API ──────────────────────────────────────────────────────────────
 
     def get_members(self) -> MembersResponse:
         """List family members for the authenticated parent."""
-        data = self._get("/families/mine/members").json()
+        data = self._get('/families/mine/members').json()
         if isinstance(data, list):
             data = parsers.parse_members_response(data)
         return MembersResponse.model_validate(data)
@@ -114,33 +114,33 @@ class FamilyLink:
     def get_apps_and_usage(self, child_id: str) -> AppUsage:
         """Get apps and usage information for a child."""
         params = [
-            ("capabilities", "CAPABILITY_APP_USAGE_SESSION"),
-            ("capabilities", "CAPABILITY_SUPERVISION_CAPABILITIES"),
+            ('capabilities', 'CAPABILITY_APP_USAGE_SESSION'),
+            ('capabilities', 'CAPABILITY_SUPERVISION_CAPABILITIES'),
         ]
-        data = self._get(f"/people/{child_id}/appsandusage", params).json()
+        data = self._get(f'/people/{child_id}/appsandusage', params).json()
         if isinstance(data, list):
             data = parsers.parse_apps_and_usage(data)
         return AppUsage.model_validate(data)
 
     def get_time_limit(self, child_id: str) -> dict:
         """Get time limit for a child."""
-        return self._get(f"/people/{child_id}/timeLimit").json()
+        return self._get(f'/people/{child_id}/timeLimit').json()
 
     def get_applied_time_limits(self, child_id: str) -> dict:
         """Get applied time limits for a child."""
-        return self._get(f"/people/{child_id}/appliedTimeLimits").json()
+        return self._get(f'/people/{child_id}/appliedTimeLimits').json()
 
     def get_time_limits(self, account_id: str | None = None) -> dict:
         """Get applied time limits for a child (today)."""
         aid = account_id or self._ensure_account_id()
         r = self._session.get(
-            f"{self.BASE_URL}/people/{aid}/appliedTimeLimits",
-            headers={"Content-Type": "application/json"},
+            f'{self.BASE_URL}/people/{aid}/appliedTimeLimits',
+            headers={'Content-Type': 'application/json'},
         )
         if r.status_code in (401, 403):
             raise SessionExpiredError(
-                f"HTTP {r.status_code} — session expired. "
-                "Re-export: familylink export-cookies --base64"
+                f'HTTP {r.status_code} — session expired. '
+                'Re-export: familylink export-cookies --base64'
             )
         r.raise_for_status()
         return r.json()
@@ -149,15 +149,15 @@ class FamilyLink:
         """Print usage for all family members."""
         for m in self.get_members().members:
             p = m.profile
-            print(f"- {p.display_name} | {p.email} | user_id={m.user_id}")  # noqa: T201
+            print(f'- {p.display_name} | {p.email} | user_id={m.user_id}')  # noqa: T201
 
     # ── Device operations ─────────────────────────────────────────────────────
 
     def set_time_limits_device(
         self,
         account_id: str | None = None,
-        device_id: str = "",
-        period_id: str = "",
+        device_id: str = '',
+        period_id: str = '',
         time_in_minutes: int = 0,
     ) -> dict:
         """Set daily time limit (minutes) for a device."""
@@ -186,14 +186,14 @@ class FamilyLink:
             ]
         )
         return self._post(
-            f"/people/{aid}/timeLimitOverrides:batchCreate", payload
+            f'/people/{aid}/timeLimitOverrides:batchCreate', payload
         ).json()
 
     def disable_time_limits_device(
         self,
         account_id: str | None = None,
-        device_id: str = "",
-        period_id: str = "",
+        device_id: str = '',
+        period_id: str = '',
         time_in_minutes: int = 0,
     ) -> dict:
         """Disable all time limits for a device (today)."""
@@ -222,14 +222,14 @@ class FamilyLink:
             ]
         )
         return self._post(
-            f"/people/{aid}/timeLimitOverrides:batchCreate", payload
+            f'/people/{aid}/timeLimitOverrides:batchCreate', payload
         ).json()
 
     def enable_time_limits_device(
         self,
         account_id: str | None = None,
-        device_id: str = "",
-        period_id: str = "",
+        device_id: str = '',
+        period_id: str = '',
         time_in_minutes: int = 0,
     ) -> dict:
         """Re-enable previous time limits for a device."""
@@ -237,31 +237,31 @@ class FamilyLink:
             account_id, device_id, period_id, time_in_minutes
         )
 
-    def lock_device(self, account_id: str | None = None, device_id: str = "") -> dict:
+    def lock_device(self, account_id: str | None = None, device_id: str = '') -> dict:
         """Lock a device."""
         aid = account_id or self._ensure_account_id()
         return self._post(
-            f"/people/{aid}/timeLimitOverrides:batchCreate",
+            f'/people/{aid}/timeLimitOverrides:batchCreate',
             json.dumps([None, aid, [[None, None, 1, device_id]], [1]]),
         ).json()
 
-    def unlock_device(self, account_id: str | None = None, device_id: str = "") -> dict:
+    def unlock_device(self, account_id: str | None = None, device_id: str = '') -> dict:
         """Unlock a device."""
         aid = account_id or self._ensure_account_id()
         return self._post(
-            f"/people/{aid}/timeLimitOverrides:batchCreate",
+            f'/people/{aid}/timeLimitOverrides:batchCreate',
             json.dumps([None, aid, [[None, None, 4, device_id]], [1]]),
         ).json()
 
     def enable_downtime_device(
         self,
         account_id: str | None = None,
-        device_id: str = "",
+        device_id: str = '',
         start_hour: int = 0,
         start_minute: int = 0,
         end_hour: int = 0,
         end_minute: int = 0,
-        period_id: str = "",
+        period_id: str = '',
     ) -> dict:
         """Enable downtime for a device (today)."""
         aid = account_id or self._ensure_account_id()
@@ -295,18 +295,18 @@ class FamilyLink:
             ]
         )
         return self._post(
-            f"/people/{aid}/timeLimitOverrides:batchCreate", payload
+            f'/people/{aid}/timeLimitOverrides:batchCreate', payload
         ).json()
 
     def disable_downtime_device(
         self,
         account_id: str | None = None,
-        device_id: str = "",
+        device_id: str = '',
         start_hour: int = 0,
         start_minute: int = 0,
         end_hour: int = 0,
         end_minute: int = 0,
-        period_id: str = "",
+        period_id: str = '',
     ) -> dict:
         """Disable downtime for a device (today)."""
         aid = account_id or self._ensure_account_id()
@@ -340,7 +340,7 @@ class FamilyLink:
             ]
         )
         return self._post(
-            f"/people/{aid}/timeLimitOverrides:batchCreate", payload
+            f'/people/{aid}/timeLimitOverrides:batchCreate', payload
         ).json()
 
     # ── App supervision ───────────────────────────────────────────────────────────
@@ -355,7 +355,7 @@ class FamilyLink:
         aid = child_id or self._ensure_account_id()
         data = [[package_name], None, [minutes, 1]]
         return self._post(
-            f"/people/{aid}/apps:updateRestrictions", json.dumps([aid, [data]])
+            f'/people/{aid}/apps:updateRestrictions', json.dumps([aid, [data]])
         ).json()
 
     def block_app(self, package_name: str, child_id: str | None = None) -> dict:
@@ -363,7 +363,7 @@ class FamilyLink:
         aid = child_id or self._ensure_account_id()
         data = [[package_name], [1]]
         return self._post(
-            f"/people/{aid}/apps:updateRestrictions", json.dumps([aid, [data]])
+            f'/people/{aid}/apps:updateRestrictions', json.dumps([aid, [data]])
         ).json()
 
     def always_allow_app(self, package_name: str, child_id: str | None = None) -> dict:
@@ -371,7 +371,7 @@ class FamilyLink:
         aid = child_id or self._ensure_account_id()
         data = [[package_name], None, None, [1]]
         return self._post(
-            f"/people/{aid}/apps:updateRestrictions", json.dumps([aid, [data]])
+            f'/people/{aid}/apps:updateRestrictions', json.dumps([aid, [data]])
         ).json()
 
     def remove_app_limit(self, package_name: str, child_id: str | None = None) -> dict:
@@ -379,5 +379,5 @@ class FamilyLink:
         aid = child_id or self._ensure_account_id()
         data = [[package_name], [1]]
         return self._post(
-            f"/people/{aid}/apps:updateRestrictions", json.dumps([aid, [data]])
+            f'/people/{aid}/apps:updateRestrictions', json.dumps([aid, [data]])
         ).json()

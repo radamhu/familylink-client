@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
 
-class LinuxGroup(app_commands.Group, name="linux", description="Manage Linux machines"):
+class LinuxGroup(app_commands.Group, name='linux', description='Manage Linux machines'):
     """Slash command group: /linux bonus."""
 
     def __init__(
@@ -32,14 +32,14 @@ class LinuxGroup(app_commands.Group, name="linux", description="Manage Linux mac
         self._make_session = make_session
 
     @app_commands.command(
-        name="bonus", description="Grant extra screen time to a Linux machine"
+        name='bonus', description='Grant extra screen time to a Linux machine'
     )
-    @app_commands.describe(machine="Machine name", minutes="Extra minutes to grant")
+    @app_commands.describe(machine='Machine name', minutes='Extra minutes to grant')
     @app_commands.choices(
         minutes=[
-            app_commands.Choice(name="+15 min", value=15),
-            app_commands.Choice(name="+30 min", value=30),
-            app_commands.Choice(name="+60 min", value=60),
+            app_commands.Choice(name='+15 min', value=15),
+            app_commands.Choice(name='+30 min', value=30),
+            app_commands.Choice(name='+60 min', value=60),
         ]
     )
     async def bonus(
@@ -51,14 +51,14 @@ class LinuxGroup(app_commands.Group, name="linux", description="Manage Linux mac
         """Grant bonus minutes to a machine, unlocking if currently locked."""
         if not require_discord_role(interaction):
             await interaction.response.send_message(
-                "Insufficient permissions.", ephemeral=True
+                'Insufficient permissions.', ephemeral=True
             )
             return
         try:
             machine_id = int(machine)
         except ValueError:
             await interaction.response.send_message(
-                "Invalid machine selection.", ephemeral=True
+                'Invalid machine selection.', ephemeral=True
             )
             return
 
@@ -66,7 +66,7 @@ class LinuxGroup(app_commands.Group, name="linux", description="Manage Linux mac
             db_machine = await session.get(LinuxMachine, machine_id)
             if db_machine is None:
                 await interaction.response.send_message(
-                    "Machine not found.", ephemeral=True
+                    'Machine not found.', ephemeral=True
                 )
                 return
 
@@ -111,7 +111,7 @@ class LinuxGroup(app_commands.Group, name="linux", description="Manage Linux mac
             session.add(
                 AuditLog(
                     child_id=db_machine.child_id,
-                    action="bonus_linux",
+                    action='bonus_linux',
                     target=db_machine.friendly_name,
                     new_value=str(minutes),
                     occurred_at=datetime.now(UTC),
@@ -119,12 +119,12 @@ class LinuxGroup(app_commands.Group, name="linux", description="Manage Linux mac
             )
             await session.commit()
 
-        msg = f"⏰ +{minutes} min granted for **{db_machine.friendly_name}**."
+        msg = f'⏰ +{minutes} min granted for **{db_machine.friendly_name}**.'
         if unlocked:
-            msg += " Machine unlocked."
+            msg += ' Machine unlocked.'
         await interaction.response.send_message(msg, ephemeral=True)
 
-    @bonus.autocomplete("machine")
+    @bonus.autocomplete('machine')
     async def machine_autocomplete(
         self,
         interaction: discord.Interaction,

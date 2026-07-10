@@ -3,10 +3,10 @@
 from unittest.mock import AsyncMock, MagicMock, patch
 
 _LOCK_CMD = (
-    "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus "
-    "dbus-send --session --type=method_call "
-    "--dest=org.freedesktop.ScreenSaver /ScreenSaver "
-    "org.freedesktop.ScreenSaver.Lock"
+    'DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus '
+    'dbus-send --session --type=method_call '
+    '--dest=org.freedesktop.ScreenSaver /ScreenSaver '
+    'org.freedesktop.ScreenSaver.Lock'
 )
 _CHECK_CMD = "loginctl list-sessions --no-pager | grep -q ' seat'"
 
@@ -29,15 +29,15 @@ async def test_check_session_returns_true_when_seat_session_active():
     mock_conn, mock_cm = _make_ssh_mock(exit_status=0)
     with (
         patch(
-            "familylink_server.services.linux_ssh.asyncssh.import_private_key",
+            'familylink_server.services.linux_ssh.asyncssh.import_private_key',
             return_value=MagicMock(),
         ),
         patch(
-            "familylink_server.services.linux_ssh.asyncssh.connect",
+            'familylink_server.services.linux_ssh.asyncssh.connect',
             return_value=mock_cm,
         ),
     ):
-        result = await check_session("host", 22, "user", "fake-pem")
+        result = await check_session('host', 22, 'user', 'fake-pem')
     assert result is True
     mock_conn.run.assert_awaited_once_with(_CHECK_CMD, check=False)
 
@@ -49,15 +49,15 @@ async def test_check_session_returns_false_when_no_seat_session():
     mock_conn, mock_cm = _make_ssh_mock(exit_status=1)
     with (
         patch(
-            "familylink_server.services.linux_ssh.asyncssh.import_private_key",
+            'familylink_server.services.linux_ssh.asyncssh.import_private_key',
             return_value=MagicMock(),
         ),
         patch(
-            "familylink_server.services.linux_ssh.asyncssh.connect",
+            'familylink_server.services.linux_ssh.asyncssh.connect',
             return_value=mock_cm,
         ),
     ):
-        result = await check_session("host", 22, "user", "fake-pem")
+        result = await check_session('host', 22, 'user', 'fake-pem')
     assert result is False
     mock_conn.run.assert_awaited_once_with(_CHECK_CMD, check=False)
 
@@ -69,15 +69,15 @@ async def test_lock_session_runs_dbus_send():
     mock_conn, mock_cm = _make_ssh_mock()
     with (
         patch(
-            "familylink_server.services.linux_ssh.asyncssh.import_private_key",
+            'familylink_server.services.linux_ssh.asyncssh.import_private_key',
             return_value=MagicMock(),
         ),
         patch(
-            "familylink_server.services.linux_ssh.asyncssh.connect",
+            'familylink_server.services.linux_ssh.asyncssh.connect',
             return_value=mock_cm,
         ),
     ):
-        await lock_session("host", 22, "user", "fake-pem")
+        await lock_session('host', 22, 'user', 'fake-pem')
     mock_conn.run.assert_awaited_once_with(_LOCK_CMD, check=True)
 
 
@@ -88,16 +88,16 @@ async def test_poweroff_machine_runs_sudo_systemctl():
     mock_conn, mock_cm = _make_ssh_mock()
     with (
         patch(
-            "familylink_server.services.linux_ssh.asyncssh.import_private_key",
+            'familylink_server.services.linux_ssh.asyncssh.import_private_key',
             return_value=MagicMock(),
         ),
         patch(
-            "familylink_server.services.linux_ssh.asyncssh.connect",
+            'familylink_server.services.linux_ssh.asyncssh.connect',
             return_value=mock_cm,
         ),
     ):
-        await poweroff_machine("host", 22, "user", "fake-pem")
-    mock_conn.run.assert_awaited_once_with("sudo systemctl poweroff", check=False)
+        await poweroff_machine('host', 22, 'user', 'fake-pem')
+    mock_conn.run.assert_awaited_once_with('sudo systemctl poweroff', check=False)
 
 
 async def test_unlock_session_kills_kscreenlocker():
@@ -107,15 +107,15 @@ async def test_unlock_session_kills_kscreenlocker():
     mock_conn, mock_cm = _make_ssh_mock()
     with (
         patch(
-            "familylink_server.services.linux_ssh.asyncssh.import_private_key",
+            'familylink_server.services.linux_ssh.asyncssh.import_private_key',
             return_value=MagicMock(),
         ),
         patch(
-            "familylink_server.services.linux_ssh.asyncssh.connect",
+            'familylink_server.services.linux_ssh.asyncssh.connect',
             return_value=mock_cm,
         ),
     ):
-        await unlock_session("host", 22, "user", "fake-pem")
+        await unlock_session('host', 22, 'user', 'fake-pem')
     mock_conn.run.assert_awaited_once_with(
-        "pkill -f kscreenlocker_greet || true", check=False
+        'pkill -f kscreenlocker_greet || true', check=False
     )

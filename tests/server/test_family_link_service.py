@@ -38,21 +38,21 @@ async def test_get_members_delegates_to_client(service, mock_client):
 
 async def test_get_apps_and_usage_delegates_to_client(service, mock_client):
     """get_apps_and_usage should forward child_id to the client."""
-    await service.get_apps_and_usage("child1")
-    mock_client.get_apps_and_usage.assert_called_once_with("child1")
+    await service.get_apps_and_usage('child1')
+    mock_client.get_apps_and_usage.assert_called_once_with('child1')
 
 
 async def test_lock_device_delegates_to_client(service, mock_client):
     """lock_device should call the client with the correct keyword arguments."""
-    await service.lock_device("dev1", child_id="child1")
+    await service.lock_device('dev1', child_id='child1')
     mock_client.lock_device.assert_called_once_with(
-        device_id="dev1", account_id="child1"
+        device_id='dev1', account_id='child1'
     )
 
 
 async def test_unlock_device_delegates_to_client(service, mock_client):
     """unlock_device should call the client with the correct keyword arguments."""
-    await service.unlock_device("dev1", child_id="child1")
+    await service.unlock_device('dev1', child_id='child1')
     mock_client.unlock_device.assert_called_once_with(
-        device_id="dev1", account_id="child1"
+        device_id='dev1', account_id='child1'
     )

@@ -11,8 +11,8 @@ from familylink_server.services.family_link import get_service
 
 
 def _session_cookie():
-    s = URLSafeSerializer(settings.secret_key, salt="fl-session")
-    return s.dumps({"email": settings.familylink_google_email})
+    s = URLSafeSerializer(settings.secret_key, salt='fl-session')
+    return s.dumps({'email': settings.familylink_google_email})
 
 
 @pytest.fixture
@@ -24,8 +24,8 @@ def client():
         return_value=MagicMock(
             members=[
                 MagicMock(
-                    user_id="child1",
-                    profile=MagicMock(display_name="Alice", email="alice@example.com"),
+                    user_id='child1',
+                    profile=MagicMock(display_name='Alice', email='alice@example.com'),
                     member_supervision_info=MagicMock(is_supervised_member=True),
                 )
             ]
@@ -33,8 +33,8 @@ def client():
     )
 
     with (
-        patch("familylink_server.main.init_service", return_value=mock_svc),
-        patch("familylink_server.services.family_link._service", mock_svc),
+        patch('familylink_server.main.init_service', return_value=mock_svc),
+        patch('familylink_server.services.family_link._service', mock_svc),
     ):
         from familylink_server.main import app
 
@@ -49,7 +49,7 @@ def client():
 
 def test_get_members_returns_200(client):
     """GET /api/members with a valid session cookie returns 200 and a list."""
-    resp = client.get("/api/members", cookies={"fl_session": _session_cookie()})
+    resp = client.get('/api/members', cookies={'fl_session': _session_cookie()})
     assert resp.status_code == 200
     data = resp.json()
     assert isinstance(data, list)
@@ -57,5 +57,5 @@ def test_get_members_returns_200(client):
 
 def test_get_members_rejects_no_session(client):
     """GET /api/members without a session cookie returns 401."""
-    resp = client.get("/api/members")
+    resp = client.get('/api/members')
     assert resp.status_code == 401

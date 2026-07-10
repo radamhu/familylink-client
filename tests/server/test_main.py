@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 @pytest.fixture
 def mock_init_service():
     """Mock init_service to avoid actual FamilyLink instantiation."""
-    with patch("familylink_server.main.init_service"):
+    with patch('familylink_server.main.init_service'):
         yield
 
 
@@ -19,7 +19,7 @@ def test_docs_endpoint_exists(mock_init_service):
     from familylink_server.main import app
 
     client = TestClient(app)
-    resp = client.get("/docs")
+    resp = client.get('/docs')
     assert resp.status_code == 200
 
 
@@ -28,9 +28,9 @@ def test_openapi_json_exists(mock_init_service):
     from familylink_server.main import app
 
     client = TestClient(app)
-    resp = client.get("/openapi.json")
+    resp = client.get('/openapi.json')
     assert resp.status_code == 200
-    assert "familylink" in resp.json()["info"]["title"].lower()
+    assert 'familylink' in resp.json()['info']['title'].lower()
 
 
 def test_auth_login_route_exists(mock_init_service):
@@ -38,15 +38,15 @@ def test_auth_login_route_exists(mock_init_service):
     from familylink_server.main import app
 
     mock_redirect = RedirectResponse(
-        url="https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=test",
+        url='https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=test',
         status_code=302,
     )
     with patch(
-        "familylink_server.auth.oauth._oauth.google.authorize_redirect",
+        'familylink_server.auth.oauth._oauth.google.authorize_redirect',
         new=AsyncMock(return_value=mock_redirect),
     ):
         client = TestClient(app)
-        resp = client.get("/auth/login", follow_redirects=False)
+        resp = client.get('/auth/login', follow_redirects=False)
     assert resp.status_code in (302, 307)
 
 
@@ -67,12 +67,12 @@ async def test_bot_not_started_when_discord_disabled():
         """Coroutine that exits immediately (stands in for health_check_loop)."""
 
     with (
-        patch("familylink_server.main.init_service"),
-        patch("familylink_server.main.get_service"),
-        patch("familylink_server.main.settings") as mock_settings,
-        patch("familylink_server.main.poller_loop", side_effect=_fake_poller),
+        patch('familylink_server.main.init_service'),
+        patch('familylink_server.main.get_service'),
+        patch('familylink_server.main.settings') as mock_settings,
+        patch('familylink_server.main.poller_loop', side_effect=_fake_poller),
         patch(
-            "familylink_server.main.health_check_loop", side_effect=_fake_health_check
+            'familylink_server.main.health_check_loop', side_effect=_fake_health_check
         ),
     ):
         mock_settings.discord_enabled = False
@@ -86,8 +86,8 @@ def test_linux_machines_route_is_registered():
     """GET /linux-machines is registered in the app."""
     from familylink_server.main import app
 
-    paths = list(app.openapi().get("paths", {}).keys())
-    assert "/linux-machines" in paths
+    paths = list(app.openapi().get('paths', {}).keys())
+    assert '/linux-machines' in paths
 
 
 def test_poller_loop_accepts_notifier_kwarg():
@@ -97,4 +97,4 @@ def test_poller_loop_accepts_notifier_kwarg():
     from familylink_server.services.linux_poller import poller_loop
 
     sig = inspect.signature(poller_loop)
-    assert "notifier" in sig.parameters
+    assert 'notifier' in sig.parameters

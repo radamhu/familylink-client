@@ -2,20 +2,20 @@
 
 import os
 
-os.environ.setdefault("DATABASE_URL", "postgresql+asyncpg://localhost/familylink_test")
-os.environ.setdefault("SECRET_KEY", "test-secret-key-32-bytes-exactly!")
-os.environ.setdefault("GOOGLE_CLIENT_ID", "test-client-id")
-os.environ.setdefault("GOOGLE_CLIENT_SECRET", "test-client-secret")
-os.environ.setdefault("FAMILYLINK_GOOGLE_EMAIL", "parent@gmail.com")
-os.environ.setdefault("FAMILYLINK_COOKIES_B64", "dGVzdA==")
-os.environ.setdefault("DISCORD_ALLOWED_ROLE", "Parent")
+os.environ.setdefault('DATABASE_URL', 'postgresql+asyncpg://localhost/familylink_test')
+os.environ.setdefault('SECRET_KEY', 'test-secret-key-32-bytes-exactly!')
+os.environ.setdefault('GOOGLE_CLIENT_ID', 'test-client-id')
+os.environ.setdefault('GOOGLE_CLIENT_SECRET', 'test-client-secret')
+os.environ.setdefault('FAMILYLINK_GOOGLE_EMAIL', 'parent@gmail.com')
+os.environ.setdefault('FAMILYLINK_COOKIES_B64', 'dGVzdA==')
+os.environ.setdefault('DISCORD_ALLOWED_ROLE', 'Parent')
 
 from unittest.mock import AsyncMock, MagicMock
 
 import discord
 
 
-def _make_interaction(role_names=("Parent",)):
+def _make_interaction(role_names=('Parent',)):
     interaction = MagicMock(spec=discord.Interaction)
     interaction.guild = MagicMock()
     member = MagicMock(spec=discord.Member)
@@ -34,12 +34,12 @@ async def test_app_block_view_unblock_calls_service():
 
     svc = AsyncMock()
     notifier = AsyncMock()
-    view = AppBlockView(svc, notifier, "com.tiktok", "uid-1", "Emma")
+    view = AppBlockView(svc, notifier, 'com.tiktok', 'uid-1', 'Emma')
 
     interaction = _make_interaction()
     await view._unblock(interaction, MagicMock())
 
-    svc.always_allow_app.assert_awaited_once_with("com.tiktok", child_id="uid-1")
+    svc.always_allow_app.assert_awaited_once_with('com.tiktok', child_id='uid-1')
     interaction.response.send_message.assert_awaited_once()
 
 
@@ -49,12 +49,12 @@ async def test_app_block_view_always_allow_calls_service():
 
     svc = AsyncMock()
     notifier = AsyncMock()
-    view = AppBlockView(svc, notifier, "com.tiktok", "uid-1", "Emma")
+    view = AppBlockView(svc, notifier, 'com.tiktok', 'uid-1', 'Emma')
 
     interaction = _make_interaction()
     await view._always_allow(interaction, MagicMock())
 
-    svc.always_allow_app.assert_awaited_once_with("com.tiktok", child_id="uid-1")
+    svc.always_allow_app.assert_awaited_once_with('com.tiktok', child_id='uid-1')
 
 
 async def test_device_lock_view_unlock_calls_service():
@@ -63,12 +63,12 @@ async def test_device_lock_view_unlock_calls_service():
 
     svc = AsyncMock()
     notifier = AsyncMock()
-    view = DeviceLockView(svc, notifier, "d-1", "uid-1", "Emma")
+    view = DeviceLockView(svc, notifier, 'd-1', 'uid-1', 'Emma')
 
     interaction = _make_interaction()
     await view._unlock(interaction, MagicMock())
 
-    svc.unlock_device.assert_awaited_once_with("d-1", child_id="uid-1")
+    svc.unlock_device.assert_awaited_once_with('d-1', child_id='uid-1')
 
 
 async def test_summary_view_lock_device_calls_service():
@@ -77,12 +77,12 @@ async def test_summary_view_lock_device_calls_service():
 
     svc = AsyncMock()
     notifier = AsyncMock()
-    view = SummaryView(svc, notifier, "uid-1", "Emma", "d-1")
+    view = SummaryView(svc, notifier, 'uid-1', 'Emma', 'd-1')
 
     interaction = _make_interaction()
     await view._lock_device(interaction, MagicMock())
 
-    svc.lock_device.assert_awaited_once_with("d-1", child_id="uid-1")
+    svc.lock_device.assert_awaited_once_with('d-1', child_id='uid-1')
 
 
 async def test_app_block_view_unauthorized():
@@ -91,12 +91,12 @@ async def test_app_block_view_unauthorized():
 
     svc = AsyncMock()
     notifier = AsyncMock()
-    view = AppBlockView(svc, notifier, "com.tiktok", "uid-1", "Emma")
+    view = AppBlockView(svc, notifier, 'com.tiktok', 'uid-1', 'Emma')
 
-    interaction = _make_interaction(role_names=("Member",))
+    interaction = _make_interaction(role_names=('Member',))
     await view._unblock(interaction, MagicMock())
 
     svc.always_allow_app.assert_not_awaited()
     interaction.response.send_message.assert_awaited_once()
     msg = interaction.response.send_message.call_args.kwargs
-    assert msg.get("ephemeral") is True
+    assert msg.get('ephemeral') is True

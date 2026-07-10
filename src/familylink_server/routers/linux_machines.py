@@ -24,14 +24,14 @@ from familylink_server.services.linux_ssh import (
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(tags=["linux_machines"])
-templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / "templates"))
+router = APIRouter(tags=['linux_machines'])
+templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / 'templates'))
 
 
 async def _get_machine_or_404(machine_id: int, session: AsyncSession) -> LinuxMachine:
     machine = await session.get(LinuxMachine, machine_id)
     if machine is None:
-        raise HTTPException(status_code=404, detail="Machine not found")
+        raise HTTPException(status_code=404, detail='Machine not found')
     return machine
 
 
@@ -53,22 +53,22 @@ def _machine_context(
     active_mins = (snapshot.active_seconds // 60) if snapshot else 0
     bonus_mins = snapshot.bonus_mins if snapshot else 0
     if snapshot and snapshot.poweroff_at:
-        status = "powered_off"
+        status = 'powered_off'
     elif snapshot and snapshot.locked_at:
-        status = "locked"
+        status = 'locked'
     else:
-        status = "active"
+        status = 'active'
     effective_limit_mins = (
         machine.daily_limit_mins + bonus_mins
         if machine.daily_limit_mins is not None
         else None
     )
     return {
-        "machine": machine,
-        "active_mins": active_mins,
-        "bonus_mins": bonus_mins,
-        "effective_limit_mins": effective_limit_mins,
-        "status": status,
+        'machine': machine,
+        'active_mins': active_mins,
+        'bonus_mins': bonus_mins,
+        'effective_limit_mins': effective_limit_mins,
+        'status': status,
     }
 
 
@@ -77,7 +77,7 @@ async def _child_names(svc: FamilyLinkService) -> dict[str, str]:
     return {m.user_id: m.profile.display_name for m in members.members}
 
 
-@router.get("/linux-machines", response_class=HTMLResponse)
+@router.get('/linux-machines', response_class=HTMLResponse)
 async def linux_machines_page(
     request: Request,
     _email: str = require_user,  # type: ignore[assignment]
@@ -94,16 +94,16 @@ async def linux_machines_page(
     for m in machines:
         snapshot = await _today_snapshot(m.id, session)
         ctx = _machine_context(m, snapshot)
-        ctx["child_name"] = children.get(m.child_id, m.child_id)
+        ctx['child_name'] = children.get(m.child_id, m.child_id)
         rows.append(ctx)
     return templates.TemplateResponse(
         request,
-        "linux_machines.html",
-        {"machines": rows, "children": children, "auth_failed": svc.auth_failed},
+        'linux_machines.html',
+        {'machines': rows, 'children': children, 'auth_failed': svc.auth_failed},
     )
 
 
-@router.get("/linux-machines/new", response_class=HTMLResponse)
+@router.get('/linux-machines/new', response_class=HTMLResponse)
 async def new_machine_form(
     request: Request,
     _email: str = require_user,  # type: ignore[assignment]
@@ -113,12 +113,12 @@ async def new_machine_form(
     children = await _child_names(svc)
     return templates.TemplateResponse(
         request,
-        "linux_machine_form.html",
-        {"machine": None, "children": children, "auth_failed": svc.auth_failed},
+        'linux_machine_form.html',
+        {'machine': None, 'children': children, 'auth_failed': svc.auth_failed},
     )
 
 
-@router.post("/linux-machines")
+@router.post('/linux-machines')
 async def create_machine(
     friendly_name: str = Form(...),
     child_id: str = Form(...),
@@ -148,21 +148,21 @@ async def create_machine(
         )
     )
     await session.commit()
-    return RedirectResponse("/linux-machines", status_code=303)
+    return RedirectResponse('/linux-machines', status_code=303)
 
 
-@router.post("/linux-machines/generate-key")
+@router.post('/linux-machines/generate-key')
 async def generate_key_pair(
     _email: str = require_user,  # type: ignore[assignment]
 ) -> JSONResponse:
     """Generate an ed25519 SSH key pair and return both halves as strings."""
-    key = asyncssh.generate_private_key("ssh-ed25519")
-    private_openssh = key.export_private_key("openssh").decode()
-    public_openssh = key.export_public_key("openssh").decode().strip()
-    return JSONResponse({"private_key": private_openssh, "public_key": public_openssh})
+    key = asyncssh.generate_private_key('ssh-ed25519')
+    private_openssh = key.export_private_key('openssh').decode()
+    public_openssh = key.export_public_key('openssh').decode().strip()
+    return JSONResponse({'private_key': private_openssh, 'public_key': public_openssh})
 
 
-@router.get("/linux-machines/{machine_id}/edit", response_class=HTMLResponse)
+@router.get('/linux-machines/{machine_id}/edit', response_class=HTMLResponse)
 async def edit_machine_form(
     machine_id: int,
     request: Request,
@@ -175,12 +175,12 @@ async def edit_machine_form(
     children = await _child_names(svc)
     return templates.TemplateResponse(
         request,
-        "linux_machine_form.html",
-        {"machine": machine, "children": children, "auth_failed": svc.auth_failed},
+        'linux_machine_form.html',
+        {'machine': machine, 'children': children, 'auth_failed': svc.auth_failed},
     )
 
 
-@router.post("/linux-machines/{machine_id}/edit")
+@router.post('/linux-machines/{machine_id}/edit')
 async def update_machine(
     machine_id: int,
     friendly_name: str = Form(...),
@@ -188,7 +188,7 @@ async def update_machine(
     hostname: str = Form(...),
     ssh_port: int = Form(22),
     ssh_user: str = Form(...),
-    ssh_private_key: str = Form(""),
+    ssh_private_key: str = Form(''),
     daily_limit_mins: int | None = Form(None),
     grace_period_mins: int = Form(5),
     enabled: bool = Form(False),
@@ -208,10 +208,10 @@ async def update_machine(
     machine.grace_period_mins = grace_period_mins
     machine.enabled = enabled
     await session.commit()
-    return RedirectResponse("/linux-machines", status_code=303)
+    return RedirectResponse('/linux-machines', status_code=303)
 
 
-@router.delete("/linux-machines/{machine_id}", response_class=HTMLResponse)
+@router.delete('/linux-machines/{machine_id}', response_class=HTMLResponse)
 async def delete_machine(
     machine_id: int,
     _email: str = require_user,  # type: ignore[assignment]
@@ -221,10 +221,10 @@ async def delete_machine(
     machine = await _get_machine_or_404(machine_id, session)
     await session.delete(machine)
     await session.commit()
-    return HTMLResponse("")
+    return HTMLResponse('')
 
 
-@router.post("/linux-machines/{machine_id}/lock", response_class=HTMLResponse)
+@router.post('/linux-machines/{machine_id}/lock', response_class=HTMLResponse)
 async def lock_machine(
     machine_id: int,
     request: Request,
@@ -242,9 +242,9 @@ async def lock_machine(
             machine.ssh_private_key,
         )
     except Exception:
-        logger.warning("lock_session failed for %s", machine.friendly_name)
+        logger.warning('lock_session failed for %s', machine.friendly_name)
         return HTMLResponse(
-            "<p>SSH connection failed. Is the machine online?</p>", status_code=502
+            '<p>SSH connection failed. Is the machine online?</p>', status_code=502
         )
     snapshot = await _today_snapshot(machine_id, session)
     now = datetime.now(UTC)
@@ -275,7 +275,7 @@ async def lock_machine(
     session.add(
         AuditLog(
             child_id=machine.child_id,
-            action="lock_linux",
+            action='lock_linux',
             target=machine.friendly_name,
             occurred_at=datetime.now(UTC),
         )
@@ -283,11 +283,11 @@ async def lock_machine(
     await session.commit()
     children = await _child_names(svc)
     ctx = _machine_context(machine, snapshot)
-    ctx["child_name"] = children.get(machine.child_id, machine.child_id)
-    return templates.TemplateResponse(request, "partials/linux_machine_card.html", ctx)
+    ctx['child_name'] = children.get(machine.child_id, machine.child_id)
+    return templates.TemplateResponse(request, 'partials/linux_machine_card.html', ctx)
 
 
-@router.post("/linux-machines/{machine_id}/unlock", response_class=HTMLResponse)
+@router.post('/linux-machines/{machine_id}/unlock', response_class=HTMLResponse)
 async def unlock_machine(
     machine_id: int,
     request: Request,
@@ -305,9 +305,9 @@ async def unlock_machine(
             machine.ssh_private_key,
         )
     except Exception:
-        logger.warning("unlock_session failed for %s", machine.friendly_name)
+        logger.warning('unlock_session failed for %s', machine.friendly_name)
         return HTMLResponse(
-            "<p>SSH connection failed. Is the machine online?</p>", status_code=502
+            '<p>SSH connection failed. Is the machine online?</p>', status_code=502
         )
     snapshot = await _today_snapshot(machine_id, session)
     now = datetime.now(UTC)
@@ -317,7 +317,7 @@ async def unlock_machine(
     session.add(
         AuditLog(
             child_id=machine.child_id,
-            action="unlock_linux",
+            action='unlock_linux',
             target=machine.friendly_name,
             occurred_at=now,
         )
@@ -325,11 +325,11 @@ async def unlock_machine(
     await session.commit()
     children = await _child_names(svc)
     ctx = _machine_context(machine, snapshot)
-    ctx["child_name"] = children.get(machine.child_id, machine.child_id)
-    return templates.TemplateResponse(request, "partials/linux_machine_card.html", ctx)
+    ctx['child_name'] = children.get(machine.child_id, machine.child_id)
+    return templates.TemplateResponse(request, 'partials/linux_machine_card.html', ctx)
 
 
-@router.post("/linux-machines/{machine_id}/poweroff", response_class=HTMLResponse)
+@router.post('/linux-machines/{machine_id}/poweroff', response_class=HTMLResponse)
 async def poweroff_machine_endpoint(
     machine_id: int,
     request: Request,
@@ -347,9 +347,9 @@ async def poweroff_machine_endpoint(
             machine.ssh_private_key,
         )
     except Exception:
-        logger.warning("poweroff_machine failed for %s", machine.friendly_name)
+        logger.warning('poweroff_machine failed for %s', machine.friendly_name)
         return HTMLResponse(
-            "<p>SSH connection failed. Is the machine online?</p>", status_code=502
+            '<p>SSH connection failed. Is the machine online?</p>', status_code=502
         )
     snapshot = await _today_snapshot(machine_id, session)
     now = datetime.now(UTC)
@@ -381,7 +381,7 @@ async def poweroff_machine_endpoint(
     session.add(
         AuditLog(
             child_id=machine.child_id,
-            action="poweroff_linux",
+            action='poweroff_linux',
             target=machine.friendly_name,
             occurred_at=datetime.now(UTC),
         )
@@ -389,11 +389,11 @@ async def poweroff_machine_endpoint(
     await session.commit()
     children = await _child_names(svc)
     ctx = _machine_context(machine, snapshot)
-    ctx["child_name"] = children.get(machine.child_id, machine.child_id)
-    return templates.TemplateResponse(request, "partials/linux_machine_card.html", ctx)
+    ctx['child_name'] = children.get(machine.child_id, machine.child_id)
+    return templates.TemplateResponse(request, 'partials/linux_machine_card.html', ctx)
 
 
-@router.post("/linux-machines/{machine_id}/bonus", response_class=HTMLResponse)
+@router.post('/linux-machines/{machine_id}/bonus', response_class=HTMLResponse)
 async def bonus_machine(
     machine_id: int,
     request: Request,
@@ -438,12 +438,12 @@ async def bonus_machine(
             )
             snapshot.locked_at = None
         except Exception:
-            logger.warning("unlock_session failed for %s", machine.friendly_name)
+            logger.warning('unlock_session failed for %s', machine.friendly_name)
     snapshot.updated_at = datetime.now(UTC)
     session.add(
         AuditLog(
             child_id=machine.child_id,
-            action="bonus_linux",
+            action='bonus_linux',
             target=machine.friendly_name,
             new_value=str(minutes),
             occurred_at=datetime.now(UTC),
@@ -452,5 +452,5 @@ async def bonus_machine(
     await session.commit()
     children = await _child_names(svc)
     ctx = _machine_context(machine, snapshot)
-    ctx["child_name"] = children.get(machine.child_id, machine.child_id)
-    return templates.TemplateResponse(request, "partials/linux_machine_card.html", ctx)
+    ctx['child_name'] = children.get(machine.child_id, machine.child_id)
+    return templates.TemplateResponse(request, 'partials/linux_machine_card.html', ctx)
