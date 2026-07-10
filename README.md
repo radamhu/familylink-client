@@ -222,6 +222,77 @@ make install
 direnv allow
 ```
 
+### Codebase navigation
+
+A knowledge graph (`graphify-out/graph.json`) is checked in. Use it to orient yourself before reading source files:
+
+```bash
+# Install graphify once
+pip install graphifyy
+
+# Then query the graph
+graphify query "<question>"
+graphify explain "<concept>"
+graphify path "<NodeA>" "<NodeB>"
+```
+
+**Architecture questions**
+
+```bash
+graphify query "Why does FamilyLinkService bridge Discord commands to 17 different communities?"
+graphify query "How does FamilyLink connect the API client to the CLI, server, and Discord bot?"
+graphify query "Why does DiscordNotifier connect app management to session alert tests?"
+```
+
+**Auth and session questions**
+
+```bash
+graphify query "How does CookieResolver pick between browser cookies, FAMILYLINK_COOKIES_B64, and SAPISID?"
+graphify query "What happens when a Google session expires — which code paths handle auth_failed?"
+graphify query "How does cookie hot-reload work without a container restart?"
+graphify path "CookieResolver" "FamilyLinkService"
+```
+
+**HTMX and server questions**
+
+```bash
+graphify query "How do HTMX mutation endpoints return partials — which templates are involved?"
+graphify query "What does the lifespan startup sequence initialise and in what order?"
+graphify path "lifespan()" "FamilyLinkService"
+graphify explain "HTMX Mutation Endpoint Returning HTML Partials"
+```
+
+**Discord bot questions**
+
+```bash
+graphify query "How do Discord slash commands reach FamilyLinkService?"
+graphify query "What is the relationship between FamilyLinkBot, AppsGroup, and DiscordNotifier?"
+graphify query "How does the daily summary get posted to Discord?"
+```
+
+**Linux machine questions**
+
+```bash
+graphify query "How does poll_machine enforce daily screen time quotas?"
+graphify query "What triggers a lock vs a power-off on a Linux machine?"
+graphify path "poll_machine()" "LinuxUsageSnapshot"
+```
+
+**Data flow questions**
+
+```bash
+graphify query "How do positional JSON arrays from the Google API become Pydantic models?"
+graphify path "parse_apps_and_usage()" "AppUsage"
+graphify query "How does get_service() inject FamilyLinkService into route handlers?"
+```
+
+**Testing questions**
+
+```bash
+graphify query "Which tests cover the cookie hot-reload endpoint?"
+graphify query "How are Discord bot commands tested without a real Discord connection?"
+graphify query "What does the server test conftest set up?"
+```
 
 ### Docker development
 
