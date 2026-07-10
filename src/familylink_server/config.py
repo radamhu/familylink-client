@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     familylink_cookies_b64: str = ""
     familylink_cookie_file: str = ""
     familylink_sapisid: str = ""
+    cookie_refresher_url: str = ""
     cache_ttl_seconds: int = 900
     debug: bool = False
 
