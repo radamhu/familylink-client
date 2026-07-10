@@ -142,3 +142,62 @@ async def test_try_auto_refresh_returns_false_on_network_error(monkeypatch):
         result = await _try_auto_refresh(svc, None)
 
     assert result is False
+
+
+async def test_health_check_loop_resets_alert_on_auto_refresh_success(monkeypatch):
+    """health_check_loop should reset _alert_active when auto-refresh succeeds."""
+    from familylink import SessionExpiredError
+    from familylink_server.config import settings
+    from familylink_server.main import health_check_loop
+
+    monkeypatch.setattr(settings, 'cookie_refresher_url', 'http://sidecar:8080')
+
+    svc = _make_service()
+    call_count = 0
+
+    async def fake_get_members():
+        nonlocal call_count
+        call_count += 1
+        if call_count == 1:
+            raise SessionExpiredError('expired')
+        # Second call succeeds
+
+    svc.get_members = fake_get_members
+
+    notified_expired = []
+    notified_restored = []
+
+    class FakeNotifier:
+        async def notify_session_expired(self):
+            notified_expired.append(True)
+
+        async def notify_session_restored(self):
+            notified_restored.append(True)
+
+    sleep_calls = []
+
+    async def fake_sleep(n):
+        sleep_calls.append(n)
+        if len(sleep_calls) >= 2:
+            raise asyncio.CancelledError  # stop the loop after 2 iterations
+
+    async def mock_refresh_impl(service, notifier):
+        service.reinit_with_cookies_b64('test_b64')
+        return True
+
+    with (
+        patch('familylink_server.main.asyncio.sleep', side_effect=fake_sleep),
+        patch(
+            'familylink_server.main._try_auto_refresh', side_effect=mock_refresh_impl
+        ) as mock_refresh,
+        patch('familylink_server.services.family_link.FamilyLink'),
+    ):
+        try:
+            await health_check_loop(svc, FakeNotifier(), interval=0)
+        except asyncio.CancelledError:
+            pass
+
+    # Auto-refresh was called on first SessionExpiredError
+    mock_refresh.assert_called_once()
+    # auth_failed flag was set then cleared
+    assert svc._auth_failed is False

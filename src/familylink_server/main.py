@@ -59,6 +59,8 @@ async def health_check_loop(
                 service.set_auth_failed(True)
                 if notifier:
                     await notifier.notify_session_expired()
+                if await _try_auto_refresh(service, notifier):
+                    _alert_active = False
         except Exception as exc:
             logger.warning(
                 'Health check probe error (transient, not alerting): %s', exc
