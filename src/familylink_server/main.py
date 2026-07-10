@@ -8,6 +8,8 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+import httpx
+
 if TYPE_CHECKING:
     from familylink_server.services.discord_notifier import DiscordNotifier
     from familylink_server.services.family_link import FamilyLinkService
@@ -61,6 +63,30 @@ async def health_check_loop(
             logger.warning(
                 'Health check probe error (transient, not alerting): %s', exc
             )
+
+
+async def _try_auto_refresh(
+    service: 'FamilyLinkService',
+    notifier: 'DiscordNotifier | None',
+) -> bool:
+    """Call cookie-refresher sidecar; hot-reload service. Returns True on success."""
+    url = settings.cookie_refresher_url
+    if not url:
+        return False
+    try:
+        logger.info('Auto-refresh: calling sidecar at %s/refresh', url)
+        async with httpx.AsyncClient() as client:
+            resp = await client.post(f'{url}/refresh', timeout=120)
+            resp.raise_for_status()
+        cookies_b64 = resp.json()['cookies_b64']
+        service.reinit_with_cookies_b64(cookies_b64)
+        if notifier:
+            await notifier.notify_session_restored()
+        logger.info('Auto-refresh: success')
+        return True
+    except Exception as exc:
+        logger.error('Auto-refresh: failed — %s', exc)
+        return False
 
 
 @asynccontextmanager

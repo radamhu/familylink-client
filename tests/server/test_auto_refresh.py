@@ -69,3 +69,76 @@ def test_reinit_with_cookies_b64_creates_new_client():
 
     assert svc._client is not old_client
     MockFL.assert_called_once()
+
+
+async def test_try_auto_refresh_no_op_when_url_not_set(monkeypatch):
+    """_try_auto_refresh should return False immediately when COOKIE_REFRESHER_URL is empty."""
+    from familylink_server.config import settings
+    from familylink_server.main import _try_auto_refresh
+
+    monkeypatch.setattr(settings, 'cookie_refresher_url', '')
+    svc = _make_service()
+    result = await _try_auto_refresh(svc, None)
+    assert result is False
+    assert svc._auth_failed is False  # untouched
+
+
+async def test_try_auto_refresh_success(httpx_mock, monkeypatch):
+    """_try_auto_refresh should call sidecar, reinit service, and return True on success."""
+    from familylink_server.config import settings
+    from familylink_server.main import _try_auto_refresh
+
+    monkeypatch.setattr(settings, 'cookie_refresher_url', 'http://sidecar:8080')
+    httpx_mock.add_response(
+        url='http://sidecar:8080/refresh',
+        method='POST',
+        json={'cookies_b64': 'dGVzdA=='},
+    )
+
+    svc = _make_service()
+    with patch('familylink_server.services.family_link.FamilyLink'):
+        result = await _try_auto_refresh(svc, None)
+
+    assert result is True
+    assert os.environ.get('FAMILYLINK_COOKIES_B64') == 'dGVzdA=='
+    assert svc._auth_failed is False
+
+
+async def test_try_auto_refresh_returns_false_on_http_error(httpx_mock, monkeypatch):
+    """_try_auto_refresh should return False when sidecar returns non-2xx."""
+    from familylink_server.config import settings
+    from familylink_server.main import _try_auto_refresh
+
+    monkeypatch.setattr(settings, 'cookie_refresher_url', 'http://sidecar:8080')
+    httpx_mock.add_response(
+        url='http://sidecar:8080/refresh',
+        method='POST',
+        status_code=500,
+        text='Playwright error',
+    )
+
+    svc = _make_service()
+    result = await _try_auto_refresh(svc, None)
+    assert result is False
+
+
+async def test_try_auto_refresh_returns_false_on_network_error(monkeypatch):
+    """_try_auto_refresh should return False on connection error without raising."""
+    import httpx as _httpx
+
+    from familylink_server.config import settings
+    from familylink_server.main import _try_auto_refresh
+
+    monkeypatch.setattr(settings, 'cookie_refresher_url', 'http://sidecar:8080')
+
+    with patch('httpx.AsyncClient') as mock_client_cls:
+        mock_client = MagicMock()
+        mock_client.__aenter__ = MagicMock(return_value=mock_client)
+        mock_client.__aexit__ = MagicMock(return_value=False)
+        mock_client.post = MagicMock(side_effect=_httpx.ConnectError('refused'))
+        mock_client_cls.return_value = mock_client
+
+        svc = _make_service()
+        result = await _try_auto_refresh(svc, None)
+
+    assert result is False
