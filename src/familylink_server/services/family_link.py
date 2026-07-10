@@ -42,13 +42,13 @@ class FamilyLinkService:
 
     def reinit_with_cookies_b64(self, cookies_b64: str) -> None:
         """Hot-swap the FamilyLink client with a full fresh cookie jar."""
-        os.environ["FAMILYLINK_COOKIES_B64"] = cookies_b64
-        os.environ.pop("FAMILYLINK_SAPISID", None)
+        os.environ['FAMILYLINK_COOKIES_B64'] = cookies_b64
+        os.environ.pop('FAMILYLINK_SAPISID', None)
         self._client = FamilyLink()
         self._members_cache = None
         self._usage_cache.clear()
         self._auth_failed = False
-        logger.info("FamilyLink client reinitialized with fresh cookie jar")
+        logger.info('FamilyLink client reinitialized with fresh cookie jar')
 
     def _is_fresh(self, ts: datetime) -> bool:
         return (datetime.now(UTC) - ts).total_seconds() < self._ttl

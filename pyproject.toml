@@ -76,6 +76,7 @@ select = [
     'T10',    # flake8-debugger
     'T20',    # flake8-print
     'C4',     # flake8-comprehensions
+    'Q',      # flake8-quotes
     'PYI006', # flake8-pyi
     'PYI062', # flake8-pyi
     'PYI063', # flake8-pyi
