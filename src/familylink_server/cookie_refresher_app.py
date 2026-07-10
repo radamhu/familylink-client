@@ -1,5 +1,6 @@
 """Sidecar: headless Chrome cookie refresher service."""
 
+import asyncio
 import base64
 import logging
 import os
@@ -32,8 +33,6 @@ async def health() -> dict:
 
 def _get_cookies_b64(email: str, password: str, totp_secret: str) -> str:
     """Log into Google via headless Chromium; return base64-encoded cookies.txt."""
-    import asyncio  # noqa: F401
-
     import pyotp
     from playwright.sync_api import sync_playwright
 
@@ -75,8 +74,6 @@ def _get_cookies_b64(email: str, password: str, totp_secret: str) -> str:
 @app.post('/refresh')
 async def refresh() -> dict:
     """Run headless Chrome login; return fresh base64 cookies."""
-    import asyncio
-
     email = os.environ.get('FAMILYLINK_GOOGLE_EMAIL', '')
     password = os.environ.get('FAMILYLINK_GOOGLE_PASSWORD', '')
     totp_secret = os.environ.get('FAMILYLINK_TOTP_SECRET', '')
