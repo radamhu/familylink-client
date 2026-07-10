@@ -5,7 +5,7 @@ import base64
 import logging
 import os
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Header, HTTPException
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +65,11 @@ def _get_cookies_b64(email: str, password: str, totp_secret: str) -> str:
             page.wait_for_load_state('networkidle')
 
         google_cookies = [c for c in ctx.cookies() if 'google.com' in c['domain']]
+        if not any(c['name'] == 'SAPISID' for c in google_cookies):
+            browser.close()
+            raise RuntimeError(
+                'Login did not produce a SAPISID cookie — Google login may have failed or required a verification step'
+            )
         browser.close()
 
     logger.info('Auto-refresh: extracted %d google.com cookies', len(google_cookies))
@@ -72,8 +77,11 @@ def _get_cookies_b64(email: str, password: str, totp_secret: str) -> str:
 
 
 @app.post('/refresh')
-async def refresh() -> dict:
+async def refresh(x_api_key: str = Header(default='')) -> dict:
     """Run headless Chrome login; return fresh base64 cookies."""
+    expected = os.environ.get('REFRESHER_API_KEY', '')
+    if expected and x_api_key != expected:
+        raise HTTPException(403, 'Forbidden')
     email = os.environ.get('FAMILYLINK_GOOGLE_EMAIL', '')
     password = os.environ.get('FAMILYLINK_GOOGLE_PASSWORD', '')
     totp_secret = os.environ.get('FAMILYLINK_TOTP_SECRET', '')

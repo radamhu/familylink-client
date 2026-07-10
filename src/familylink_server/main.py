@@ -77,8 +77,11 @@ async def _try_auto_refresh(
         return False
     try:
         logger.info('Auto-refresh: calling sidecar at %s/refresh', url)
+        headers = {}
+        if settings.refresher_api_key:
+            headers['X-Api-Key'] = settings.refresher_api_key
         async with httpx.AsyncClient() as client:
-            resp = await client.post(f'{url}/refresh', timeout=120)
+            resp = await client.post(f'{url}/refresh', timeout=120, headers=headers)
             resp.raise_for_status()
         cookies_b64 = resp.json()['cookies_b64']
         service.reinit_with_cookies_b64(cookies_b64)
