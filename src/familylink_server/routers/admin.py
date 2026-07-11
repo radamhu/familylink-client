@@ -100,14 +100,22 @@ async def refresher_bootstrap(
 
     body = await request.body()
     async with httpx.AsyncClient() as client:
-        resp = await client.post(
-            f'{settings.cookie_refresher_url}/bootstrap',
-            content=body,
-            headers={
-                'Content-Type': 'application/json',
-                'X-Api-Key': settings.refresher_api_key,
-            },
-            timeout=30,
-        )
-        resp.raise_for_status()
+        try:
+            resp = await client.post(
+                f'{settings.cookie_refresher_url}/bootstrap',
+                content=body,
+                headers={
+                    'Content-Type': 'application/json',
+                    'X-Api-Key': settings.refresher_api_key,
+                },
+                timeout=30,
+            )
+            resp.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            raise HTTPException(
+                502,
+                f'Sidecar rejected bootstrap: {exc.response.status_code} {exc.response.text}',
+            ) from exc
+        except httpx.HTTPError as exc:
+            raise HTTPException(502, f'Sidecar unreachable: {exc}') from exc
     logger.info('Bootstrap proxied to cookie-refresher sidecar')

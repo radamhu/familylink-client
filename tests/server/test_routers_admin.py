@@ -67,3 +67,27 @@ def test_refresher_bootstrap_fails_when_sidecar_not_configured(client, monkeypat
         headers={'X-Api-Key': 'secret'},
     )
     assert resp.status_code == 400
+
+
+def test_refresher_bootstrap_surfaces_sidecar_error(client, httpx_mock, monkeypatch):
+    """POST /admin/refresher-bootstrap returns 502 with detail when the sidecar rejects it."""
+    monkeypatch.setattr(
+        settings, 'cookie_refresher_url', 'http://cookie-refresher:8080'
+    )
+    monkeypatch.setattr(settings, 'refresher_api_key', 'secret')
+
+    httpx_mock.add_response(
+        url='http://cookie-refresher:8080/bootstrap',
+        method='POST',
+        status_code=401,
+        text='bad sidecar key',
+    )
+
+    resp = client.post(
+        '/admin/refresher-bootstrap',
+        json={'cookies': [], 'origins': []},
+        headers={'X-Api-Key': 'secret'},
+    )
+    assert resp.status_code == 502
+    assert '401' in resp.text
+    assert 'bad sidecar key' in resp.text
