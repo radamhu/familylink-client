@@ -20,7 +20,6 @@ class Settings(BaseSettings):
     familylink_google_email: str
     familylink_cookies_b64: str = ''
     familylink_cookie_file: str = ''
-    familylink_sapisid: str = ''
     cookie_refresher_url: str = ''
     refresher_api_key: str = ''
     cache_ttl_seconds: int = 900

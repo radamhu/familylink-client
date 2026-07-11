@@ -86,12 +86,12 @@ Replace `suriel` with the actual SSH user configured for that machine.
 
 #### How enforcement works
 
-| Condition | Action |
-|---|---|
-| Active graphical session (seat-based) detected | Accumulate seconds toward the daily quota |
-| Quota exceeded, not yet locked | Lock screen via D-Bus (`org.freedesktop.ScreenSaver.Lock`) |
-| Locked, grace period elapsed | Power off via `sudo systemctl poweroff` |
-| Bonus minutes granted while locked | Kill `kscreenlocker_greet` to dismiss the lock screen |
+| Condition                                      | Action                                                       |
+| ---------------------------------------------- | ------------------------------------------------------------ |
+| Active graphical session (seat-based) detected | Accumulate seconds toward the daily quota                    |
+| Quota exceeded, not yet locked                 | Lock screen via D-Bus (`org.freedesktop.ScreenSaver.Lock`) |
+| Locked, grace period elapsed                   | Power off via`sudo systemctl poweroff`                     |
+| Bonus minutes granted while locked             | Kill`kscreenlocker_greet` to dismiss the lock screen       |
 
 The daily quota and grace period (default 5 min) are configurable per machine.
 
@@ -371,21 +371,21 @@ This outputs both a `cookies.txt` file and a base64-encoded string. Copy the bas
 
 In your deployment platform's dashboard, set these environment variables (see `.env.example` for details):
 
-| Variable                    | Description                                                                                            |
-| --------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `DATABASE_URL`            | PostgreSQL connection string:`postgresql+asyncpg://user:password@host/dbname`                        |
-| `SECRET_KEY`              | Random 32-byte hex (generate:`python -c "import secrets; print(secrets.token_hex(32))"`)             |
-| `GOOGLE_CLIENT_ID`        | From Google OAuth credentials                                                                          |
-| `GOOGLE_CLIENT_SECRET`    | From Google OAuth credentials                                                                          |
-| `FAMILYLINK_GOOGLE_EMAIL` | Parent's Gmail address                                                                                 |
-| `FAMILYLINK_COOKIES_B64`  | Base64 output from`familylink export-cookies --base64`                                               |
-| `CACHE_TTL_SECONDS`       | Cache duration in seconds (default:`900`)                                                            |
-| `DEBUG`                   | Set to`true` to disable `Secure` flag on the session cookie — required for local HTTP (see below) |
-| `COOKIE_REFRESHER_URL`    | Internal URL of the cookie-refresher sidecar, e.g. `http://cookie-refresher:8080` — enables auto-refresh on session expiry (optional) |
-| `REFRESHER_API_KEY`       | Shared secret sent as `X-Api-Key` to the sidecar — must match the sidecar's own `REFRESHER_API_KEY` (optional but recommended) |
-| `COOLIFY_URL`             | _(ops workstation only)_ Base URL of your Coolify instance — used by `export-cookies --coolify`   |
-| `COOLIFY_TOKEN`           | _(ops workstation only)_ Coolify API token — used by `export-cookies --coolify`                    |
-| `COOLIFY_APP_UUID`        | _(ops workstation only)_ UUID of the Coolify app to update — used by `export-cookies --coolify`   |
+| Variable                    | Description                                                                                                                             |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`            | PostgreSQL connection string:`postgresql+asyncpg://user:password@host/dbname`                                                         |
+| `SECRET_KEY`              | Random 32-byte hex (generate:`python -c "import secrets; print(secrets.token_hex(32))"`)                                              |
+| `GOOGLE_CLIENT_ID`        | From Google OAuth credentials                                                                                                           |
+| `GOOGLE_CLIENT_SECRET`    | From Google OAuth credentials                                                                                                           |
+| `FAMILYLINK_GOOGLE_EMAIL` | Parent's Gmail address                                                                                                                  |
+| `FAMILYLINK_COOKIES_B64`  | Base64 output from`familylink export-cookies --base64`                                                                                |
+| `CACHE_TTL_SECONDS`       | Cache duration in seconds (default:`900`)                                                                                             |
+| `DEBUG`                   | Set to`true` to disable `Secure` flag on the session cookie — required for local HTTP (see below)                                  |
+| `COOKIE_REFRESHER_URL`    | Internal URL of the cookie-refresher sidecar, e.g.`http://cookie-refresher:8080` — enables auto-refresh on session expiry (optional) |
+| `REFRESHER_API_KEY`       | Shared secret sent as`X-Api-Key` to the sidecar — must match the sidecar's own `REFRESHER_API_KEY` (optional but recommended)      |
+| `COOLIFY_URL`             | _(ops workstation only)_ Base URL of your Coolify instance — used by `export-cookies --coolify`                                    |
+| `COOLIFY_TOKEN`           | _(ops workstation only)_ Coolify API token — used by `export-cookies --coolify`                                                    |
+| `COOLIFY_APP_UUID`        | _(ops workstation only)_ UUID of the Coolify app to update — used by `export-cookies --coolify`                                    |
 
 ### Step 4: Run database migrations
 
@@ -426,7 +426,7 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
 3. Register `https://<your-coolify-domain>/auth/callback` as an authorized redirect URI in Google Cloud Console.
 4. Deploy. On first visit you will see `{"detail":"Not authenticated"}` — this is expected. Navigate to `/auth/login` to start the OAuth flow.
 
-**Session resilience:** The server monitors the Family Link session in the background. A health check probe runs every 30 minutes; if it fails, the server sets an `auth_failed` flag and posts a Discord alert ("⚠️ Google session expired"). When the session is restored, another alert fires ("✅ Family Link session restored"). While `auth_failed` is set, a red banner appears on every page linking to the reconnect form.
+**Session resilience:** The server monitors the Family Link session in the background. A health check probe runs every 30 minutes; if it fails, the server sets an `auth_failed` flag and posts a Discord alert ("⚠️ Google session expired"). When the session is restored, another alert fires ("✅ Family Link session restored"). While `auth_failed` is set, a red banner appears on every page pointing at the sidecar retry / CLI re-export fallback (see below).
 
 **Auto-refresh sidecar (recommended):** A separate Docker service (`cookie-refresher`) can restore the session fully automatically — no human action required for routine refreshes. It does **not** automate a Google login (Google reliably blocks scripted username/password sign-in with "This browser or app may not be secure", regardless of IP or headless mode — this is a deliberate anti-automation policy, not a bug to work around). Instead, it replays a real, human-authenticated session that you bootstrap once from your own browser.
 
@@ -490,9 +490,9 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
      no SAPISID after nav = persisted session is fully dead) ──
               │
               ▼
-  alert stays active → same existing fallbacks:
-    • manual /admin/reconnect (paste fresh SAPISID), or
-    • re-run bootstrap script (step [1]-[4] above)
+  alert stays active → same existing fallback:
+    • re-run bootstrap script (step [1]-[4] above), or
+    • CLI: familylink export-cookies --coolify --restart
 ```
 
 **Deploying the sidecar in Coolify:**
@@ -501,110 +501,24 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
 2. Mount a persistent volume into the sidecar at `/data` (holds the bootstrapped session; survives container restarts/redeploys)
 3. Set the sidecar's environment variables:
 
-   | Variable | Description |
-   |---|---|
+   | Variable             | Description                                                                                                     |
+   | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
    | `REFRESHER_API_KEY` | Shared secret required as `X-Api-Key` on both `/refresh` and `/bootstrap`; protects the endpoints from other internal callers |
 
 4. Note the sidecar's **internal** Coolify service URL (e.g. `http://cookie-refresher:8080`)
 5. On the **main server** service, add:
 
-   | Variable | Description |
-   |---|---|
+   | Variable                 | Description                                                       |
+   | ------------------------ | ----------------------------------------------------------------- |
    | `COOKIE_REFRESHER_URL` | Internal URL of the sidecar, e.g. `http://cookie-refresher:8080` |
-   | `REFRESHER_API_KEY` | Same value as set on the sidecar |
+   | `REFRESHER_API_KEY`    | Same value as set on the sidecar                                  |
 
-6. Deploy both services, then run `scripts/bootstrap_refresher_session.py` from your laptop (see diagram above) to seed the sidecar's persisted session — `/refresh` returns 400 until this has been done at least once.
+6. Deploy both services, then run `WEB_BASE_URL=https://<your-coolify-domain> REFRESHER_API_KEY=<value from Coolify env> scripts/bootstrap_refresher_session.py` from your laptop (see diagram above) to seed the sidecar's persisted session — `/refresh` returns 400 until this has been done at least once.
 7. Smoke-test: `curl -X POST -H "X-Api-Key: <key>" http://<sidecar-internal>:8080/refresh` should return `{"cookies_b64": "..."}` within ~30 seconds.
 
 > **No credentials on the sidecar.** Because bootstrap captures an already-authenticated session from your real browser, the sidecar never sees your Google password or TOTP secret — nothing to leak, nothing for Google's automated-login detector to catch.
 
-**Reconnecting without a restart:** When the session expires and no sidecar is configured (or the sidecar fails), you can restore it from any browser — including mobile — without a CLI or container restart:
-
-1. Open the web UI — you will see either the 503 error page (with the paste form inline) or a red banner linking to `/admin/reconnect`
-2. On your phone, open **google.com** in a browser that is signed into the parent Google account
-3. Tap the address bar and type (then press Go):
-   ```
-   javascript:alert(document.cookie.match(/SAPISID=([^;]+)/)[1])
-   ```
-4. An alert shows your SAPISID value — copy it
-5. Paste it into the form and tap **Reconnect** — the server hot-swaps the session immediately
-
-**One-tap reconnect via mobile shortcut:** For a faster flow, configure a shortcut that extracts the SAPISID automatically and POSTs it to the server. You need the `fl_session` cookie value once (it is valid for 30 days) — get it from your browser's developer tools after logging in (`Application → Cookies → fl_session`).
-
-*iOS — Apple Shortcuts:*
-
-1. New Shortcut → add action **"Open URLs"** → `https://www.google.com`
-2. Add action **"Run JavaScript on Web Page"**:
-   ```javascript
-   return document.cookie.match(/SAPISID=([^;]+)/)[1]
-   ```
-3. Add action **"Get Contents of URL"**:
-   - URL: `https://your-server.com/admin/refresh-cookies`
-   - Method: `POST`
-   - Headers: `Content-Type: application/json` and `Cookie: fl_session=PASTE_VALUE_HERE`
-   - Request Body: `{"sapisid": "[JavaScript Result]"}` (use the output from step 2)
-4. Add action **"Show Notification"** → "✅ Reconnected" (run if status is 204)
-5. Add to Home Screen for one-tap access
-
-> The "Run JavaScript on Web Page" action requires Safari to load google.com first (step 1). iOS will show a brief Safari flash before the shortcut continues.
-
-*Android — HTTP Shortcuts app ([Waboodoo](https://play.google.com/store/apps/details?id=ch.rmy.android.http_shortcuts)):*
-
-Install **HTTP Shortcuts** from the Play Store. The flow is: copy SAPISID in Firefox → tap the home screen shortcut → done.
-
-**Step 1 — Get your `fl_session` cookie (one-time setup, valid 30 days)**
-
-`fl_session` is the Family Link web app's own login cookie — it is **not** a Google cookie. Get it from a desktop browser after logging into your server:
-
-1. Open the Family Link web app (your Coolify URL) in Chrome and log in
-2. Press **F12** → **Application** tab → **Cookies** → expand the left panel and click **your server's domain** (e.g. `https://familylink.yourdomain.com`) — not google.com
-3. Find the row named `fl_session` and copy its **Value**
-
-This value goes into the shortcut's Cookie header and does not change unless you log out or the 30-day TTL expires.
-
-**Step 2 — Create the shortcut**
-
-1. Open HTTP Shortcuts → tap **+** → choose **Regular Shortcut**
-2. **Name**: `Reconnect Family Link`
-3. **Method**: `POST`
-4. **URL**: `https://your-server.com/admin/refresh-cookies`
-5. Tap **Headers** → add two entries:
-   - Name `Content-Type` → Value `application/json`
-   - Name `Cookie` → Value `fl_session=PASTE_FL_SESSION_HERE`
-6. Tap **Request Body** → select **Custom text / JSON** → paste:
-   ```json
-   {"sapisid": "{sapisid}"}
-   ```
-7. Tap **Response Handling** → **Success output** → set message: `✅ Session restored`
-8. Save
-
-**Step 3 — Add the SAPISID variable**
-
-1. Main screen → **Variables** → **+**
-2. **Name**: `sapisid` _(must match exactly what's in the request body above)_
-3. **Type**: **Clipboard Content** ← reads whatever you copied last, no prompt needed
-4. Save
-
-> **Why Clipboard Content?** You will copy the SAPISID from Firefox right before tapping the shortcut, so reading from clipboard is the smoothest one-tap flow. If you prefer to paste manually into a dialog instead, use **Password Input** as the type and set **Title** to `Paste SAPISID` — the shortcut will prompt you each time.
-
-**Step 4 — Add to Home Screen**
-
-In the app, long-press the shortcut → **Place on Home Screen**.
-
-**Every time you need to reconnect — the full flow:**
-
-1. Open **Firefox for Android** → go to `google.com` (signed in as the parent account)
-2. Tap the address bar, type the following, and press Go:
-   ```
-   javascript:alert(document.cookie.match(/SAPISID=([^;]+)/)[1])
-   ```
-3. An alert shows your SAPISID — tap and hold the value to copy it
-4. Go to your home screen and tap **Reconnect Family Link**
-5. The shortcut reads the SAPISID from your clipboard and POSTs it — you'll see "✅ Session restored"
-
-> Chrome on Android does not support `javascript:` URLs — use Firefox for Android for step 2.
-
-**Refreshing cookies via CLI (requires restart):** Alternatively, re-export from your local browser and push to Coolify:
+**Refreshing cookies via CLI (requires restart):** When the sidecar isn't configured (or fails), re-export a full session from your local browser and push it to Coolify:
 
 ```bash
 familylink export-cookies --browser chrome --base64 --coolify --restart
@@ -614,11 +528,11 @@ This exports cookies from Chrome, base64-encodes them, updates `FAMILYLINK_COOKI
 
 The following environment variables must be set in your **local** `.env` before running the command (they are not needed on the server):
 
-| Variable           | Description                                                                             |
-| ------------------ | --------------------------------------------------------------------------------------- |
-| `COOLIFY_URL`      | Base URL of your Coolify instance, e.g. `http://192.168.0.22:8000`                     |
+| Variable             | Description                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------- |
+| `COOLIFY_URL`      | Base URL of your Coolify instance, e.g.`http://192.168.0.22:8000`                       |
 | `COOLIFY_TOKEN`    | Coolify API token — generate in Coolify → Security → API Tokens                        |
-| `COOLIFY_APP_UUID` | UUID of the Coolify application to update — visible in the app's URL or General settings|
+| `COOLIFY_APP_UUID` | UUID of the Coolify application to update — visible in the app's URL or General settings |
 
 **Traefik labels** are already present in `docker-compose.yml` and configure:
 
@@ -630,7 +544,7 @@ The following environment variables must be set in your **local** `.env` before 
 ### Troubleshooting
 
 - **Database connection fails**: Verify `DATABASE_URL` format and that your database is reachable from the deployment platform
-- **"Could not find SAPISID" / 503 "Google session expired"**: The cookies have expired. Quickest fix (no restart): open the web UI, use the SAPISID paste form on the 503 page or navigate to `/admin/reconnect` (see *Reconnecting without a restart* above). CLI alternative: re-run `familylink export-cookies --base64 --coolify --restart`
+- **"Could not find SAPISID" / 503 "Google session expired"**: The cookies have expired. If the `cookie-refresher` sidecar is configured, it retries automatically on the next health check. Otherwise re-run `familylink export-cookies --base64 --coolify --restart` from a machine signed into the parent account
 - **OAuth redirect fails / `redirect_uri_mismatch`**: Check that the redirect URI in Google Cloud Console exactly matches your deployed URL (scheme included — `https://` not `http://`)
 - **Behind a reverse proxy, OAuth callback URL is `http://` instead of `https://`**: The app must run with `--proxy-headers --forwarded-allow-ips='*'` so uvicorn trusts the `X-Forwarded-Proto` header from the proxy. This is already set in the `Dockerfile` `CMD`. If deploying via `Procfile` or another mechanism, add the flags there too.
 - **`{"detail":"Not authenticated"}` on first visit**: You haven't logged in yet — navigate to `/auth/login`

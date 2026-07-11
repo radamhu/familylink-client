@@ -24,8 +24,8 @@
   <main class="container">
     {% if auth_failed %}
     <div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:6px;padding:0.5rem 1rem;margin-bottom:1rem;color:#991b1b">
-      ⚠️ Google session expired —
-      <a href="/admin/reconnect">Reconnect</a>
+      ⚠️ Google session expired — the cookie-refresher sidecar will retry automatically, or run
+      <code>familylink export-cookies --coolify --restart</code>
     </div>
     {% endif %}
     {% block content %}{% endblock %}

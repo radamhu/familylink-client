@@ -31,15 +31,6 @@ class FamilyLinkService:
         """Set or clear the auth-failed flag."""
         self._auth_failed = failed
 
-    def reinit_with_cookies(self, sapisid: str) -> None:
-        """Hot-swap the FamilyLink client with a fresh SAPISID. No restart needed."""
-        os.environ['FAMILYLINK_SAPISID'] = sapisid
-        self._client = FamilyLink()
-        self._members_cache = None
-        self._usage_cache.clear()
-        self._auth_failed = False
-        logger.info('FamilyLink client reinitialized with fresh SAPISID')
-
     def reinit_with_cookies_b64(self, cookies_b64: str) -> None:
         """Hot-swap the FamilyLink client with a full fresh cookie jar."""
         os.environ['FAMILYLINK_COOKIES_B64'] = cookies_b64
