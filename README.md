@@ -1,9 +1,9 @@
 # Family Link
 
-A non-official Python package to interact with Google Family Link, to manage your kids' screen time.
+A non-official Python package to interact with Google Family Link and linux machines, to manage your kids' screen time.
 
 <p align="center">
-  <img src="logo.svg" alt="Family Link logo" width="200" height="200">
+  <img src="logo.jpeg" alt="Family Link logo" width="200" height="200">
 </p>
 
 ## Prerequisites
