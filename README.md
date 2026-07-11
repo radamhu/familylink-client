@@ -428,33 +428,95 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
 
 **Session resilience:** The server monitors the Family Link session in the background. A health check probe runs every 30 minutes; if it fails, the server sets an `auth_failed` flag and posts a Discord alert ("⚠️ Google session expired"). When the session is restored, another alert fires ("✅ Family Link session restored"). While `auth_failed` is set, a red banner appears on every page linking to the reconnect form.
 
-**Auto-refresh sidecar (recommended):** A separate Docker service (`cookie-refresher`) can restore the session fully automatically — no human action required. When the health check detects expiry, the main server calls the sidecar's `POST /refresh` endpoint. The sidecar launches headless Chromium, logs into Google with stored credentials + TOTP, extracts a fresh full cookie jar, and returns it. The main server hot-reloads immediately. A "✅ restored" Discord notification fires on success; if the sidecar is unreachable or login fails, the manual reconnect flow remains available as fallback.
+**Auto-refresh sidecar (recommended):** A separate Docker service (`cookie-refresher`) can restore the session fully automatically — no human action required for routine refreshes. It does **not** automate a Google login (Google reliably blocks scripted username/password sign-in with "This browser or app may not be secure", regardless of IP or headless mode — this is a deliberate anti-automation policy, not a bug to work around). Instead, it replays a real, human-authenticated session that you bootstrap once from your own browser.
+
+```
+════════════════════════════════════════════════════════════════════
+ ONE-TIME (and rare re-auth) — YOU, on your laptop
+════════════════════════════════════════════════════════════════════
+
+  [1] Log into Google normally
+      in your real Chrome
+              │
+              ▼
+  [2] Run scripts/bootstrap_refresher_session.py
+      → pulls cookies from that Chrome
+        (browser_cookie3, same lib the CLI
+         export-cookies already uses)
+      → converts to Playwright storage_state JSON
+      → POSTs it to the deployed web app
+              │
+              ▼
+  [3] web app: POST /admin/refresher-bootstrap
+      (X-Api-Key auth)
+      → proxies body to sidecar's internal /bootstrap
+              │
+              ▼
+  [4] sidecar: POST /bootstrap
+      → writes state.json to its Docker volume
+              │
+              ▼
+         ✅ done. No automated login ever happens —
+            nothing for Google to flag.
+
+  You only repeat this if the persisted session ever
+  fully dies (password change, long inactivity,
+  Google security event — rare).
+
+════════════════════════════════════════════════════════════════════
+ AUTOMATIC — the app handles this forever after, no human involved
+════════════════════════════════════════════════════════════════════
+
+  every 30 min: health_check_loop probes Family Link API
+              │
+              ▼ (probe fails: SessionExpiredError)
+  main app calls sidecar: POST /refresh
+              │
+              ▼
+  sidecar loads state.json from volume into Playwright
+  → visits myaccount.google.com (no login form touched)
+  → grabs fresh cookies
+  → writes rotated cookies BACK to state.json
+  → returns cookies_b64
+              │
+              ▼
+  main app hot-reloads FamilyLinkService with fresh cookies
+  Discord: "✅ restored" notification
+              │
+              ▼
+         session working again, zero manual action
+
+  ── if /refresh fails (state.json missing, or Google shows
+     no SAPISID after nav = persisted session is fully dead) ──
+              │
+              ▼
+  alert stays active → same existing fallbacks:
+    • manual /admin/reconnect (paste fresh SAPISID), or
+    • re-run bootstrap script (step [1]-[4] above)
+```
 
 **Deploying the sidecar in Coolify:**
 
 1. Add a second service to your Coolify project pointing at the same repo, but set **Dockerfile** to `Dockerfile.refresher`
-2. Set the sidecar's environment variables:
+2. Mount a persistent volume into the sidecar at `/data` (holds the bootstrapped session; survives container restarts/redeploys)
+3. Set the sidecar's environment variables:
 
    | Variable | Description |
    |---|---|
-   | `FAMILYLINK_GOOGLE_EMAIL` | Parent Google account email |
-   | `FAMILYLINK_GOOGLE_PASSWORD` | Parent Google account password |
-   | `FAMILYLINK_TOTP_SECRET` | Base32 TOTP seed — get it by re-enrolling 2FA at myaccount.google.com → Security → 2-Step Verification (shows QR + seed) |
-   | `REFRESHER_API_KEY` | Shared secret the main server must send as `X-Api-Key`; protects the endpoint from other internal callers (optional but recommended) |
+   | `REFRESHER_API_KEY` | Shared secret required as `X-Api-Key` on both `/refresh` and `/bootstrap`; protects the endpoints from other internal callers |
 
-3. Note the sidecar's **internal** Coolify service URL (e.g. `http://cookie-refresher:8080`)
-4. On the **main server** service, add:
+4. Note the sidecar's **internal** Coolify service URL (e.g. `http://cookie-refresher:8080`)
+5. On the **main server** service, add:
 
    | Variable | Description |
    |---|---|
    | `COOKIE_REFRESHER_URL` | Internal URL of the sidecar, e.g. `http://cookie-refresher:8080` |
    | `REFRESHER_API_KEY` | Same value as set on the sidecar |
 
-5. Deploy both services. Smoke-test: `curl -X POST -H "X-Api-Key: <key>" http://<sidecar-internal>:8080/refresh` should return `{"cookies_b64": "..."}` within ~30 seconds.
+6. Deploy both services, then run `scripts/bootstrap_refresher_session.py` from your laptop (see diagram above) to seed the sidecar's persisted session — `/refresh` returns 400 until this has been done at least once.
+7. Smoke-test: `curl -X POST -H "X-Api-Key: <key>" http://<sidecar-internal>:8080/refresh` should return `{"cookies_b64": "..."}` within ~30 seconds.
 
-> **TOTP clock sync:** The sidecar generates time-based codes against the system clock. The container must be NTP-synced (true by default on most Linux hosts). A clock skew of more than ±15 seconds will cause Google to reject the 2FA code.
-
-> **Google may block headless Chrome.** If Google serves a CAPTCHA or "verify it's you" challenge, the sidecar returns 500 and the manual reconnect flow is used instead. This is rare for established accounts but can happen after credential changes or suspicious-login detection.
+> **No credentials on the sidecar.** Because bootstrap captures an already-authenticated session from your real browser, the sidecar never sees your Google password or TOTP secret — nothing to leak, nothing for Google's automated-login detector to catch.
 
 **Reconnecting without a restart:** When the session expires and no sidecar is configured (or the sidecar fails), you can restore it from any browser — including mobile — without a CLI or container restart:
 
