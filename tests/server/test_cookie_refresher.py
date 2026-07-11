@@ -205,6 +205,84 @@ def test_get_cookies_b64_raises_when_no_sapisid(monkeypatch):
         _get_cookies_b64('user@example.com', 'pass', 'JBSWY3DPEHPK3PXP')
 
 
+def test_get_cookies_b64_includes_page_context_on_failure(monkeypatch):
+    """_get_cookies_b64 error message includes page URL/title when a step fails."""
+    import sys
+    import types
+
+    class FakePage:
+        url = 'https://accounts.google.com/v3/signin/challenge/az'
+
+        def goto(self, *a, **kw):
+            pass
+
+        def fill(self, selector, *a, **kw):
+            if selector == 'input[type="email"]':
+                raise TimeoutError('Timeout 30000ms exceeded waiting for locator')
+
+        def click(self, *a, **kw):
+            pass
+
+        def wait_for_load_state(self, *a, **kw):
+            pass
+
+        def query_selector(self, *a, **kw):
+            return None
+
+        def title(self):
+            return "Couldn't sign you in"
+
+    class FakeContext:
+        def new_page(self):
+            return FakePage()
+
+        def cookies(self):
+            return []
+
+    class FakeBrowser:
+        def new_context(self, **kw):
+            return FakeContext()
+
+        def close(self):
+            pass
+
+    class FakeChromium:
+        def launch(self, **kw):
+            return FakeBrowser()
+
+    class FakePlaywright:
+        chromium = FakeChromium()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            pass
+
+    fake_sync_api = types.ModuleType('playwright.sync_api')
+    fake_sync_api.sync_playwright = lambda: FakePlaywright()
+
+    fake_playwright_pkg = types.ModuleType('playwright')
+    fake_playwright_pkg.sync_api = fake_sync_api
+
+    fake_pyotp = types.ModuleType('pyotp')
+
+    monkeypatch.setitem(sys.modules, 'playwright', fake_playwright_pkg)
+    monkeypatch.setitem(sys.modules, 'playwright.sync_api', fake_sync_api)
+    monkeypatch.setitem(sys.modules, 'pyotp', fake_pyotp)
+
+    import pytest
+
+    from familylink_server.cookie_refresher_app import _get_cookies_b64
+
+    with pytest.raises(RuntimeError) as exc_info:
+        _get_cookies_b64('user@example.com', 'pass', 'JBSWY3DPEHPK3PXP')
+
+    message = str(exc_info.value)
+    assert 'accounts.google.com/v3/signin/challenge/az' in message
+    assert "Couldn't sign you in" in message
+
+
 def test_refresh_forbidden_when_wrong_key(monkeypatch):
     """POST /refresh returns 403 when REFRESHER_API_KEY is set and key is wrong."""
     from fastapi.testclient import TestClient

@@ -46,23 +46,33 @@ def _get_cookies_b64(email: str, password: str, totp_secret: str) -> str:
         )
         page = ctx.new_page()
 
-        page.goto(
-            'https://accounts.google.com/signin/v2/identifier',
-            wait_until='networkidle',
-        )
-        page.fill('input[type="email"]', email)
-        page.click('#identifierNext')
-        page.wait_for_load_state('networkidle')
-
-        page.fill('input[type="password"]', password)
-        page.click('#passwordNext')
-        page.wait_for_load_state('networkidle')
-
-        totp_el = page.query_selector('input[type="tel"], input[type="number"]')
-        if totp_el:
-            totp_el.fill(pyotp.TOTP(totp_secret).now())
-            page.keyboard.press('Enter')
+        try:
+            page.goto(
+                'https://accounts.google.com/signin/v2/identifier',
+                wait_until='networkidle',
+            )
+            page.fill('input[type="email"]', email)
+            page.click('#identifierNext')
             page.wait_for_load_state('networkidle')
+
+            page.fill('input[type="password"]', password)
+            page.click('#passwordNext')
+            page.wait_for_load_state('networkidle')
+
+            totp_el = page.query_selector('input[type="tel"], input[type="number"]')
+            if totp_el:
+                totp_el.fill(pyotp.TOTP(totp_secret).now())
+                page.keyboard.press('Enter')
+                page.wait_for_load_state('networkidle')
+        except Exception as exc:
+            try:
+                title = page.title()
+            except Exception:
+                title = '<unavailable>'
+            browser.close()
+            raise RuntimeError(
+                f'Login flow failed at {page.url!r} (title={title!r}): {exc}'
+            ) from exc
 
         google_cookies = [c for c in ctx.cookies() if 'google.com' in c['domain']]
         if not any(c['name'] == 'SAPISID' for c in google_cookies):
