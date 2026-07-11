@@ -2,11 +2,13 @@
 
 import logging
 
-from fastapi import APIRouter
+import httpx
+from fastapi import APIRouter, Header, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 from familylink_server.auth.oauth import require_user
+from familylink_server.config import settings
 from familylink_server.services.family_link import get_service
 
 logger = logging.getLogger(__name__)
@@ -83,3 +85,29 @@ async def refresh_cookies(body: RefreshCookiesRequest) -> None:
     """Hot-swap the FamilyLink client with fresh cookies. No server restart needed."""
     get_service().reinit_with_cookies(body.sapisid)
     logger.info('Cookies hot-reloaded via /admin/refresh-cookies')
+
+
+@router.post('/refresher-bootstrap', status_code=204)
+async def refresher_bootstrap(
+    request: Request, x_api_key: str = Header(default='')
+) -> None:
+    """Proxy a bootstrapped Playwright storage_state to the cookie-refresher sidecar."""
+    expected = settings.refresher_api_key
+    if expected and x_api_key != expected:
+        raise HTTPException(403, 'Forbidden')
+    if not settings.cookie_refresher_url:
+        raise HTTPException(400, 'COOKIE_REFRESHER_URL is not configured')
+
+    body = await request.body()
+    async with httpx.AsyncClient() as client:
+        resp = await client.post(
+            f'{settings.cookie_refresher_url}/bootstrap',
+            content=body,
+            headers={
+                'Content-Type': 'application/json',
+                'X-Api-Key': settings.refresher_api_key,
+            },
+            timeout=30,
+        )
+        resp.raise_for_status()
+    logger.info('Bootstrap proxied to cookie-refresher sidecar')
