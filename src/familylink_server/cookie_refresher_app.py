@@ -4,8 +4,10 @@ import asyncio
 import base64
 import logging
 import os
+from pathlib import Path
 
 from fastapi import FastAPI, Header, HTTPException
+from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +31,26 @@ def _to_netscape(cookies: list[dict]) -> str:
 async def health() -> dict:
     """Liveness probe."""
     return {'status': 'ok'}
+
+
+class StorageState(BaseModel):
+    """Playwright browser-context storage_state payload."""
+
+    cookies: list[dict]
+    origins: list[dict] = []
+
+
+@app.post('/bootstrap', status_code=204)
+async def bootstrap(body: StorageState, x_api_key: str = Header(default='')) -> None:
+    """Persist a storage_state JSON to disk for /refresh to reuse."""
+    expected = os.environ.get('REFRESHER_API_KEY', '')
+    if expected and x_api_key != expected:
+        raise HTTPException(403, 'Forbidden')
+
+    state_path = Path(os.environ.get('STATE_PATH', '/data/state.json'))
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(body.model_dump_json())
+    logger.info('Bootstrap: wrote %d cookies to %s', len(body.cookies), state_path)
 
 
 def _get_cookies_b64(email: str, password: str, totp_secret: str) -> str:

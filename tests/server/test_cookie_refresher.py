@@ -1,8 +1,56 @@
 """Tests for the cookie-refresher sidecar app."""
 
+import json
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
+
+
+def test_bootstrap_writes_state_file(monkeypatch, tmp_path):
+    """POST /bootstrap writes the storage_state JSON to STATE_PATH."""
+    state_file = tmp_path / 'state.json'
+    monkeypatch.setenv('STATE_PATH', str(state_file))
+    from familylink_server.cookie_refresher_app import app
+
+    client = TestClient(app)
+    resp = client.post(
+        '/bootstrap',
+        json={
+            'cookies': [
+                {
+                    'name': 'SAPISID',
+                    'value': 'abc',
+                    'domain': '.google.com',
+                    'path': '/',
+                    'expires': -1,
+                    'httpOnly': False,
+                    'secure': True,
+                    'sameSite': 'None',
+                }
+            ],
+            'origins': [],
+        },
+    )
+    assert resp.status_code == 204
+
+    saved = json.loads(state_file.read_text())
+    assert saved['cookies'][0]['name'] == 'SAPISID'
+    assert saved['origins'] == []
+
+
+def test_bootstrap_forbidden_when_wrong_key(monkeypatch, tmp_path):
+    """POST /bootstrap returns 403 when REFRESHER_API_KEY is set and key is wrong."""
+    monkeypatch.setenv('REFRESHER_API_KEY', 'secret')
+    monkeypatch.setenv('STATE_PATH', str(tmp_path / 'state.json'))
+    from familylink_server.cookie_refresher_app import app
+
+    client = TestClient(app)
+    resp = client.post(
+        '/bootstrap',
+        json={'cookies': [], 'origins': []},
+        headers={'X-Api-Key': 'wrong'},
+    )
+    assert resp.status_code == 403
 
 
 def test_to_netscape_subdomain_flag():
