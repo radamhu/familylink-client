@@ -4,7 +4,9 @@ import asyncio
 import base64
 import logging
 import os
+from collections.abc import Mapping, Sequence
 from pathlib import Path
+from typing import Any
 
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
@@ -14,7 +16,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(title='cookie-refresher')
 
 
-def _to_netscape(cookies: list[dict]) -> str:
+def _to_netscape(cookies: Sequence[Mapping[str, Any]]) -> str:
     """Convert Playwright cookie dicts to Netscape cookies.txt format."""
     lines = ['# Netscape HTTP Cookie File']
     for c in cookies:
