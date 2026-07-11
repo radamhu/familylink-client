@@ -10,6 +10,10 @@ Usage:
     WEB_BASE_URL=https://your-app.example.com \
     REFRESHER_API_KEY=<shared secret> \
     python scripts/bootstrap_refresher_session.py [--browser chrome]
+
+Set REFRESHER_INSECURE_SKIP_TLS_VERIFY=1 to skip TLS certificate verification
+(e.g. for a self-signed cert on an intranet-only deployment). Never set this
+against a server reachable over the public internet.
 """
 
 import argparse
@@ -76,11 +80,20 @@ def main() -> int:
 
     import httpx
 
+    verify_tls = os.environ.get('REFRESHER_INSECURE_SKIP_TLS_VERIFY', '') != '1'
+    if not verify_tls:
+        print(  # noqa: T201
+            'WARNING: TLS certificate verification disabled '
+            '(REFRESHER_INSECURE_SKIP_TLS_VERIFY=1). Intranet use only.',
+            file=sys.stderr,
+        )
+
     resp = httpx.post(
         f'{web_base_url}/admin/refresher-bootstrap',
         content=json.dumps(storage_state),
         headers={'Content-Type': 'application/json', 'X-Api-Key': api_key},
         timeout=30,
+        verify=verify_tls,
     )
     resp.raise_for_status()
     print(f'Bootstrapped {len(storage_state["cookies"])} cookies to the sidecar.')  # noqa: T201
