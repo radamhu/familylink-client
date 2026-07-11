@@ -31,9 +31,9 @@ def _cookiejar_to_storage_state(cookies: list) -> dict:
                 'domain': c.domain,
                 'path': c.path,
                 'expires': c.expires if c.expires else -1,
-                'httpOnly': False,
+                'httpOnly': 'HttpOnly' in getattr(c, '_rest', {}),
                 'secure': bool(c.secure),
-                'sameSite': 'None',
+                'sameSite': 'None' if c.secure else 'Lax',
             }
         )
     return {'cookies': playwright_cookies, 'origins': []}
@@ -53,7 +53,7 @@ def main() -> int:
         import browser_cookie3
     except ImportError:
         print(  # noqa: T201
-            'browser_cookie3 not installed. Run: pip install browser_cookie3',
+            'browser_cookie3 not installed. Run: pip install -e ".[browser]"',
             file=sys.stderr,
         )
         return 1
