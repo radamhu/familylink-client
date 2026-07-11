@@ -47,7 +47,6 @@ test = [
 ]
 refresher = [
     "playwright>=1.40",
-    "pyotp>=2.9",
     "fastapi>=0.115",
     "uvicorn[standard]>=0.32",
 ]

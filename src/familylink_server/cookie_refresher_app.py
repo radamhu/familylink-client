@@ -53,39 +53,22 @@ async def bootstrap(body: StorageState, x_api_key: str = Header(default='')) -> 
     logger.info('Bootstrap: wrote %d cookies to %s', len(body.cookies), state_path)
 
 
-def _get_cookies_b64(email: str, password: str, totp_secret: str) -> str:
-    """Log into Google via headless Chromium; return base64-encoded cookies.txt."""
-    import pyotp
+def _get_cookies_b64(state_path: Path) -> str:
+    """Replay a persisted Google session; return base64-encoded cookies.txt."""
+    if not state_path.exists():
+        raise RuntimeError(
+            f'No persisted session at {state_path} — run bootstrap first'
+        )
+
     from playwright.sync_api import sync_playwright
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        ctx = browser.new_context(
-            user_agent=(
-                'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
-                '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-            )
-        )
+        ctx = browser.new_context(storage_state=str(state_path))
         page = ctx.new_page()
 
         try:
-            page.goto(
-                'https://accounts.google.com/signin/v2/identifier',
-                wait_until='networkidle',
-            )
-            page.fill('input[type="email"]', email)
-            page.click('#identifierNext')
-            page.wait_for_load_state('networkidle')
-
-            page.fill('input[type="password"]', password)
-            page.click('#passwordNext')
-            page.wait_for_load_state('networkidle')
-
-            totp_el = page.query_selector('input[type="tel"], input[type="number"]')
-            if totp_el:
-                totp_el.fill(pyotp.TOTP(totp_secret).now())
-                page.keyboard.press('Enter')
-                page.wait_for_load_state('networkidle')
+            page.goto('https://myaccount.google.com/', wait_until='networkidle')
         except Exception as exc:
             try:
                 title = page.title()
@@ -93,48 +76,36 @@ def _get_cookies_b64(email: str, password: str, totp_secret: str) -> str:
                 title = '<unavailable>'
             browser.close()
             raise RuntimeError(
-                f'Login flow failed at {page.url!r} (title={title!r}): {exc}'
+                f'Refresh navigation failed at {page.url!r} (title={title!r}): {exc}'
             ) from exc
 
         google_cookies = [c for c in ctx.cookies() if 'google.com' in c['domain']]
         if not any(c['name'] == 'SAPISID' for c in google_cookies):
             browser.close()
             raise RuntimeError(
-                'Login did not produce a SAPISID cookie — Google login may have failed or required a verification step'
+                'Persisted session has no SAPISID after navigation — it has '
+                'expired. Re-run scripts/bootstrap_refresher_session.py.'
             )
+
+        ctx.storage_state(path=str(state_path))
         browser.close()
 
-    logger.info('Auto-refresh: extracted %d google.com cookies', len(google_cookies))
+    logger.info('Refresh: extracted %d google.com cookies', len(google_cookies))
     return base64.b64encode(_to_netscape(google_cookies).encode()).decode()
 
 
 @app.post('/refresh')
 async def refresh(x_api_key: str = Header(default='')) -> dict:
-    """Run headless Chrome login; return fresh base64 cookies."""
+    """Replay the persisted Google session; return fresh base64 cookies."""
     expected = os.environ.get('REFRESHER_API_KEY', '')
     if expected and x_api_key != expected:
         raise HTTPException(403, 'Forbidden')
-    email = os.environ.get('FAMILYLINK_GOOGLE_EMAIL', '')
-    password = os.environ.get('FAMILYLINK_GOOGLE_PASSWORD', '')
-    totp_secret = os.environ.get('FAMILYLINK_TOTP_SECRET', '')
 
-    missing = [
-        name
-        for name, val in [
-            ('FAMILYLINK_GOOGLE_EMAIL', email),
-            ('FAMILYLINK_GOOGLE_PASSWORD', password),
-            ('FAMILYLINK_TOTP_SECRET', totp_secret),
-        ]
-        if not val
-    ]
-    if missing:
-        raise HTTPException(400, f'Missing env vars: {", ".join(missing)}')
+    state_path = Path(os.environ.get('STATE_PATH', '/data/state.json'))
 
     try:
-        cookies_b64 = await asyncio.to_thread(
-            _get_cookies_b64, email, password, totp_secret
-        )
+        cookies_b64 = await asyncio.to_thread(_get_cookies_b64, state_path)
         return {'cookies_b64': cookies_b64}
     except Exception as exc:
-        logger.error('Playwright login failed: %s', exc)
+        logger.error('Refresh failed: %s', exc)
         raise HTTPException(500, str(exc))
