@@ -45,8 +45,8 @@
     "semantic_hash": "e90d49c28f4bbff945d7541a05714561"
   },
   "pyproject.toml": {
-    "mtime": 1783667521.7313259,
-    "ast_hash": "f573d8a1231546e9e2fab478663068db",
+    "mtime": 1783754894.9719853,
+    "ast_hash": "2fb543fe8f8c63065260fcf5c987444d",
     "semantic_hash": ""
   },
   "src/familylink/__init__.py": {
@@ -175,8 +175,8 @@
     "semantic_hash": "87d8a2f6bb20b9721ad2b99e146ac8a8"
   },
   "src/familylink_server/routers/admin.py": {
-    "mtime": 1783664758.2611496,
-    "ast_hash": "c41912b01dbbeaa240bceb3a99183583",
+    "mtime": 1783753715.5711157,
+    "ast_hash": "842be735410cf9fef53c874c84797fc3",
     "semantic_hash": ""
   },
   "src/familylink_server/routers/apps.py": {
@@ -420,13 +420,13 @@
     "semantic_hash": "c93b80de6750f50c95924e2f1affe4fd"
   },
   "README.md": {
-    "mtime": 1783667633.002975,
-    "ast_hash": "a422fb141a293f6338bf61c743edbd4d",
+    "mtime": 1783750520.066963,
+    "ast_hash": "b912975ad1b4320385c66cfda748576f",
     "semantic_hash": ""
   },
   "docker-compose.yml": {
-    "mtime": 1783668106.3047473,
-    "ast_hash": "3ceacc03972461e8bdf2339d1f44b17e",
+    "mtime": 1783753869.8066242,
+    "ast_hash": "1c9a56dbde26f478e0b7df26c41ee7a2",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-06-19-client-refactor.md": {
@@ -645,8 +645,8 @@
     "semantic_hash": ""
   },
   "src/familylink_server/cookie_refresher_app.py": {
-    "mtime": 1783746583.292741,
-    "ast_hash": "2220c136878a9e8c7ebbd38b38c5cdb4",
+    "mtime": 1783752520.2519157,
+    "ast_hash": "cff36c8397a2ce7e5b478d1fc42b880c",
     "semantic_hash": ""
   },
   "tests/server/test_auto_refresh.py": {
@@ -655,8 +655,8 @@
     "semantic_hash": ""
   },
   "tests/server/test_cookie_refresher.py": {
-    "mtime": 1783746571.93048,
-    "ast_hash": "1af2b57b0dd9da0440e0cfab29e39e74",
+    "mtime": 1783752520.2522173,
+    "ast_hash": "c41555fad08d3870770838cd7d4ff5df",
     "semantic_hash": ""
   },
   ".agents/skills/cavecrew/README.md": {
@@ -747,6 +747,31 @@
   "docs/superpowers/specs/2026-07-10-headless-chrome-auto-refresh-design.md": {
     "mtime": 1783662652.8442922,
     "ast_hash": "03157ad05ea2049160fa2e348d8293fb",
+    "semantic_hash": ""
+  },
+  "scripts/bootstrap_refresher_session.py": {
+    "mtime": 1783754202.6284378,
+    "ast_hash": "85b1c4698506ca080352019a90cb529b",
+    "semantic_hash": ""
+  },
+  "tests/scripts/test_bootstrap_refresher_session.py": {
+    "mtime": 1783754085.2985857,
+    "ast_hash": "9d824edc99c86ad3220384853747e6c3",
+    "semantic_hash": ""
+  },
+  "tests/server/test_routers_admin.py": {
+    "mtime": 1783753702.288995,
+    "ast_hash": "4372c78c3654a598ed70f57ac4cd6c03",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md": {
+    "mtime": 1783754898.7686493,
+    "ast_hash": "38c1e8be970ba5984ff1030653a48a8e",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md": {
+    "mtime": 1783750609.1285982,
+    "ast_hash": "460b8682bc50a3c64448bce11ba509a0",
     "semantic_hash": ""
   }
 }

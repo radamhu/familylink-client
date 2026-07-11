@@ -973,6 +973,66 @@
       "norm_label": "familylink"
     },
     {
+      "label": "bootstrap_refresher_session.py",
+      "file_type": "code",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scripts_bootstrap_refresher_session",
+      "community": 36,
+      "norm_label": "bootstrap_refresher_session.py"
+    },
+    {
+      "label": "_cookiejar_to_storage_state()",
+      "file_type": "code",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "scripts_bootstrap_refresher_session_cookiejar_to_storage_state",
+      "community": 36,
+      "norm_label": "_cookiejar_to_storage_state()"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "scripts_bootstrap_refresher_session_main",
+      "community": 36,
+      "norm_label": "main()"
+    },
+    {
+      "label": "One-time (or rare re-auth) bootstrap for the cookie-refresher sidecar.  Captures",
+      "file_type": "rationale",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scripts_bootstrap_refresher_session_rationale_1",
+      "community": 36,
+      "norm_label": "one-time (or rare re-auth) bootstrap for the cookie-refresher sidecar.  captures"
+    },
+    {
+      "label": "Convert browser_cookie3 cookie objects to a Playwright storage_state dict.",
+      "file_type": "rationale",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "scripts_bootstrap_refresher_session_rationale_22",
+      "community": 36,
+      "norm_label": "convert browser_cookie3 cookie objects to a playwright storage_state dict."
+    },
+    {
+      "label": "Extract cookies from browser and bootstrap the refresher sidecar.",
+      "file_type": "rationale",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "scripts_bootstrap_refresher_session_rationale_43",
+      "community": 36,
+      "norm_label": "extract cookies from browser and bootstrap the refresher sidecar."
+    },
+    {
       "label": "__init__.py",
       "file_type": "code",
       "source_file": "src/familylink/__init__.py",
@@ -1099,7 +1159,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_familylink_cli_cmd_export_cookies",
-      "community": 3,
+      "community": 132,
       "norm_label": "_cmd_export_cookies()"
     },
     {
@@ -1209,7 +1269,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "src_familylink_cli_rationale_100",
-      "community": 3,
+      "community": 132,
       "norm_label": "export google cookies for cloud/docker deployment."
     },
     {
@@ -1279,7 +1339,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_familylink_client_sessionexpirederror",
-      "community": 36,
+      "community": 28,
       "norm_label": "sessionexpirederror"
     },
     {
@@ -1439,7 +1499,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "src_familylink_client_familylink_get_time_limits",
-      "community": 36,
+      "community": 15,
       "norm_label": ".get_time_limits()"
     },
     {
@@ -1579,7 +1639,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_client_rationale_19",
-      "community": 36,
+      "community": 28,
       "norm_label": "google session has expired or been invalidated.      re-export cookies and updat"
     },
     {
@@ -1639,7 +1699,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "src_familylink_client_rationale_134",
-      "community": 36,
+      "community": 15,
       "norm_label": "get applied time limits for a child (today)."
     },
     {
@@ -1759,7 +1819,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_familylink_models_appsupervisioncapability",
-      "community": 2,
+      "community": 131,
       "norm_label": "appsupervisioncapability"
     },
     {
@@ -1769,7 +1829,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "str",
-      "community": 2,
+      "community": 131,
       "norm_label": "str"
     },
     {
@@ -1779,7 +1839,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "enum",
-      "community": 2,
+      "community": 131,
       "norm_label": "enum"
     },
     {
@@ -1789,7 +1849,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_familylink_models_adsupportstatus",
-      "community": 2,
+      "community": 131,
       "norm_label": "adsupportstatus"
     },
     {
@@ -1799,7 +1859,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_familylink_models_iapsupportstatus",
-      "community": 2,
+      "community": 131,
       "norm_label": "iapsupportstatus"
     },
     {
@@ -1809,7 +1869,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_familylink_models_appsource",
-      "community": 2,
+      "community": 131,
       "norm_label": "appsource"
     },
     {
@@ -1819,7 +1879,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_familylink_models_alwaysallowedstate",
-      "community": 2,
+      "community": 131,
       "norm_label": "alwaysallowedstate"
     },
     {
@@ -1949,7 +2009,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "src_familylink_models_appusage",
-      "community": 11,
+      "community": 133,
       "norm_label": "appusage"
     },
     {
@@ -1959,7 +2019,7 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "src_familylink_models_appusage_get_app_title",
-      "community": 11,
+      "community": 133,
       "norm_label": ".get_app_title()"
     },
     {
@@ -2029,7 +2089,7 @@
       "source_location": "L253",
       "_origin": "ast",
       "id": "src_familylink_models_membersresponse",
-      "community": 8,
+      "community": 133,
       "norm_label": "membersresponse"
     },
     {
@@ -2049,7 +2109,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_10",
-      "community": 2,
+      "community": 131,
       "norm_label": "supervision capabilities for an app."
     },
     {
@@ -2059,7 +2119,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_18",
-      "community": 2,
+      "community": 131,
       "norm_label": "ad support status for an app."
     },
     {
@@ -2069,7 +2129,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_25",
-      "community": 2,
+      "community": 131,
       "norm_label": "in-app purchase support status for an app."
     },
     {
@@ -2079,7 +2139,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_32",
-      "community": 2,
+      "community": 131,
       "norm_label": "source of the app installation."
     },
     {
@@ -2089,7 +2149,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_39",
-      "community": 2,
+      "community": 131,
       "norm_label": "state of always-allowed setting for an app."
     },
     {
@@ -2199,7 +2259,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_162",
-      "community": 11,
+      "community": 133,
       "norm_label": "app usage response model."
     },
     {
@@ -2209,7 +2269,7 @@
       "source_location": "L175",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_175",
-      "community": 11,
+      "community": 133,
       "norm_label": "get the title of an app."
     },
     {
@@ -2269,7 +2329,7 @@
       "source_location": "L254",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_254",
-      "community": 8,
+      "community": 133,
       "norm_label": "response from the members api endpoint."
     },
     {
@@ -3069,7 +3129,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux",
-      "community": 20,
+      "community": 29,
       "norm_label": "linux.py"
     },
     {
@@ -3079,7 +3139,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_linuxgroup",
-      "community": 20,
+      "community": 29,
       "norm_label": "linuxgroup"
     },
     {
@@ -3089,7 +3149,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_linuxgroup_init",
-      "community": 20,
+      "community": 29,
       "norm_label": ".__init__()"
     },
     {
@@ -3099,7 +3159,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_py_abstractasynccontextmanager",
-      "community": 20,
+      "community": 29,
       "norm_label": "abstractasynccontextmanager"
     },
     {
@@ -3109,7 +3169,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_py_asyncsession",
-      "community": 20,
+      "community": 29,
       "norm_label": "asyncsession"
     },
     {
@@ -3159,7 +3219,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_rationale_1",
-      "community": 20,
+      "community": 29,
       "norm_label": "discord /linux command group."
     },
     {
@@ -3169,7 +3229,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_rationale_25",
-      "community": 20,
+      "community": 29,
       "norm_label": "slash command group: /linux bonus."
     },
     {
@@ -3569,7 +3629,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_appblockview",
-      "community": 10,
+      "community": 31,
       "norm_label": "appblockview"
     },
     {
@@ -3689,7 +3749,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_appallowview",
-      "community": 10,
+      "community": 14,
       "norm_label": "appallowview"
     },
     {
@@ -3769,7 +3829,7 @@
       "source_location": "L227",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_deviceunlockview",
-      "community": 10,
+      "community": 14,
       "norm_label": "deviceunlockview"
     },
     {
@@ -3809,7 +3869,7 @@
       "source_location": "L273",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview",
-      "community": 11,
+      "community": 10,
       "norm_label": "summaryview"
     },
     {
@@ -3829,7 +3889,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview_lock_device",
-      "community": 11,
+      "community": 10,
       "norm_label": "._lock_device()"
     },
     {
@@ -3839,7 +3899,7 @@
       "source_location": "L318",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview_lock_device_btn",
-      "community": 11,
+      "community": 10,
       "norm_label": "._lock_device_btn()"
     },
     {
@@ -3859,7 +3919,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_19",
-      "community": 10,
+      "community": 31,
       "norm_label": "buttons shown after blocking an app: unblock and always allow."
     },
     {
@@ -3909,7 +3969,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_138",
-      "community": 10,
+      "community": 14,
       "norm_label": "button shown after always-allowing an app: remove (blocks it)."
     },
     {
@@ -3949,7 +4009,7 @@
       "source_location": "L228",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_228",
-      "community": 10,
+      "community": 14,
       "norm_label": "button shown after unlocking a device: lock."
     },
     {
@@ -3969,7 +4029,7 @@
       "source_location": "L274",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_274",
-      "community": 11,
+      "community": 10,
       "norm_label": "buttons on the daily summary embed: lock device."
     },
     {
@@ -3979,7 +4039,7 @@
       "source_location": "L294",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_294",
-      "community": 11,
+      "community": 10,
       "norm_label": "handle lock device button press."
     },
     {
@@ -4116,7 +4176,7 @@
       "label": "_to_netscape()",
       "file_type": "code",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L15",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_to_netscape",
       "community": 95,
@@ -4126,27 +4186,57 @@
       "label": "health()",
       "file_type": "code",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L29",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_health",
       "community": 86,
       "norm_label": "health()"
     },
     {
+      "label": "StorageState",
+      "file_type": "code",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "src_familylink_server_cookie_refresher_app_storagestate",
+      "community": 86,
+      "norm_label": "storagestate"
+    },
+    {
+      "label": "bootstrap()",
+      "file_type": "code",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L44",
+      "_origin": "ast",
+      "id": "src_familylink_server_cookie_refresher_app_bootstrap",
+      "community": 86,
+      "norm_label": "bootstrap()"
+    },
+    {
       "label": "_get_cookies_b64()",
       "file_type": "code",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L34",
+      "source_location": "L56",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_get_cookies_b64",
-      "community": 86,
+      "community": 137,
       "norm_label": "_get_cookies_b64()"
+    },
+    {
+      "label": "Path",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "src_familylink_server_cookie_refresher_app_py_path",
+      "community": 86,
+      "norm_label": "path"
     },
     {
       "label": "refresh()",
       "file_type": "code",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L90",
+      "source_location": "L98",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_refresh",
       "community": 86,
@@ -4166,31 +4256,51 @@
       "label": "Convert Playwright cookie dicts to Netscape cookies.txt format.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L16",
+      "source_location": "L18",
       "_origin": "ast",
-      "id": "src_familylink_server_cookie_refresher_app_rationale_16",
+      "id": "src_familylink_server_cookie_refresher_app_rationale_18",
       "community": 95,
       "norm_label": "convert playwright cookie dicts to netscape cookies.txt format."
     },
     {
-      "label": "Log into Google via headless Chromium; return base64-encoded cookies.txt.",
+      "label": "Playwright browser-context storage_state payload.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L35",
+      "source_location": "L37",
       "_origin": "ast",
-      "id": "src_familylink_server_cookie_refresher_app_rationale_35",
+      "id": "src_familylink_server_cookie_refresher_app_rationale_37",
       "community": 86,
-      "norm_label": "log into google via headless chromium; return base64-encoded cookies.txt."
+      "norm_label": "playwright browser-context storage_state payload."
     },
     {
-      "label": "Run headless Chrome login; return fresh base64 cookies.",
+      "label": "Persist a storage_state JSON to disk for /refresh to reuse.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L91",
+      "source_location": "L45",
       "_origin": "ast",
-      "id": "src_familylink_server_cookie_refresher_app_rationale_91",
+      "id": "src_familylink_server_cookie_refresher_app_rationale_45",
       "community": 86,
-      "norm_label": "run headless chrome login; return fresh base64 cookies."
+      "norm_label": "persist a storage_state json to disk for /refresh to reuse."
+    },
+    {
+      "label": "Replay a persisted Google session; return base64-encoded cookies.txt.",
+      "file_type": "rationale",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L57",
+      "_origin": "ast",
+      "id": "src_familylink_server_cookie_refresher_app_rationale_57",
+      "community": 137,
+      "norm_label": "replay a persisted google session; return base64-encoded cookies.txt."
+    },
+    {
+      "label": "Replay the persisted Google session; return fresh base64 cookies.",
+      "file_type": "rationale",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L99",
+      "_origin": "ast",
+      "id": "src_familylink_server_cookie_refresher_app_rationale_99",
+      "community": 86,
+      "norm_label": "replay the persisted google session; return fresh base64 cookies."
     },
     {
       "label": "__init__.py",
@@ -4539,7 +4649,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "fastapi",
-      "community": 6,
+      "community": 139,
       "norm_label": "fastapi"
     },
     {
@@ -4549,7 +4659,7 @@
       "source_location": "L159",
       "_origin": "ast",
       "id": "src_familylink_server_main_session_expired_handler",
-      "community": 36,
+      "community": 5,
       "norm_label": "session_expired_handler()"
     },
     {
@@ -4559,7 +4669,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_main_py_request",
-      "community": 36,
+      "community": 5,
       "norm_label": "request"
     },
     {
@@ -4569,7 +4679,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_main_py_htmlresponse",
-      "community": 36,
+      "community": 5,
       "norm_label": "htmlresponse"
     },
     {
@@ -4619,7 +4729,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "src_familylink_server_main_rationale_162",
-      "community": 36,
+      "community": 5,
       "norm_label": "return a 503 page with re-export instructions when google cookies expire."
     },
     {
@@ -4649,27 +4759,27 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_admin",
-      "community": 6,
+      "community": 134,
       "norm_label": "admin.py"
     },
     {
       "label": "RefreshCookiesRequest",
       "file_type": "code",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L17",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_server_routers_admin_refreshcookiesrequest",
-      "community": 6,
+      "community": 134,
       "norm_label": "refreshcookiesrequest"
     },
     {
       "label": "reconnect_page()",
       "file_type": "code",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L24",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "src_familylink_server_routers_admin_reconnect_page",
-      "community": 6,
+      "community": 134,
       "norm_label": "reconnect_page()"
     },
     {
@@ -4679,18 +4789,38 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_admin_py_htmlresponse",
-      "community": 6,
+      "community": 134,
       "norm_label": "htmlresponse"
     },
     {
       "label": "refresh_cookies()",
       "file_type": "code",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L82",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "src_familylink_server_routers_admin_refresh_cookies",
-      "community": 6,
+      "community": 134,
       "norm_label": "refresh_cookies()"
+    },
+    {
+      "label": "refresher_bootstrap()",
+      "file_type": "code",
+      "source_file": "src/familylink_server/routers/admin.py",
+      "source_location": "L91",
+      "_origin": "ast",
+      "id": "src_familylink_server_routers_admin_refresher_bootstrap",
+      "community": 134,
+      "norm_label": "refresher_bootstrap()"
+    },
+    {
+      "label": "Request",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "src_familylink_server_routers_admin_py_request",
+      "community": 134,
+      "norm_label": "request"
     },
     {
       "label": "Admin endpoints \u2014 protected, for operational management.",
@@ -4699,38 +4829,48 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_admin_rationale_1",
-      "community": 6,
+      "community": 134,
       "norm_label": "admin endpoints \u2014 protected, for operational management."
     },
     {
       "label": "Request body for the refresh-cookies endpoint.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L18",
+      "source_location": "L20",
       "_origin": "ast",
-      "id": "src_familylink_server_routers_admin_rationale_18",
-      "community": 6,
+      "id": "src_familylink_server_routers_admin_rationale_20",
+      "community": 134,
       "norm_label": "request body for the refresh-cookies endpoint."
     },
     {
       "label": "Reconnect page \u2014 shows the SAPISID paste form.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L27",
+      "source_location": "L29",
       "_origin": "ast",
-      "id": "src_familylink_server_routers_admin_rationale_27",
-      "community": 6,
+      "id": "src_familylink_server_routers_admin_rationale_29",
+      "community": 134,
       "norm_label": "reconnect page \u2014 shows the sapisid paste form."
     },
     {
       "label": "Hot-swap the FamilyLink client with fresh cookies. No server restart needed.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L83",
+      "source_location": "L85",
       "_origin": "ast",
-      "id": "src_familylink_server_routers_admin_rationale_83",
-      "community": 6,
+      "id": "src_familylink_server_routers_admin_rationale_85",
+      "community": 134,
       "norm_label": "hot-swap the familylink client with fresh cookies. no server restart needed."
+    },
+    {
+      "label": "Proxy a bootstrapped Playwright storage_state to the cookie-refresher sidecar.",
+      "file_type": "rationale",
+      "source_file": "src/familylink_server/routers/admin.py",
+      "source_location": "L94",
+      "_origin": "ast",
+      "id": "src_familylink_server_routers_admin_rationale_94",
+      "community": 134,
+      "norm_label": "proxy a bootstrapped playwright storage_state to the cookie-refresher sidecar."
     },
     {
       "label": "apps.py",
@@ -5149,7 +5289,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history",
-      "community": 6,
+      "community": 140,
       "norm_label": "history.py"
     },
     {
@@ -5159,7 +5299,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_history_page",
-      "community": 6,
+      "community": 140,
       "norm_label": "history_page()"
     },
     {
@@ -5169,7 +5309,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_py_request",
-      "community": 6,
+      "community": 140,
       "norm_label": "request"
     },
     {
@@ -5179,7 +5319,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_py_asyncsession",
-      "community": 6,
+      "community": 140,
       "norm_label": "asyncsession"
     },
     {
@@ -5189,7 +5329,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_py_htmlresponse",
-      "community": 6,
+      "community": 140,
       "norm_label": "htmlresponse"
     },
     {
@@ -5199,7 +5339,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_rationale_1",
-      "community": 6,
+      "community": 140,
       "norm_label": "router for the /history audit log page."
     },
     {
@@ -5209,7 +5349,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_rationale_28",
-      "community": 6,
+      "community": 140,
       "norm_label": "render the audit log history page with infinite-scroll pagination."
     },
     {
@@ -5549,7 +5689,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_members",
-      "community": 6,
+      "community": 139,
       "norm_label": "members.py"
     },
     {
@@ -5559,7 +5699,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_familylink_server_routers_members_get_members",
-      "community": 6,
+      "community": 139,
       "norm_label": "get_members()"
     },
     {
@@ -5569,7 +5709,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_members_rationale_1",
-      "community": 6,
+      "community": 139,
       "norm_label": "router for the /api/members endpoint."
     },
     {
@@ -5579,7 +5719,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_familylink_server_routers_members_rationale_16",
-      "community": 6,
+      "community": 139,
       "norm_label": "return a json list of supervised child members."
     },
     {
@@ -5589,7 +5729,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_usage",
-      "community": 6,
+      "community": 141,
       "norm_label": "usage.py"
     },
     {
@@ -5599,7 +5739,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_familylink_server_routers_usage_get_usage_today",
-      "community": 6,
+      "community": 141,
       "norm_label": "get_usage_today()"
     },
     {
@@ -5609,7 +5749,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_usage_py_asyncsession",
-      "community": 6,
+      "community": 141,
       "norm_label": "asyncsession"
     },
     {
@@ -5619,7 +5759,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_usage_rationale_1",
-      "community": 6,
+      "community": 141,
       "norm_label": "router for the /api/usage/today endpoint."
     },
     {
@@ -5629,7 +5769,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_familylink_server_routers_usage_rationale_20",
-      "community": 6,
+      "community": 141,
       "norm_label": "return the top-10 apps by usage seconds for today."
     },
     {
@@ -5989,7 +6129,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_is_fresh",
-      "community": 8,
+      "community": 133,
       "norm_label": "._is_fresh()"
     },
     {
@@ -5999,7 +6139,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_py_datetime",
-      "community": 75,
+      "community": 133,
       "norm_label": "datetime"
     },
     {
@@ -6009,7 +6149,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_get_members",
-      "community": 8,
+      "community": 133,
       "norm_label": ".get_members()"
     },
     {
@@ -6019,7 +6159,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_get_apps_and_usage",
-      "community": 8,
+      "community": 133,
       "norm_label": ".get_apps_and_usage()"
     },
     {
@@ -6089,7 +6229,7 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_get_service",
-      "community": 0,
+      "community": 68,
       "norm_label": "get_service()"
     },
     {
@@ -6159,7 +6299,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_57",
-      "community": 8,
+      "community": 133,
       "norm_label": "return family members, using the cache when still fresh."
     },
     {
@@ -6169,7 +6309,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_68",
-      "community": 8,
+      "community": 133,
       "norm_label": "return app usage for a child, using the cache when still fresh."
     },
     {
@@ -6239,7 +6379,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_132",
-      "community": 0,
+      "community": 68,
       "norm_label": "fastapi dependency \u2014 returns the singleton."
     },
     {
@@ -6403,6 +6543,86 @@
       "norm_label": "unlock all sessions on the machine.      args:         hostname: the ssh host to"
     },
     {
+      "label": "test_bootstrap_refresher_session.py",
+      "file_type": "code",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tests_scripts_test_bootstrap_refresher_session",
+      "community": 36,
+      "norm_label": "test_bootstrap_refresher_session.py"
+    },
+    {
+      "label": "_FakeCookie",
+      "file_type": "code",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "tests_scripts_test_bootstrap_refresher_session_fakecookie",
+      "community": 36,
+      "norm_label": "_fakecookie"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "tests_scripts_test_bootstrap_refresher_session_fakecookie_init",
+      "community": 36,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": "test_cookiejar_to_storage_state_filters_and_converts()",
+      "file_type": "code",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "tests_scripts_test_bootstrap_refresher_session_test_cookiejar_to_storage_state_filters_and_converts",
+      "community": 36,
+      "norm_label": "test_cookiejar_to_storage_state_filters_and_converts()"
+    },
+    {
+      "label": "test_cookiejar_to_storage_state_handles_missing_expires()",
+      "file_type": "code",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "tests_scripts_test_bootstrap_refresher_session_test_cookiejar_to_storage_state_handles_missing_expires",
+      "community": 36,
+      "norm_label": "test_cookiejar_to_storage_state_handles_missing_expires()"
+    },
+    {
+      "label": "Tests for the cookie-refresher bootstrap script's pure conversion logic.",
+      "file_type": "rationale",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tests_scripts_test_bootstrap_refresher_session_rationale_1",
+      "community": 36,
+      "norm_label": "tests for the cookie-refresher bootstrap script's pure conversion logic."
+    },
+    {
+      "label": "Only google.com cookies are kept; fields map to Playwright's schema.",
+      "file_type": "rationale",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "tests_scripts_test_bootstrap_refresher_session_rationale_15",
+      "community": 36,
+      "norm_label": "only google.com cookies are kept; fields map to playwright's schema."
+    },
+    {
+      "label": "A session cookie (expires=None/0) maps to Playwright's -1 sentinel.",
+      "file_type": "rationale",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L34",
+      "_origin": "ast",
+      "id": "tests_scripts_test_bootstrap_refresher_session_rationale_34",
+      "community": 36,
+      "norm_label": "a session cookie (expires=none/0) maps to playwright's -1 sentinel."
+    },
+    {
       "label": "__init__.py",
       "file_type": "code",
       "source_file": "tests/server/__init__.py",
@@ -6449,7 +6669,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "tests_server_test_auth_app",
-      "community": 62,
+      "community": 0,
       "norm_label": "app()"
     },
     {
@@ -6539,7 +6759,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "tests_server_test_auth_rationale_19",
-      "community": 62,
+      "community": 0,
       "norm_label": "create a fastapi test app with the auth router and a protected route."
     },
     {
@@ -8053,10 +8273,30 @@
       "norm_label": "test_cookie_refresher.py"
     },
     {
+      "label": "test_bootstrap_writes_state_file()",
+      "file_type": "code",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "tests_server_test_cookie_refresher_test_bootstrap_writes_state_file",
+      "community": 76,
+      "norm_label": "test_bootstrap_writes_state_file()"
+    },
+    {
+      "label": "test_bootstrap_forbidden_when_wrong_key()",
+      "file_type": "code",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "tests_server_test_cookie_refresher_test_bootstrap_forbidden_when_wrong_key",
+      "community": 76,
+      "norm_label": "test_bootstrap_forbidden_when_wrong_key()"
+    },
+    {
       "label": "test_to_netscape_subdomain_flag()",
       "file_type": "code",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L8",
+      "source_location": "L56",
       "_origin": "ast",
       "id": "tests_server_test_cookie_refresher_test_to_netscape_subdomain_flag",
       "community": 95,
@@ -8066,7 +8306,7 @@
       "label": "test_to_netscape_non_subdomain()",
       "file_type": "code",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L27",
+      "source_location": "L75",
       "_origin": "ast",
       "id": "tests_server_test_cookie_refresher_test_to_netscape_non_subdomain",
       "community": 95,
@@ -8076,7 +8316,7 @@
       "label": "test_to_netscape_missing_expires()",
       "file_type": "code",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L45",
+      "source_location": "L93",
       "_origin": "ast",
       "id": "tests_server_test_cookie_refresher_test_to_netscape_missing_expires",
       "community": 95,
@@ -8086,37 +8326,57 @@
       "label": "test_health_endpoint()",
       "file_type": "code",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L56",
+      "source_location": "L104",
       "_origin": "ast",
       "id": "tests_server_test_cookie_refresher_test_health_endpoint",
       "community": 76,
       "norm_label": "test_health_endpoint()"
     },
     {
-      "label": "test_refresh_missing_password()",
+      "label": "test_refresh_missing_state()",
       "file_type": "code",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L66",
+      "source_location": "L114",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_test_refresh_missing_password",
+      "id": "tests_server_test_cookie_refresher_test_refresh_missing_state",
       "community": 76,
-      "norm_label": "test_refresh_missing_password()"
+      "norm_label": "test_refresh_missing_state()"
     },
     {
-      "label": "test_refresh_missing_totp()",
+      "label": "test_get_cookies_b64_raises_when_expired()",
       "file_type": "code",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L79",
+      "source_location": "L125",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_test_refresh_missing_totp",
-      "community": 76,
-      "norm_label": "test_refresh_missing_totp()"
+      "id": "tests_server_test_cookie_refresher_test_get_cookies_b64_raises_when_expired",
+      "community": 137,
+      "norm_label": "test_get_cookies_b64_raises_when_expired()"
+    },
+    {
+      "label": "test_get_cookies_b64_includes_page_context_on_failure()",
+      "file_type": "code",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L200",
+      "_origin": "ast",
+      "id": "tests_server_test_cookie_refresher_test_get_cookies_b64_includes_page_context_on_failure",
+      "community": 137,
+      "norm_label": "test_get_cookies_b64_includes_page_context_on_failure()"
+    },
+    {
+      "label": "test_get_cookies_b64_writes_rotated_state()",
+      "file_type": "code",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L268",
+      "_origin": "ast",
+      "id": "tests_server_test_cookie_refresher_test_get_cookies_b64_writes_rotated_state",
+      "community": 137,
+      "norm_label": "test_get_cookies_b64_writes_rotated_state()"
     },
     {
       "label": "test_refresh_success()",
       "file_type": "code",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L91",
+      "source_location": "L348",
       "_origin": "ast",
       "id": "tests_server_test_cookie_refresher_test_refresh_success",
       "community": 76,
@@ -8126,37 +8386,17 @@
       "label": "test_refresh_playwright_error()",
       "file_type": "code",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L110",
+      "source_location": "L363",
       "_origin": "ast",
       "id": "tests_server_test_cookie_refresher_test_refresh_playwright_error",
       "community": 40,
       "norm_label": "test_refresh_playwright_error()"
     },
     {
-      "label": "test_get_cookies_b64_raises_when_no_sapisid()",
-      "file_type": "code",
-      "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L129",
-      "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_test_get_cookies_b64_raises_when_no_sapisid",
-      "community": 86,
-      "norm_label": "test_get_cookies_b64_raises_when_no_sapisid()"
-    },
-    {
-      "label": "test_get_cookies_b64_includes_page_context_on_failure()",
-      "file_type": "code",
-      "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L208",
-      "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_test_get_cookies_b64_includes_page_context_on_failure",
-      "community": 86,
-      "norm_label": "test_get_cookies_b64_includes_page_context_on_failure()"
-    },
-    {
       "label": "test_refresh_forbidden_when_wrong_key()",
       "file_type": "code",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L286",
+      "source_location": "L378",
       "_origin": "ast",
       "id": "tests_server_test_cookie_refresher_test_refresh_forbidden_when_wrong_key",
       "community": 76,
@@ -8166,7 +8406,7 @@
       "label": "test_refresh_allowed_when_key_matches()",
       "file_type": "code",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L302",
+      "source_location": "L391",
       "_origin": "ast",
       "id": "tests_server_test_cookie_refresher_test_refresh_allowed_when_key_matches",
       "community": 76,
@@ -8183,12 +8423,32 @@
       "norm_label": "tests for the cookie-refresher sidecar app."
     },
     {
+      "label": "POST /bootstrap writes the storage_state JSON to STATE_PATH.",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "tests_server_test_cookie_refresher_rationale_10",
+      "community": 76,
+      "norm_label": "post /bootstrap writes the storage_state json to state_path."
+    },
+    {
+      "label": "POST /bootstrap returns 403 when REFRESHER_API_KEY is set and key is wrong.",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "tests_server_test_cookie_refresher_rationale_42",
+      "community": 76,
+      "norm_label": "post /bootstrap returns 403 when refresher_api_key is set and key is wrong."
+    },
+    {
       "label": "Domains starting with '.' should use TRUE for include_subdomains.",
       "file_type": "rationale",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L9",
+      "source_location": "L57",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_9",
+      "id": "tests_server_test_cookie_refresher_rationale_57",
       "community": 95,
       "norm_label": "domains starting with '.' should use true for include_subdomains."
     },
@@ -8196,9 +8456,9 @@
       "label": "Domains not starting with '.' should use FALSE for include_subdomains.",
       "file_type": "rationale",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L28",
+      "source_location": "L76",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_28",
+      "id": "tests_server_test_cookie_refresher_rationale_76",
       "community": 95,
       "norm_label": "domains not starting with '.' should use false for include_subdomains."
     },
@@ -8206,9 +8466,9 @@
       "label": "Cookies without 'expires' key should default to expiry 0.",
       "file_type": "rationale",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L46",
+      "source_location": "L94",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_46",
+      "id": "tests_server_test_cookie_refresher_rationale_94",
       "community": 95,
       "norm_label": "cookies without 'expires' key should default to expiry 0."
     },
@@ -8216,39 +8476,59 @@
       "label": "GET /health should return 200 with status ok.",
       "file_type": "rationale",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L57",
+      "source_location": "L105",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_57",
+      "id": "tests_server_test_cookie_refresher_rationale_105",
       "community": 76,
       "norm_label": "get /health should return 200 with status ok."
     },
     {
-      "label": "POST /refresh should return 400 when FAMILYLINK_GOOGLE_PASSWORD is unset.",
+      "label": "POST /refresh returns 500 with a clear message when no state file exists.",
       "file_type": "rationale",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L67",
+      "source_location": "L115",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_67",
+      "id": "tests_server_test_cookie_refresher_rationale_115",
       "community": 76,
-      "norm_label": "post /refresh should return 400 when familylink_google_password is unset."
+      "norm_label": "post /refresh returns 500 with a clear message when no state file exists."
     },
     {
-      "label": "POST /refresh should return 400 when FAMILYLINK_TOTP_SECRET is unset.",
+      "label": "_get_cookies_b64 raises RuntimeError when navigation produces no SAPISID cookie.",
       "file_type": "rationale",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L80",
+      "source_location": "L126",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_80",
-      "community": 76,
-      "norm_label": "post /refresh should return 400 when familylink_totp_secret is unset."
+      "id": "tests_server_test_cookie_refresher_rationale_126",
+      "community": 137,
+      "norm_label": "_get_cookies_b64 raises runtimeerror when navigation produces no sapisid cookie."
+    },
+    {
+      "label": "_get_cookies_b64 error message includes page URL/title when navigation fails.",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L201",
+      "_origin": "ast",
+      "id": "tests_server_test_cookie_refresher_rationale_201",
+      "community": 137,
+      "norm_label": "_get_cookies_b64 error message includes page url/title when navigation fails."
+    },
+    {
+      "label": "_get_cookies_b64 loads from and persists back to the same state file.",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L269",
+      "_origin": "ast",
+      "id": "tests_server_test_cookie_refresher_rationale_269",
+      "community": 137,
+      "norm_label": "_get_cookies_b64 loads from and persists back to the same state file."
     },
     {
       "label": "POST /refresh should return cookies_b64 when _get_cookies_b64 succeeds.",
       "file_type": "rationale",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L92",
+      "source_location": "L349",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_92",
+      "id": "tests_server_test_cookie_refresher_rationale_349",
       "community": 76,
       "norm_label": "post /refresh should return cookies_b64 when _get_cookies_b64 succeeds."
     },
@@ -8256,39 +8536,19 @@
       "label": "POST /refresh should return 500 when Playwright login fails.",
       "file_type": "rationale",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L111",
+      "source_location": "L364",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_111",
+      "id": "tests_server_test_cookie_refresher_rationale_364",
       "community": 40,
       "norm_label": "post /refresh should return 500 when playwright login fails."
-    },
-    {
-      "label": "_get_cookies_b64 raises RuntimeError when login produces no SAPISID cookie.",
-      "file_type": "rationale",
-      "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L130",
-      "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_130",
-      "community": 86,
-      "norm_label": "_get_cookies_b64 raises runtimeerror when login produces no sapisid cookie."
-    },
-    {
-      "label": "_get_cookies_b64 error message includes page URL/title when a step fails.",
-      "file_type": "rationale",
-      "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L209",
-      "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_209",
-      "community": 86,
-      "norm_label": "_get_cookies_b64 error message includes page url/title when a step fails."
     },
     {
       "label": "POST /refresh returns 403 when REFRESHER_API_KEY is set and key is wrong.",
       "file_type": "rationale",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L287",
+      "source_location": "L379",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_287",
+      "id": "tests_server_test_cookie_refresher_rationale_379",
       "community": 76,
       "norm_label": "post /refresh returns 403 when refresher_api_key is set and key is wrong."
     },
@@ -8296,9 +8556,9 @@
       "label": "POST /refresh returns 200 when correct X-Api-Key header is sent.",
       "file_type": "rationale",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L303",
+      "source_location": "L392",
       "_origin": "ast",
-      "id": "tests_server_test_cookie_refresher_rationale_303",
+      "id": "tests_server_test_cookie_refresher_rationale_392",
       "community": 76,
       "norm_label": "post /refresh returns 200 when correct x-api-key header is sent."
     },
@@ -9673,6 +9933,126 @@
       "norm_label": "poller_loop signature accepts a notifier keyword argument."
     },
     {
+      "label": "test_routers_admin.py",
+      "file_type": "code",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin",
+      "community": 135,
+      "norm_label": "test_routers_admin.py"
+    },
+    {
+      "label": "client()",
+      "file_type": "code",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin_client",
+      "community": 139,
+      "norm_label": "client()"
+    },
+    {
+      "label": "test_refresher_bootstrap_proxies_to_sidecar()",
+      "file_type": "code",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin_test_refresher_bootstrap_proxies_to_sidecar",
+      "community": 135,
+      "norm_label": "test_refresher_bootstrap_proxies_to_sidecar()"
+    },
+    {
+      "label": "test_refresher_bootstrap_forbidden_when_wrong_key()",
+      "file_type": "code",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L44",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin_test_refresher_bootstrap_forbidden_when_wrong_key",
+      "community": 135,
+      "norm_label": "test_refresher_bootstrap_forbidden_when_wrong_key()"
+    },
+    {
+      "label": "test_refresher_bootstrap_fails_when_sidecar_not_configured()",
+      "file_type": "code",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin_test_refresher_bootstrap_fails_when_sidecar_not_configured",
+      "community": 135,
+      "norm_label": "test_refresher_bootstrap_fails_when_sidecar_not_configured()"
+    },
+    {
+      "label": "test_refresher_bootstrap_surfaces_sidecar_error()",
+      "file_type": "code",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L72",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin_test_refresher_bootstrap_surfaces_sidecar_error",
+      "community": 135,
+      "norm_label": "test_refresher_bootstrap_surfaces_sidecar_error()"
+    },
+    {
+      "label": "Tests for the /admin router's refresher-bootstrap proxy endpoint.",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin_rationale_1",
+      "community": 135,
+      "norm_label": "tests for the /admin router's refresher-bootstrap proxy endpoint."
+    },
+    {
+      "label": "Provide a TestClient with only the admin router mounted (no lifespan).",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin_rationale_13",
+      "community": 139,
+      "norm_label": "provide a testclient with only the admin router mounted (no lifespan)."
+    },
+    {
+      "label": "POST /admin/refresher-bootstrap forwards the body to the sidecar's /bootstrap.",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin_rationale_20",
+      "community": 135,
+      "norm_label": "post /admin/refresher-bootstrap forwards the body to the sidecar's /bootstrap."
+    },
+    {
+      "label": "POST /admin/refresher-bootstrap returns 403 when X-Api-Key doesn't match.",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin_rationale_45",
+      "community": 135,
+      "norm_label": "post /admin/refresher-bootstrap returns 403 when x-api-key doesn't match."
+    },
+    {
+      "label": "POST /admin/refresher-bootstrap returns 400 when COOKIE_REFRESHER_URL is unset.",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin_rationale_60",
+      "community": 135,
+      "norm_label": "post /admin/refresher-bootstrap returns 400 when cookie_refresher_url is unset."
+    },
+    {
+      "label": "POST /admin/refresher-bootstrap returns 502 with detail when the sidecar rejects",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_admin_rationale_73",
+      "community": 135,
+      "norm_label": "post /admin/refresher-bootstrap returns 502 with detail when the sidecar rejects"
+    },
+    {
       "label": "test_routers_apps.py",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
@@ -10339,7 +10719,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_linux_machines_page_requires_auth",
-      "community": 101,
+      "community": 0,
       "norm_label": "test_linux_machines_page_requires_auth()"
     },
     {
@@ -10399,7 +10779,7 @@
       "source_location": "L207",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_generate_key_requires_auth",
-      "community": 101,
+      "community": 0,
       "norm_label": "test_generate_key_requires_auth()"
     },
     {
@@ -10489,7 +10869,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_rationale_60",
-      "community": 101,
+      "community": 0,
       "norm_label": "get /linux-machines without auth returns 401."
     },
     {
@@ -10549,7 +10929,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_rationale_208",
-      "community": 101,
+      "community": 0,
       "norm_label": "post /linux-machines/generate-key without auth returns 401."
     },
     {
@@ -10909,7 +11289,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_coolify_requires_base64",
-      "community": 65,
+      "community": 132,
       "norm_label": "test_coolify_requires_base64()"
     },
     {
@@ -10919,7 +11299,7 @@
       "source_location": "L111",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_restart_requires_coolify",
-      "community": 65,
+      "community": 132,
       "norm_label": "test_restart_requires_coolify()"
     },
     {
@@ -10929,7 +11309,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_coolify_exits_on_missing_coolify_url",
-      "community": 3,
+      "community": 132,
       "norm_label": "test_coolify_exits_on_missing_coolify_url()"
     },
     {
@@ -10939,7 +11319,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_coolify_exits_on_missing_coolify_token",
-      "community": 3,
+      "community": 132,
       "norm_label": "test_coolify_exits_on_missing_coolify_token()"
     },
     {
@@ -10949,7 +11329,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_coolify_exits_on_missing_coolify_app_uuid",
-      "community": 3,
+      "community": 132,
       "norm_label": "test_coolify_exits_on_missing_coolify_app_uuid()"
     },
     {
@@ -11039,7 +11419,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_105",
-      "community": 65,
+      "community": 132,
       "norm_label": "--coolify without --base64 must exit 1 before touching browser."
     },
     {
@@ -11049,7 +11429,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_112",
-      "community": 65,
+      "community": 132,
       "norm_label": "--restart without --coolify must exit 1 before touching browser."
     },
     {
@@ -11059,7 +11439,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_119",
-      "community": 3,
+      "community": 132,
       "norm_label": "--coolify exits 1 when coolify_url is absent, before touching browser."
     },
     {
@@ -11069,7 +11449,7 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_129",
-      "community": 3,
+      "community": 132,
       "norm_label": "--coolify exits 1 when coolify_token is absent, before touching browser."
     },
     {
@@ -11079,7 +11459,7 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_139",
-      "community": 3,
+      "community": 132,
       "norm_label": "--coolify exits 1 when coolify_app_uuid is absent, before touching browser."
     },
     {
@@ -11119,7 +11499,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "tests_unit_test_client_test_get_members_raises_on_401",
-      "community": 36,
+      "community": 28,
       "norm_label": "test_get_members_raises_on_401()"
     },
     {
@@ -11129,7 +11509,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "tests_unit_test_client_test_get_members_raises_on_403",
-      "community": 36,
+      "community": 28,
       "norm_label": "test_get_members_raises_on_403()"
     },
     {
@@ -11209,7 +11589,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "tests_unit_test_client_rationale_70",
-      "community": 36,
+      "community": 28,
       "norm_label": "get_members() raises sessionexpirederror on a 401 response."
     },
     {
@@ -11219,7 +11599,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "tests_unit_test_client_rationale_77",
-      "community": 36,
+      "community": 28,
       "norm_label": "get_members() raises sessionexpirederror on a 403 response."
     },
     {
@@ -11269,7 +11649,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_test_models",
-      "community": 2,
+      "community": 138,
       "norm_label": "test_models.py"
     },
     {
@@ -11279,7 +11659,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "tests_unit_test_models_test_members_response_model_validate_alias_keys",
-      "community": 2,
+      "community": 138,
       "norm_label": "test_members_response_model_validate_alias_keys()"
     },
     {
@@ -11289,7 +11669,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "tests_unit_test_models_test_members_response_api_header_snake_case",
-      "community": 2,
+      "community": 138,
       "norm_label": "test_members_response_api_header_snake_case()"
     },
     {
@@ -11299,7 +11679,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "tests_unit_test_models_test_app_usage_model_validate_alias_keys",
-      "community": 2,
+      "community": 138,
       "norm_label": "test_app_usage_model_validate_alias_keys()"
     },
     {
@@ -11309,7 +11689,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_1",
-      "community": 2,
+      "community": 138,
       "norm_label": "tests for familylink models."
     },
     {
@@ -11319,7 +11699,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_7",
-      "community": 2,
+      "community": 138,
       "norm_label": "test membersresponse.model_validate with camelcase alias keys."
     },
     {
@@ -11329,7 +11709,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_33",
-      "community": 2,
+      "community": 138,
       "norm_label": "test nested apiheader conversion to snake_case."
     },
     {
@@ -11339,7 +11719,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_45",
-      "community": 2,
+      "community": 138,
       "norm_label": "test appusage.model_validate with camelcase alias keys."
     },
     {
@@ -12796,7 +13176,7 @@
       "label": "Troubleshooting",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L568",
+      "source_location": "L630",
       "_origin": "ast",
       "id": "readme_troubleshooting",
       "community": 63,
@@ -13881,6 +14261,96 @@
       "id": "docs_superpowers_plans_2026_07_10_headless_chrome_auto_refresh_spec_coverage_self_check",
       "community": 87,
       "norm_label": "spec coverage self-check"
+    },
+    {
+      "label": "2026-07-11-persisted-session-refresher.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_11_persisted_session_refresher",
+      "community": 136,
+      "norm_label": "2026-07-11-persisted-session-refresher.md"
+    },
+    {
+      "label": "Persisted-Session Cookie Refresher Implementation Plan",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_persisted_session_cookie_refresher_implementation_plan",
+      "community": 136,
+      "norm_label": "persisted-session cookie refresher implementation plan"
+    },
+    {
+      "label": "Global Constraints",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_global_constraints",
+      "community": 136,
+      "norm_label": "global constraints"
+    },
+    {
+      "label": "Task 1: Sidecar `POST /bootstrap` endpoint",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_1_sidecar_post_bootstrap_endpoint",
+      "community": 136,
+      "norm_label": "task 1: sidecar `post /bootstrap` endpoint"
+    },
+    {
+      "label": "Task 2: Rewrite `/refresh` to replay a persisted session instead of logging in",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L166",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_2_rewrite_refresh_to_replay_a_persisted_session_instead_of_logging_in",
+      "community": 136,
+      "norm_label": "task 2: rewrite `/refresh` to replay a persisted session instead of logging in"
+    },
+    {
+      "label": "Task 3: Main app \u2014 `POST /admin/refresher-bootstrap` proxy endpoint",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L550",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_3_main_app_post_admin_refresher_bootstrap_proxy_endpoint",
+      "community": 136,
+      "norm_label": "task 3: main app \u2014 `post /admin/refresher-bootstrap` proxy endpoint"
+    },
+    {
+      "label": "Task 4: Deployment config \u2014 volume, env var cleanup",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L735",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_4_deployment_config_volume_env_var_cleanup",
+      "community": 136,
+      "norm_label": "task 4: deployment config \u2014 volume, env var cleanup"
+    },
+    {
+      "label": "Task 5: Bootstrap script",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L819",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_5_bootstrap_script",
+      "community": 136,
+      "norm_label": "task 5: bootstrap script"
+    },
+    {
+      "label": "Task 6: Update knowledge graph and run manual verification",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L1008",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_6_update_knowledge_graph_and_run_manual_verification",
+      "community": 136,
+      "norm_label": "task 6: update knowledge graph and run manual verification"
     },
     {
       "label": "2026-06-19-web-service-architecture-design.md",
@@ -15400,6 +15870,126 @@
       "_origin": "ast",
       "id": "docs_superpowers_specs_2026_07_10_headless_chrome_auto_refresh_design_verification",
       "community": 85,
+      "norm_label": "verification"
+    },
+    {
+      "label": "2026-07-11-persisted-session-refresher-design.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design",
+      "community": 101,
+      "norm_label": "2026-07-11-persisted-session-refresher-design.md"
+    },
+    {
+      "label": "Design: Persisted-Session Cookie Refresher (replaces password+TOTP login)",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "community": 101,
+      "norm_label": "design: persisted-session cookie refresher (replaces password+totp login)"
+    },
+    {
+      "label": "Problem",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_problem",
+      "community": 101,
+      "norm_label": "problem"
+    },
+    {
+      "label": "Solution",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_solution",
+      "community": 101,
+      "norm_label": "solution"
+    },
+    {
+      "label": "Architecture",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_architecture",
+      "community": 101,
+      "norm_label": "architecture"
+    },
+    {
+      "label": "Scope",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_scope",
+      "community": 101,
+      "norm_label": "scope"
+    },
+    {
+      "label": "New Files",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_new_files",
+      "community": 101,
+      "norm_label": "new files"
+    },
+    {
+      "label": "Modified Files",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_modified_files",
+      "community": 101,
+      "norm_label": "modified files"
+    },
+    {
+      "label": "Removed",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L71",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_removed",
+      "community": 101,
+      "norm_label": "removed"
+    },
+    {
+      "label": "Key Implementation Details",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L77",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_key_implementation_details",
+      "community": 101,
+      "norm_label": "key implementation details"
+    },
+    {
+      "label": "Testing",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L87",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_testing",
+      "community": 101,
+      "norm_label": "testing"
+    },
+    {
+      "label": "Verification",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L93",
+      "_origin": "ast",
+      "id": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_verification",
+      "community": 101,
       "norm_label": "verification"
     },
     {
@@ -17530,6 +18120,100 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "scripts_bootstrap_refresher_session",
+      "target": "scripts_bootstrap_refresher_session_cookiejar_to_storage_state",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "scripts_bootstrap_refresher_session",
+      "target": "scripts_bootstrap_refresher_session_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scripts_bootstrap_refresher_session_rationale_1",
+      "target": "scripts_bootstrap_refresher_session",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "scripts_bootstrap_refresher_session_main",
+      "target": "scripts_bootstrap_refresher_session_cookiejar_to_storage_state",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "scripts_bootstrap_refresher_session_rationale_22",
+      "target": "scripts_bootstrap_refresher_session_cookiejar_to_storage_state",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session",
+      "target": "scripts_bootstrap_refresher_session_cookiejar_to_storage_state",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session_test_cookiejar_to_storage_state_filters_and_converts",
+      "target": "scripts_bootstrap_refresher_session_cookiejar_to_storage_state",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session_test_cookiejar_to_storage_state_handles_missing_expires",
+      "target": "scripts_bootstrap_refresher_session_cookiejar_to_storage_state",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/bootstrap_refresher_session.py",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "scripts_bootstrap_refresher_session_rationale_43",
+      "target": "scripts_bootstrap_refresher_session_main",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -18426,7 +19110,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L73",
+      "source_location": "L59",
       "weight": 1.0,
       "source": "src_familylink_server_cookie_refresher_app_get_cookies_b64",
       "target": "runtimeerror"
@@ -18448,7 +19132,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L118",
+      "source_location": "L367",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher_test_refresh_playwright_error",
       "target": "runtimeerror"
@@ -19973,8 +20657,18 @@
     {
       "relation": "inherits",
       "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "src_familylink_server_cookie_refresher_app_storagestate",
+      "target": "basemodel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L17",
+      "source_location": "L19",
       "weight": 1.0,
       "source": "src_familylink_server_routers_admin_refreshcookiesrequest",
       "target": "basemodel",
@@ -24390,6 +25084,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/routers/admin.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_familylink_server_routers_admin",
+      "target": "src_familylink_server_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/services/family_link.py",
       "source_location": "L10",
       "weight": 1.0,
@@ -24405,6 +25110,17 @@
       "source_location": "L14",
       "weight": 1.0,
       "source": "tests_server_test_auth",
+      "target": "src_familylink_server_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin",
       "target": "src_familylink_server_config",
       "confidence_score": 1.0
     },
@@ -24626,7 +25342,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "source": "src_familylink_server_cookie_refresher_app",
       "target": "fastapi",
@@ -24636,7 +25352,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L34",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "src_familylink_server_cookie_refresher_app",
+      "target": "src_familylink_server_cookie_refresher_app_bootstrap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L56",
       "weight": 1.0,
       "source": "src_familylink_server_cookie_refresher_app",
       "target": "src_familylink_server_cookie_refresher_app_get_cookies_b64",
@@ -24646,7 +25372,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L29",
+      "source_location": "L31",
       "weight": 1.0,
       "source": "src_familylink_server_cookie_refresher_app",
       "target": "src_familylink_server_cookie_refresher_app_health",
@@ -24656,7 +25382,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L90",
+      "source_location": "L98",
       "weight": 1.0,
       "source": "src_familylink_server_cookie_refresher_app",
       "target": "src_familylink_server_cookie_refresher_app_refresh",
@@ -24666,7 +25392,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L15",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "src_familylink_server_cookie_refresher_app",
+      "target": "src_familylink_server_cookie_refresher_app_storagestate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L17",
       "weight": 1.0,
       "source": "src_familylink_server_cookie_refresher_app",
       "target": "src_familylink_server_cookie_refresher_app_to_netscape",
@@ -24687,7 +25423,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L86",
+      "source_location": "L94",
       "weight": 1.0,
       "source": "src_familylink_server_cookie_refresher_app_get_cookies_b64",
       "target": "src_familylink_server_cookie_refresher_app_to_netscape",
@@ -24697,9 +25433,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L16",
+      "source_location": "L18",
       "weight": 1.0,
-      "source": "src_familylink_server_cookie_refresher_app_rationale_16",
+      "source": "src_familylink_server_cookie_refresher_app_rationale_18",
       "target": "src_familylink_server_cookie_refresher_app_to_netscape",
       "confidence_score": 1.0
     },
@@ -24709,7 +25445,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L52",
+      "source_location": "L100",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher_test_to_netscape_missing_expires",
       "target": "src_familylink_server_cookie_refresher_app_to_netscape"
@@ -24720,7 +25456,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L41",
+      "source_location": "L89",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher_test_to_netscape_non_subdomain",
       "target": "src_familylink_server_cookie_refresher_app_to_netscape"
@@ -24731,18 +25467,71 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L22",
+      "source_location": "L70",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher_test_to_netscape_subdomain_flag",
       "target": "src_familylink_server_cookie_refresher_app_to_netscape"
     },
     {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "src_familylink_server_cookie_refresher_app_bootstrap",
+      "target": "src_familylink_server_cookie_refresher_app_storagestate",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0,
-      "source": "src_familylink_server_cookie_refresher_app_rationale_35",
+      "source": "src_familylink_server_cookie_refresher_app_rationale_37",
+      "target": "src_familylink_server_cookie_refresher_app_storagestate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "src_familylink_server_cookie_refresher_app_bootstrap",
+      "target": "src_familylink_server_cookie_refresher_app_py_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "src_familylink_server_cookie_refresher_app_rationale_45",
+      "target": "src_familylink_server_cookie_refresher_app_bootstrap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "src_familylink_server_cookie_refresher_app_get_cookies_b64",
+      "target": "src_familylink_server_cookie_refresher_app_py_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L57",
+      "weight": 1.0,
+      "source": "src_familylink_server_cookie_refresher_app_rationale_57",
       "target": "src_familylink_server_cookie_refresher_app_get_cookies_b64",
       "confidence_score": 1.0
     },
@@ -24751,7 +25540,7 @@
       "context": "argument",
       "confidence": "INFERRED",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L113",
+      "source_location": "L107",
       "weight": 1.0,
       "source": "src_familylink_server_cookie_refresher_app_refresh",
       "target": "src_familylink_server_cookie_refresher_app_get_cookies_b64",
@@ -24763,7 +25552,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L279",
+      "source_location": "L261",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher_test_get_cookies_b64_includes_page_context_on_failure",
       "target": "src_familylink_server_cookie_refresher_app_get_cookies_b64"
@@ -24774,18 +25563,40 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L205",
+      "source_location": "L197",
       "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_test_get_cookies_b64_raises_when_no_sapisid",
+      "source": "tests_server_test_cookie_refresher_test_get_cookies_b64_raises_when_expired",
       "target": "src_familylink_server_cookie_refresher_app_get_cookies_b64"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L338",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher_test_get_cookies_b64_writes_rotated_state",
+      "target": "src_familylink_server_cookie_refresher_app_get_cookies_b64"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/cookie_refresher_app.py",
+      "source_location": "L104",
+      "weight": 1.0,
+      "source": "src_familylink_server_cookie_refresher_app_refresh",
+      "target": "src_familylink_server_cookie_refresher_app_py_path",
+      "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/cookie_refresher_app.py",
-      "source_location": "L91",
+      "source_location": "L99",
       "weight": 1.0,
-      "source": "src_familylink_server_cookie_refresher_app_rationale_91",
+      "source": "src_familylink_server_cookie_refresher_app_rationale_99",
       "target": "src_familylink_server_cookie_refresher_app_refresh",
       "confidence_score": 1.0
     },
@@ -26041,7 +26852,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "source": "src_familylink_server_routers_admin",
       "target": "fastapi",
@@ -26147,6 +26958,28 @@
       "target": "fastapi"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin",
+      "target": "fastapi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin_client",
+      "target": "fastapi"
+    },
+    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
@@ -26192,7 +27025,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L24",
+      "source_location": "L26",
       "weight": 1.0,
       "source": "src_familylink_server_routers_admin",
       "target": "src_familylink_server_routers_admin_reconnect_page",
@@ -26202,7 +27035,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L82",
+      "source_location": "L84",
       "weight": 1.0,
       "source": "src_familylink_server_routers_admin",
       "target": "src_familylink_server_routers_admin_refresh_cookies",
@@ -26212,10 +27045,20 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L17",
+      "source_location": "L19",
       "weight": 1.0,
       "source": "src_familylink_server_routers_admin",
       "target": "src_familylink_server_routers_admin_refreshcookiesrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/routers/admin.py",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "src_familylink_server_routers_admin",
+      "target": "src_familylink_server_routers_admin_refresher_bootstrap",
       "confidence_score": 1.0
     },
     {
@@ -26232,9 +27075,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L18",
+      "source_location": "L20",
       "weight": 1.0,
-      "source": "src_familylink_server_routers_admin_rationale_18",
+      "source": "src_familylink_server_routers_admin_rationale_20",
       "target": "src_familylink_server_routers_admin_refreshcookiesrequest",
       "confidence_score": 1.0
     },
@@ -26243,7 +27086,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L82",
+      "source_location": "L84",
       "weight": 1.0,
       "source": "src_familylink_server_routers_admin_refresh_cookies",
       "target": "src_familylink_server_routers_admin_refreshcookiesrequest",
@@ -26253,9 +27096,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L27",
+      "source_location": "L29",
       "weight": 1.0,
-      "source": "src_familylink_server_routers_admin_rationale_27",
+      "source": "src_familylink_server_routers_admin_rationale_29",
       "target": "src_familylink_server_routers_admin_reconnect_page",
       "confidence_score": 1.0
     },
@@ -26264,7 +27107,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L24",
+      "source_location": "L26",
       "weight": 1.0,
       "source": "src_familylink_server_routers_admin_reconnect_page",
       "target": "src_familylink_server_routers_admin_py_htmlresponse",
@@ -26274,9 +27117,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L83",
+      "source_location": "L85",
       "weight": 1.0,
-      "source": "src_familylink_server_routers_admin_rationale_83",
+      "source": "src_familylink_server_routers_admin_rationale_85",
       "target": "src_familylink_server_routers_admin_refresh_cookies",
       "confidence_score": 1.0
     },
@@ -26286,10 +27129,31 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/admin.py",
-      "source_location": "L84",
+      "source_location": "L86",
       "weight": 1.0,
       "source": "src_familylink_server_routers_admin_refresh_cookies",
       "target": "src_familylink_server_services_family_link_get_service"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/routers/admin.py",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "src_familylink_server_routers_admin_rationale_94",
+      "target": "src_familylink_server_routers_admin_refresher_bootstrap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/familylink_server/routers/admin.py",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "src_familylink_server_routers_admin_refresher_bootstrap",
+      "target": "src_familylink_server_routers_admin_py_request",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -29867,6 +30731,98 @@
       "target": "src_familylink_server_services_linux_ssh_unlock_session"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session",
+      "target": "tests_scripts_test_bootstrap_refresher_session_fakecookie",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session",
+      "target": "tests_scripts_test_bootstrap_refresher_session_test_cookiejar_to_storage_state_filters_and_converts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session",
+      "target": "tests_scripts_test_bootstrap_refresher_session_test_cookiejar_to_storage_state_handles_missing_expires",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session_rationale_1",
+      "target": "tests_scripts_test_bootstrap_refresher_session",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session_fakecookie",
+      "target": "tests_scripts_test_bootstrap_refresher_session_fakecookie_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session_test_cookiejar_to_storage_state_filters_and_converts",
+      "target": "tests_scripts_test_bootstrap_refresher_session_fakecookie",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session_test_cookiejar_to_storage_state_handles_missing_expires",
+      "target": "tests_scripts_test_bootstrap_refresher_session_fakecookie",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session_rationale_15",
+      "target": "tests_scripts_test_bootstrap_refresher_session_test_cookiejar_to_storage_state_filters_and_converts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/scripts/test_bootstrap_refresher_session.py",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "tests_scripts_test_bootstrap_refresher_session_rationale_34",
+      "target": "tests_scripts_test_bootstrap_refresher_session_test_cookiejar_to_storage_state_handles_missing_expires",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/conftest.py",
@@ -29993,7 +30949,29 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L60",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher_test_bootstrap_forbidden_when_wrong_key",
+      "target": "tests_server_test_auth_app"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher_test_bootstrap_writes_state_file",
+      "target": "tests_server_test_auth_app"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L108",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher_test_health_endpoint",
       "target": "tests_server_test_auth_app"
@@ -30004,9 +30982,9 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L73",
+      "source_location": "L119",
       "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_test_refresh_missing_password",
+      "source": "tests_server_test_cookie_refresher_test_refresh_missing_state",
       "target": "tests_server_test_auth_app"
     },
     {
@@ -30015,18 +30993,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L86",
-      "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_test_refresh_missing_totp",
-      "target": "tests_server_test_auth_app"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L122",
+      "source_location": "L371",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher_test_refresh_playwright_error",
       "target": "tests_server_test_auth_app"
@@ -30037,7 +31004,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L103",
+      "source_location": "L356",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher_test_refresh_success",
       "target": "tests_server_test_auth_app"
@@ -32346,7 +33313,27 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L208",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher",
+      "target": "tests_server_test_cookie_refresher_test_bootstrap_forbidden_when_wrong_key",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher",
+      "target": "tests_server_test_cookie_refresher_test_bootstrap_writes_state_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L200",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher",
       "target": "tests_server_test_cookie_refresher_test_get_cookies_b64_includes_page_context_on_failure",
@@ -32356,17 +33343,27 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L129",
+      "source_location": "L125",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher",
-      "target": "tests_server_test_cookie_refresher_test_get_cookies_b64_raises_when_no_sapisid",
+      "target": "tests_server_test_cookie_refresher_test_get_cookies_b64_raises_when_expired",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L56",
+      "source_location": "L268",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher",
+      "target": "tests_server_test_cookie_refresher_test_get_cookies_b64_writes_rotated_state",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L104",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher",
       "target": "tests_server_test_cookie_refresher_test_health_endpoint",
@@ -32376,7 +33373,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L302",
+      "source_location": "L391",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher",
       "target": "tests_server_test_cookie_refresher_test_refresh_allowed_when_key_matches",
@@ -32386,7 +33383,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L286",
+      "source_location": "L378",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher",
       "target": "tests_server_test_cookie_refresher_test_refresh_forbidden_when_wrong_key",
@@ -32396,27 +33393,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L66",
+      "source_location": "L114",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher",
-      "target": "tests_server_test_cookie_refresher_test_refresh_missing_password",
+      "target": "tests_server_test_cookie_refresher_test_refresh_missing_state",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L79",
-      "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher",
-      "target": "tests_server_test_cookie_refresher_test_refresh_missing_totp",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L110",
+      "source_location": "L363",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher",
       "target": "tests_server_test_cookie_refresher_test_refresh_playwright_error",
@@ -32426,7 +33413,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L91",
+      "source_location": "L348",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher",
       "target": "tests_server_test_cookie_refresher_test_refresh_success",
@@ -32436,7 +33423,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L45",
+      "source_location": "L93",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher",
       "target": "tests_server_test_cookie_refresher_test_to_netscape_missing_expires",
@@ -32446,7 +33433,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L27",
+      "source_location": "L75",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher",
       "target": "tests_server_test_cookie_refresher_test_to_netscape_non_subdomain",
@@ -32456,7 +33443,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L8",
+      "source_location": "L56",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher",
       "target": "tests_server_test_cookie_refresher_test_to_netscape_subdomain_flag",
@@ -32476,30 +33463,20 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_rationale_9",
-      "target": "tests_server_test_cookie_refresher_test_to_netscape_subdomain_flag",
+      "source": "tests_server_test_cookie_refresher_rationale_10",
+      "target": "tests_server_test_cookie_refresher_test_bootstrap_writes_state_file",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L28",
+      "source_location": "L42",
       "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_rationale_28",
-      "target": "tests_server_test_cookie_refresher_test_to_netscape_non_subdomain",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L46",
-      "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_rationale_46",
-      "target": "tests_server_test_cookie_refresher_test_to_netscape_missing_expires",
+      "source": "tests_server_test_cookie_refresher_rationale_42",
+      "target": "tests_server_test_cookie_refresher_test_bootstrap_forbidden_when_wrong_key",
       "confidence_score": 1.0
     },
     {
@@ -32509,6 +33486,36 @@
       "source_location": "L57",
       "weight": 1.0,
       "source": "tests_server_test_cookie_refresher_rationale_57",
+      "target": "tests_server_test_cookie_refresher_test_to_netscape_subdomain_flag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher_rationale_76",
+      "target": "tests_server_test_cookie_refresher_test_to_netscape_non_subdomain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher_rationale_94",
+      "target": "tests_server_test_cookie_refresher_test_to_netscape_missing_expires",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher_rationale_105",
       "target": "tests_server_test_cookie_refresher_test_health_endpoint",
       "confidence_score": 1.0
     },
@@ -32516,59 +33523,29 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L67",
+      "source_location": "L115",
       "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_rationale_67",
-      "target": "tests_server_test_cookie_refresher_test_refresh_missing_password",
+      "source": "tests_server_test_cookie_refresher_rationale_115",
+      "target": "tests_server_test_cookie_refresher_test_refresh_missing_state",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L80",
+      "source_location": "L126",
       "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_rationale_80",
-      "target": "tests_server_test_cookie_refresher_test_refresh_missing_totp",
+      "source": "tests_server_test_cookie_refresher_rationale_126",
+      "target": "tests_server_test_cookie_refresher_test_get_cookies_b64_raises_when_expired",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L92",
+      "source_location": "L201",
       "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_rationale_92",
-      "target": "tests_server_test_cookie_refresher_test_refresh_success",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L111",
-      "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_rationale_111",
-      "target": "tests_server_test_cookie_refresher_test_refresh_playwright_error",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L130",
-      "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_rationale_130",
-      "target": "tests_server_test_cookie_refresher_test_get_cookies_b64_raises_when_no_sapisid",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L209",
-      "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_rationale_209",
+      "source": "tests_server_test_cookie_refresher_rationale_201",
       "target": "tests_server_test_cookie_refresher_test_get_cookies_b64_includes_page_context_on_failure",
       "confidence_score": 1.0
     },
@@ -32576,9 +33553,39 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L287",
+      "source_location": "L269",
       "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_rationale_287",
+      "source": "tests_server_test_cookie_refresher_rationale_269",
+      "target": "tests_server_test_cookie_refresher_test_get_cookies_b64_writes_rotated_state",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L349",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher_rationale_349",
+      "target": "tests_server_test_cookie_refresher_test_refresh_success",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L364",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher_rationale_364",
+      "target": "tests_server_test_cookie_refresher_test_refresh_playwright_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_cookie_refresher.py",
+      "source_location": "L379",
+      "weight": 1.0,
+      "source": "tests_server_test_cookie_refresher_rationale_379",
       "target": "tests_server_test_cookie_refresher_test_refresh_forbidden_when_wrong_key",
       "confidence_score": 1.0
     },
@@ -32586,9 +33593,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_cookie_refresher.py",
-      "source_location": "L303",
+      "source_location": "L392",
       "weight": 1.0,
-      "source": "tests_server_test_cookie_refresher_rationale_303",
+      "source": "tests_server_test_cookie_refresher_rationale_392",
       "target": "tests_server_test_cookie_refresher_test_refresh_allowed_when_key_matches",
       "confidence_score": 1.0
     },
@@ -34376,6 +35383,116 @@
       "weight": 1.0,
       "source": "tests_server_test_main_rationale_94",
       "target": "tests_server_test_main_test_poller_loop_accepts_notifier_kwarg",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin",
+      "target": "tests_server_test_routers_admin_client",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin",
+      "target": "tests_server_test_routers_admin_test_refresher_bootstrap_fails_when_sidecar_not_configured",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin",
+      "target": "tests_server_test_routers_admin_test_refresher_bootstrap_forbidden_when_wrong_key",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin",
+      "target": "tests_server_test_routers_admin_test_refresher_bootstrap_proxies_to_sidecar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin",
+      "target": "tests_server_test_routers_admin_test_refresher_bootstrap_surfaces_sidecar_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin_rationale_1",
+      "target": "tests_server_test_routers_admin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin_rationale_13",
+      "target": "tests_server_test_routers_admin_client",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin_rationale_20",
+      "target": "tests_server_test_routers_admin_test_refresher_bootstrap_proxies_to_sidecar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin_rationale_45",
+      "target": "tests_server_test_routers_admin_test_refresher_bootstrap_forbidden_when_wrong_key",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin_rationale_60",
+      "target": "tests_server_test_routers_admin_test_refresher_bootstrap_fails_when_sidecar_not_configured",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_admin.py",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_admin_rationale_73",
+      "target": "tests_server_test_routers_admin_test_refresher_bootstrap_surfaces_sidecar_error",
       "confidence_score": 1.0
     },
     {
@@ -38076,7 +39193,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L568",
+      "source_location": "L630",
       "weight": 1.0,
       "source": "readme_server_deployment",
       "target": "readme_troubleshooting",
@@ -39060,6 +40177,86 @@
       "weight": 1.0,
       "source": "docs_superpowers_plans_2026_07_10_headless_chrome_auto_refresh_global_constraints",
       "target": "docs_superpowers_plans_2026_07_10_headless_chrome_auto_refresh_task_6_wire_try_auto_refresh_into_health_check_loop",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_11_persisted_session_refresher",
+      "target": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_persisted_session_cookie_refresher_implementation_plan",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_persisted_session_cookie_refresher_implementation_plan",
+      "target": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_global_constraints",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_global_constraints",
+      "target": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_1_sidecar_post_bootstrap_endpoint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L166",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_global_constraints",
+      "target": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_2_rewrite_refresh_to_replay_a_persisted_session_instead_of_logging_in",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L550",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_global_constraints",
+      "target": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_3_main_app_post_admin_refresher_bootstrap_proxy_endpoint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L735",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_global_constraints",
+      "target": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_4_deployment_config_volume_env_var_cleanup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L819",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_global_constraints",
+      "target": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_5_bootstrap_script",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-11-persisted-session-refresher.md",
+      "source_location": "L1008",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_global_constraints",
+      "target": "docs_superpowers_plans_2026_07_11_persisted_session_refresher_task_6_update_knowledge_graph_and_run_manual_verification",
       "confidence_score": 1.0
     },
     {
@@ -40493,6 +41690,116 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design",
+      "target": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "target": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_architecture",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L77",
+      "weight": 1.0,
+      "source": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "target": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_key_implementation_details",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "target": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_modified_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "target": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_new_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "target": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_problem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "target": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_removed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "target": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_scope",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "target": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_solution",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "target": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_testing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/specs/2026-07-11-persisted-session-refresher-design.md",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_design_persisted_session_cookie_refresher_replaces_password_totp_login",
+      "target": "docs_superpowers_specs_2026_07_11_persisted_session_refresher_design_verification",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
@@ -40809,5 +42116,5 @@
       "source_file": "docs/superpowers/specs/2026-06-30-oauth-bearer-auth-resilience-design.md"
     }
   ],
-  "built_at_commit": "b0bb80c57ed10c33ff7515263c1abf61938d6e5c"
+  "built_at_commit": "2c446714bb45d9dc285bfeb10f896d5f35355cd4"
 }
