@@ -1,0 +1,109 @@
+"""Background asyncio task that force-blocks apps Google fails to enforce daily limits on."""
+
+from __future__ import annotations
+
+import logging
+from datetime import UTC, date, datetime
+from typing import TYPE_CHECKING
+
+from sqlalchemy import select
+
+from familylink_server.db.models import AppConfig, AuditLog
+from familylink_server.db.session import make_session
+
+if TYPE_CHECKING:
+    from familylink.models import AppUsage
+    from familylink_server.services.discord_notifier import DiscordNotifier
+    from familylink_server.services.family_link import FamilyLinkService
+
+logger = logging.getLogger(__name__)
+
+POLL_INTERVAL = 300
+
+
+def _usage_minutes_by_package(usage: AppUsage, today: date) -> dict[str, float]:
+    """Sum today's per-package usage, in minutes, from raw usage sessions."""
+    totals: dict[str, float] = {}
+    for session in usage.app_usage_sessions:
+        if (session.date.year, session.date.month, session.date.day) != (
+            today.year,
+            today.month,
+            today.day,
+        ):
+            continue
+        package = session.app_id.android_app_package_name
+        totals[package] = totals.get(package, 0.0) + float(session.usage) / 60
+    return totals
+
+
+async def enforce_child(
+    child_id: str,
+    svc: FamilyLinkService,
+    notifier: DiscordNotifier | None = None,
+) -> None:
+    """Block/restore one child's opted-in apps based on live Google usage vs. limit."""
+    today = date.today()
+    async with make_session() as session:
+        result = await session.execute(
+            select(AppConfig).where(
+                AppConfig.child_id == child_id,
+                AppConfig.auto_block_enabled.is_(True),
+            )
+        )
+        configs = result.scalars().all()
+        if not configs:
+            return
+
+        usage = await svc.get_apps_and_usage(child_id, bypass_cache=True)
+        usage_by_package = _usage_minutes_by_package(usage, today)
+        apps_by_package = {a.package_name: a for a in usage.apps}
+
+        for config in configs:
+            app = apps_by_package.get(config.package_name)
+            if app is None or app.supervision_setting.usage_limit is None:
+                continue
+            limit_mins = app.supervision_setting.usage_limit.daily_usage_limit_mins
+
+            if (
+                config.auto_blocked_at is not None
+                and config.auto_blocked_at.date() < today
+            ):
+                await svc.set_app_limit(config.package_name, limit_mins, child_id)
+                config.auto_blocked_at = None
+                session.add(
+                    AuditLog(
+                        child_id=child_id,
+                        action='auto_unblock',
+                        target=config.package_name,
+                        new_value=f'{limit_mins} min',
+                        occurred_at=datetime.now(UTC),
+                    )
+                )
+                if notifier:
+                    await notifier.notify_change(
+                        'auto_unblock', child_id, config.package_name, 'enforcer'
+                    )
+                continue
+
+            bonus = config.bonus_mins if config.bonus_date == today else 0
+            effective_limit = limit_mins + bonus
+            usage_mins = usage_by_package.get(config.package_name, 0.0)
+
+            if usage_mins >= effective_limit and config.auto_blocked_at is None:
+                await svc.block_app(config.package_name, child_id)
+                config.auto_blocked_at = datetime.now(UTC)
+                session.add(
+                    AuditLog(
+                        child_id=child_id,
+                        action='auto_block',
+                        target=config.package_name,
+                        new_value=f'{usage_mins:.0f}/{effective_limit} min',
+                        occurred_at=datetime.now(UTC),
+                    )
+                )
+                if notifier:
+                    await notifier.notify_change(
+                        'auto_block', child_id, config.package_name, 'enforcer'
+                    )
+
+        await session.commit()
