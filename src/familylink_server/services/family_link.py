@@ -55,13 +55,16 @@ class FamilyLinkService:
         self._members_cache = (result, datetime.now(UTC))
         return result
 
-    async def get_apps_and_usage(self, child_id: str) -> AppUsage:
+    async def get_apps_and_usage(
+        self, child_id: str, bypass_cache: bool = False
+    ) -> AppUsage:
         """Return app usage for a child, using the cache when still fresh."""
         if not hasattr(self, '_usage_cache'):
             self._usage_cache: dict[str, tuple[AppUsage, datetime]] = {}
-        cached = self._usage_cache.get(child_id)
-        if cached and self._is_fresh(cached[1]):
-            return cached[0]
+        if not bypass_cache:
+            cached = self._usage_cache.get(child_id)
+            if cached and self._is_fresh(cached[1]):
+                return cached[0]
         result = await asyncio.to_thread(self._client.get_apps_and_usage, child_id)
         self._usage_cache[child_id] = (result, datetime.now(UTC))
         return result

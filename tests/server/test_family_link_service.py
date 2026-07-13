@@ -56,3 +56,16 @@ async def test_unlock_device_delegates_to_client(service, mock_client):
     mock_client.unlock_device.assert_called_once_with(
         device_id='dev1', account_id='child1'
     )
+
+
+async def test_get_apps_and_usage_bypass_cache_ignores_fresh_cache(mock_client):
+    """bypass_cache=True calls the client even when a fresh cache entry exists."""
+    svc = FamilyLinkService.__new__(FamilyLinkService)
+    svc._client = mock_client
+    svc._ttl = 900
+    svc._usage_cache = {}
+
+    await svc.get_apps_and_usage('child1')
+    await svc.get_apps_and_usage('child1', bypass_cache=True)
+
+    assert mock_client.get_apps_and_usage.call_count == 2
