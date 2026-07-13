@@ -520,7 +520,11 @@ def test_grant_bonus_stacks_within_same_day():
     mock_session.commit = AsyncMock()
 
     mock_svc = MagicMock()
-    mock_svc.get_apps_and_usage = AsyncMock(return_value=_make_usage())
+    mock_svc.get_apps_and_usage = AsyncMock(
+        return_value=_make_usage(
+            _make_app_mock('YouTube', 'com.google.android.youtube', limit_mins=30)
+        )
+    )
     mock_svc.set_app_limit = AsyncMock()
 
     from familylink_server.main import app
@@ -568,7 +572,11 @@ def test_grant_bonus_resets_on_new_day():
     mock_session.commit = AsyncMock()
 
     mock_svc = MagicMock()
-    mock_svc.get_apps_and_usage = AsyncMock(return_value=_make_usage())
+    mock_svc.get_apps_and_usage = AsyncMock(
+        return_value=_make_usage(
+            _make_app_mock('YouTube', 'com.google.android.youtube', limit_mins=30)
+        )
+    )
     mock_svc.set_app_limit = AsyncMock()
 
     from familylink_server.main import app
@@ -637,6 +645,35 @@ def test_grant_bonus_rejects_non_preset_minutes():
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 400
+    mock_session.commit.assert_not_awaited()
+
+
+def test_grant_bonus_rejects_unknown_package():
+    """POST /apps/{package}/bonus for a package not found on the child returns 404."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(
+        return_value=_make_usage(
+            _make_app_mock('YouTube', 'com.google.android.youtube', limit_mins=30)
+        )
+    )
+    mock_session = AsyncMock()
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: mock_session
+    try:
+        client = TestClient(app)
+        resp = client.post(
+            '/apps/com.nonexistent.app/bonus',
+            data={'child_id': 'child1', 'minutes': '15'},
+            cookies={'fl_session': _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 404
     mock_session.commit.assert_not_awaited()
 
 

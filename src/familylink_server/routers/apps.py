@@ -297,6 +297,12 @@ async def grant_bonus(
         raise HTTPException(
             status_code=400, detail='minutes must be one of 15, 30, or 60'
         )
+    usage = await svc.get_apps_and_usage(child_id)
+    app_match = next((a for a in usage.apps if a.package_name == package), None)
+    if app_match is None:
+        raise HTTPException(
+            status_code=404, detail=f'{package!r} not found for this child.'
+        )
     config = await get_or_create_app_config(session, child_id, package)
     today = date.today()
     if config.bonus_date != today:
@@ -306,11 +312,9 @@ async def grant_bonus(
         config.bonus_mins += minutes
 
     if config.auto_blocked_at is not None:
-        usage = await svc.get_apps_and_usage(child_id)
-        app_match = next((a for a in usage.apps if a.package_name == package), None)
         base_limit = (
             app_match.supervision_setting.usage_limit.daily_usage_limit_mins
-            if app_match is not None and app_match.supervision_setting.usage_limit
+            if app_match.supervision_setting.usage_limit
             else 0
         )
         await svc.set_app_limit(package, base_limit, child_id)
