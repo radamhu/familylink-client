@@ -21,12 +21,13 @@ def _make_config(
     return cfg
 
 
-def _make_app(package_name='com.example.app', limit_mins=30):
+def _make_app(package_name='com.example.app', limit_mins=30, hidden=False):
     app = MagicMock()
     app.package_name = package_name
     app.supervision_setting.usage_limit = (
         MagicMock(daily_usage_limit_mins=limit_mins) if limit_mins is not None else None
     )
+    app.supervision_setting.hidden = hidden
     return app
 
 
@@ -109,6 +110,32 @@ async def test_enforce_child_does_not_block_when_under_limit():
 
     mock_svc.block_app.assert_not_awaited()
     assert config.auto_blocked_at is None
+
+
+async def test_enforce_child_does_not_claim_ownership_of_manually_blocked_app():
+    """App already hidden (parent's manual block) and over limit -> enforcer must not
+    call block_app or set auto_blocked_at, since it never blocked the app itself.
+    """
+    from familylink_server.services.app_enforcer import enforce_child
+
+    config = _make_config(auto_blocked_at=None)
+    usage = _make_usage(
+        [_make_app(limit_mins=30, hidden=True)],
+        [_make_usage_session(usage_seconds=45 * 60)],
+    )
+    mock_ctx, mock_session = _make_session_ctx([config])
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.block_app = AsyncMock()
+
+    with patch(
+        'familylink_server.services.app_enforcer.make_session', return_value=mock_ctx
+    ):
+        await enforce_child('child1', mock_svc)
+
+    mock_svc.block_app.assert_not_awaited()
+    assert config.auto_blocked_at is None
+    mock_session.commit.assert_awaited_once()
 
 
 async def test_enforce_child_skips_when_no_google_limit():
@@ -293,3 +320,51 @@ async def test_app_enforcer_loop_calls_enforce_child_for_each_distinct_child():
 
     mock_enforce.assert_any_await('child1', mock_svc, notifier=None)
     mock_enforce.assert_any_await('child2', mock_svc, notifier=None)
+
+
+async def test_app_enforcer_loop_logs_and_continues_when_one_child_raises():
+    """One child's enforce_child raising must not stop the loop or block the other child;
+    the failure must be logged via logger.exception.
+    """
+    from familylink_server.services import app_enforcer
+
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalars.return_value.all.return_value = ['child1', 'child2']
+    mock_session = AsyncMock()
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
+    mock_ctx = MagicMock()
+    mock_ctx.__aenter__ = AsyncMock(return_value=mock_session)
+    mock_ctx.__aexit__ = AsyncMock(return_value=False)
+
+    calls = []
+
+    async def _enforce_side_effect(child_id, svc, notifier=None):
+        calls.append(child_id)
+        if child_id == 'child1':
+            raise RuntimeError('boom')
+
+    mock_enforce = AsyncMock(side_effect=_enforce_side_effect)
+    mock_svc = MagicMock()
+
+    async def _raise_cancelled(*args, **kwargs):
+        raise asyncio.CancelledError()
+
+    with (
+        patch(
+            'familylink_server.services.app_enforcer.make_session',
+            return_value=mock_ctx,
+        ),
+        patch('familylink_server.services.app_enforcer.enforce_child', mock_enforce),
+        patch(
+            'familylink_server.services.app_enforcer.asyncio.sleep',
+            side_effect=_raise_cancelled,
+        ),
+        patch.object(app_enforcer.logger, 'exception') as mock_log_exception,
+    ):
+        with pytest.raises(asyncio.CancelledError):
+            await app_enforcer.app_enforcer_loop(mock_svc)
+
+    # Both children were attempted despite child1 raising.
+    assert set(calls) == {'child1', 'child2'}
+    # The failure was logged, not silently swallowed.
+    mock_log_exception.assert_called_once()

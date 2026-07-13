@@ -592,6 +592,54 @@ def test_grant_bonus_resets_on_new_day():
     assert existing.bonus_date == dt.date.today()
 
 
+def test_grant_bonus_rejects_negative_minutes():
+    """POST /apps/{package}/bonus with minutes=-15 returns 400, not applied."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    mock_svc = MagicMock()
+    mock_session = AsyncMock()
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: mock_session
+    try:
+        client = TestClient(app)
+        resp = client.post(
+            '/apps/com.google.android.youtube/bonus',
+            data={'child_id': 'child1', 'minutes': '-15'},
+            cookies={'fl_session': _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 400
+    mock_session.commit.assert_not_awaited()
+
+
+def test_grant_bonus_rejects_non_preset_minutes():
+    """POST /apps/{package}/bonus with minutes=45 (not a 15/30/60 preset) returns 400."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    mock_svc = MagicMock()
+    mock_session = AsyncMock()
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: mock_session
+    try:
+        client = TestClient(app)
+        resp = client.post(
+            '/apps/com.google.android.youtube/bonus',
+            data={'child_id': 'child1', 'minutes': '45'},
+            cookies={'fl_session': _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 400
+    mock_session.commit.assert_not_awaited()
+
+
 def test_apps_page_shows_bonus_buttons_only_when_auto_blocked():
     """Bonus buttons appear on an auto-blocked row and not otherwise."""
     from familylink_server.db.models import AppConfig

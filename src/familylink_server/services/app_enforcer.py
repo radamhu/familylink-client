@@ -90,7 +90,11 @@ async def enforce_child(
             effective_limit = limit_mins + bonus
             usage_mins = usage_by_package.get(config.package_name, 0.0)
 
-            if usage_mins >= effective_limit and config.auto_blocked_at is None:
+            if (
+                usage_mins >= effective_limit
+                and config.auto_blocked_at is None
+                and not app.supervision_setting.hidden
+            ):
                 await svc.block_app(config.package_name, child_id)
                 config.auto_blocked_at = datetime.now(UTC)
                 session.add(
@@ -124,13 +128,18 @@ async def app_enforcer_loop(
                 )
                 child_ids = result.scalars().all()
 
-            await asyncio.gather(
+            results = await asyncio.gather(
                 *[
                     enforce_child(child_id, svc, notifier=notifier)
                     for child_id in child_ids
                 ],
                 return_exceptions=True,
             )
+            for child_id, outcome in zip(child_ids, results, strict=True):
+                if isinstance(outcome, Exception):
+                    logger.exception(
+                        'enforce_child failed for child %s', child_id, exc_info=outcome
+                    )
         except Exception:
             logger.exception('App enforcer cycle failed')
         await asyncio.sleep(POLL_INTERVAL)

@@ -3,7 +3,7 @@
 from datetime import UTC, date, datetime
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, Form, Request
+from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
@@ -18,6 +18,8 @@ from familylink_server.services.family_link import FamilyLinkService, get_servic
 
 router = APIRouter(tags=['apps'])
 templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / 'templates'))
+
+VALID_BONUS_MINUTES = {15, 30, 60}
 
 
 async def _child_name(svc: FamilyLinkService, child_id: str) -> str:
@@ -308,6 +310,10 @@ async def grant_bonus(
     session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> HTMLResponse:
     """Grant bonus minutes to an auto-blocked app, unblocking it immediately."""
+    if minutes not in VALID_BONUS_MINUTES:
+        raise HTTPException(
+            status_code=400, detail='minutes must be one of 15, 30, or 60'
+        )
     config = await _get_or_create_app_config(session, child_id, package)
     today = date.today()
     if config.bonus_date != today:
