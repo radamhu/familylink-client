@@ -165,8 +165,8 @@
     "semantic_hash": "06ea69ab580d0b5ce8ddabd74d4b8a80"
   },
   "src/familylink_server/main.py": {
-    "mtime": 1783928104.109466,
-    "ast_hash": "9db7be3aac152e3788cd715798392127",
+    "mtime": 1783778531.9368122,
+    "ast_hash": "ae5d73bd3cda259dcbc24ed9783e0991",
     "semantic_hash": ""
   },
   "src/familylink_server/routers/__init__.py": {
@@ -180,8 +180,8 @@
     "semantic_hash": ""
   },
   "src/familylink_server/routers/apps.py": {
-    "mtime": 1783928595.9022405,
-    "ast_hash": "0973aeb6ecdb93c38657678c0b4391af",
+    "mtime": 1783664730.721284,
+    "ast_hash": "ef345e849770a78e9da6087b276c8c99",
     "semantic_hash": ""
   },
   "src/familylink_server/routers/dashboard.py": {
@@ -325,8 +325,8 @@
     "semantic_hash": ""
   },
   "tests/server/test_routers_apps.py": {
-    "mtime": 1783928595.902587,
-    "ast_hash": "064ac8c06bed2275456b15c678d3e9aa",
+    "mtime": 1783664730.7253854,
+    "ast_hash": "12fed343ab0ada94b9ea3915cfe853b5",
     "semantic_hash": ""
   },
   "tests/server/test_routers_dashboard.py": {
@@ -340,8 +340,8 @@
     "semantic_hash": ""
   },
   "tests/server/test_routers_discord.py": {
-    "mtime": 1783928662.5342991,
-    "ast_hash": "1fe5fbbff9644b06f3fa668a9e4a063c",
+    "mtime": 1783664730.7247164,
+    "ast_hash": "07a0215bd7b6c3ef11cd8a6dbfa8396e",
     "semantic_hash": ""
   },
   "tests/server/test_routers_linux_machines.py": {
@@ -570,9 +570,9 @@
     "semantic_hash": "d2c8932f63b75ff389f4b76bb33f727f"
   },
   "src/familylink_server/templates/partials/app_row.html": {
-    "mtime": 1783928595.9023972,
-    "ast_hash": "e0fdba89735f2cc77764035685c5668e",
-    "semantic_hash": ""
+    "mtime": 1781879288.837386,
+    "ast_hash": "5944333648c64b1d43e86b2e815ebe55",
+    "semantic_hash": "5944333648c64b1d43e86b2e815ebe55"
   },
   "src/familylink_server/templates/partials/child_expanded.html": {
     "mtime": 1782831406.9555757,
@@ -775,13 +775,13 @@
     "semantic_hash": ""
   },
   "src/familylink_server/services/app_enforcer.py": {
-    "mtime": 1783928104.1097457,
-    "ast_hash": "b2f310986ff3d9961efe0f0f8479364e",
+    "mtime": 1783927604.7296803,
+    "ast_hash": "b999cfb0dfb30185a4c476947c05bf1b",
     "semantic_hash": ""
   },
   "tests/server/test_app_enforcer.py": {
-    "mtime": 1783928104.1098957,
-    "ast_hash": "cbabeca109ea0a77170ca489c1cc38b2",
+    "mtime": 1783927639.3538404,
+    "ast_hash": "e1f7814ef368267a56b52a06181079c9",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-07-13-auto-block-overused-apps.md": {
