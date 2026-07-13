@@ -41,6 +41,14 @@ def _make_client(mock_svc):
     return client
 
 
+def _empty_config_session():
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalars.return_value.all.return_value = []
+    mock_session = AsyncMock()
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
+    return mock_session
+
+
 def test_apps_page_returns_200():
     """GET /apps with a valid session returns 200 and app titles."""
     mock_svc = MagicMock()
@@ -67,11 +75,13 @@ def test_apps_page_returns_200():
     from familylink_server.services.family_link import get_service
 
     app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: _empty_config_session()
     try:
         client = TestClient(app)
         resp = client.get('/apps', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     assert 'YouTube' in resp.text
 
@@ -83,6 +93,9 @@ def test_set_limit_returns_partial(monkeypatch):
     mock_session = AsyncMock()
     mock_session.add = MagicMock()
     mock_session.commit = AsyncMock()
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalar_one_or_none.return_value = None
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
     from familylink_server.main import app
     from familylink_server.services.family_link import get_service
 
@@ -168,11 +181,13 @@ def test_apps_page_shows_child_tabs_for_multiple_children():
     from familylink_server.services.family_link import get_service
 
     app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: _empty_config_session()
     try:
         client = TestClient(app)
         resp = client.get('/apps', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     assert 'Emma' in resp.text
     assert 'Lucas' in resp.text
@@ -198,11 +213,13 @@ def test_apps_page_child_param_selects_correct_child():
     from familylink_server.services.family_link import get_service
 
     app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: _empty_config_session()
     try:
         client = TestClient(app)
         resp = client.get('/apps?child=child2', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     mock_svc.get_apps_and_usage.assert_called_once_with('child2')
 
@@ -222,11 +239,13 @@ def test_apps_page_invalid_child_falls_back_to_first():
     from familylink_server.services.family_link import get_service
 
     app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: _empty_config_session()
     try:
         client = TestClient(app)
         resp = client.get('/apps?child=unknown-id', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     mock_svc.get_apps_and_usage.assert_called_once_with('child1')
 
@@ -246,11 +265,13 @@ def test_apps_page_single_child_no_tab_links():
     from familylink_server.services.family_link import get_service
 
     app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: _empty_config_session()
     try:
         client = TestClient(app)
         resp = client.get('/apps', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     # The child tab navigation should not render for single child
     # but filter links still include child= parameter
@@ -286,11 +307,136 @@ def test_apps_page_kid_switcher_shows_avatar():
     mock_svc.auth_failed = False
 
     app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: _empty_config_session()
     try:
         client = TestClient(app)
         resp = client.get('/apps', cookies={'fl_session': _cookie()})
     finally:
         app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     assert '#a855f7' in resp.text  # first child color
     assert '#3b82f6' in resp.text  # second child color
+
+
+def test_apps_page_shows_auto_block_checkbox_for_limited_app():
+    """A 'limited' app row includes the auto-block checkbox, checked when opted in."""
+    from familylink_server.db.models import AppConfig
+
+    mock_svc = MagicMock()
+    mock_svc.get_members = AsyncMock(
+        return_value=MagicMock(members=[_make_member('child1', 'Emma')])
+    )
+    mock_svc.get_apps_and_usage = AsyncMock(
+        return_value=_make_usage(
+            _make_app_mock('YouTube', 'com.google.android.youtube', limit_mins=30)
+        )
+    )
+    config = AppConfig(
+        child_id='child1',
+        app_name='com.google.android.youtube',
+        package_name='com.google.android.youtube',
+        auto_block_enabled=True,
+    )
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalars.return_value.all.return_value = [config]
+    mock_session = AsyncMock()
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: mock_session
+    try:
+        client = TestClient(app)
+        resp = client.get('/apps', cookies={'fl_session': _cookie()})
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 200
+    assert 'Auto-block on overuse' in resp.text
+    assert 'checked' in resp.text
+
+
+def test_apps_page_hides_auto_block_checkbox_for_blocked_app():
+    """A 'blocked' app row does not include the auto-block checkbox."""
+    mock_svc = MagicMock()
+    mock_svc.get_members = AsyncMock(
+        return_value=MagicMock(members=[_make_member('child1', 'Emma')])
+    )
+    mock_svc.get_apps_and_usage = AsyncMock(
+        return_value=_make_usage(
+            _make_app_mock('YouTube', 'com.google.android.youtube', hidden=True)
+        )
+    )
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: _empty_config_session()
+    try:
+        client = TestClient(app)
+        resp = client.get('/apps', cookies={'fl_session': _cookie()})
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 200
+    assert 'Auto-block on overuse' not in resp.text
+
+
+def test_set_auto_block_enables_creates_new_appconfig_row():
+    """POST /apps/{package}/auto-block with enabled=true creates a row and returns 200."""
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalar_one_or_none.return_value = None
+    mock_session = AsyncMock()
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
+    mock_session.add = MagicMock()
+    mock_session.flush = AsyncMock()
+    mock_session.commit = AsyncMock()
+    from familylink_server.main import app
+
+    app.dependency_overrides[get_session] = lambda: mock_session
+    try:
+        client = TestClient(app)
+        resp = client.post(
+            '/apps/com.google.android.youtube/auto-block',
+            data={'child_id': 'child1', 'limit_mins': '30', 'enabled': 'true'},
+            cookies={'fl_session': _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 200
+    assert 'checked' in resp.text
+    mock_session.commit.assert_awaited_once()
+
+
+def test_set_auto_block_disables_existing_row():
+    """POST with enabled omitted (unchecked) clears the opt-in flag on an existing row."""
+    from familylink_server.db.models import AppConfig
+
+    existing = AppConfig(
+        child_id='child1',
+        app_name='com.google.android.youtube',
+        package_name='com.google.android.youtube',
+        auto_block_enabled=True,
+    )
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalar_one_or_none.return_value = existing
+    mock_session = AsyncMock()
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
+    mock_session.add = MagicMock()
+    mock_session.commit = AsyncMock()
+    from familylink_server.main import app
+
+    app.dependency_overrides[get_session] = lambda: mock_session
+    try:
+        client = TestClient(app)
+        resp = client.post(
+            '/apps/com.google.android.youtube/auto-block',
+            data={'child_id': 'child1', 'limit_mins': '30'},
+            cookies={'fl_session': _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 200
+    assert existing.auto_block_enabled is False

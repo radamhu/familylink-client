@@ -94,6 +94,9 @@ async def test_set_limit_notifies_discord(monkeypatch):
         session = AsyncMock()
         session.add = MagicMock()
         session.commit = AsyncMock()
+        mock_exec_result = MagicMock()
+        mock_exec_result.scalar_one_or_none.return_value = None
+        session.execute = AsyncMock(return_value=mock_exec_result)
 
         await set_limit(
             package='com.example.app',

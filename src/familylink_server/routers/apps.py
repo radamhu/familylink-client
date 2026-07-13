@@ -6,11 +6,13 @@ from pathlib import Path
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from familylink_server.auth.oauth import require_user
 from familylink_server.constants import CHILD_COLORS
-from familylink_server.db import AuditLog, get_session
+from familylink_server.db import AppConfig, AuditLog, get_session
 from familylink_server.services.discord_notifier import get_notifier
 from familylink_server.services.family_link import FamilyLinkService, get_service
 
@@ -50,6 +52,27 @@ def _app_state(app) -> dict:
     }
 
 
+async def _get_or_create_app_config(
+    session: AsyncSession, child_id: str, package_name: str
+) -> AppConfig:
+    """Get the AppConfig row for (child_id, package_name), creating it if absent."""
+    stmt = select(AppConfig).where(
+        AppConfig.child_id == child_id, AppConfig.package_name == package_name
+    )
+    config = (await session.execute(stmt)).scalar_one_or_none()
+    if config is None:
+        config = AppConfig(
+            child_id=child_id, app_name=package_name, package_name=package_name
+        )
+        session.add(config)
+        try:
+            await session.flush()
+        except IntegrityError:
+            await session.rollback()
+            config = (await session.execute(stmt)).scalar_one()
+    return config
+
+
 @router.get('/apps', response_class=HTMLResponse)
 async def apps_page(
     request: Request,
@@ -57,6 +80,7 @@ async def apps_page(
     child: str = '',
     _email: str = require_user,  # type: ignore[assignment]
     svc: FamilyLinkService = Depends(get_service),  # noqa: B008
+    session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> HTMLResponse:
     """Render the apps page with a per-child tab strip and inline edit controls."""
     members = await svc.get_members()
@@ -82,10 +106,20 @@ async def apps_page(
     apps = []
     if active_child_id:
         usage = await svc.get_apps_and_usage(active_child_id)
-        apps = [
-            dict(_app_state(a), child_id=active_child_id)
-            for a in sorted(usage.apps, key=lambda x: x.title.lower())
-        ]
+        result = await session.execute(
+            select(AppConfig).where(AppConfig.child_id == active_child_id)
+        )
+        configs_by_package = {c.package_name: c for c in result.scalars().all()}
+        for a in sorted(usage.apps, key=lambda x: x.title.lower()):
+            config = configs_by_package.get(a.package_name)
+            apps.append(
+                dict(
+                    _app_state(a),
+                    child_id=active_child_id,
+                    auto_block_enabled=config.auto_block_enabled if config else False,
+                    auto_blocked_at=config.auto_blocked_at if config else None,
+                )
+            )
         if filter != 'all':
             apps = [a for a in apps if a['state'] == filter]
 
@@ -130,6 +164,12 @@ async def set_limit(
         )
     )
     await session.commit()
+    config_result = await session.execute(
+        select(AppConfig).where(
+            AppConfig.child_id == child_id, AppConfig.package_name == package
+        )
+    )
+    config = config_result.scalar_one_or_none()
     app_data = {
         'package_name': package,
         'title': package,
@@ -137,6 +177,8 @@ async def set_limit(
         'state_label': f'Limited {minutes} min',
         'limit_mins': minutes,
         'child_id': child_id,
+        'auto_block_enabled': config.auto_block_enabled if config else False,
+        'auto_blocked_at': config.auto_blocked_at if config else None,
     }
     return templates.TemplateResponse(
         request, 'partials/app_row.html', {'app': app_data}
@@ -211,6 +253,44 @@ async def allow_app(
         'state_label': 'Always allowed',
         'limit_mins': None,
         'child_id': child_id,
+    }
+    return templates.TemplateResponse(
+        request, 'partials/app_row.html', {'app': app_data}
+    )
+
+
+@router.post('/apps/{package}/auto-block', response_class=HTMLResponse)
+async def set_auto_block(
+    package: str,
+    request: Request,
+    child_id: str = Form(...),
+    limit_mins: int = Form(...),
+    enabled: bool = Form(False),
+    _email: str = require_user,  # type: ignore[assignment]
+    session: AsyncSession = Depends(get_session),  # noqa: B008
+) -> HTMLResponse:
+    """Toggle auto-block-on-overuse opt-in for an app and return the updated row partial."""
+    config = await _get_or_create_app_config(session, child_id, package)
+    config.auto_block_enabled = enabled
+    session.add(
+        AuditLog(
+            child_id=child_id,
+            action='auto_block_toggle',
+            target=package,
+            new_value=str(enabled),
+            occurred_at=datetime.now(UTC),
+        )
+    )
+    await session.commit()
+    app_data = {
+        'package_name': package,
+        'title': package,
+        'state': 'limited',
+        'state_label': f'Limited {limit_mins} min',
+        'limit_mins': limit_mins,
+        'child_id': child_id,
+        'auto_block_enabled': config.auto_block_enabled,
+        'auto_blocked_at': None,
     }
     return templates.TemplateResponse(
         request, 'partials/app_row.html', {'app': app_data}

@@ -37,5 +37,28 @@
         </form>
       </div>
     </details>
+    {% if app.state == "limited" %}
+      <form hx-post="/apps/{{ app.package_name }}/auto-block"
+            hx-trigger="change"
+            hx-target="#row-{{ app.package_name | replace('.', '-') }}"
+            hx-swap="outerHTML" style="display:inline">
+        <input type="hidden" name="child_id" value="{{ app.child_id }}">
+        <input type="hidden" name="limit_mins" value="{{ app.limit_mins }}">
+        <label style="font-size:0.75rem">
+          <input type="checkbox" name="enabled" value="true" {{ 'checked' if app.auto_block_enabled }}>
+          Auto-block on overuse
+        </label>
+      </form>
+    {% endif %}
+    {% if app.auto_blocked_at %}
+      <form hx-post="/apps/{{ app.package_name }}/bonus"
+            hx-target="#row-{{ app.package_name | replace('.', '-') }}"
+            hx-swap="outerHTML" style="display:inline">
+        <input type="hidden" name="child_id" value="{{ app.child_id }}">
+        {% for mins in [15, 30, 60] %}
+          <button type="submit" name="minutes" value="{{ mins }}" class="outline" style="font-size:0.75rem;padding:0.25rem 0.5rem">+{{ mins }} min</button>
+        {% endfor %}
+      </form>
+    {% endif %}
   </td>
 </tr>
