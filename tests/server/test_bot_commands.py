@@ -399,3 +399,111 @@ async def test_apps_auto_block_requires_role():
 
     msg = interaction.response.send_message.call_args[0][0]
     assert 'permission' in msg.lower() or 'insufficient' in msg.lower()
+
+
+async def test_apps_bonus_stacks_same_day():
+    """'/apps bonus' adds to existing same-day bonus_mins."""
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+
+    m = MagicMock()
+    m.user_id = 'uid-1'
+    m.profile.display_name = 'Emma'
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    from datetime import UTC, datetime
+
+    config = MagicMock()
+    config.bonus_mins = 15
+    config.bonus_date = datetime.now(UTC).date()
+    config.auto_blocked_at = None
+    mock_ctx, mock_session = _make_session_ctx(config=config)
+    make_session = MagicMock(return_value=mock_ctx)
+
+    group = AppsGroup(svc, notifier, make_session=make_session)
+    interaction = _make_interaction(['Parent'])
+
+    await group.bonus.callback(
+        group, interaction, package='com.tiktok', minutes=30, child='uid-1'
+    )
+
+    assert config.bonus_mins == 45
+    svc.set_app_limit.assert_not_called()
+    msg = interaction.response.send_message.call_args[0][0]
+    assert '+30' in msg
+    assert '45 min bonus today' in msg
+
+
+async def test_apps_bonus_resets_on_new_day():
+    """'/apps bonus' resets bonus_mins when bonus_date is not today."""
+    from datetime import date
+
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+
+    m = MagicMock()
+    m.user_id = 'uid-1'
+    m.profile.display_name = 'Emma'
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    config = MagicMock()
+    config.bonus_mins = 999
+    config.bonus_date = date(2000, 1, 1)
+    config.auto_blocked_at = None
+    mock_ctx, mock_session = _make_session_ctx(config=config)
+    make_session = MagicMock(return_value=mock_ctx)
+
+    group = AppsGroup(svc, notifier, make_session=make_session)
+    interaction = _make_interaction(['Parent'])
+
+    await group.bonus.callback(
+        group, interaction, package='com.tiktok', minutes=15, child='uid-1'
+    )
+
+    assert config.bonus_mins == 15
+
+
+async def test_apps_bonus_unblocks_when_auto_blocked():
+    """'/apps bonus' calls set_app_limit and clears auto_blocked_at when currently blocked."""
+    from datetime import UTC, datetime
+
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+
+    m = MagicMock()
+    m.user_id = 'uid-1'
+    m.profile.display_name = 'Emma'
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    app = MagicMock()
+    app.package_name = 'com.tiktok'
+    app.supervision_setting.usage_limit = MagicMock(daily_usage_limit_mins=60)
+    svc.get_apps_and_usage.return_value = MagicMock(apps=[app])
+
+    config = MagicMock()
+    config.bonus_mins = 0
+    config.bonus_date = datetime.now(UTC).date()
+    config.auto_blocked_at = datetime.now(UTC)
+    mock_ctx, mock_session = _make_session_ctx(config=config)
+    make_session = MagicMock(return_value=mock_ctx)
+
+    group = AppsGroup(svc, notifier, make_session=make_session)
+    interaction = _make_interaction(['Parent'])
+
+    await group.bonus.callback(
+        group, interaction, package='com.tiktok', minutes=30, child='uid-1'
+    )
+
+    svc.set_app_limit.assert_awaited_once_with('com.tiktok', 90, child_id='uid-1')
+    assert config.auto_blocked_at is None
+    msg = interaction.response.send_message.call_args[0][0]
+    assert 'unblocked' in msg.lower()

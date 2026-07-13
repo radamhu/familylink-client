@@ -298,3 +298,87 @@ class AppsGroup(app_commands.Group, name='apps', description='Manage supervised 
             f'\N{GEAR}️ Auto-block **{state}** for `{package}` ({child_name}).',
             ephemeral=True,
         )
+
+    @app_commands.command(
+        name='bonus', description='Grant bonus minutes to an auto-blocked app'
+    )
+    @app_commands.describe(
+        package='App package name',
+        minutes='Extra minutes to grant',
+        child='Which child',
+    )
+    @app_commands.choices(
+        minutes=[
+            app_commands.Choice(name='+15 min', value=15),
+            app_commands.Choice(name='+30 min', value=30),
+            app_commands.Choice(name='+60 min', value=60),
+        ]
+    )
+    @app_commands.autocomplete(child=child_autocomplete)
+    async def bonus(
+        self,
+        interaction: discord.Interaction,
+        package: str,
+        minutes: int,
+        child: str | None = None,
+    ) -> None:
+        """Grant bonus minutes to an app, unblocking it immediately if auto-blocked."""
+        if not require_discord_role(interaction):
+            await interaction.response.send_message(
+                'Insufficient permissions.', ephemeral=True
+            )
+            return
+        resolved = await resolve_child(self._svc, child)
+        if resolved is None:
+            await interaction.response.send_message(
+                'Please specify a child with the `child` parameter.', ephemeral=True
+            )
+            return
+        child_id, child_name = resolved
+
+        async with self._make_session() as session:
+            config = await _get_or_create_app_config(session, child_id, package)
+            today = datetime.now(UTC).date()
+            if config.bonus_date != today:
+                config.bonus_mins = minutes
+                config.bonus_date = today
+            else:
+                config.bonus_mins += minutes
+
+            unblocked = False
+            if config.auto_blocked_at is not None:
+                usage = await self._svc.get_apps_and_usage(child_id)
+                app_match = next(
+                    (a for a in usage.apps if a.package_name == package), None
+                )
+                base_limit = (
+                    app_match.supervision_setting.usage_limit.daily_usage_limit_mins
+                    if app_match is not None
+                    and app_match.supervision_setting.usage_limit
+                    else 0
+                )
+                await self._svc.set_app_limit(
+                    package, base_limit + config.bonus_mins, child_id=child_id
+                )
+                config.auto_blocked_at = None
+                unblocked = True
+
+            session.add(
+                AuditLog(
+                    child_id=child_id,
+                    action='bonus_app',
+                    target=package,
+                    new_value=str(minutes),
+                    occurred_at=datetime.now(UTC),
+                )
+            )
+            await session.commit()
+            bonus_total = config.bonus_mins
+
+        msg = (
+            f'⏰ +{minutes} min bonus granted for `{package}` ({child_name}) '
+            f'— {bonus_total} min bonus today.'
+        )
+        if unblocked:
+            msg += ' App unblocked.'
+        await interaction.response.send_message(msg, ephemeral=True)
