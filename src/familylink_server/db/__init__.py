@@ -1,5 +1,6 @@
 """Database models and session factory for Family Link server."""
 
+from familylink_server.db.app_config import get_or_create_app_config
 from familylink_server.db.models import (
     AppConfig,
     AuditLog,
@@ -19,6 +20,7 @@ __all__ = [
     'LinuxMachine',
     'LinuxUsageSnapshot',
     'UsageSnapshot',
+    'get_or_create_app_config',
     'get_session',
     'make_session',
 ]

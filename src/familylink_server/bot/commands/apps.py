@@ -7,8 +7,6 @@ from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
-from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
 
 from familylink_server.bot.commands import (
     child_autocomplete,
@@ -16,7 +14,7 @@ from familylink_server.bot.commands import (
     resolve_child,
 )
 from familylink_server.bot.embeds import apps_list_embed
-from familylink_server.db import AppConfig, AuditLog
+from familylink_server.db import AuditLog, get_or_create_app_config
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -28,27 +26,6 @@ if TYPE_CHECKING:
     from familylink_server.services.family_link import FamilyLinkService
 
 _PAGE_SIZE = 10
-
-
-async def _get_or_create_app_config(
-    session: AsyncSession, child_id: str, package_name: str
-) -> AppConfig:
-    """Get the AppConfig row for (child_id, package_name), creating it if absent."""
-    stmt = select(AppConfig).where(
-        AppConfig.child_id == child_id, AppConfig.package_name == package_name
-    )
-    config = (await session.execute(stmt)).scalar_one_or_none()
-    if config is None:
-        config = AppConfig(
-            child_id=child_id, app_name=package_name, package_name=package_name
-        )
-        session.add(config)
-        try:
-            await session.flush()
-        except IntegrityError:
-            await session.rollback()
-            config = (await session.execute(stmt)).scalar_one()
-    return config
 
 
 class AppsGroup(app_commands.Group, name='apps', description='Manage supervised apps'):
@@ -280,7 +257,7 @@ class AppsGroup(app_commands.Group, name='apps', description='Manage supervised 
             return
 
         async with self._make_session() as session:
-            config = await _get_or_create_app_config(session, child_id, package)
+            config = await get_or_create_app_config(session, child_id, package)
             config.auto_block_enabled = enabled
             session.add(
                 AuditLog(
@@ -336,8 +313,16 @@ class AppsGroup(app_commands.Group, name='apps', description='Manage supervised 
             return
         child_id, child_name = resolved
 
+        usage = await self._svc.get_apps_and_usage(child_id)
+        app_match = next((a for a in usage.apps if a.package_name == package), None)
+        if app_match is None:
+            await interaction.response.send_message(
+                f'`{package}` not found for {child_name}.', ephemeral=True
+            )
+            return
+
         async with self._make_session() as session:
-            config = await _get_or_create_app_config(session, child_id, package)
+            config = await get_or_create_app_config(session, child_id, package)
             today = date.today()
             if config.bonus_date != today:
                 config.bonus_mins = minutes
@@ -347,14 +332,9 @@ class AppsGroup(app_commands.Group, name='apps', description='Manage supervised 
 
             unblocked = False
             if config.auto_blocked_at is not None:
-                usage = await self._svc.get_apps_and_usage(child_id)
-                app_match = next(
-                    (a for a in usage.apps if a.package_name == package), None
-                )
                 base_limit = (
                     app_match.supervision_setting.usage_limit.daily_usage_limit_mins
-                    if app_match is not None
-                    and app_match.supervision_setting.usage_limit
+                    if app_match.supervision_setting.usage_limit
                     else 0
                 )
                 await self._svc.set_app_limit(package, base_limit, child_id=child_id)

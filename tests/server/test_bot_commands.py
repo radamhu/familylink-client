@@ -401,6 +401,42 @@ async def test_apps_auto_block_requires_role():
     assert 'permission' in msg.lower() or 'insufficient' in msg.lower()
 
 
+async def test_apps_auto_block_disables_without_limit_check():
+    """'/apps auto-block enabled=False' does not require an active Google-side limit."""
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+
+    m = MagicMock()
+    m.user_id = 'uid-1'
+    m.profile.display_name = 'Emma'
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    app = MagicMock()
+    app.package_name = 'com.tiktok'
+    app.supervision_setting.usage_limit = None
+    svc.get_apps_and_usage.return_value = MagicMock(apps=[app])
+
+    config = MagicMock()
+    config.auto_block_enabled = True
+    mock_ctx, mock_session = _make_session_ctx(config=config)
+    make_session = MagicMock(return_value=mock_ctx)
+
+    group = AppsGroup(svc, notifier, make_session=make_session)
+    interaction = _make_interaction(['Parent'])
+
+    await group.auto_block.callback(
+        group, interaction, package='com.tiktok', enabled=False, child='uid-1'
+    )
+
+    assert config.auto_block_enabled is False
+    mock_session.commit.assert_awaited_once()
+    msg = interaction.response.send_message.call_args[0][0]
+    assert 'no active' not in msg.lower()
+
+
 async def test_apps_bonus_stacks_same_day():
     """'/apps bonus' adds to existing same-day bonus_mins."""
     from familylink_server.bot.commands.apps import AppsGroup
@@ -415,6 +451,11 @@ async def test_apps_bonus_stacks_same_day():
     svc.get_members.return_value = MagicMock(members=[m])
 
     from datetime import date
+
+    app = MagicMock()
+    app.package_name = 'com.tiktok'
+    app.supervision_setting.usage_limit = MagicMock(daily_usage_limit_mins=60)
+    svc.get_apps_and_usage.return_value = MagicMock(apps=[app])
 
     config = MagicMock()
     config.bonus_mins = 15
@@ -451,6 +492,11 @@ async def test_apps_bonus_resets_on_new_day():
     m.profile.display_name = 'Emma'
     m.member_supervision_info.is_supervised_member = True
     svc.get_members.return_value = MagicMock(members=[m])
+
+    app = MagicMock()
+    app.package_name = 'com.tiktok'
+    app.supervision_setting.usage_limit = MagicMock(daily_usage_limit_mins=60)
+    svc.get_apps_and_usage.return_value = MagicMock(apps=[app])
 
     config = MagicMock()
     config.bonus_mins = 999
@@ -507,3 +553,21 @@ async def test_apps_bonus_unblocks_when_auto_blocked():
     assert config.auto_blocked_at is None
     msg = interaction.response.send_message.call_args[0][0]
     assert 'unblocked' in msg.lower()
+
+
+async def test_apps_bonus_requires_role():
+    """'/apps bonus' replies with permission error without the Discord role."""
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+    make_session = MagicMock()
+    group = AppsGroup(svc, notifier, make_session=make_session)
+    interaction = _make_interaction([])
+
+    await group.bonus.callback(
+        group, interaction, package='com.tiktok', minutes=15, child='uid-1'
+    )
+
+    msg = interaction.response.send_message.call_args[0][0]
+    assert 'permission' in msg.lower() or 'insufficient' in msg.lower()

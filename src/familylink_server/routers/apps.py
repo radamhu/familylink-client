@@ -7,12 +7,16 @@ from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from familylink_server.auth.oauth import require_user
 from familylink_server.constants import CHILD_COLORS
-from familylink_server.db import AppConfig, AuditLog, get_session
+from familylink_server.db import (
+    AppConfig,
+    AuditLog,
+    get_or_create_app_config,
+    get_session,
+)
 from familylink_server.services.discord_notifier import get_notifier
 from familylink_server.services.family_link import FamilyLinkService, get_service
 
@@ -52,27 +56,6 @@ def _app_state(app) -> dict:
         if sup.usage_limit
         else None,
     }
-
-
-async def _get_or_create_app_config(
-    session: AsyncSession, child_id: str, package_name: str
-) -> AppConfig:
-    """Get the AppConfig row for (child_id, package_name), creating it if absent."""
-    stmt = select(AppConfig).where(
-        AppConfig.child_id == child_id, AppConfig.package_name == package_name
-    )
-    config = (await session.execute(stmt)).scalar_one_or_none()
-    if config is None:
-        config = AppConfig(
-            child_id=child_id, app_name=package_name, package_name=package_name
-        )
-        session.add(config)
-        try:
-            await session.flush()
-        except IntegrityError:
-            await session.rollback()
-            config = (await session.execute(stmt)).scalar_one()
-    return config
 
 
 @router.get('/apps', response_class=HTMLResponse)
@@ -272,7 +255,7 @@ async def set_auto_block(
     session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> HTMLResponse:
     """Toggle auto-block-on-overuse opt-in for an app and return the updated row partial."""
-    config = await _get_or_create_app_config(session, child_id, package)
+    config = await get_or_create_app_config(session, child_id, package)
     config.auto_block_enabled = enabled
     session.add(
         AuditLog(
@@ -314,7 +297,7 @@ async def grant_bonus(
         raise HTTPException(
             status_code=400, detail='minutes must be one of 15, 30, or 60'
         )
-    config = await _get_or_create_app_config(session, child_id, package)
+    config = await get_or_create_app_config(session, child_id, package)
     today = date.today()
     if config.bonus_date != today:
         config.bonus_mins = minutes
