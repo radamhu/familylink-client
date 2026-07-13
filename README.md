@@ -499,22 +499,18 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
 
 1. Add a second service to your Coolify project pointing at the same repo, but set **Dockerfile** to `Dockerfile.refresher`
 2. Mount a persistent volume into the sidecar at `/data` (holds the bootstrapped session; survives container restarts/redeploys)
-3. Set the sidecar's environment variables:
-
-   | Variable             | Description                                                                                                     |
+3. Set the sidecar's environment variables:| Variable              | Description                                                                                                                        |
    | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-   | `REFRESHER_API_KEY` | Shared secret required as `X-Api-Key` on both `/refresh` and `/bootstrap`; protects the endpoints from other internal callers |
-
+   | `REFRESHER_API_KEY` | Shared secret required as`X-Api-Key` on both `/refresh` and `/bootstrap`; protects the endpoints from other internal callers |
 4. Note the sidecar's **internal** Coolify service URL (e.g. `http://cookie-refresher:8080`)
-5. On the **main server** service, add:
-
-   | Variable                 | Description                                                       |
+5. On the **main server** service, add:| Variable                 | Description                                                       |
    | ------------------------ | ----------------------------------------------------------------- |
-   | `COOKIE_REFRESHER_URL` | Internal URL of the sidecar, e.g. `http://cookie-refresher:8080` |
+   | `COOKIE_REFRESHER_URL` | Internal URL of the sidecar, e.g.`http://cookie-refresher:8080` |
    | `REFRESHER_API_KEY`    | Same value as set on the sidecar                                  |
-
-6. Deploy both services, then run `WEB_BASE_URL=https://<your-coolify-domain> REFRESHER_API_KEY=<value from Coolify env> scripts/bootstrap_refresher_session.py` from your laptop (see diagram above) to seed the sidecar's persisted session — `/refresh` returns 400 until this has been done at least once.
-7. Smoke-test: `curl -X POST -H "X-Api-Key: <key>" http://<sidecar-internal>:8080/refresh` should return `{"cookies_b64": "..."}` within ~30 seconds.
+6. Deploy both services, then run
+7. WEB_BASE_URL=https://cha67f8p0xtt7y1mv464yu43.192.168.0.22.sslip.o REFRESHER_INSECURE_SKIP_TLS_VERIFY=1 REFRESHER_API_KEY=CHANGE_ME python scripts/bootstrap_refresher_session.py --browser chrome
+8. from your laptop (see diagram above) to seed the sidecar's persisted session — `/refresh` returns 400 until this has been done at least once.
+9. Smoke-test: `curl -X POST -H "X-Api-Key: <key>" http://<sidecar-internal>:8080/refresh` should return `{"cookies_b64": "..."}` within ~30 seconds.
 
 > **No credentials on the sidecar.** Because bootstrap captures an already-authenticated session from your real browser, the sidecar never sees your Google password or TOTP secret — nothing to leak, nothing for Google's automated-login detector to catch.
 
