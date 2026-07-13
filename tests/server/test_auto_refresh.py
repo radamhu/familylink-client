@@ -44,7 +44,7 @@ def test_reinit_with_cookies_b64_pops_sapisid():
 
 
 def test_reinit_with_cookies_b64_clears_caches():
-    """reinit_with_cookies_b64 should clear caches and reset auth_failed."""
+    """reinit_with_cookies_b64 should clear caches but leave auth_failed for the caller to verify."""
     svc = _make_service()
     svc._members_cache = (MagicMock(), MagicMock())
     svc._usage_cache = {'child1': (MagicMock(), MagicMock())}
@@ -55,7 +55,7 @@ def test_reinit_with_cookies_b64_clears_caches():
 
     assert svc._members_cache is None
     assert svc._usage_cache == {}
-    assert svc._auth_failed is False
+    assert svc._auth_failed is True  # unverified — caller must confirm before clearing
 
 
 def test_reinit_with_cookies_b64_creates_new_client():
@@ -183,6 +183,7 @@ async def test_health_check_loop_resets_alert_on_auto_refresh_success(monkeypatc
 
     async def mock_refresh_impl(service, notifier):
         service.reinit_with_cookies_b64('test_b64')
+        service.set_auth_failed(False)
         return True
 
     with (

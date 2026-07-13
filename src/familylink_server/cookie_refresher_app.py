@@ -92,8 +92,37 @@ def _get_cookies_b64(state_path: Path) -> str:
         ctx.storage_state(path=str(state_path))
         browser.close()
 
+    cookies_b64 = base64.b64encode(_to_netscape(google_cookies).encode()).decode()
+    _verify_family_link_access(cookies_b64)
     logger.info('Refresh: extracted %d google.com cookies', len(google_cookies))
-    return base64.b64encode(_to_netscape(google_cookies).encode()).decode()
+    return cookies_b64
+
+
+def _verify_family_link_access(cookies_b64: str) -> None:
+    """Confirm the refreshed cookies actually authenticate against the Family Link API.
+
+    myaccount.google.com accepts sessions that kidsmanagement-pa (Family Link's
+    private API) already rejects, so presence of a SAPISID cookie alone is not
+    sufficient evidence the refresh worked.
+    """
+    from familylink import FamilyLink
+
+    prev_cookies_b64 = os.environ.get('FAMILYLINK_COOKIES_B64')
+    prev_sapisid = os.environ.pop('FAMILYLINK_SAPISID', None)
+    os.environ['FAMILYLINK_COOKIES_B64'] = cookies_b64
+    try:
+        FamilyLink().get_members()
+    except Exception as exc:
+        raise RuntimeError(
+            f'Refreshed cookies failed Family Link API verification: {exc}'
+        ) from exc
+    finally:
+        if prev_cookies_b64 is None:
+            os.environ.pop('FAMILYLINK_COOKIES_B64', None)
+        else:
+            os.environ['FAMILYLINK_COOKIES_B64'] = prev_cookies_b64
+        if prev_sapisid is not None:
+            os.environ['FAMILYLINK_SAPISID'] = prev_sapisid
 
 
 @app.post('/refresh')

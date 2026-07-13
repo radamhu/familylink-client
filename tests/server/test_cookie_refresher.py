@@ -335,7 +335,8 @@ def test_get_cookies_b64_writes_rotated_state(monkeypatch, tmp_path):
 
     from familylink_server.cookie_refresher_app import _get_cookies_b64
 
-    result = _get_cookies_b64(state_path)
+    with patch('familylink_server.cookie_refresher_app._verify_family_link_access'):
+        result = _get_cookies_b64(state_path)
 
     assert written['loaded_from'] == str(state_path)
     assert written['path'] == str(state_path)

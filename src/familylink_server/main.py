@@ -86,6 +86,8 @@ async def _try_auto_refresh(
             resp.raise_for_status()
         cookies_b64 = resp.json()['cookies_b64']
         service.reinit_with_cookies_b64(cookies_b64)
+        await service.get_members()  # verify the refresh actually authenticates
+        service.set_auth_failed(False)
         if notifier:
             await notifier.notify_session_restored()
         logger.info('Auto-refresh: success')
@@ -164,12 +166,36 @@ app = FastAPI(
 
 app.add_middleware(SessionMiddleware, secret_key=settings.secret_key)
 
+_refresh_in_flight = False
+
+
+def _kick_off_background_refresh() -> None:
+    """Fire-and-forget auto-refresh so a live 401 doesn't wait for the next health check."""
+    global _refresh_in_flight
+    if _refresh_in_flight:
+        return
+    _refresh_in_flight = True
+
+    async def _run() -> None:
+        global _refresh_in_flight
+        from familylink_server.services.discord_notifier import get_notifier
+
+        try:
+            service = get_service()
+            service.set_auth_failed(True)
+            await _try_auto_refresh(service, get_notifier())
+        finally:
+            _refresh_in_flight = False
+
+    asyncio.create_task(_run())
+
 
 @app.exception_handler(SessionExpiredError)
 async def session_expired_handler(
     request: Request, exc: SessionExpiredError
 ) -> HTMLResponse:
     """Return a 503 page with re-export instructions when Google cookies expire."""
+    _kick_off_background_refresh()
     return HTMLResponse(
         status_code=503,
         content="""<!doctype html>
@@ -186,7 +212,7 @@ async def session_expired_handler(
       <header><strong>Google session expired</strong></header>
       <p>The Family Link session has expired and needs a full re-export of your Google cookies to restore access.</p>
 
-      <p>If the <code>cookie-refresher</code> sidecar is configured, it will retry automatically on the next health check (every 30 minutes) — no action needed.</p>
+      <p>If the <code>cookie-refresher</code> sidecar is configured, a refresh has been triggered automatically — reload in a few seconds.</p>
 
       <details open style="margin-top:1rem">
         <summary>Manual fix (CLI, requires restart)</summary>
