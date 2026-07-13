@@ -1,6 +1,6 @@
 """Router for the /apps HTML page and HTMX limit/block/allow endpoints."""
 
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, Form, Request
@@ -291,6 +291,70 @@ async def set_auto_block(
         'child_id': child_id,
         'auto_block_enabled': config.auto_block_enabled,
         'auto_blocked_at': None,
+    }
+    return templates.TemplateResponse(
+        request, 'partials/app_row.html', {'app': app_data}
+    )
+
+
+@router.post('/apps/{package}/bonus', response_class=HTMLResponse)
+async def grant_bonus(
+    package: str,
+    request: Request,
+    child_id: str = Form(...),
+    minutes: int = Form(...),
+    _email: str = require_user,  # type: ignore[assignment]
+    svc: FamilyLinkService = Depends(get_service),  # noqa: B008
+    session: AsyncSession = Depends(get_session),  # noqa: B008
+) -> HTMLResponse:
+    """Grant bonus minutes to an auto-blocked app, unblocking it immediately."""
+    config = await _get_or_create_app_config(session, child_id, package)
+    today = date.today()
+    if config.bonus_date != today:
+        config.bonus_mins = minutes
+        config.bonus_date = today
+    else:
+        config.bonus_mins += minutes
+
+    if config.auto_blocked_at is not None:
+        usage = await svc.get_apps_and_usage(child_id)
+        app_match = next((a for a in usage.apps if a.package_name == package), None)
+        base_limit = (
+            app_match.supervision_setting.usage_limit.daily_usage_limit_mins
+            if app_match is not None and app_match.supervision_setting.usage_limit
+            else 0
+        )
+        new_limit = base_limit + config.bonus_mins
+        await svc.set_app_limit(package, new_limit, child_id)
+        config.auto_blocked_at = None
+        state, state_label, limit_mins = (
+            'limited',
+            f'Limited {new_limit} min',
+            new_limit,
+        )
+    else:
+        state, state_label, limit_mins = 'blocked', 'Blocked', None
+
+    session.add(
+        AuditLog(
+            child_id=child_id,
+            action='bonus_app',
+            target=package,
+            new_value=str(minutes),
+            occurred_at=datetime.now(UTC),
+        )
+    )
+    await session.commit()
+
+    app_data = {
+        'package_name': package,
+        'title': package,
+        'state': state,
+        'state_label': state_label,
+        'limit_mins': limit_mins,
+        'child_id': child_id,
+        'auto_block_enabled': config.auto_block_enabled,
+        'auto_blocked_at': config.auto_blocked_at,
     }
     return templates.TemplateResponse(
         request, 'partials/app_row.html', {'app': app_data}

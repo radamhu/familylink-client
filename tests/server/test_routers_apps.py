@@ -440,3 +440,196 @@ def test_set_auto_block_disables_existing_row():
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
     assert existing.auto_block_enabled is False
+
+
+def test_grant_bonus_unblocks_auto_blocked_app():
+    """POST /apps/{package}/bonus on an auto-blocked app calls set_app_limit and clears auto_blocked_at."""
+    import datetime as dt
+
+    from familylink_server.db.models import AppConfig
+
+    existing = AppConfig(
+        child_id='child1',
+        app_name='com.google.android.youtube',
+        package_name='com.google.android.youtube',
+        auto_block_enabled=True,
+        auto_blocked_at=dt.datetime.now(dt.UTC),
+        bonus_mins=0,
+        bonus_date=None,
+    )
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalar_one_or_none.return_value = existing
+    mock_session = AsyncMock()
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
+    mock_session.add = MagicMock()
+    mock_session.commit = AsyncMock()
+
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(
+        return_value=_make_usage(
+            _make_app_mock('YouTube', 'com.google.android.youtube', limit_mins=30)
+        )
+    )
+    mock_svc.set_app_limit = AsyncMock()
+
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: mock_session
+    try:
+        client = TestClient(app)
+        resp = client.post(
+            '/apps/com.google.android.youtube/bonus',
+            data={'child_id': 'child1', 'minutes': '15'},
+            cookies={'fl_session': _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+
+    assert resp.status_code == 200
+    mock_svc.set_app_limit.assert_awaited_once_with(
+        'com.google.android.youtube', 45, 'child1'
+    )
+    assert existing.auto_blocked_at is None
+    assert existing.bonus_mins == 15
+
+
+def test_grant_bonus_stacks_within_same_day():
+    """A second bonus grant on the same day adds to bonus_mins instead of resetting it."""
+    import datetime as dt
+
+    from familylink_server.db.models import AppConfig
+
+    today = dt.date.today()
+    existing = AppConfig(
+        child_id='child1',
+        app_name='com.google.android.youtube',
+        package_name='com.google.android.youtube',
+        auto_block_enabled=True,
+        auto_blocked_at=None,
+        bonus_mins=15,
+        bonus_date=today,
+    )
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalar_one_or_none.return_value = existing
+    mock_session = AsyncMock()
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
+    mock_session.add = MagicMock()
+    mock_session.commit = AsyncMock()
+
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=_make_usage())
+    mock_svc.set_app_limit = AsyncMock()
+
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: mock_session
+    try:
+        client = TestClient(app)
+        resp = client.post(
+            '/apps/com.google.android.youtube/bonus',
+            data={'child_id': 'child1', 'minutes': '30'},
+            cookies={'fl_session': _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+
+    assert resp.status_code == 200
+    assert existing.bonus_mins == 45  # 15 + 30, not reset
+    mock_svc.set_app_limit.assert_not_awaited()  # not currently auto-blocked
+
+
+def test_grant_bonus_resets_on_new_day():
+    """A bonus grant on a new day starts fresh instead of adding to yesterday's leftover."""
+    import datetime as dt
+
+    from familylink_server.db.models import AppConfig
+
+    yesterday = dt.date.today() - dt.timedelta(days=1)
+    existing = AppConfig(
+        child_id='child1',
+        app_name='com.google.android.youtube',
+        package_name='com.google.android.youtube',
+        auto_block_enabled=True,
+        auto_blocked_at=None,
+        bonus_mins=15,
+        bonus_date=yesterday,
+    )
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalar_one_or_none.return_value = existing
+    mock_session = AsyncMock()
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
+    mock_session.add = MagicMock()
+    mock_session.commit = AsyncMock()
+
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=_make_usage())
+    mock_svc.set_app_limit = AsyncMock()
+
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: mock_session
+    try:
+        client = TestClient(app)
+        resp = client.post(
+            '/apps/com.google.android.youtube/bonus',
+            data={'child_id': 'child1', 'minutes': '30'},
+            cookies={'fl_session': _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+
+    assert resp.status_code == 200
+    assert existing.bonus_mins == 30  # fresh start, not 15 + 30
+    assert existing.bonus_date == dt.date.today()
+
+
+def test_apps_page_shows_bonus_buttons_only_when_auto_blocked():
+    """Bonus buttons appear on an auto-blocked row and not otherwise."""
+    from familylink_server.db.models import AppConfig
+
+    mock_svc = MagicMock()
+    mock_svc.get_members = AsyncMock(
+        return_value=MagicMock(members=[_make_member('child1', 'Emma')])
+    )
+    mock_svc.get_apps_and_usage = AsyncMock(
+        return_value=_make_usage(
+            _make_app_mock('YouTube', 'com.google.android.youtube', hidden=True)
+        )
+    )
+    import datetime as dt
+
+    config = AppConfig(
+        child_id='child1',
+        app_name='com.google.android.youtube',
+        package_name='com.google.android.youtube',
+        auto_block_enabled=True,
+        auto_blocked_at=dt.datetime.now(dt.UTC),
+    )
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalars.return_value.all.return_value = [config]
+    mock_session = AsyncMock()
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    app.dependency_overrides[get_service] = lambda: mock_svc
+    app.dependency_overrides[get_session] = lambda: mock_session
+    try:
+        client = TestClient(app)
+        resp = client.get('/apps', cookies={'fl_session': _cookie()})
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 200
+    assert '+15 min' in resp.text
+    assert '+30 min' in resp.text
+    assert '+60 min' in resp.text
