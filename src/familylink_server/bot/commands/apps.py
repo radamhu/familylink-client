@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from typing import TYPE_CHECKING
 
 import discord
@@ -338,7 +338,7 @@ class AppsGroup(app_commands.Group, name='apps', description='Manage supervised 
 
         async with self._make_session() as session:
             config = await _get_or_create_app_config(session, child_id, package)
-            today = datetime.now(UTC).date()
+            today = date.today()
             if config.bonus_date != today:
                 config.bonus_mins = minutes
                 config.bonus_date = today
@@ -357,9 +357,7 @@ class AppsGroup(app_commands.Group, name='apps', description='Manage supervised 
                     and app_match.supervision_setting.usage_limit
                     else 0
                 )
-                await self._svc.set_app_limit(
-                    package, base_limit + config.bonus_mins, child_id=child_id
-                )
+                await self._svc.set_app_limit(package, base_limit, child_id=child_id)
                 config.auto_blocked_at = None
                 unblocked = True
 
