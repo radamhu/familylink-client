@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from datetime import UTC, date, datetime
 from typing import TYPE_CHECKING
@@ -107,3 +108,29 @@ async def enforce_child(
                     )
 
         await session.commit()
+
+
+async def app_enforcer_loop(
+    svc: FamilyLinkService, notifier: DiscordNotifier | None = None
+) -> None:
+    """Iterate every child with at least one auto-block-enabled app, every POLL_INTERVAL."""
+    while True:
+        try:
+            async with make_session() as session:
+                result = await session.execute(
+                    select(AppConfig.child_id)
+                    .where(AppConfig.auto_block_enabled.is_(True))
+                    .distinct()
+                )
+                child_ids = result.scalars().all()
+
+            await asyncio.gather(
+                *[
+                    enforce_child(child_id, svc, notifier=notifier)
+                    for child_id in child_ids
+                ],
+                return_exceptions=True,
+            )
+        except Exception:
+            logger.exception('App enforcer cycle failed')
+        await asyncio.sleep(POLL_INTERVAL)

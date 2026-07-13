@@ -1,7 +1,10 @@
 """Tests for the app-overuse enforcer."""
 
+import asyncio
 import datetime
 from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
 
 
 def _make_config(
@@ -254,3 +257,39 @@ async def test_enforce_child_sums_multiple_sessions_same_day_ignores_other_days(
 
     # 10 + 25 = 35 min >= 30 min limit -> blocks; the 999-min session from yesterday is excluded
     mock_svc.block_app.assert_awaited_once_with('com.example.app', 'child1')
+
+
+async def test_app_enforcer_loop_calls_enforce_child_for_each_distinct_child():
+    """The loop queries distinct opted-in child_ids and enforces each one."""
+    from familylink_server.services import app_enforcer
+
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalars.return_value.all.return_value = ['child1', 'child2']
+    mock_session = AsyncMock()
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
+    mock_ctx = MagicMock()
+    mock_ctx.__aenter__ = AsyncMock(return_value=mock_session)
+    mock_ctx.__aexit__ = AsyncMock(return_value=False)
+
+    mock_enforce = AsyncMock()
+    mock_svc = MagicMock()
+
+    async def _raise_cancelled(*args, **kwargs):
+        raise asyncio.CancelledError()
+
+    with (
+        patch(
+            'familylink_server.services.app_enforcer.make_session',
+            return_value=mock_ctx,
+        ),
+        patch('familylink_server.services.app_enforcer.enforce_child', mock_enforce),
+        patch(
+            'familylink_server.services.app_enforcer.asyncio.sleep',
+            side_effect=_raise_cancelled,
+        ),
+    ):
+        with pytest.raises(asyncio.CancelledError):
+            await app_enforcer.app_enforcer_loop(mock_svc)
+
+    mock_enforce.assert_any_await('child1', mock_svc, notifier=None)
+    mock_enforce.assert_any_await('child2', mock_svc, notifier=None)

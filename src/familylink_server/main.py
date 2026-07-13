@@ -30,6 +30,7 @@ from familylink_server.routers.history import router as history_router
 from familylink_server.routers.linux_machines import router as linux_machines_router
 from familylink_server.routers.members import router as members_router
 from familylink_server.routers.usage import router as usage_router
+from familylink_server.services.app_enforcer import app_enforcer_loop
 from familylink_server.services.family_link import get_service, init_service
 from familylink_server.services.linux_poller import poller_loop
 
@@ -127,6 +128,11 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
     poller_task = asyncio.create_task(poller_loop(notifier=notifier))
     logger.info('Linux machine poller started')
 
+    enforcer_task = asyncio.create_task(
+        app_enforcer_loop(get_service(), notifier=notifier)
+    )
+    logger.info('App overuse enforcer started')
+
     health_task = asyncio.create_task(health_check_loop(get_service(), notifier))
     logger.info('Health check task started (interval=1800s)')
 
@@ -135,6 +141,10 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
     poller_task.cancel()
     with contextlib.suppress(asyncio.CancelledError):
         await poller_task
+
+    enforcer_task.cancel()
+    with contextlib.suppress(asyncio.CancelledError):
+        await enforcer_task
 
     health_task.cancel()
     with contextlib.suppress(asyncio.CancelledError):
