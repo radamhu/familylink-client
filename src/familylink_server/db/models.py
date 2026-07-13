@@ -23,6 +23,7 @@ class AppConfig(Base):
     """App configuration settings for a child's device usage."""
 
     __tablename__ = 'app_configs'
+    __table_args__ = (UniqueConstraint('child_id', 'package_name'),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     child_id: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
@@ -36,6 +37,12 @@ class AppConfig(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(UTC)
     )
+    auto_block_enabled: Mapped[bool] = mapped_column(Boolean, default=False)
+    auto_blocked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    bonus_mins: Mapped[int] = mapped_column(Integer, default=0)
+    bonus_date: Mapped[date | None] = mapped_column(Date, nullable=True)
 
 
 class UsageSnapshot(Base):
