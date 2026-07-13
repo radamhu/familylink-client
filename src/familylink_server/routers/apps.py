@@ -324,13 +324,12 @@ async def grant_bonus(
             if app_match is not None and app_match.supervision_setting.usage_limit
             else 0
         )
-        new_limit = base_limit + config.bonus_mins
-        await svc.set_app_limit(package, new_limit, child_id)
+        await svc.set_app_limit(package, base_limit, child_id)
         config.auto_blocked_at = None
         state, state_label, limit_mins = (
             'limited',
-            f'Limited {new_limit} min',
-            new_limit,
+            f'Limited {base_limit} min (+{config.bonus_mins} bonus today)',
+            base_limit,
         )
     else:
         state, state_label, limit_mins = 'blocked', 'Blocked', None

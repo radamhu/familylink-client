@@ -490,7 +490,7 @@ def test_grant_bonus_unblocks_auto_blocked_app():
 
     assert resp.status_code == 200
     mock_svc.set_app_limit.assert_awaited_once_with(
-        'com.google.android.youtube', 45, 'child1'
+        'com.google.android.youtube', 30, 'child1'
     )
     assert existing.auto_blocked_at is None
     assert existing.bonus_mins == 15
