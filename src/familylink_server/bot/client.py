@@ -148,7 +148,10 @@ class FamilyLinkBot(commands.Bot):
                 make_summary_command,
             )
 
-            self.tree.add_command(AppsGroup(self.service, self.notifier), guild=guild)
+            self.tree.add_command(
+                AppsGroup(self.service, self.notifier, make_session=self._make_session),
+                guild=guild,
+            )
             self.tree.add_command(
                 DevicesGroup(self.service, self.notifier), guild=guild
             )

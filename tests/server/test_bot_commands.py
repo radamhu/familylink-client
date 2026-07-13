@@ -106,7 +106,7 @@ async def test_apps_block_calls_service():
 
     svc = AsyncMock()
     notifier = AsyncMock()
-    group = AppsGroup(svc, notifier)
+    group = AppsGroup(svc, notifier, make_session=MagicMock())
 
     # Single child, no child_id needed
     m = MagicMock()
@@ -128,7 +128,7 @@ async def test_apps_limit_calls_service():
 
     svc = AsyncMock()
     notifier = AsyncMock()
-    group = AppsGroup(svc, notifier)
+    group = AppsGroup(svc, notifier, make_session=MagicMock())
 
     m = MagicMock()
     m.user_id = 'uid-1'
@@ -150,7 +150,7 @@ async def test_apps_allow_calls_service():
 
     svc = AsyncMock()
     notifier = AsyncMock()
-    group = AppsGroup(svc, notifier)
+    group = AppsGroup(svc, notifier, make_session=MagicMock())
 
     m = MagicMock()
     m.user_id = 'uid-1'
@@ -170,7 +170,7 @@ async def test_apps_block_unauthorized():
 
     svc = AsyncMock()
     notifier = AsyncMock()
-    group = AppsGroup(svc, notifier)
+    group = AppsGroup(svc, notifier, make_session=MagicMock())
 
     interaction = _make_interaction(['Member'])
     await group.block.callback(group, interaction, package='com.tiktok', child='uid-1')
@@ -294,3 +294,108 @@ async def test_refresh_clears_cache():
     assert svc._members_cache is None
     assert svc._usage_cache == {}
     interaction.response.send_message.assert_awaited_once()
+
+
+def _make_session_ctx(config=None):
+    from unittest.mock import AsyncMock
+
+    mock_session = AsyncMock()
+    mock_exec_result = MagicMock()
+    mock_exec_result.scalar_one_or_none.return_value = config
+    mock_exec_result.scalar_one.return_value = config
+    mock_session.execute = AsyncMock(return_value=mock_exec_result)
+    mock_session.add = MagicMock()
+    mock_session.flush = AsyncMock()
+    mock_session.commit = AsyncMock()
+
+    mock_ctx = MagicMock()
+    mock_ctx.__aenter__ = AsyncMock(return_value=mock_session)
+    mock_ctx.__aexit__ = AsyncMock(return_value=False)
+    return mock_ctx, mock_session
+
+
+async def test_apps_auto_block_enables_when_app_has_limit():
+    """'/apps auto-block' sets auto_block_enabled=True when the app has a Google limit."""
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+
+    m = MagicMock()
+    m.user_id = 'uid-1'
+    m.profile.display_name = 'Emma'
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    app = MagicMock()
+    app.package_name = 'com.tiktok'
+    app.supervision_setting.usage_limit = MagicMock(daily_usage_limit_mins=60)
+    svc.get_apps_and_usage.return_value = MagicMock(apps=[app])
+
+    config = MagicMock()
+    config.auto_block_enabled = False
+    mock_ctx, mock_session = _make_session_ctx(config=config)
+    make_session = MagicMock(return_value=mock_ctx)
+
+    group = AppsGroup(svc, notifier, make_session=make_session)
+    interaction = _make_interaction(['Parent'])
+
+    await group.auto_block.callback(
+        group, interaction, package='com.tiktok', enabled=True, child='uid-1'
+    )
+
+    assert config.auto_block_enabled is True
+    mock_session.commit.assert_awaited_once()
+    interaction.response.send_message.assert_awaited_once()
+    msg = interaction.response.send_message.call_args[0][0]
+    assert 'enabled' in msg.lower()
+    assert 'com.tiktok' in msg
+
+
+async def test_apps_auto_block_rejects_app_without_limit():
+    """'/apps auto-block' refuses to enable when the app has no Google-side limit."""
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+
+    m = MagicMock()
+    m.user_id = 'uid-1'
+    m.profile.display_name = 'Emma'
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    app = MagicMock()
+    app.package_name = 'com.tiktok'
+    app.supervision_setting.usage_limit = None
+    svc.get_apps_and_usage.return_value = MagicMock(apps=[app])
+
+    make_session = MagicMock()
+    group = AppsGroup(svc, notifier, make_session=make_session)
+    interaction = _make_interaction(['Parent'])
+
+    await group.auto_block.callback(
+        group, interaction, package='com.tiktok', enabled=True, child='uid-1'
+    )
+
+    make_session.assert_not_called()
+    msg = interaction.response.send_message.call_args[0][0]
+    assert 'no active' in msg.lower()
+
+
+async def test_apps_auto_block_requires_role():
+    """'/apps auto-block' replies with permission error without the Discord role."""
+    from familylink_server.bot.commands.apps import AppsGroup
+
+    svc = AsyncMock()
+    notifier = AsyncMock()
+    make_session = MagicMock()
+    group = AppsGroup(svc, notifier, make_session=make_session)
+    interaction = _make_interaction([])
+
+    await group.auto_block.callback(
+        group, interaction, package='com.tiktok', enabled=True, child='uid-1'
+    )
+
+    msg = interaction.response.send_message.call_args[0][0]
+    assert 'permission' in msg.lower() or 'insufficient' in msg.lower()
