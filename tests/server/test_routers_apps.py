@@ -161,8 +161,8 @@ def _make_usage(*app_mocks):
     return u
 
 
-def test_apps_page_shows_child_tabs_for_multiple_children():
-    """Tab links for both children appear when two supervised children exist."""
+def test_apps_page_shows_sections_for_multiple_children():
+    """A heading section for each child appears when two supervised children exist."""
     mock_svc = MagicMock()
     mock_svc.get_members = AsyncMock(
         return_value=MagicMock(
@@ -191,67 +191,12 @@ def test_apps_page_shows_child_tabs_for_multiple_children():
     assert resp.status_code == 200
     assert 'Emma' in resp.text
     assert 'Lucas' in resp.text
-    assert 'href="/apps?child=child1' in resp.text
-    assert 'href="/apps?child=child2' in resp.text
-
-
-def test_apps_page_child_param_selects_correct_child():
-    """?child=child2 fetches child2's apps, not child1's."""
-    mock_svc = MagicMock()
-    mock_svc.get_members = AsyncMock(
-        return_value=MagicMock(
-            members=[
-                _make_member('child1', 'Emma'),
-                _make_member('child2', 'Lucas'),
-            ]
-        )
-    )
-    mock_svc.get_apps_and_usage = AsyncMock(
-        return_value=_make_usage(_make_app_mock('Minecraft', 'com.mojang.minecraftpe'))
-    )
-    from familylink_server.main import app
-    from familylink_server.services.family_link import get_service
-
-    app.dependency_overrides[get_service] = lambda: mock_svc
-    app.dependency_overrides[get_session] = lambda: _empty_config_session()
-    try:
-        client = TestClient(app)
-        resp = client.get('/apps?child=child2', cookies={'fl_session': _cookie()})
-    finally:
-        app.dependency_overrides.pop(get_service, None)
-        app.dependency_overrides.pop(get_session, None)
-    assert resp.status_code == 200
-    mock_svc.get_apps_and_usage.assert_called_once_with('child2')
-
-
-def test_apps_page_invalid_child_falls_back_to_first():
-    """Unknown child param silently falls back to children[0]."""
-    mock_svc = MagicMock()
-    mock_svc.get_members = AsyncMock(
-        return_value=MagicMock(members=[_make_member('child1', 'Emma')])
-    )
-    mock_svc.get_apps_and_usage = AsyncMock(
-        return_value=_make_usage(
-            _make_app_mock('YouTube', 'com.google.android.youtube')
-        )
-    )
-    from familylink_server.main import app
-    from familylink_server.services.family_link import get_service
-
-    app.dependency_overrides[get_service] = lambda: mock_svc
-    app.dependency_overrides[get_session] = lambda: _empty_config_session()
-    try:
-        client = TestClient(app)
-        resp = client.get('/apps?child=unknown-id', cookies={'fl_session': _cookie()})
-    finally:
-        app.dependency_overrides.pop(get_service, None)
-        app.dependency_overrides.pop(get_session, None)
-    assert resp.status_code == 200
-    mock_svc.get_apps_and_usage.assert_called_once_with('child1')
+    mock_svc.get_apps_and_usage.assert_any_call('child1')
+    mock_svc.get_apps_and_usage.assert_any_call('child2')
 
 
 def test_apps_page_single_child_no_tab_links():
-    """With one child the response contains no child tab navigation."""
+    """With one child the response contains no child switcher navigation."""
     mock_svc = MagicMock()
     mock_svc.get_members = AsyncMock(
         return_value=MagicMock(members=[_make_member('child1', 'Emma')])
@@ -273,12 +218,8 @@ def test_apps_page_single_child_no_tab_links():
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    # The child tab navigation should not render for single child
-    # but filter links still include child= parameter
-    assert 'Emma</a>' not in resp.text  # No child name links (tab nav)
-    assert (
-        'href="/apps?child=child1&filter=all' in resp.text
-    )  # Filter nav includes child=
+    assert 'Emma</a>' not in resp.text  # Name renders as heading text, not a link
+    assert 'href="/apps?filter=all' in resp.text  # Filter nav has no child= param
 
 
 def test_apps_page_kid_switcher_shows_avatar():

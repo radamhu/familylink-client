@@ -62,59 +62,54 @@ def _app_state(app) -> dict:
 async def apps_page(
     request: Request,
     filter: str = 'all',
-    child: str = '',
     _email: str = require_user,  # type: ignore[assignment]
     svc: FamilyLinkService = Depends(get_service),  # noqa: B008
     session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> HTMLResponse:
-    """Render the apps page with a per-child tab strip and inline edit controls."""
+    """Render the apps page listing apps grouped by kid, with inline edit controls."""
     members = await svc.get_members()
     supervised = [
         m
         for m in members.members
         if m.member_supervision_info and m.member_supervision_info.is_supervised_member
     ]
-    children = [
-        {
-            'user_id': m.user_id,
-            'display_name': m.profile.display_name,
-            'color': CHILD_COLORS[i % len(CHILD_COLORS)],
-        }
-        for i, m in enumerate(supervised)
-    ]
 
-    child_ids = {c['user_id'] for c in children}
-    active_child_id = (
-        child if child in child_ids else (children[0]['user_id'] if children else '')
+    child_ids = [m.user_id for m in supervised]
+    result = await session.execute(
+        select(AppConfig).where(AppConfig.child_id.in_(child_ids))
     )
+    configs_by_key = {(c.child_id, c.package_name): c for c in result.scalars().all()}
 
-    apps = []
-    if active_child_id:
-        usage = await svc.get_apps_and_usage(active_child_id)
-        result = await session.execute(
-            select(AppConfig).where(AppConfig.child_id == active_child_id)
-        )
-        configs_by_package = {c.package_name: c for c in result.scalars().all()}
+    children = []
+    for i, m in enumerate(supervised):
+        usage = await svc.get_apps_and_usage(m.user_id)
+        apps = []
         for a in sorted(usage.apps, key=lambda x: x.title.lower()):
-            config = configs_by_package.get(a.package_name)
+            config = configs_by_key.get((m.user_id, a.package_name))
             apps.append(
                 dict(
                     _app_state(a),
-                    child_id=active_child_id,
+                    child_id=m.user_id,
                     auto_block_enabled=config.auto_block_enabled if config else False,
                     auto_blocked_at=config.auto_blocked_at if config else None,
                 )
             )
         if filter != 'all':
             apps = [a for a in apps if a['state'] == filter]
+        children.append(
+            {
+                'user_id': m.user_id,
+                'display_name': m.profile.display_name,
+                'color': CHILD_COLORS[i % len(CHILD_COLORS)],
+                'apps': apps,
+            }
+        )
 
     return templates.TemplateResponse(
         request,
         'apps.html',
         {
-            'apps': apps,
             'children': children,
-            'active_child_id': active_child_id,
             'filter': filter,
             'auth_failed': svc.auth_failed,
         },
