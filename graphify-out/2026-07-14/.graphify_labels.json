@@ -146,5 +146,11 @@
   "144": "Embed",
   "145": "family_link.py",
   "146": "UsageDate",
-  "147": "SupervisionSetting"
+  "147": "SupervisionSetting",
+  "148": "Birthday",
+  "149": "DeviceCapabilityInfo",
+  "150": "DeviceDisplayInfo",
+  "151": "test_resolve_child_single_child",
+  "152": "test_resolve_child_multiple_children_no_id",
+  "153": "test_resolve_child_explicit_id"
 }

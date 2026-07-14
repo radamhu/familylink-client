@@ -1209,7 +1209,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_familylink_cli_cmd_export_cookies",
-      "community": 3,
+      "community": 65,
       "norm_label": "_cmd_export_cookies()"
     },
     {
@@ -1319,7 +1319,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "src_familylink_cli_rationale_100",
-      "community": 3,
+      "community": 65,
       "norm_label": "export google cookies for cloud/docker deployment."
     },
     {
@@ -1389,7 +1389,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_familylink_client_sessionexpirederror",
-      "community": 135,
+      "community": 28,
       "norm_label": "sessionexpirederror"
     },
     {
@@ -1549,7 +1549,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "src_familylink_client_familylink_get_time_limits",
-      "community": 135,
+      "community": 28,
       "norm_label": ".get_time_limits()"
     },
     {
@@ -1689,7 +1689,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_client_rationale_19",
-      "community": 135,
+      "community": 28,
       "norm_label": "google session has expired or been invalidated.      re-export cookies and updat"
     },
     {
@@ -1749,7 +1749,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "src_familylink_client_rationale_134",
-      "community": 135,
+      "community": 28,
       "norm_label": "get applied time limits for a child (today)."
     },
     {
@@ -1869,7 +1869,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_familylink_models_appsupervisioncapability",
-      "community": 134,
+      "community": 2,
       "norm_label": "appsupervisioncapability"
     },
     {
@@ -1879,7 +1879,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "str",
-      "community": 134,
+      "community": 2,
       "norm_label": "str"
     },
     {
@@ -1889,7 +1889,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "enum",
-      "community": 134,
+      "community": 2,
       "norm_label": "enum"
     },
     {
@@ -1899,7 +1899,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_familylink_models_adsupportstatus",
-      "community": 134,
+      "community": 2,
       "norm_label": "adsupportstatus"
     },
     {
@@ -1909,7 +1909,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_familylink_models_iapsupportstatus",
-      "community": 134,
+      "community": 2,
       "norm_label": "iapsupportstatus"
     },
     {
@@ -1919,7 +1919,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_familylink_models_appsource",
-      "community": 134,
+      "community": 2,
       "norm_label": "appsource"
     },
     {
@@ -1929,7 +1929,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_familylink_models_alwaysallowedstate",
-      "community": 134,
+      "community": 2,
       "norm_label": "alwaysallowedstate"
     },
     {
@@ -1939,7 +1939,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_familylink_models_alwaysallowedappinfo",
-      "community": 145,
+      "community": 2,
       "norm_label": "alwaysallowedappinfo"
     },
     {
@@ -1969,7 +1969,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "src_familylink_models_supervisionsetting",
-      "community": 147,
+      "community": 2,
       "norm_label": "supervisionsetting"
     },
     {
@@ -1979,7 +1979,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_familylink_models_app",
-      "community": 146,
+      "community": 2,
       "norm_label": "app"
     },
     {
@@ -2019,7 +2019,7 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "src_familylink_models_devicedisplayinfo",
-      "community": 150,
+      "community": 2,
       "norm_label": "devicedisplayinfo"
     },
     {
@@ -2029,7 +2029,7 @@
       "source_location": "L135",
       "_origin": "ast",
       "id": "src_familylink_models_devicecapabilityinfo",
-      "community": 149,
+      "community": 2,
       "norm_label": "devicecapabilityinfo"
     },
     {
@@ -2059,7 +2059,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "src_familylink_models_appusage",
-      "community": 133,
+      "community": 8,
       "norm_label": "appusage"
     },
     {
@@ -2069,7 +2069,7 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "src_familylink_models_appusage_get_app_title",
-      "community": 133,
+      "community": 8,
       "norm_label": ".get_app_title()"
     },
     {
@@ -2079,7 +2079,7 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "src_familylink_models_birthday",
-      "community": 148,
+      "community": 2,
       "norm_label": "birthday"
     },
     {
@@ -2139,7 +2139,7 @@
       "source_location": "L253",
       "_origin": "ast",
       "id": "src_familylink_models_membersresponse",
-      "community": 35,
+      "community": 8,
       "norm_label": "membersresponse"
     },
     {
@@ -2159,7 +2159,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_10",
-      "community": 134,
+      "community": 2,
       "norm_label": "supervision capabilities for an app."
     },
     {
@@ -2169,7 +2169,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_18",
-      "community": 134,
+      "community": 2,
       "norm_label": "ad support status for an app."
     },
     {
@@ -2179,7 +2179,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_25",
-      "community": 134,
+      "community": 2,
       "norm_label": "in-app purchase support status for an app."
     },
     {
@@ -2189,7 +2189,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_32",
-      "community": 134,
+      "community": 2,
       "norm_label": "source of the app installation."
     },
     {
@@ -2199,7 +2199,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_39",
-      "community": 134,
+      "community": 2,
       "norm_label": "state of always-allowed setting for an app."
     },
     {
@@ -2209,7 +2209,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_45",
-      "community": 145,
+      "community": 2,
       "norm_label": "information about always-allowed status of an app."
     },
     {
@@ -2229,7 +2229,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_62",
-      "community": 147,
+      "community": 2,
       "norm_label": "supervision settings for an app."
     },
     {
@@ -2239,7 +2239,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_78",
-      "community": 146,
+      "community": 2,
       "norm_label": "information about an app."
     },
     {
@@ -2279,7 +2279,7 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_126",
-      "community": 150,
+      "community": 2,
       "norm_label": "display information for a device."
     },
     {
@@ -2289,7 +2289,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_136",
-      "community": 149,
+      "community": 2,
       "norm_label": "capability information for a device."
     },
     {
@@ -2309,7 +2309,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_162",
-      "community": 133,
+      "community": 8,
       "norm_label": "app usage response model."
     },
     {
@@ -2319,7 +2319,7 @@
       "source_location": "L175",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_175",
-      "community": 133,
+      "community": 8,
       "norm_label": "get the title of an app."
     },
     {
@@ -2329,7 +2329,7 @@
       "source_location": "L183",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_183",
-      "community": 148,
+      "community": 2,
       "norm_label": "birthday information."
     },
     {
@@ -2379,7 +2379,7 @@
       "source_location": "L254",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_254",
-      "community": 35,
+      "community": 8,
       "norm_label": "response from the members api endpoint."
     },
     {
@@ -2979,7 +2979,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_apps",
-      "community": 14,
+      "community": 145,
       "norm_label": "apps.py"
     },
     {
@@ -2999,7 +2999,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_apps_appsgroup_init",
-      "community": 131,
+      "community": 140,
       "norm_label": ".__init__()"
     },
     {
@@ -3009,7 +3009,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_apps_py_abstractasynccontextmanager",
-      "community": 131,
+      "community": 140,
       "norm_label": "abstractasynccontextmanager"
     },
     {
@@ -3019,7 +3019,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_apps_py_asyncsession",
-      "community": 131,
+      "community": 140,
       "norm_label": "asyncsession"
     },
     {
@@ -3099,7 +3099,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_apps_rationale_1",
-      "community": 14,
+      "community": 145,
       "norm_label": "discord /apps command group."
     },
     {
@@ -3149,7 +3149,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_devices",
-      "community": 14,
+      "community": 146,
       "norm_label": "devices.py"
     },
     {
@@ -3159,7 +3159,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_devices_devicesgroup",
-      "community": 14,
+      "community": 131,
       "norm_label": "devicesgroup"
     },
     {
@@ -3219,7 +3219,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_devices_rationale_1",
-      "community": 14,
+      "community": 146,
       "norm_label": "discord /devices command group."
     },
     {
@@ -3229,7 +3229,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_devices_rationale_25",
-      "community": 14,
+      "community": 131,
       "norm_label": "slash command group: /devices list | lock | unlock."
     },
     {
@@ -3239,7 +3239,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux",
-      "community": 20,
+      "community": 133,
       "norm_label": "linux.py"
     },
     {
@@ -3249,7 +3249,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_linuxgroup",
-      "community": 20,
+      "community": 133,
       "norm_label": "linuxgroup"
     },
     {
@@ -3259,7 +3259,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_linuxgroup_init",
-      "community": 20,
+      "community": 133,
       "norm_label": ".__init__()"
     },
     {
@@ -3269,7 +3269,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_py_abstractasynccontextmanager",
-      "community": 20,
+      "community": 133,
       "norm_label": "abstractasynccontextmanager"
     },
     {
@@ -3279,7 +3279,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_py_asyncsession",
-      "community": 20,
+      "community": 133,
       "norm_label": "asyncsession"
     },
     {
@@ -3329,7 +3329,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_rationale_1",
-      "community": 20,
+      "community": 133,
       "norm_label": "discord /linux command group."
     },
     {
@@ -3339,7 +3339,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_rationale_25",
-      "community": 20,
+      "community": 133,
       "norm_label": "slash command group: /linux bonus."
     },
     {
@@ -3729,7 +3729,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views",
-      "community": 86,
+      "community": 131,
       "norm_label": "views.py"
     },
     {
@@ -3759,7 +3759,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_appblockview_unblock",
-      "community": 10,
+      "community": 31,
       "norm_label": "._unblock()"
     },
     {
@@ -3769,7 +3769,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_py_interaction",
-      "community": 10,
+      "community": 31,
       "norm_label": "interaction"
     },
     {
@@ -3779,7 +3779,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "button",
-      "community": 10,
+      "community": 31,
       "norm_label": "button"
     },
     {
@@ -3799,7 +3799,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_appblockview_unblock_btn",
-      "community": 10,
+      "community": 31,
       "norm_label": "._unblock_btn()"
     },
     {
@@ -3819,7 +3819,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_applimitview",
-      "community": 10,
+      "community": 131,
       "norm_label": "applimitview"
     },
     {
@@ -3839,7 +3839,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_applimitview_undo",
-      "community": 10,
+      "community": 31,
       "norm_label": "._undo()"
     },
     {
@@ -3849,7 +3849,7 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_applimitview_undo_btn",
-      "community": 10,
+      "community": 31,
       "norm_label": "._undo_btn()"
     },
     {
@@ -3879,7 +3879,7 @@
       "source_location": "L155",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_appallowview_remove",
-      "community": 10,
+      "community": 31,
       "norm_label": "._remove()"
     },
     {
@@ -3889,7 +3889,7 @@
       "source_location": "L175",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_appallowview_remove_btn",
-      "community": 10,
+      "community": 31,
       "norm_label": "._remove_btn()"
     },
     {
@@ -3899,7 +3899,7 @@
       "source_location": "L181",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_devicelockview",
-      "community": 140,
+      "community": 131,
       "norm_label": "devicelockview"
     },
     {
@@ -3909,7 +3909,7 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_devicelockview_init",
-      "community": 140,
+      "community": 131,
       "norm_label": ".__init__()"
     },
     {
@@ -3919,7 +3919,7 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_devicelockview_unlock",
-      "community": 140,
+      "community": 31,
       "norm_label": "._unlock()"
     },
     {
@@ -3929,7 +3929,7 @@
       "source_location": "L221",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_devicelockview_unlock_btn",
-      "community": 140,
+      "community": 31,
       "norm_label": "._unlock_btn()"
     },
     {
@@ -3939,7 +3939,7 @@
       "source_location": "L227",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_deviceunlockview",
-      "community": 86,
+      "community": 131,
       "norm_label": "deviceunlockview"
     },
     {
@@ -3949,7 +3949,7 @@
       "source_location": "L230",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_deviceunlockview_init",
-      "community": 86,
+      "community": 131,
       "norm_label": ".__init__()"
     },
     {
@@ -3959,7 +3959,7 @@
       "source_location": "L245",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_deviceunlockview_lock",
-      "community": 86,
+      "community": 31,
       "norm_label": "._lock()"
     },
     {
@@ -3969,7 +3969,7 @@
       "source_location": "L267",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_deviceunlockview_lock_btn",
-      "community": 86,
+      "community": 31,
       "norm_label": "._lock_btn()"
     },
     {
@@ -3979,7 +3979,7 @@
       "source_location": "L273",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview",
-      "community": 10,
+      "community": 131,
       "norm_label": "summaryview"
     },
     {
@@ -3999,7 +3999,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview_lock_device",
-      "community": 10,
+      "community": 31,
       "norm_label": "._lock_device()"
     },
     {
@@ -4009,7 +4009,7 @@
       "source_location": "L318",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview_lock_device_btn",
-      "community": 10,
+      "community": 31,
       "norm_label": "._lock_device_btn()"
     },
     {
@@ -4019,7 +4019,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_1",
-      "community": 86,
+      "community": 131,
       "norm_label": "discord ui views (action button rows for embeds)."
     },
     {
@@ -4039,7 +4039,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_39",
-      "community": 10,
+      "community": 31,
       "norm_label": "handle unblock button press."
     },
     {
@@ -4059,7 +4059,7 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_92",
-      "community": 10,
+      "community": 131,
       "norm_label": "button shown after setting an app limit: undo (removes limit via always_allow)."
     },
     {
@@ -4069,7 +4069,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_112",
-      "community": 10,
+      "community": 31,
       "norm_label": "handle undo button press."
     },
     {
@@ -4089,7 +4089,7 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_158",
-      "community": 10,
+      "community": 31,
       "norm_label": "handle remove button press."
     },
     {
@@ -4099,7 +4099,7 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_182",
-      "community": 140,
+      "community": 131,
       "norm_label": "button shown after locking a device: unlock."
     },
     {
@@ -4109,7 +4109,7 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_202",
-      "community": 140,
+      "community": 31,
       "norm_label": "handle unlock button press."
     },
     {
@@ -4119,7 +4119,7 @@
       "source_location": "L228",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_228",
-      "community": 86,
+      "community": 131,
       "norm_label": "button shown after unlocking a device: lock."
     },
     {
@@ -4129,7 +4129,7 @@
       "source_location": "L248",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_248",
-      "community": 86,
+      "community": 31,
       "norm_label": "handle lock button press."
     },
     {
@@ -4139,7 +4139,7 @@
       "source_location": "L274",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_274",
-      "community": 10,
+      "community": 131,
       "norm_label": "buttons on the daily summary embed: lock device."
     },
     {
@@ -4149,7 +4149,7 @@
       "source_location": "L294",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_294",
-      "community": 10,
+      "community": 31,
       "norm_label": "handle lock device button press."
     },
     {
@@ -4259,7 +4259,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_constants",
-      "community": 30,
+      "community": 7,
       "norm_label": "constants.py"
     },
     {
@@ -4269,7 +4269,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_constants_rationale_1",
-      "community": 30,
+      "community": 7,
       "norm_label": "shared constants for the familylink server."
     },
     {
@@ -4469,7 +4469,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config",
-      "community": 77,
+      "community": 7,
       "norm_label": "app_config.py"
     },
     {
@@ -4479,7 +4479,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_get_or_create_app_config",
-      "community": 77,
+      "community": 7,
       "norm_label": "get_or_create_app_config()"
     },
     {
@@ -4489,7 +4489,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_py_asyncsession",
-      "community": 77,
+      "community": 7,
       "norm_label": "asyncsession"
     },
     {
@@ -4499,7 +4499,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_rationale_1",
-      "community": 77,
+      "community": 7,
       "norm_label": "shared appconfig get-or-create helper."
     },
     {
@@ -4509,7 +4509,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_rationale_19",
-      "community": 77,
+      "community": 7,
       "norm_label": "get the appconfig row for (child_id, package_name), creating it if absent."
     },
     {
@@ -4519,7 +4519,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_models",
-      "community": 22,
+      "community": 77,
       "norm_label": "models.py"
     },
     {
@@ -4529,7 +4529,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_base",
-      "community": 22,
+      "community": 77,
       "norm_label": "base"
     },
     {
@@ -4539,7 +4539,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "declarativebase",
-      "community": 22,
+      "community": 77,
       "norm_label": "declarativebase"
     },
     {
@@ -4559,7 +4559,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_usagesnapshot",
-      "community": 22,
+      "community": 77,
       "norm_label": "usagesnapshot"
     },
     {
@@ -4569,7 +4569,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_devicesnapshot",
-      "community": 22,
+      "community": 77,
       "norm_label": "devicesnapshot"
     },
     {
@@ -4579,7 +4579,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_auditlog",
-      "community": 7,
+      "community": 77,
       "norm_label": "auditlog"
     },
     {
@@ -4629,7 +4629,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_1",
-      "community": 22,
+      "community": 77,
       "norm_label": "sqlalchemy orm models."
     },
     {
@@ -4639,7 +4639,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_19",
-      "community": 22,
+      "community": 77,
       "norm_label": "sqlalchemy declarative base for all orm models."
     },
     {
@@ -4659,7 +4659,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_49",
-      "community": 22,
+      "community": 77,
       "norm_label": "snapshot of app usage on a specific date."
     },
     {
@@ -4669,7 +4669,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_63",
-      "community": 22,
+      "community": 77,
       "norm_label": "snapshot of device state and metadata."
     },
     {
@@ -4679,7 +4679,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_77",
-      "community": 7,
+      "community": 77,
       "norm_label": "audit trail of administrative actions on child accounts."
     },
     {
@@ -4739,7 +4739,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_familylink_server_db_session_get_session",
-      "community": 0,
+      "community": 68,
       "norm_label": "get_session()"
     },
     {
@@ -4749,7 +4749,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_db_session_py_asyncsession",
-      "community": 1,
+      "community": 30,
       "norm_label": "asyncsession"
     },
     {
@@ -4759,7 +4759,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_familylink_server_db_session_make_session",
-      "community": 1,
+      "community": 30,
       "norm_label": "make_session()"
     },
     {
@@ -4779,7 +4779,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_familylink_server_db_session_rationale_15",
-      "community": 0,
+      "community": 68,
       "norm_label": "get an async database session.      yields an asyncsession from the configured e"
     },
     {
@@ -4789,7 +4789,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_familylink_server_db_session_rationale_28",
-      "community": 1,
+      "community": 30,
       "norm_label": "async context manager for use outside fastapi dependency injection.      use in"
     },
     {
@@ -4829,7 +4829,7 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "src_familylink_server_main_lifespan",
-      "community": 11,
+      "community": 30,
       "norm_label": "lifespan()"
     },
     {
@@ -4919,7 +4919,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "src_familylink_server_main_rationale_102",
-      "community": 11,
+      "community": 30,
       "norm_label": "initialize services at startup; shut down cleanly."
     },
     {
@@ -5086,7 +5086,7 @@
       "label": "set_limit()",
       "file_type": "code",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L125",
+      "source_location": "L120",
       "_origin": "ast",
       "id": "src_familylink_server_routers_apps_set_limit",
       "community": 7,
@@ -5096,7 +5096,7 @@
       "label": "block_app()",
       "file_type": "code",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L174",
+      "source_location": "L169",
       "_origin": "ast",
       "id": "src_familylink_server_routers_apps_block_app",
       "community": 7,
@@ -5106,7 +5106,7 @@
       "label": "allow_app()",
       "file_type": "code",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L211",
+      "source_location": "L206",
       "_origin": "ast",
       "id": "src_familylink_server_routers_apps_allow_app",
       "community": 7,
@@ -5116,7 +5116,7 @@
       "label": "set_auto_block()",
       "file_type": "code",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L248",
+      "source_location": "L243",
       "_origin": "ast",
       "id": "src_familylink_server_routers_apps_set_auto_block",
       "community": 7,
@@ -5126,7 +5126,7 @@
       "label": "grant_bonus()",
       "file_type": "code",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L286",
+      "source_location": "L281",
       "_origin": "ast",
       "id": "src_familylink_server_routers_apps_grant_bonus",
       "community": 7,
@@ -5143,22 +5143,22 @@
       "norm_label": "router for the /apps html page and htmx limit/block/allow endpoints."
     },
     {
-      "label": "Render the apps page with a per-child tab strip and inline edit controls.",
+      "label": "Render the apps page listing apps grouped by kid, with inline edit controls.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L70",
+      "source_location": "L69",
       "_origin": "ast",
-      "id": "src_familylink_server_routers_apps_rationale_70",
+      "id": "src_familylink_server_routers_apps_rationale_69",
       "community": 7,
-      "norm_label": "render the apps page with a per-child tab strip and inline edit controls."
+      "norm_label": "render the apps page listing apps grouped by kid, with inline edit controls."
     },
     {
       "label": "Set a daily usage limit for an app and return the updated row partial.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L134",
+      "source_location": "L129",
       "_origin": "ast",
-      "id": "src_familylink_server_routers_apps_rationale_134",
+      "id": "src_familylink_server_routers_apps_rationale_129",
       "community": 7,
       "norm_label": "set a daily usage limit for an app and return the updated row partial."
     },
@@ -5166,9 +5166,9 @@
       "label": "Block an app and return the updated row partial.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L182",
+      "source_location": "L177",
       "_origin": "ast",
-      "id": "src_familylink_server_routers_apps_rationale_182",
+      "id": "src_familylink_server_routers_apps_rationale_177",
       "community": 7,
       "norm_label": "block an app and return the updated row partial."
     },
@@ -5176,9 +5176,9 @@
       "label": "Always-allow an app and return the updated row partial.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L219",
+      "source_location": "L214",
       "_origin": "ast",
-      "id": "src_familylink_server_routers_apps_rationale_219",
+      "id": "src_familylink_server_routers_apps_rationale_214",
       "community": 7,
       "norm_label": "always-allow an app and return the updated row partial."
     },
@@ -5186,9 +5186,9 @@
       "label": "Toggle auto-block-on-overuse opt-in for an app and return the updated row partia",
       "file_type": "rationale",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L257",
+      "source_location": "L252",
       "_origin": "ast",
-      "id": "src_familylink_server_routers_apps_rationale_257",
+      "id": "src_familylink_server_routers_apps_rationale_252",
       "community": 7,
       "norm_label": "toggle auto-block-on-overuse opt-in for an app and return the updated row partia"
     },
@@ -5196,9 +5196,9 @@
       "label": "Grant bonus minutes to an auto-blocked app, unblocking it immediately.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L295",
+      "source_location": "L290",
       "_origin": "ast",
-      "id": "src_familylink_server_routers_apps_rationale_295",
+      "id": "src_familylink_server_routers_apps_rationale_290",
       "community": 7,
       "norm_label": "grant bonus minutes to an auto-blocked app, unblocking it immediately."
     },
@@ -5349,7 +5349,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices",
-      "community": 30,
+      "community": 7,
       "norm_label": "devices.py"
     },
     {
@@ -5359,7 +5359,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_child_name",
-      "community": 30,
+      "community": 7,
       "norm_label": "_child_name()"
     },
     {
@@ -5369,7 +5369,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_devices_page",
-      "community": 30,
+      "community": 7,
       "norm_label": "devices_page()"
     },
     {
@@ -5379,7 +5379,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_py_request",
-      "community": 30,
+      "community": 7,
       "norm_label": "request"
     },
     {
@@ -5389,7 +5389,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_py_htmlresponse",
-      "community": 30,
+      "community": 7,
       "norm_label": "htmlresponse"
     },
     {
@@ -5399,7 +5399,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_lock_device",
-      "community": 30,
+      "community": 7,
       "norm_label": "lock_device()"
     },
     {
@@ -5409,7 +5409,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_py_asyncsession",
-      "community": 30,
+      "community": 7,
       "norm_label": "asyncsession"
     },
     {
@@ -5419,7 +5419,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_unlock_device",
-      "community": 30,
+      "community": 7,
       "norm_label": "unlock_device()"
     },
     {
@@ -5429,7 +5429,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_1",
-      "community": 30,
+      "community": 7,
       "norm_label": "router for the /devices html page and htmx lock/unlock endpoints."
     },
     {
@@ -5439,7 +5439,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_35",
-      "community": 30,
+      "community": 7,
       "norm_label": "render the devices page listing supervised devices grouped by kid."
     },
     {
@@ -5449,7 +5449,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_77",
-      "community": 30,
+      "community": 7,
       "norm_label": "lock a device and return the updated device card partial."
     },
     {
@@ -5459,7 +5459,7 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_115",
-      "community": 30,
+      "community": 7,
       "norm_label": "unlock a device and return the updated device card partial."
     },
     {
@@ -5479,7 +5479,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_history_page",
-      "community": 8,
+      "community": 134,
       "norm_label": "history_page()"
     },
     {
@@ -5489,7 +5489,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_py_request",
-      "community": 8,
+      "community": 134,
       "norm_label": "request"
     },
     {
@@ -5499,7 +5499,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_py_asyncsession",
-      "community": 8,
+      "community": 134,
       "norm_label": "asyncsession"
     },
     {
@@ -5509,7 +5509,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_py_htmlresponse",
-      "community": 8,
+      "community": 134,
       "norm_label": "htmlresponse"
     },
     {
@@ -5529,7 +5529,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_rationale_28",
-      "community": 8,
+      "community": 134,
       "norm_label": "render the audit log history page with infinite-scroll pagination."
     },
     {
@@ -5639,7 +5639,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_create_machine",
-      "community": 16,
+      "community": 139,
       "norm_label": "create_machine()"
     },
     {
@@ -5649,7 +5649,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_py_redirectresponse",
-      "community": 16,
+      "community": 139,
       "norm_label": "redirectresponse"
     },
     {
@@ -5689,7 +5689,7 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_update_machine",
-      "community": 16,
+      "community": 139,
       "norm_label": "update_machine()"
     },
     {
@@ -5779,7 +5779,7 @@
       "source_location": "L135",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_rationale_135",
-      "community": 16,
+      "community": 139,
       "norm_label": "create a new linux machine record."
     },
     {
@@ -5809,7 +5809,7 @@
       "source_location": "L198",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_rationale_198",
-      "community": 16,
+      "community": 139,
       "norm_label": "update an existing linux machine record."
     },
     {
@@ -6019,7 +6019,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "src_familylink_server_services_app_enforcer_app_enforcer_loop",
-      "community": 33,
+      "community": 30,
       "norm_label": "app_enforcer_loop()"
     },
     {
@@ -6059,7 +6059,7 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "src_familylink_server_services_app_enforcer_rationale_120",
-      "community": 33,
+      "community": 30,
       "norm_label": "iterate every child with at least one auto-block-enabled app, every poll_interva"
     },
     {
@@ -6129,7 +6129,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_familylink_server_services_discord_notifier_discordnotifier_set_channel",
-      "community": 131,
+      "community": 141,
       "norm_label": ".set_channel()"
     },
     {
@@ -6139,7 +6139,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "textchannel",
-      "community": 131,
+      "community": 141,
       "norm_label": "textchannel"
     },
     {
@@ -6259,7 +6259,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "src_familylink_server_services_discord_notifier_rationale_86",
-      "community": 131,
+      "community": 141,
       "norm_label": "called by the bot's on_ready once the channel is resolved."
     },
     {
@@ -6329,7 +6329,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link",
-      "community": 8,
+      "community": 30,
       "norm_label": "family_link.py"
     },
     {
@@ -6339,7 +6339,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice",
-      "community": 8,
+      "community": 131,
       "norm_label": "familylinkservice"
     },
     {
@@ -6359,7 +6359,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_auth_failed",
-      "community": 8,
+      "community": 148,
       "norm_label": ".auth_failed()"
     },
     {
@@ -6369,7 +6369,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_set_auth_failed",
-      "community": 8,
+      "community": 151,
       "norm_label": ".set_auth_failed()"
     },
     {
@@ -6429,7 +6429,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_lock_device",
-      "community": 8,
+      "community": 131,
       "norm_label": ".lock_device()"
     },
     {
@@ -6439,7 +6439,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_unlock_device",
-      "community": 8,
+      "community": 152,
       "norm_label": ".unlock_device()"
     },
     {
@@ -6449,7 +6449,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_set_app_limit",
-      "community": 8,
+      "community": 150,
       "norm_label": ".set_app_limit()"
     },
     {
@@ -6459,7 +6459,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_block_app",
-      "community": 8,
+      "community": 149,
       "norm_label": ".block_app()"
     },
     {
@@ -6469,7 +6469,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_always_allow_app",
-      "community": 8,
+      "community": 147,
       "norm_label": ".always_allow_app()"
     },
     {
@@ -6479,7 +6479,7 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_init_service",
-      "community": 8,
+      "community": 30,
       "norm_label": "init_service()"
     },
     {
@@ -6489,7 +6489,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_get_service",
-      "community": 68,
+      "community": 0,
       "norm_label": "get_service()"
     },
     {
@@ -6499,7 +6499,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_1",
-      "community": 8,
+      "community": 30,
       "norm_label": "singleton service wrapping the familylink client with async + cache-aside."
     },
     {
@@ -6509,7 +6509,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_16",
-      "community": 8,
+      "community": 131,
       "norm_label": "wraps the synchronous familylink client for async fastapi use."
     },
     {
@@ -6519,7 +6519,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_27",
-      "community": 8,
+      "community": 148,
       "norm_label": "return true if the last google api call failed due to auth."
     },
     {
@@ -6529,7 +6529,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_31",
-      "community": 8,
+      "community": 151,
       "norm_label": "set or clear the auth-failed flag."
     },
     {
@@ -6569,7 +6569,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_76",
-      "community": 8,
+      "community": 131,
       "norm_label": "lock a supervised device."
     },
     {
@@ -6579,7 +6579,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_82",
-      "community": 8,
+      "community": 152,
       "norm_label": "unlock a supervised device."
     },
     {
@@ -6589,7 +6589,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_90",
-      "community": 8,
+      "community": 150,
       "norm_label": "set a daily usage limit for an app and invalidate the usage cache."
     },
     {
@@ -6599,7 +6599,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_100",
-      "community": 8,
+      "community": 149,
       "norm_label": "block an app and invalidate the usage cache."
     },
     {
@@ -6609,7 +6609,7 @@
       "source_location": "L110",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_110",
-      "community": 8,
+      "community": 147,
       "norm_label": "always-allow an app and invalidate the usage cache."
     },
     {
@@ -6619,7 +6619,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_122",
-      "community": 8,
+      "community": 30,
       "norm_label": "called once at app startup (lifespan). returns the singleton."
     },
     {
@@ -6629,7 +6629,7 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_129",
-      "community": 68,
+      "community": 0,
       "norm_label": "fastapi dependency \u2014 returns the singleton."
     },
     {
@@ -6659,7 +6659,7 @@
       "source_location": "L190",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_poller_poller_loop",
-      "community": 1,
+      "community": 30,
       "norm_label": "poller_loop()"
     },
     {
@@ -6689,7 +6689,7 @@
       "source_location": "L191",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_poller_rationale_191",
-      "community": 1,
+      "community": 30,
       "norm_label": "main poll loop \u2014 iterates all enabled machines every poll_interval seconds."
     },
     {
@@ -6739,7 +6739,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_ssh_unlock_session",
-      "community": 16,
+      "community": 37,
       "norm_label": "unlock_session()"
     },
     {
@@ -6789,7 +6789,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_ssh_rationale_104",
-      "community": 16,
+      "community": 37,
       "norm_label": "unlock all sessions on the machine.      args:         hostname: the ssh host to"
     },
     {
@@ -7699,7 +7699,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_require_discord_role_fails_no_guild",
-      "community": 9,
+      "community": 154,
       "norm_label": "test_require_discord_role_fails_no_guild()"
     },
     {
@@ -7709,7 +7709,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_resolve_child_single_child",
-      "community": 151,
+      "community": 9,
       "norm_label": "test_resolve_child_single_child()"
     },
     {
@@ -7719,7 +7719,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_resolve_child_multiple_children_no_id",
-      "community": 152,
+      "community": 9,
       "norm_label": "test_resolve_child_multiple_children_no_id()"
     },
     {
@@ -7729,7 +7729,7 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_resolve_child_explicit_id",
-      "community": 153,
+      "community": 9,
       "norm_label": "test_resolve_child_explicit_id()"
     },
     {
@@ -7739,7 +7739,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_apps_block_calls_service",
-      "community": 9,
+      "community": 153,
       "norm_label": "test_apps_block_calls_service()"
     },
     {
@@ -7799,7 +7799,7 @@
       "source_location": "L224",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_usage_today_calls_service",
-      "community": 34,
+      "community": 9,
       "norm_label": "test_usage_today_calls_service()"
     },
     {
@@ -7809,7 +7809,7 @@
       "source_location": "L250",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_status_calls_service",
-      "community": 29,
+      "community": 9,
       "norm_label": "test_status_calls_service()"
     },
     {
@@ -7819,7 +7819,7 @@
       "source_location": "L282",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_refresh_clears_cache",
-      "community": 29,
+      "community": 9,
       "norm_label": "test_refresh_clears_cache()"
     },
     {
@@ -7829,7 +7829,7 @@
       "source_location": "L299",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_make_session_ctx",
-      "community": 9,
+      "community": 86,
       "norm_label": "_make_session_ctx()"
     },
     {
@@ -7839,7 +7839,7 @@
       "source_location": "L317",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_apps_auto_block_enables_when_app_has_limit",
-      "community": 9,
+      "community": 86,
       "norm_label": "test_apps_auto_block_enables_when_app_has_limit()"
     },
     {
@@ -7869,7 +7869,7 @@
       "source_location": "L404",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_apps_auto_block_disables_without_limit_check",
-      "community": 9,
+      "community": 86,
       "norm_label": "test_apps_auto_block_disables_without_limit_check()"
     },
     {
@@ -7879,7 +7879,7 @@
       "source_location": "L440",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_apps_bonus_stacks_same_day",
-      "community": 9,
+      "community": 86,
       "norm_label": "test_apps_bonus_stacks_same_day()"
     },
     {
@@ -7889,7 +7889,7 @@
       "source_location": "L481",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_apps_bonus_resets_on_new_day",
-      "community": 9,
+      "community": 86,
       "norm_label": "test_apps_bonus_resets_on_new_day()"
     },
     {
@@ -7899,7 +7899,7 @@
       "source_location": "L518",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_apps_bonus_unblocks_when_auto_blocked",
-      "community": 9,
+      "community": 86,
       "norm_label": "test_apps_bonus_unblocks_when_auto_blocked()"
     },
     {
@@ -7959,7 +7959,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_49",
-      "community": 9,
+      "community": 154,
       "norm_label": "test that role check fails when interaction has no guild."
     },
     {
@@ -7969,7 +7969,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_58",
-      "community": 151,
+      "community": 9,
       "norm_label": "test that resolve_child returns single child when no id is provided."
     },
     {
@@ -7979,7 +7979,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_73",
-      "community": 152,
+      "community": 9,
       "norm_label": "test that resolve_child returns none when multiple children exist and no id."
     },
     {
@@ -7989,7 +7989,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_89",
-      "community": 153,
+      "community": 9,
       "norm_label": "test that resolve_child returns matching child when id is provided."
     },
     {
@@ -7999,7 +7999,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_104",
-      "community": 9,
+      "community": 153,
       "norm_label": "test that /apps block calls block_app on the service."
     },
     {
@@ -8059,7 +8059,7 @@
       "source_location": "L225",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_225",
-      "community": 34,
+      "community": 9,
       "norm_label": "test that /usage today calls get_apps_and_usage and sends a message."
     },
     {
@@ -8069,7 +8069,7 @@
       "source_location": "L251",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_251",
-      "community": 29,
+      "community": 9,
       "norm_label": "test that /status calls get_members and sends an embed."
     },
     {
@@ -8079,7 +8079,7 @@
       "source_location": "L283",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_283",
-      "community": 29,
+      "community": 9,
       "norm_label": "test that /refresh sets _members_cache to none and empties _usage_cache."
     },
     {
@@ -8089,7 +8089,7 @@
       "source_location": "L318",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_318",
-      "community": 9,
+      "community": 86,
       "norm_label": "/apps auto-block' sets auto_block_enabled=true when the app has a google limit."
     },
     {
@@ -8119,7 +8119,7 @@
       "source_location": "L405",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_405",
-      "community": 9,
+      "community": 86,
       "norm_label": "/apps auto-block enabled=false' does not require an active google-side limit."
     },
     {
@@ -8129,7 +8129,7 @@
       "source_location": "L441",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_441",
-      "community": 9,
+      "community": 86,
       "norm_label": "/apps bonus' adds to existing same-day bonus_mins."
     },
     {
@@ -8139,7 +8139,7 @@
       "source_location": "L482",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_482",
-      "community": 9,
+      "community": 86,
       "norm_label": "/apps bonus' resets bonus_mins when bonus_date is not today."
     },
     {
@@ -8149,7 +8149,7 @@
       "source_location": "L519",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_519",
-      "community": 9,
+      "community": 86,
       "norm_label": "/apps bonus' calls set_app_limit and clears auto_blocked_at when currently block"
     },
     {
@@ -9199,7 +9199,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config",
-      "community": 77,
+      "community": 7,
       "norm_label": "test_db_app_config.py"
     },
     {
@@ -9209,7 +9209,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config_test_get_or_create_app_config_retries_after_integrity_error",
-      "community": 77,
+      "community": 7,
       "norm_label": "test_get_or_create_app_config_retries_after_integrity_error()"
     },
     {
@@ -9219,7 +9219,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config_rationale_1",
-      "community": 77,
+      "community": 7,
       "norm_label": "tests for the shared get_or_create_app_config db helper."
     },
     {
@@ -9229,7 +9229,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config_rationale_12",
-      "community": 77,
+      "community": 7,
       "norm_label": "a concurrent insert race (unique constraint violation) is resolved by re-queryin"
     },
     {
@@ -9299,7 +9299,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "tests_server_test_db_models_test_linux_machine_model_attributes",
-      "community": 37,
+      "community": 22,
       "norm_label": "test_linux_machine_model_attributes()"
     },
     {
@@ -9399,7 +9399,7 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "tests_server_test_db_models_rationale_98",
-      "community": 37,
+      "community": 22,
       "norm_label": "linuxmachine has expected columns with correct defaults."
     },
     {
@@ -10469,7 +10469,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_main",
-      "community": 11,
+      "community": 10,
       "norm_label": "test_main.py"
     },
     {
@@ -10479,7 +10479,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "tests_server_test_main_mock_init_service",
-      "community": 11,
+      "community": 10,
       "norm_label": "mock_init_service()"
     },
     {
@@ -10489,7 +10489,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "tests_server_test_main_test_docs_endpoint_exists",
-      "community": 11,
+      "community": 10,
       "norm_label": "test_docs_endpoint_exists()"
     },
     {
@@ -10499,7 +10499,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "tests_server_test_main_test_openapi_json_exists",
-      "community": 11,
+      "community": 10,
       "norm_label": "test_openapi_json_exists()"
     },
     {
@@ -10509,7 +10509,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "tests_server_test_main_test_auth_login_route_exists",
-      "community": 11,
+      "community": 10,
       "norm_label": "test_auth_login_route_exists()"
     },
     {
@@ -10519,7 +10519,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "tests_server_test_main_test_bot_not_started_when_discord_disabled",
-      "community": 11,
+      "community": 10,
       "norm_label": "test_bot_not_started_when_discord_disabled()"
     },
     {
@@ -10529,7 +10529,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "tests_server_test_main_test_linux_machines_route_is_registered",
-      "community": 11,
+      "community": 10,
       "norm_label": "test_linux_machines_route_is_registered()"
     },
     {
@@ -10539,7 +10539,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "tests_server_test_main_test_poller_loop_accepts_notifier_kwarg",
-      "community": 11,
+      "community": 10,
       "norm_label": "test_poller_loop_accepts_notifier_kwarg()"
     },
     {
@@ -10549,7 +10549,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_main_rationale_1",
-      "community": 11,
+      "community": 10,
       "norm_label": "tests for the fastapi application factory."
     },
     {
@@ -10559,7 +10559,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "tests_server_test_main_rationale_12",
-      "community": 11,
+      "community": 10,
       "norm_label": "mock init_service to avoid actual familylink instantiation."
     },
     {
@@ -10569,7 +10569,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "tests_server_test_main_rationale_18",
-      "community": 11,
+      "community": 10,
       "norm_label": "fastapi swagger ui docs should be available at /docs."
     },
     {
@@ -10579,7 +10579,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "tests_server_test_main_rationale_27",
-      "community": 11,
+      "community": 10,
       "norm_label": "openapi schema should be available at /openapi.json."
     },
     {
@@ -10589,7 +10589,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "tests_server_test_main_rationale_37",
-      "community": 11,
+      "community": 10,
       "norm_label": "get /auth/login should redirect to google oauth."
     },
     {
@@ -10599,7 +10599,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "tests_server_test_main_rationale_54",
-      "community": 11,
+      "community": 10,
       "norm_label": "lifespan should not create a discord bot task when discord vars are absent."
     },
     {
@@ -10609,7 +10609,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "tests_server_test_main_rationale_86",
-      "community": 11,
+      "community": 10,
       "norm_label": "get /linux-machines is registered in the app."
     },
     {
@@ -10619,7 +10619,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "tests_server_test_main_rationale_94",
-      "community": 11,
+      "community": 10,
       "norm_label": "poller_loop signature accepts a notifier keyword argument."
     },
     {
@@ -10843,40 +10843,20 @@
       "norm_label": "_make_usage()"
     },
     {
-      "label": "test_apps_page_shows_child_tabs_for_multiple_children()",
+      "label": "test_apps_page_shows_sections_for_multiple_children()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
       "source_location": "L164",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_test_apps_page_shows_child_tabs_for_multiple_children",
+      "id": "tests_server_test_routers_apps_test_apps_page_shows_sections_for_multiple_children",
       "community": 62,
-      "norm_label": "test_apps_page_shows_child_tabs_for_multiple_children()"
-    },
-    {
-      "label": "test_apps_page_child_param_selects_correct_child()",
-      "file_type": "code",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L198",
-      "_origin": "ast",
-      "id": "tests_server_test_routers_apps_test_apps_page_child_param_selects_correct_child",
-      "community": 62,
-      "norm_label": "test_apps_page_child_param_selects_correct_child()"
-    },
-    {
-      "label": "test_apps_page_invalid_child_falls_back_to_first()",
-      "file_type": "code",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L227",
-      "_origin": "ast",
-      "id": "tests_server_test_routers_apps_test_apps_page_invalid_child_falls_back_to_first",
-      "community": 62,
-      "norm_label": "test_apps_page_invalid_child_falls_back_to_first()"
+      "norm_label": "test_apps_page_shows_sections_for_multiple_children()"
     },
     {
       "label": "test_apps_page_single_child_no_tab_links()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L253",
+      "source_location": "L198",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_apps_page_single_child_no_tab_links",
       "community": 62,
@@ -10886,7 +10866,7 @@
       "label": "test_apps_page_kid_switcher_shows_avatar()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L284",
+      "source_location": "L225",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_apps_page_kid_switcher_shows_avatar",
       "community": 62,
@@ -10896,7 +10876,7 @@
       "label": "test_apps_page_shows_auto_block_checkbox_for_limited_app()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L322",
+      "source_location": "L263",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_apps_page_shows_auto_block_checkbox_for_limited_app",
       "community": 62,
@@ -10906,7 +10886,7 @@
       "label": "test_apps_page_hides_auto_block_checkbox_for_blocked_app()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L361",
+      "source_location": "L302",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_apps_page_hides_auto_block_checkbox_for_blocked_app",
       "community": 62,
@@ -10916,17 +10896,17 @@
       "label": "test_set_auto_block_enables_creates_new_appconfig_row()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L387",
+      "source_location": "L328",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_set_auto_block_enables_creates_new_appconfig_row",
-      "community": 138,
+      "community": 62,
       "norm_label": "test_set_auto_block_enables_creates_new_appconfig_row()"
     },
     {
       "label": "test_set_auto_block_disables_existing_row()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L413",
+      "source_location": "L354",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_set_auto_block_disables_existing_row",
       "community": 62,
@@ -10936,7 +10916,7 @@
       "label": "test_grant_bonus_unblocks_auto_blocked_app()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L445",
+      "source_location": "L386",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_grant_bonus_unblocks_auto_blocked_app",
       "community": 62,
@@ -10946,7 +10926,7 @@
       "label": "test_grant_bonus_stacks_within_same_day()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L499",
+      "source_location": "L440",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_grant_bonus_stacks_within_same_day",
       "community": 62,
@@ -10956,7 +10936,7 @@
       "label": "test_grant_bonus_resets_on_new_day()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L551",
+      "source_location": "L492",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_grant_bonus_resets_on_new_day",
       "community": 62,
@@ -10966,7 +10946,7 @@
       "label": "test_grant_bonus_rejects_negative_minutes()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L603",
+      "source_location": "L544",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_grant_bonus_rejects_negative_minutes",
       "community": 138,
@@ -10976,17 +10956,17 @@
       "label": "test_grant_bonus_rejects_non_preset_minutes()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L627",
+      "source_location": "L568",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_grant_bonus_rejects_non_preset_minutes",
-      "community": 62,
+      "community": 138,
       "norm_label": "test_grant_bonus_rejects_non_preset_minutes()"
     },
     {
       "label": "test_grant_bonus_rejects_unknown_package()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L651",
+      "source_location": "L592",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_grant_bonus_rejects_unknown_package",
       "community": 62,
@@ -10996,7 +10976,7 @@
       "label": "test_apps_page_shows_bonus_buttons_only_when_auto_blocked()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L680",
+      "source_location": "L621",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_apps_page_shows_bonus_buttons_only_when_auto_blocked",
       "community": 62,
@@ -11043,52 +11023,32 @@
       "norm_label": "post /apps/{package}/block calls block_app and returns 200 with partial html."
     },
     {
-      "label": "Tab links for both children appear when two supervised children exist.",
+      "label": "A heading section for each child appears when two supervised children exist.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
       "source_location": "L165",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_rationale_165",
       "community": 62,
-      "norm_label": "tab links for both children appear when two supervised children exist."
+      "norm_label": "a heading section for each child appears when two supervised children exist."
     },
     {
-      "label": "?child=child2 fetches child2's apps, not child1's.",
+      "label": "With one child the response contains no child switcher navigation.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
       "source_location": "L199",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_rationale_199",
       "community": 62,
-      "norm_label": "?child=child2 fetches child2's apps, not child1's."
-    },
-    {
-      "label": "Unknown child param silently falls back to children[0].",
-      "file_type": "rationale",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L228",
-      "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_228",
-      "community": 62,
-      "norm_label": "unknown child param silently falls back to children[0]."
-    },
-    {
-      "label": "With one child the response contains no child tab navigation.",
-      "file_type": "rationale",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L254",
-      "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_254",
-      "community": 62,
-      "norm_label": "with one child the response contains no child tab navigation."
+      "norm_label": "with one child the response contains no child switcher navigation."
     },
     {
       "label": "Apps page kid switcher renders colored avatar initial when multiple children exi",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L285",
+      "source_location": "L226",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_285",
+      "id": "tests_server_test_routers_apps_rationale_226",
       "community": 62,
       "norm_label": "apps page kid switcher renders colored avatar initial when multiple children exi"
     },
@@ -11096,9 +11056,9 @@
       "label": "A 'limited' app row includes the auto-block checkbox, checked when opted in.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L323",
+      "source_location": "L264",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_323",
+      "id": "tests_server_test_routers_apps_rationale_264",
       "community": 62,
       "norm_label": "a 'limited' app row includes the auto-block checkbox, checked when opted in."
     },
@@ -11106,9 +11066,9 @@
       "label": "A 'blocked' app row does not include the auto-block checkbox.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L362",
+      "source_location": "L303",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_362",
+      "id": "tests_server_test_routers_apps_rationale_303",
       "community": 62,
       "norm_label": "a 'blocked' app row does not include the auto-block checkbox."
     },
@@ -11116,19 +11076,19 @@
       "label": "POST /apps/{package}/auto-block with enabled=true creates a row and returns 200.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L388",
+      "source_location": "L329",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_388",
-      "community": 138,
+      "id": "tests_server_test_routers_apps_rationale_329",
+      "community": 62,
       "norm_label": "post /apps/{package}/auto-block with enabled=true creates a row and returns 200."
     },
     {
       "label": "POST with enabled omitted (unchecked) clears the opt-in flag on an existing row.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L414",
+      "source_location": "L355",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_414",
+      "id": "tests_server_test_routers_apps_rationale_355",
       "community": 62,
       "norm_label": "post with enabled omitted (unchecked) clears the opt-in flag on an existing row."
     },
@@ -11136,9 +11096,9 @@
       "label": "POST /apps/{package}/bonus on an auto-blocked app calls set_app_limit and clears",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L446",
+      "source_location": "L387",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_446",
+      "id": "tests_server_test_routers_apps_rationale_387",
       "community": 62,
       "norm_label": "post /apps/{package}/bonus on an auto-blocked app calls set_app_limit and clears"
     },
@@ -11146,9 +11106,9 @@
       "label": "A second bonus grant on the same day adds to bonus_mins instead of resetting it.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L500",
+      "source_location": "L441",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_500",
+      "id": "tests_server_test_routers_apps_rationale_441",
       "community": 62,
       "norm_label": "a second bonus grant on the same day adds to bonus_mins instead of resetting it."
     },
@@ -11156,9 +11116,9 @@
       "label": "A bonus grant on a new day starts fresh instead of adding to yesterday's leftove",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L552",
+      "source_location": "L493",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_552",
+      "id": "tests_server_test_routers_apps_rationale_493",
       "community": 62,
       "norm_label": "a bonus grant on a new day starts fresh instead of adding to yesterday's leftove"
     },
@@ -11166,9 +11126,9 @@
       "label": "POST /apps/{package}/bonus with minutes=-15 returns 400, not applied.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L604",
+      "source_location": "L545",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_604",
+      "id": "tests_server_test_routers_apps_rationale_545",
       "community": 138,
       "norm_label": "post /apps/{package}/bonus with minutes=-15 returns 400, not applied."
     },
@@ -11176,19 +11136,19 @@
       "label": "POST /apps/{package}/bonus with minutes=45 (not a 15/30/60 preset) returns 400.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L628",
+      "source_location": "L569",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_628",
-      "community": 62,
+      "id": "tests_server_test_routers_apps_rationale_569",
+      "community": 138,
       "norm_label": "post /apps/{package}/bonus with minutes=45 (not a 15/30/60 preset) returns 400."
     },
     {
       "label": "POST /apps/{package}/bonus for a package not found on the child returns 404.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L652",
+      "source_location": "L593",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_652",
+      "id": "tests_server_test_routers_apps_rationale_593",
       "community": 62,
       "norm_label": "post /apps/{package}/bonus for a package not found on the child returns 404."
     },
@@ -11196,9 +11156,9 @@
       "label": "Bonus buttons appear on an auto-blocked row and not otherwise.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L681",
+      "source_location": "L622",
       "_origin": "ast",
-      "id": "tests_server_test_routers_apps_rationale_681",
+      "id": "tests_server_test_routers_apps_rationale_622",
       "community": 62,
       "norm_label": "bonus buttons appear on an auto-blocked row and not otherwise."
     },
@@ -11469,7 +11429,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord",
-      "community": 139,
+      "community": 7,
       "norm_label": "test_routers_discord.py"
     },
     {
@@ -11479,7 +11439,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_block_app_notifies_discord",
-      "community": 139,
+      "community": 7,
       "norm_label": "test_block_app_notifies_discord()"
     },
     {
@@ -11489,7 +11449,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_lock_device_notifies_discord",
-      "community": 139,
+      "community": 7,
       "norm_label": "test_lock_device_notifies_discord()"
     },
     {
@@ -11499,7 +11459,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_set_limit_notifies_discord",
-      "community": 139,
+      "community": 7,
       "norm_label": "test_set_limit_notifies_discord()"
     },
     {
@@ -11509,7 +11469,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_unlock_device_notifies_discord",
-      "community": 139,
+      "community": 7,
       "norm_label": "test_unlock_device_notifies_discord()"
     },
     {
@@ -11519,7 +11479,7 @@
       "source_location": "L154",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_no_notify_when_notifier_is_none",
-      "community": 139,
+      "community": 7,
       "norm_label": "test_no_notify_when_notifier_is_none()"
     },
     {
@@ -11529,7 +11489,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_1",
-      "community": 139,
+      "community": 7,
       "norm_label": "tests that routers call discordnotifier after writes."
     },
     {
@@ -11539,7 +11499,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_7",
-      "community": 139,
+      "community": 7,
       "norm_label": "post /apps/{package}/block should call discordnotifier.notify_change."
     },
     {
@@ -11549,7 +11509,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_44",
-      "community": 139,
+      "community": 7,
       "norm_label": "post /devices/{device_id}/lock should call discordnotifier.notify_change."
     },
     {
@@ -11559,7 +11519,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_79",
-      "community": 139,
+      "community": 7,
       "norm_label": "post /apps/{package}/limit should call discordnotifier.notify_change."
     },
     {
@@ -11569,7 +11529,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_118",
-      "community": 139,
+      "community": 7,
       "norm_label": "post /devices/{device_id}/unlock should call discordnotifier.notify_change."
     },
     {
@@ -11579,7 +11539,7 @@
       "source_location": "L155",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_155",
-      "community": 139,
+      "community": 7,
       "norm_label": "router writes should complete without error when get_notifier returns none."
     },
     {
@@ -11929,7 +11889,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "tests_server_test_routers_members_client",
-      "community": 138,
+      "community": 38,
       "norm_label": "client()"
     },
     {
@@ -11969,7 +11929,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "tests_server_test_routers_members_rationale_20",
-      "community": 138,
+      "community": 38,
       "norm_label": "provide a testclient with familylinkservice mocked out."
     },
     {
@@ -12209,7 +12169,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_coolify_requires_base64",
-      "community": 3,
+      "community": 65,
       "norm_label": "test_coolify_requires_base64()"
     },
     {
@@ -12219,7 +12179,7 @@
       "source_location": "L111",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_restart_requires_coolify",
-      "community": 3,
+      "community": 65,
       "norm_label": "test_restart_requires_coolify()"
     },
     {
@@ -12239,7 +12199,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_coolify_exits_on_missing_coolify_token",
-      "community": 3,
+      "community": 65,
       "norm_label": "test_coolify_exits_on_missing_coolify_token()"
     },
     {
@@ -12339,7 +12299,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_105",
-      "community": 3,
+      "community": 65,
       "norm_label": "--coolify without --base64 must exit 1 before touching browser."
     },
     {
@@ -12349,7 +12309,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_112",
-      "community": 3,
+      "community": 65,
       "norm_label": "--restart without --coolify must exit 1 before touching browser."
     },
     {
@@ -12369,7 +12329,7 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_129",
-      "community": 3,
+      "community": 65,
       "norm_label": "--coolify exits 1 when coolify_token is absent, before touching browser."
     },
     {
@@ -12419,7 +12379,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "tests_unit_test_client_test_get_members_raises_on_401",
-      "community": 135,
+      "community": 28,
       "norm_label": "test_get_members_raises_on_401()"
     },
     {
@@ -12429,7 +12389,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "tests_unit_test_client_test_get_members_raises_on_403",
-      "community": 135,
+      "community": 28,
       "norm_label": "test_get_members_raises_on_403()"
     },
     {
@@ -12509,7 +12469,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "tests_unit_test_client_rationale_70",
-      "community": 135,
+      "community": 28,
       "norm_label": "get_members() raises sessionexpirederror on a 401 response."
     },
     {
@@ -12519,7 +12479,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "tests_unit_test_client_rationale_77",
-      "community": 135,
+      "community": 28,
       "norm_label": "get_members() raises sessionexpirederror on a 403 response."
     },
     {
@@ -12569,7 +12529,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_test_models",
-      "community": 141,
+      "community": 2,
       "norm_label": "test_models.py"
     },
     {
@@ -12579,7 +12539,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "tests_unit_test_models_test_members_response_model_validate_alias_keys",
-      "community": 141,
+      "community": 2,
       "norm_label": "test_members_response_model_validate_alias_keys()"
     },
     {
@@ -12589,7 +12549,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "tests_unit_test_models_test_members_response_api_header_snake_case",
-      "community": 141,
+      "community": 2,
       "norm_label": "test_members_response_api_header_snake_case()"
     },
     {
@@ -12599,7 +12559,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "tests_unit_test_models_test_app_usage_model_validate_alias_keys",
-      "community": 141,
+      "community": 2,
       "norm_label": "test_app_usage_model_validate_alias_keys()"
     },
     {
@@ -12609,7 +12569,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_1",
-      "community": 141,
+      "community": 2,
       "norm_label": "tests for familylink models."
     },
     {
@@ -12619,7 +12579,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_7",
-      "community": 141,
+      "community": 2,
       "norm_label": "test membersresponse.model_validate with camelcase alias keys."
     },
     {
@@ -12629,7 +12589,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_33",
-      "community": 141,
+      "community": 2,
       "norm_label": "test nested apiheader conversion to snake_case."
     },
     {
@@ -12639,7 +12599,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_45",
-      "community": 141,
+      "community": 2,
       "norm_label": "test appusage.model_validate with camelcase alias keys."
     },
     {
@@ -27307,7 +27267,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L306",
+      "source_location": "L301",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_grant_bonus",
       "target": "src_familylink_server_db_app_config_get_or_create_app_config"
@@ -27318,7 +27278,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L258",
+      "source_location": "L253",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_auto_block",
       "target": "src_familylink_server_db_app_config_get_or_create_app_config"
@@ -27510,7 +27470,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L95",
+      "source_location": "L79",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_apps_page",
       "target": "src_familylink_server_db_models_appconfig"
@@ -27521,7 +27481,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L153",
+      "source_location": "L148",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_limit",
       "target": "src_familylink_server_db_models_appconfig"
@@ -27565,7 +27525,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L335",
+      "source_location": "L276",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_auto_block_checkbox_for_limited_app",
       "target": "src_familylink_server_db_models_appconfig"
@@ -27576,7 +27536,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L695",
+      "source_location": "L636",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_bonus_buttons_only_when_auto_blocked",
       "target": "src_familylink_server_db_models_appconfig"
@@ -27587,7 +27547,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L558",
+      "source_location": "L499",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_resets_on_new_day",
       "target": "src_familylink_server_db_models_appconfig"
@@ -27598,7 +27558,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L506",
+      "source_location": "L447",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_stacks_within_same_day",
       "target": "src_familylink_server_db_models_appconfig"
@@ -27609,7 +27569,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L451",
+      "source_location": "L392",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_unblocks_auto_blocked_app",
       "target": "src_familylink_server_db_models_appconfig"
@@ -27620,7 +27580,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L417",
+      "source_location": "L358",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_set_auto_block_disables_existing_row",
       "target": "src_familylink_server_db_models_appconfig"
@@ -27683,7 +27643,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L226",
+      "source_location": "L221",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_allow_app",
       "target": "src_familylink_server_db_models_auditlog"
@@ -27694,7 +27654,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L189",
+      "source_location": "L184",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_block_app",
       "target": "src_familylink_server_db_models_auditlog"
@@ -27705,7 +27665,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L331",
+      "source_location": "L326",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_grant_bonus",
       "target": "src_familylink_server_db_models_auditlog"
@@ -27716,7 +27676,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L261",
+      "source_location": "L256",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_auto_block",
       "target": "src_familylink_server_db_models_auditlog"
@@ -27727,7 +27687,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L143",
+      "source_location": "L138",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_limit",
       "target": "src_familylink_server_db_models_auditlog"
@@ -28157,18 +28117,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L222",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_child_param_selects_correct_child",
-      "target": "src_familylink_server_db_session_get_session"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L382",
+      "source_location": "L323",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_hides_auto_block_checkbox_for_blocked_app",
       "target": "src_familylink_server_db_session_get_session"
@@ -28179,18 +28128,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L248",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_invalid_child_falls_back_to_first",
-      "target": "src_familylink_server_db_session_get_session"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L316",
+      "source_location": "L257",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_kid_switcher_shows_avatar",
       "target": "src_familylink_server_db_session_get_session"
@@ -28212,7 +28150,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L355",
+      "source_location": "L296",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_auto_block_checkbox_for_limited_app",
       "target": "src_familylink_server_db_session_get_session"
@@ -28223,7 +28161,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L716",
+      "source_location": "L657",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_bonus_buttons_only_when_auto_blocked",
       "target": "src_familylink_server_db_session_get_session"
@@ -28236,7 +28174,7 @@
       "source_file": "tests/server/test_routers_apps.py",
       "source_location": "L190",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_shows_child_tabs_for_multiple_children",
+      "source": "tests_server_test_routers_apps_test_apps_page_shows_sections_for_multiple_children",
       "target": "src_familylink_server_db_session_get_session"
     },
     {
@@ -28245,7 +28183,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L274",
+      "source_location": "L219",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_single_child_no_tab_links",
       "target": "src_familylink_server_db_session_get_session"
@@ -28267,7 +28205,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L622",
+      "source_location": "L563",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_negative_minutes",
       "target": "src_familylink_server_db_session_get_session"
@@ -28278,7 +28216,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L646",
+      "source_location": "L587",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_non_preset_minutes",
       "target": "src_familylink_server_db_session_get_session"
@@ -28289,7 +28227,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L675",
+      "source_location": "L616",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_unknown_package",
       "target": "src_familylink_server_db_session_get_session"
@@ -28300,7 +28238,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L596",
+      "source_location": "L537",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_resets_on_new_day",
       "target": "src_familylink_server_db_session_get_session"
@@ -28311,7 +28249,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L544",
+      "source_location": "L485",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_stacks_within_same_day",
       "target": "src_familylink_server_db_session_get_session"
@@ -28322,7 +28260,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L489",
+      "source_location": "L430",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_unblocks_auto_blocked_app",
       "target": "src_familylink_server_db_session_get_session"
@@ -28333,7 +28271,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L440",
+      "source_location": "L381",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_set_auto_block_disables_existing_row",
       "target": "src_familylink_server_db_session_get_session"
@@ -28344,7 +28282,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L407",
+      "source_location": "L348",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_set_auto_block_enables_creates_new_appconfig_row",
       "target": "src_familylink_server_db_session_get_session"
@@ -29184,7 +29122,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L211",
+      "source_location": "L206",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps",
       "target": "src_familylink_server_routers_apps_allow_app",
@@ -29214,7 +29152,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L174",
+      "source_location": "L169",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps",
       "target": "src_familylink_server_routers_apps_block_app",
@@ -29234,7 +29172,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L286",
+      "source_location": "L281",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps",
       "target": "src_familylink_server_routers_apps_grant_bonus",
@@ -29244,7 +29182,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L248",
+      "source_location": "L243",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps",
       "target": "src_familylink_server_routers_apps_set_auto_block",
@@ -29254,7 +29192,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L125",
+      "source_location": "L120",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps",
       "target": "src_familylink_server_routers_apps_set_limit",
@@ -29275,7 +29213,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L223",
+      "source_location": "L218",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_allow_app",
       "target": "src_familylink_server_routers_apps_child_name",
@@ -29286,7 +29224,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L186",
+      "source_location": "L181",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_block_app",
       "target": "src_familylink_server_routers_apps_child_name",
@@ -29308,7 +29246,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L138",
+      "source_location": "L133",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_limit",
       "target": "src_familylink_server_routers_apps_child_name",
@@ -29319,7 +29257,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L102",
+      "source_location": "L91",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_apps_page",
       "target": "src_familylink_server_routers_apps_app_state",
@@ -29373,9 +29311,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L70",
+      "source_location": "L69",
       "weight": 1.0,
-      "source": "src_familylink_server_routers_apps_rationale_70",
+      "source": "src_familylink_server_routers_apps_rationale_69",
       "target": "src_familylink_server_routers_apps_apps_page",
       "confidence_score": 1.0
     },
@@ -29384,7 +29322,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L211",
+      "source_location": "L206",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_allow_app",
       "target": "src_familylink_server_routers_apps_py_request",
@@ -29395,7 +29333,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L174",
+      "source_location": "L169",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_block_app",
       "target": "src_familylink_server_routers_apps_py_request",
@@ -29406,7 +29344,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L286",
+      "source_location": "L281",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_grant_bonus",
       "target": "src_familylink_server_routers_apps_py_request",
@@ -29417,7 +29355,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L248",
+      "source_location": "L243",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_auto_block",
       "target": "src_familylink_server_routers_apps_py_request",
@@ -29428,7 +29366,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L125",
+      "source_location": "L120",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_limit",
       "target": "src_familylink_server_routers_apps_py_request",
@@ -29439,7 +29377,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L211",
+      "source_location": "L206",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_allow_app",
       "target": "src_familylink_server_routers_apps_py_asyncsession",
@@ -29450,7 +29388,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L174",
+      "source_location": "L169",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_block_app",
       "target": "src_familylink_server_routers_apps_py_asyncsession",
@@ -29461,7 +29399,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L286",
+      "source_location": "L281",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_grant_bonus",
       "target": "src_familylink_server_routers_apps_py_asyncsession",
@@ -29472,7 +29410,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L248",
+      "source_location": "L243",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_auto_block",
       "target": "src_familylink_server_routers_apps_py_asyncsession",
@@ -29483,7 +29421,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L125",
+      "source_location": "L120",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_limit",
       "target": "src_familylink_server_routers_apps_py_asyncsession",
@@ -29494,7 +29432,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L211",
+      "source_location": "L206",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_allow_app",
       "target": "src_familylink_server_routers_apps_py_htmlresponse",
@@ -29505,7 +29443,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L174",
+      "source_location": "L169",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_block_app",
       "target": "src_familylink_server_routers_apps_py_htmlresponse",
@@ -29516,7 +29454,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L286",
+      "source_location": "L281",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_grant_bonus",
       "target": "src_familylink_server_routers_apps_py_htmlresponse",
@@ -29527,7 +29465,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L248",
+      "source_location": "L243",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_auto_block",
       "target": "src_familylink_server_routers_apps_py_htmlresponse",
@@ -29538,7 +29476,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L125",
+      "source_location": "L120",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_limit",
       "target": "src_familylink_server_routers_apps_py_htmlresponse",
@@ -29548,9 +29486,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L134",
+      "source_location": "L129",
       "weight": 1.0,
-      "source": "src_familylink_server_routers_apps_rationale_134",
+      "source": "src_familylink_server_routers_apps_rationale_129",
       "target": "src_familylink_server_routers_apps_set_limit",
       "confidence_score": 1.0
     },
@@ -29560,7 +29498,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L136",
+      "source_location": "L131",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_limit",
       "target": "src_familylink_server_services_discord_notifier_get_notifier"
@@ -29570,7 +29508,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L125",
+      "source_location": "L120",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_set_limit",
       "target": "src_familylink_server_services_family_link_familylinkservice",
@@ -29593,7 +29531,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L184",
+      "source_location": "L179",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_block_app",
       "target": "src_familylink_server_services_discord_notifier_get_notifier"
@@ -29603,7 +29541,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L174",
+      "source_location": "L169",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_block_app",
       "target": "src_familylink_server_services_family_link_familylinkservice",
@@ -29613,9 +29551,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L182",
+      "source_location": "L177",
       "weight": 1.0,
-      "source": "src_familylink_server_routers_apps_rationale_182",
+      "source": "src_familylink_server_routers_apps_rationale_177",
       "target": "src_familylink_server_routers_apps_block_app",
       "confidence_score": 1.0
     },
@@ -29625,7 +29563,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L221",
+      "source_location": "L216",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_allow_app",
       "target": "src_familylink_server_services_discord_notifier_get_notifier"
@@ -29635,7 +29573,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L211",
+      "source_location": "L206",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_allow_app",
       "target": "src_familylink_server_services_family_link_familylinkservice",
@@ -29645,9 +29583,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L219",
+      "source_location": "L214",
       "weight": 1.0,
-      "source": "src_familylink_server_routers_apps_rationale_219",
+      "source": "src_familylink_server_routers_apps_rationale_214",
       "target": "src_familylink_server_routers_apps_allow_app",
       "confidence_score": 1.0
     },
@@ -29666,9 +29604,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L257",
+      "source_location": "L252",
       "weight": 1.0,
-      "source": "src_familylink_server_routers_apps_rationale_257",
+      "source": "src_familylink_server_routers_apps_rationale_252",
       "target": "src_familylink_server_routers_apps_set_auto_block",
       "confidence_score": 1.0
     },
@@ -29677,7 +29615,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L286",
+      "source_location": "L281",
       "weight": 1.0,
       "source": "src_familylink_server_routers_apps_grant_bonus",
       "target": "src_familylink_server_services_family_link_familylinkservice",
@@ -29687,9 +29625,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/routers/apps.py",
-      "source_location": "L295",
+      "source_location": "L290",
       "weight": 1.0,
-      "source": "src_familylink_server_routers_apps_rationale_295",
+      "source": "src_familylink_server_routers_apps_rationale_290",
       "target": "src_familylink_server_routers_apps_grant_bonus",
       "confidence_score": 1.0
     },
@@ -32447,18 +32385,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L221",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_child_param_selects_correct_child",
-      "target": "src_familylink_server_services_family_link_get_service"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L381",
+      "source_location": "L322",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_hides_auto_block_checkbox_for_blocked_app",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -32469,18 +32396,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L247",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_invalid_child_falls_back_to_first",
-      "target": "src_familylink_server_services_family_link_get_service"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L315",
+      "source_location": "L256",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_kid_switcher_shows_avatar",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -32502,7 +32418,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L354",
+      "source_location": "L295",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_auto_block_checkbox_for_limited_app",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -32513,7 +32429,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L715",
+      "source_location": "L656",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_bonus_buttons_only_when_auto_blocked",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -32526,7 +32442,7 @@
       "source_file": "tests/server/test_routers_apps.py",
       "source_location": "L189",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_shows_child_tabs_for_multiple_children",
+      "source": "tests_server_test_routers_apps_test_apps_page_shows_sections_for_multiple_children",
       "target": "src_familylink_server_services_family_link_get_service"
     },
     {
@@ -32535,7 +32451,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L273",
+      "source_location": "L218",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_single_child_no_tab_links",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -32557,7 +32473,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L621",
+      "source_location": "L562",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_negative_minutes",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -32568,7 +32484,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L645",
+      "source_location": "L586",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_non_preset_minutes",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -32579,7 +32495,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L674",
+      "source_location": "L615",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_unknown_package",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -32590,7 +32506,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L595",
+      "source_location": "L536",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_resets_on_new_day",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -32601,7 +32517,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L543",
+      "source_location": "L484",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_stacks_within_same_day",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -32612,7 +32528,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L488",
+      "source_location": "L429",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_unblocks_auto_blocked_app",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -34385,18 +34301,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L218",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_child_param_selects_correct_child",
-      "target": "tests_server_test_auth_app"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L378",
+      "source_location": "L319",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_hides_auto_block_checkbox_for_blocked_app",
       "target": "tests_server_test_auth_app"
@@ -34407,18 +34312,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L244",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_invalid_child_falls_back_to_first",
-      "target": "tests_server_test_auth_app"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L312",
+      "source_location": "L253",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_kid_switcher_shows_avatar",
       "target": "tests_server_test_auth_app"
@@ -34440,7 +34334,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L351",
+      "source_location": "L292",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_auto_block_checkbox_for_limited_app",
       "target": "tests_server_test_auth_app"
@@ -34451,7 +34345,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L712",
+      "source_location": "L653",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_bonus_buttons_only_when_auto_blocked",
       "target": "tests_server_test_auth_app"
@@ -34464,7 +34358,7 @@
       "source_file": "tests/server/test_routers_apps.py",
       "source_location": "L186",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_shows_child_tabs_for_multiple_children",
+      "source": "tests_server_test_routers_apps_test_apps_page_shows_sections_for_multiple_children",
       "target": "tests_server_test_auth_app"
     },
     {
@@ -34473,7 +34367,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L270",
+      "source_location": "L215",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_single_child_no_tab_links",
       "target": "tests_server_test_auth_app"
@@ -34495,7 +34389,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L614",
+      "source_location": "L555",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_negative_minutes",
       "target": "tests_server_test_auth_app"
@@ -34506,7 +34400,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L638",
+      "source_location": "L579",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_non_preset_minutes",
       "target": "tests_server_test_auth_app"
@@ -34517,7 +34411,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L667",
+      "source_location": "L608",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_unknown_package",
       "target": "tests_server_test_auth_app"
@@ -34528,7 +34422,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L588",
+      "source_location": "L529",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_resets_on_new_day",
       "target": "tests_server_test_auth_app"
@@ -34539,7 +34433,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L536",
+      "source_location": "L477",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_stacks_within_same_day",
       "target": "tests_server_test_auth_app"
@@ -34550,7 +34444,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L481",
+      "source_location": "L422",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_unblocks_auto_blocked_app",
       "target": "tests_server_test_auth_app"
@@ -34561,7 +34455,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L433",
+      "source_location": "L374",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_set_auto_block_disables_existing_row",
       "target": "tests_server_test_auth_app"
@@ -34572,7 +34466,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L400",
+      "source_location": "L341",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_set_auto_block_enables_creates_new_appconfig_row",
       "target": "tests_server_test_auth_app"
@@ -39194,17 +39088,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L198",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps",
-      "target": "tests_server_test_routers_apps_test_apps_page_child_param_selects_correct_child",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L361",
+      "source_location": "L302",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_apps_page_hides_auto_block_checkbox_for_blocked_app",
@@ -39214,17 +39098,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L227",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps",
-      "target": "tests_server_test_routers_apps_test_apps_page_invalid_child_falls_back_to_first",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L284",
+      "source_location": "L225",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_apps_page_kid_switcher_shows_avatar",
@@ -39244,7 +39118,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L322",
+      "source_location": "L263",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_apps_page_shows_auto_block_checkbox_for_limited_app",
@@ -39254,7 +39128,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L680",
+      "source_location": "L621",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_apps_page_shows_bonus_buttons_only_when_auto_blocked",
@@ -39267,14 +39141,14 @@
       "source_location": "L164",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
-      "target": "tests_server_test_routers_apps_test_apps_page_shows_child_tabs_for_multiple_children",
+      "target": "tests_server_test_routers_apps_test_apps_page_shows_sections_for_multiple_children",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L253",
+      "source_location": "L198",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_apps_page_single_child_no_tab_links",
@@ -39294,7 +39168,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L603",
+      "source_location": "L544",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_grant_bonus_rejects_negative_minutes",
@@ -39304,7 +39178,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L627",
+      "source_location": "L568",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_grant_bonus_rejects_non_preset_minutes",
@@ -39314,7 +39188,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L651",
+      "source_location": "L592",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_grant_bonus_rejects_unknown_package",
@@ -39324,7 +39198,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L551",
+      "source_location": "L492",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_grant_bonus_resets_on_new_day",
@@ -39334,7 +39208,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L499",
+      "source_location": "L440",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_grant_bonus_stacks_within_same_day",
@@ -39344,7 +39218,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L445",
+      "source_location": "L386",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_grant_bonus_unblocks_auto_blocked_app",
@@ -39354,7 +39228,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L413",
+      "source_location": "L354",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_set_auto_block_disables_existing_row",
@@ -39364,7 +39238,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L387",
+      "source_location": "L328",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps",
       "target": "tests_server_test_routers_apps_test_set_auto_block_enables_creates_new_appconfig_row",
@@ -39395,18 +39269,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L219",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_child_param_selects_correct_child",
-      "target": "tests_server_test_routers_apps_cookie",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L379",
+      "source_location": "L320",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_hides_auto_block_checkbox_for_blocked_app",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39417,18 +39280,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L245",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_invalid_child_falls_back_to_first",
-      "target": "tests_server_test_routers_apps_cookie",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L313",
+      "source_location": "L254",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_kid_switcher_shows_avatar",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39450,7 +39302,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L352",
+      "source_location": "L293",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_auto_block_checkbox_for_limited_app",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39461,7 +39313,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L713",
+      "source_location": "L654",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_bonus_buttons_only_when_auto_blocked",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39474,7 +39326,7 @@
       "source_file": "tests/server/test_routers_apps.py",
       "source_location": "L187",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_shows_child_tabs_for_multiple_children",
+      "source": "tests_server_test_routers_apps_test_apps_page_shows_sections_for_multiple_children",
       "target": "tests_server_test_routers_apps_cookie",
       "confidence_score": 1.0
     },
@@ -39483,7 +39335,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L271",
+      "source_location": "L216",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_single_child_no_tab_links",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39505,7 +39357,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L618",
+      "source_location": "L559",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_negative_minutes",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39516,7 +39368,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L642",
+      "source_location": "L583",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_non_preset_minutes",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39527,7 +39379,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L671",
+      "source_location": "L612",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_unknown_package",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39538,7 +39390,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L592",
+      "source_location": "L533",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_resets_on_new_day",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39549,7 +39401,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L540",
+      "source_location": "L481",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_stacks_within_same_day",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39560,7 +39412,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L485",
+      "source_location": "L426",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_unblocks_auto_blocked_app",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39571,7 +39423,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L437",
+      "source_location": "L378",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_set_auto_block_disables_existing_row",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39582,7 +39434,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L404",
+      "source_location": "L345",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_set_auto_block_enables_creates_new_appconfig_row",
       "target": "tests_server_test_routers_apps_cookie",
@@ -39604,31 +39456,9 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L210",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_child_param_selects_correct_child",
-      "target": "tests_server_test_routers_apps_make_app_mock",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L369",
+      "source_location": "L310",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_hides_auto_block_checkbox_for_blocked_app",
-      "target": "tests_server_test_routers_apps_make_app_mock",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L235",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_invalid_child_falls_back_to_first",
       "target": "tests_server_test_routers_apps_make_app_mock",
       "confidence_score": 1.0
     },
@@ -39648,7 +39478,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L332",
+      "source_location": "L273",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_auto_block_checkbox_for_limited_app",
       "target": "tests_server_test_routers_apps_make_app_mock",
@@ -39659,7 +39489,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L690",
+      "source_location": "L631",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_bonus_buttons_only_when_auto_blocked",
       "target": "tests_server_test_routers_apps_make_app_mock",
@@ -39672,7 +39502,7 @@
       "source_file": "tests/server/test_routers_apps.py",
       "source_location": "L177",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_shows_child_tabs_for_multiple_children",
+      "source": "tests_server_test_routers_apps_test_apps_page_shows_sections_for_multiple_children",
       "target": "tests_server_test_routers_apps_make_app_mock",
       "confidence_score": 1.0
     },
@@ -39681,7 +39511,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L261",
+      "source_location": "L206",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_single_child_no_tab_links",
       "target": "tests_server_test_routers_apps_make_app_mock",
@@ -39692,7 +39522,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L659",
+      "source_location": "L600",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_unknown_package",
       "target": "tests_server_test_routers_apps_make_app_mock",
@@ -39703,7 +39533,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L577",
+      "source_location": "L518",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_resets_on_new_day",
       "target": "tests_server_test_routers_apps_make_app_mock",
@@ -39714,7 +39544,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L525",
+      "source_location": "L466",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_stacks_within_same_day",
       "target": "tests_server_test_routers_apps_make_app_mock",
@@ -39725,7 +39555,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L470",
+      "source_location": "L411",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_unblocks_auto_blocked_app",
       "target": "tests_server_test_routers_apps_make_app_mock",
@@ -39736,18 +39566,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L216",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_child_param_selects_correct_child",
-      "target": "tests_server_test_routers_apps_empty_config_session",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L376",
+      "source_location": "L317",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_hides_auto_block_checkbox_for_blocked_app",
       "target": "tests_server_test_routers_apps_empty_config_session",
@@ -39758,18 +39577,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L242",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_invalid_child_falls_back_to_first",
-      "target": "tests_server_test_routers_apps_empty_config_session",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L310",
+      "source_location": "L251",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_kid_switcher_shows_avatar",
       "target": "tests_server_test_routers_apps_empty_config_session",
@@ -39793,7 +39601,7 @@
       "source_file": "tests/server/test_routers_apps.py",
       "source_location": "L184",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_shows_child_tabs_for_multiple_children",
+      "source": "tests_server_test_routers_apps_test_apps_page_shows_sections_for_multiple_children",
       "target": "tests_server_test_routers_apps_empty_config_session",
       "confidence_score": 1.0
     },
@@ -39802,7 +39610,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L268",
+      "source_location": "L213",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_single_child_no_tab_links",
       "target": "tests_server_test_routers_apps_empty_config_session",
@@ -39843,18 +39651,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L204",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_child_param_selects_correct_child",
-      "target": "tests_server_test_routers_apps_make_member",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L365",
+      "source_location": "L306",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_hides_auto_block_checkbox_for_blocked_app",
       "target": "tests_server_test_routers_apps_make_member",
@@ -39865,18 +39662,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L231",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_invalid_child_falls_back_to_first",
-      "target": "tests_server_test_routers_apps_make_member",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L328",
+      "source_location": "L269",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_auto_block_checkbox_for_limited_app",
       "target": "tests_server_test_routers_apps_make_member",
@@ -39887,7 +39673,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L686",
+      "source_location": "L627",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_bonus_buttons_only_when_auto_blocked",
       "target": "tests_server_test_routers_apps_make_member",
@@ -39900,7 +39686,7 @@
       "source_file": "tests/server/test_routers_apps.py",
       "source_location": "L170",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_shows_child_tabs_for_multiple_children",
+      "source": "tests_server_test_routers_apps_test_apps_page_shows_sections_for_multiple_children",
       "target": "tests_server_test_routers_apps_make_member",
       "confidence_score": 1.0
     },
@@ -39909,7 +39695,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L257",
+      "source_location": "L202",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_single_child_no_tab_links",
       "target": "tests_server_test_routers_apps_make_member",
@@ -39920,18 +39706,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L210",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_child_param_selects_correct_child",
-      "target": "tests_server_test_routers_apps_make_usage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L368",
+      "source_location": "L309",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_hides_auto_block_checkbox_for_blocked_app",
       "target": "tests_server_test_routers_apps_make_usage",
@@ -39942,18 +39717,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L234",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_invalid_child_falls_back_to_first",
-      "target": "tests_server_test_routers_apps_make_usage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L331",
+      "source_location": "L272",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_auto_block_checkbox_for_limited_app",
       "target": "tests_server_test_routers_apps_make_usage",
@@ -39964,7 +39728,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L689",
+      "source_location": "L630",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_shows_bonus_buttons_only_when_auto_blocked",
       "target": "tests_server_test_routers_apps_make_usage",
@@ -39977,7 +39741,7 @@
       "source_file": "tests/server/test_routers_apps.py",
       "source_location": "L176",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_test_apps_page_shows_child_tabs_for_multiple_children",
+      "source": "tests_server_test_routers_apps_test_apps_page_shows_sections_for_multiple_children",
       "target": "tests_server_test_routers_apps_make_usage",
       "confidence_score": 1.0
     },
@@ -39986,7 +39750,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L260",
+      "source_location": "L205",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_apps_page_single_child_no_tab_links",
       "target": "tests_server_test_routers_apps_make_usage",
@@ -39997,7 +39761,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L658",
+      "source_location": "L599",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_rejects_unknown_package",
       "target": "tests_server_test_routers_apps_make_usage",
@@ -40008,7 +39772,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L576",
+      "source_location": "L517",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_resets_on_new_day",
       "target": "tests_server_test_routers_apps_make_usage",
@@ -40019,7 +39783,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L524",
+      "source_location": "L465",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_stacks_within_same_day",
       "target": "tests_server_test_routers_apps_make_usage",
@@ -40030,7 +39794,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L469",
+      "source_location": "L410",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_test_grant_bonus_unblocks_auto_blocked_app",
       "target": "tests_server_test_routers_apps_make_usage",
@@ -40043,7 +39807,7 @@
       "source_location": "L165",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_rationale_165",
-      "target": "tests_server_test_routers_apps_test_apps_page_shows_child_tabs_for_multiple_children",
+      "target": "tests_server_test_routers_apps_test_apps_page_shows_sections_for_multiple_children",
       "confidence_score": 1.0
     },
     {
@@ -40053,26 +39817,6 @@
       "source_location": "L199",
       "weight": 1.0,
       "source": "tests_server_test_routers_apps_rationale_199",
-      "target": "tests_server_test_routers_apps_test_apps_page_child_param_selects_correct_child",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L228",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_228",
-      "target": "tests_server_test_routers_apps_test_apps_page_invalid_child_falls_back_to_first",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L254",
-      "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_254",
       "target": "tests_server_test_routers_apps_test_apps_page_single_child_no_tab_links",
       "confidence_score": 1.0
     },
@@ -40080,9 +39824,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L285",
+      "source_location": "L226",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_285",
+      "source": "tests_server_test_routers_apps_rationale_226",
       "target": "tests_server_test_routers_apps_test_apps_page_kid_switcher_shows_avatar",
       "confidence_score": 1.0
     },
@@ -40090,9 +39834,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L323",
+      "source_location": "L264",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_323",
+      "source": "tests_server_test_routers_apps_rationale_264",
       "target": "tests_server_test_routers_apps_test_apps_page_shows_auto_block_checkbox_for_limited_app",
       "confidence_score": 1.0
     },
@@ -40100,9 +39844,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L362",
+      "source_location": "L303",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_362",
+      "source": "tests_server_test_routers_apps_rationale_303",
       "target": "tests_server_test_routers_apps_test_apps_page_hides_auto_block_checkbox_for_blocked_app",
       "confidence_score": 1.0
     },
@@ -40110,9 +39854,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L388",
+      "source_location": "L329",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_388",
+      "source": "tests_server_test_routers_apps_rationale_329",
       "target": "tests_server_test_routers_apps_test_set_auto_block_enables_creates_new_appconfig_row",
       "confidence_score": 1.0
     },
@@ -40120,9 +39864,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L414",
+      "source_location": "L355",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_414",
+      "source": "tests_server_test_routers_apps_rationale_355",
       "target": "tests_server_test_routers_apps_test_set_auto_block_disables_existing_row",
       "confidence_score": 1.0
     },
@@ -40130,9 +39874,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L446",
+      "source_location": "L387",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_446",
+      "source": "tests_server_test_routers_apps_rationale_387",
       "target": "tests_server_test_routers_apps_test_grant_bonus_unblocks_auto_blocked_app",
       "confidence_score": 1.0
     },
@@ -40140,9 +39884,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L500",
+      "source_location": "L441",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_500",
+      "source": "tests_server_test_routers_apps_rationale_441",
       "target": "tests_server_test_routers_apps_test_grant_bonus_stacks_within_same_day",
       "confidence_score": 1.0
     },
@@ -40150,9 +39894,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L552",
+      "source_location": "L493",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_552",
+      "source": "tests_server_test_routers_apps_rationale_493",
       "target": "tests_server_test_routers_apps_test_grant_bonus_resets_on_new_day",
       "confidence_score": 1.0
     },
@@ -40160,9 +39904,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L604",
+      "source_location": "L545",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_604",
+      "source": "tests_server_test_routers_apps_rationale_545",
       "target": "tests_server_test_routers_apps_test_grant_bonus_rejects_negative_minutes",
       "confidence_score": 1.0
     },
@@ -40170,9 +39914,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L628",
+      "source_location": "L569",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_628",
+      "source": "tests_server_test_routers_apps_rationale_569",
       "target": "tests_server_test_routers_apps_test_grant_bonus_rejects_non_preset_minutes",
       "confidence_score": 1.0
     },
@@ -40180,9 +39924,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L652",
+      "source_location": "L593",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_652",
+      "source": "tests_server_test_routers_apps_rationale_593",
       "target": "tests_server_test_routers_apps_test_grant_bonus_rejects_unknown_package",
       "confidence_score": 1.0
     },
@@ -40190,9 +39934,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_apps.py",
-      "source_location": "L681",
+      "source_location": "L622",
       "weight": 1.0,
-      "source": "tests_server_test_routers_apps_rationale_681",
+      "source": "tests_server_test_routers_apps_rationale_622",
       "target": "tests_server_test_routers_apps_test_apps_page_shows_bonus_buttons_only_when_auto_blocked",
       "confidence_score": 1.0
     },
@@ -46646,5 +46390,5 @@
       "source_file": "docs/superpowers/specs/2026-06-30-oauth-bearer-auth-resilience-design.md"
     }
   ],
-  "built_at_commit": "14ea590b91a0120b8c689d176ff6a13a1dc417b3"
+  "built_at_commit": "14789ec4ac2de2b6729fb551d376039b7162a87b"
 }

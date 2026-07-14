@@ -100,8 +100,8 @@
     "semantic_hash": "032d7a534b3e7f152e7d4405a1db8f95"
   },
   "src/familylink_server/bot/client.py": {
-    "mtime": 1783664730.7231178,
-    "ast_hash": "add407d70d599fb328322cc756226e9d",
+    "mtime": 1783944820.8063564,
+    "ast_hash": "8ff920c62e19a21bcb0e1dd06e16b12e",
     "semantic_hash": ""
   },
   "src/familylink_server/bot/commands/__init__.py": {
@@ -110,8 +110,8 @@
     "semantic_hash": "eec8ade5ffb3869a789e5797ac9bd82a"
   },
   "src/familylink_server/bot/commands/apps.py": {
-    "mtime": 1783664730.7231052,
-    "ast_hash": "ed7d1eb2ca779a746af1f8e5108fee1f",
+    "mtime": 1783947375.975113,
+    "ast_hash": "882681251e5b1f3c37d40fcab63f5399",
     "semantic_hash": ""
   },
   "src/familylink_server/bot/commands/devices.py": {
@@ -150,8 +150,8 @@
     "semantic_hash": ""
   },
   "src/familylink_server/db/__init__.py": {
-    "mtime": 1783664730.7225757,
-    "ast_hash": "f0c4dbcb04f8c8096e71e16e46465e61",
+    "mtime": 1783947333.7377136,
+    "ast_hash": "7e486df873398db08521a3122cf0f43a",
     "semantic_hash": ""
   },
   "src/familylink_server/db/models.py": {
@@ -165,8 +165,8 @@
     "semantic_hash": "06ea69ab580d0b5ce8ddabd74d4b8a80"
   },
   "src/familylink_server/main.py": {
-    "mtime": 1783928104.109466,
-    "ast_hash": "9db7be3aac152e3788cd715798392127",
+    "mtime": 1783949582.770658,
+    "ast_hash": "0cf1b0e411d43930f07e552191bc8fbf",
     "semantic_hash": ""
   },
   "src/familylink_server/routers/__init__.py": {
@@ -180,8 +180,8 @@
     "semantic_hash": ""
   },
   "src/familylink_server/routers/apps.py": {
-    "mtime": 1783928595.9022405,
-    "ast_hash": "0973aeb6ecdb93c38657678c0b4391af",
+    "mtime": 1783947876.6154563,
+    "ast_hash": "b9f22d05e68fcfdcc1550ee09a523434",
     "semantic_hash": ""
   },
   "src/familylink_server/routers/dashboard.py": {
@@ -190,8 +190,8 @@
     "semantic_hash": ""
   },
   "src/familylink_server/routers/devices.py": {
-    "mtime": 1783664730.7194142,
-    "ast_hash": "e65a4bbea56efcd501e78330bde95d6e",
+    "mtime": 1784002355.6313353,
+    "ast_hash": "4050009252d15f54ff784feede9dd20c",
     "semantic_hash": ""
   },
   "src/familylink_server/routers/history.py": {
@@ -225,8 +225,8 @@
     "semantic_hash": ""
   },
   "src/familylink_server/services/family_link.py": {
-    "mtime": 1783927252.6560328,
-    "ast_hash": "582d11c5f517e24981cb83c9826d9400",
+    "mtime": 1783949283.2192743,
+    "ast_hash": "f2d447b9aba19787331309757cbf2623",
     "semantic_hash": ""
   },
   "src/familylink_server/services/linux_poller.py": {
@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "tests/server/test_bot_commands.py": {
-    "mtime": 1783664730.7231054,
-    "ast_hash": "378909dd7c34213f909802ff1ecfda57",
+    "mtime": 1783947431.9569328,
+    "ast_hash": "0412f4b734221b5fbf76a9015ccf657f",
     "semantic_hash": ""
   },
   "tests/server/test_bot_embeds.py": {
@@ -325,8 +325,8 @@
     "semantic_hash": ""
   },
   "tests/server/test_routers_apps.py": {
-    "mtime": 1783928595.902587,
-    "ast_hash": "064ac8c06bed2275456b15c678d3e9aa",
+    "mtime": 1783947903.2477694,
+    "ast_hash": "7a3ab6ead7aff597ec51379e72ac3633",
     "semantic_hash": ""
   },
   "tests/server/test_routers_dashboard.py": {
@@ -420,8 +420,8 @@
     "semantic_hash": "c93b80de6750f50c95924e2f1affe4fd"
   },
   "README.md": {
-    "mtime": 1783779240.267727,
-    "ast_hash": "2d0ad8b882ee2e1543a0830fdd7bc06a",
+    "mtime": 1783951748.6945388,
+    "ast_hash": "ef04de2c2598876c214b703da9a256df",
     "semantic_hash": ""
   },
   "docker-compose.yml": {
@@ -550,9 +550,9 @@
     "semantic_hash": "83028c07145df3f7a64368029dc36e34"
   },
   "src/familylink_server/templates/devices.html": {
-    "mtime": 1781878635.5597475,
-    "ast_hash": "e220fde86526a134c98b6760b1cc3acd",
-    "semantic_hash": "e220fde86526a134c98b6760b1cc3acd"
+    "mtime": 1784002361.8459394,
+    "ast_hash": "7ae52f3e319f132f43fd1b0566c3441f",
+    "semantic_hash": ""
   },
   "src/familylink_server/templates/history.html": {
     "mtime": 1781879608.686737,
@@ -640,18 +640,18 @@
     "semantic_hash": ""
   },
   "src/familylink_server/cookie_refresher_app.py": {
-    "mtime": 1783755122.6285086,
-    "ast_hash": "5ed266b5a4bcdd6683071e273156eee5",
+    "mtime": 1783949283.2189806,
+    "ast_hash": "699047ff395c304a6c601350d962e2f1",
     "semantic_hash": ""
   },
   "tests/server/test_auto_refresh.py": {
-    "mtime": 1783665847.895092,
-    "ast_hash": "294cbe4aeea6a981d88551c4d3c7b337",
+    "mtime": 1783949283.2194283,
+    "ast_hash": "b502988d2ac0a28c739d6a720ec21873",
     "semantic_hash": ""
   },
   "tests/server/test_cookie_refresher.py": {
-    "mtime": 1783752520.2522173,
-    "ast_hash": "c41555fad08d3870770838cd7d4ff5df",
+    "mtime": 1783949283.2196033,
+    "ast_hash": "73f894ab16b8a95e63406a23cd0ad3e9",
     "semantic_hash": ""
   },
   ".agents/skills/cavecrew/README.md": {
@@ -775,13 +775,13 @@
     "semantic_hash": ""
   },
   "src/familylink_server/services/app_enforcer.py": {
-    "mtime": 1783928104.1097457,
-    "ast_hash": "b2f310986ff3d9961efe0f0f8479364e",
+    "mtime": 1783930880.550478,
+    "ast_hash": "784ee5d1b7ee751216e88b73b2f2fb55",
     "semantic_hash": ""
   },
   "tests/server/test_app_enforcer.py": {
-    "mtime": 1783928104.1098957,
-    "ast_hash": "cbabeca109ea0a77170ca489c1cc38b2",
+    "mtime": 1783930856.9775374,
+    "ast_hash": "670ab66d5040aac89143b734ae41816b",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-07-13-auto-block-overused-apps.md": {
@@ -797,6 +797,21 @@
   "logo.jpeg": {
     "mtime": 1783779098.0799613,
     "ast_hash": "6081daf860842fb45fc5de935c6fc632",
+    "semantic_hash": ""
+  },
+  "src/familylink_server/db/app_config.py": {
+    "mtime": 1783947327.4952145,
+    "ast_hash": "ca04becd2c0f18755e0e08605ffec3c2",
+    "semantic_hash": ""
+  },
+  "tests/server/test_db_app_config.py": {
+    "mtime": 1783947912.3209543,
+    "ast_hash": "52e3b265e915d56572903dd45188bc1c",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-07-13-auto-block-discord-bot.md": {
+    "mtime": 1783931965.7384295,
+    "ast_hash": "dc0fca47f96dfad9bb395c6c8e913cb3",
     "semantic_hash": ""
   }
 }

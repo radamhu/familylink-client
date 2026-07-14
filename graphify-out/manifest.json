@@ -180,8 +180,8 @@
     "semantic_hash": ""
   },
   "src/familylink_server/routers/apps.py": {
-    "mtime": 1783947876.6154563,
-    "ast_hash": "b9f22d05e68fcfdcc1550ee09a523434",
+    "mtime": 1784003347.7759323,
+    "ast_hash": "0c63c72225fa38974aaad11d5782cf3d",
     "semantic_hash": ""
   },
   "src/familylink_server/routers/dashboard.py": {
@@ -325,8 +325,8 @@
     "semantic_hash": ""
   },
   "tests/server/test_routers_apps.py": {
-    "mtime": 1783947903.2477694,
-    "ast_hash": "7a3ab6ead7aff597ec51379e72ac3633",
+    "mtime": 1784003378.6850815,
+    "ast_hash": "8d71afe696a42d1d9861c7f1dc11ff2f",
     "semantic_hash": ""
   },
   "tests/server/test_routers_dashboard.py": {
@@ -535,9 +535,9 @@
     "semantic_hash": "20ddd2602578abf626ddbd434e31de7a"
   },
   "src/familylink_server/templates/apps.html": {
-    "mtime": 1782831060.3919663,
-    "ast_hash": "5693b2cab616759e607dd905ef9d81ea",
-    "semantic_hash": "5693b2cab616759e607dd905ef9d81ea"
+    "mtime": 1784003358.703779,
+    "ast_hash": "4c16441dfdbd3790478036d0524c5769",
+    "semantic_hash": ""
   },
   "src/familylink_server/templates/base.html": {
     "mtime": 1783778531.9372346,
