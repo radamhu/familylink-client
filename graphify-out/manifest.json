@@ -535,8 +535,8 @@
     "semantic_hash": "20ddd2602578abf626ddbd434e31de7a"
   },
   "src/familylink_server/templates/apps.html": {
-    "mtime": 1784003358.703779,
-    "ast_hash": "4c16441dfdbd3790478036d0524c5769",
+    "mtime": 1784006850.398459,
+    "ast_hash": "9a2c01f141018b7444f5027e94060648",
     "semantic_hash": ""
   },
   "src/familylink_server/templates/base.html": {
