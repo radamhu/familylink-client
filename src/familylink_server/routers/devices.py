@@ -9,6 +9,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from familylink_server.auth.oauth import require_user
+from familylink_server.constants import CHILD_COLORS
 from familylink_server.db import AuditLog, get_session
 from familylink_server.services.discord_notifier import get_notifier
 from familylink_server.services.family_link import FamilyLinkService, get_service
@@ -31,28 +32,36 @@ async def devices_page(
     _email: str = require_user,  # type: ignore[assignment]
     svc: FamilyLinkService = Depends(get_service),  # noqa: B008
 ) -> HTMLResponse:
-    """Render the devices page listing all supervised devices."""
+    """Render the devices page listing supervised devices grouped by kid."""
     members = await svc.get_members()
-    children = [
+    supervised = [
         m
         for m in members.members
         if m.member_supervision_info and m.member_supervision_info.is_supervised_member
     ]
-    devices = []
-    for child in children:
+    children = []
+    for i, child in enumerate(supervised):
         usage = await svc.get_apps_and_usage(child.user_id)
-        for d in usage.device_info:
-            devices.append(
-                {
-                    'device_id': d.device_id,
-                    'child_id': child.user_id,
-                    'friendly_name': d.display_info.friendly_name,
-                    'model': getattr(d.display_info, 'model', None),
-                    'is_locked': False,
-                }
-            )
+        devices = [
+            {
+                'device_id': d.device_id,
+                'child_id': child.user_id,
+                'friendly_name': d.display_info.friendly_name,
+                'model': getattr(d.display_info, 'model', None),
+                'is_locked': False,
+            }
+            for d in usage.device_info
+        ]
+        children.append(
+            {
+                'user_id': child.user_id,
+                'display_name': child.profile.display_name,
+                'color': CHILD_COLORS[i % len(CHILD_COLORS)],
+                'devices': devices,
+            }
+        )
     return templates.TemplateResponse(
-        request, 'devices.html', {'devices': devices, 'auth_failed': svc.auth_failed}
+        request, 'devices.html', {'children': children, 'auth_failed': svc.auth_failed}
     )
 
 

@@ -2,12 +2,24 @@
 {% block title %}Devices{% endblock %}
 {% block content %}
 <h2>Devices</h2>
-<div class="grid">
-  {% for device in devices %}
-    {% include "partials/device_card.html" %}
+{% if children %}
+  {% for child in children %}
+    <section style="margin-bottom:1.5rem">
+      <h3 style="display:flex;align-items:center;gap:8px">
+        <span style="width:22px;height:22px;border-radius:50%;background:{{ child.color }};color:white;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">{{ child.display_name[0] | upper }}</span>
+        {{ child.display_name }}
+      </h3>
+      <div class="grid">
+        {% for device in child.devices %}
+          {% include "partials/device_card.html" %}
+        {% endfor %}
+      </div>
+      {% if not child.devices %}
+        <p>No devices found.</p>
+      {% endif %}
+    </section>
   {% endfor %}
-  {% if not devices %}
-    <p>No devices found.</p>
-  {% endif %}
-</div>
+{% else %}
+  <p>No supervised children found.</p>
+{% endif %}
 {% endblock %}
