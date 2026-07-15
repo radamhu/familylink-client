@@ -151,6 +151,9 @@ def test_get_cookies_b64_raises_when_expired(monkeypatch, tmp_path):
             return 'My Account'
 
     class FakeContext:
+        def add_init_script(self, *a, **kw):
+            pass
+
         def new_page(self):
             return FakePage()
 
@@ -215,6 +218,9 @@ def test_get_cookies_b64_includes_page_context_on_failure(monkeypatch, tmp_path)
             return "Couldn't sign you in"
 
     class FakeContext:
+        def add_init_script(self, *a, **kw):
+            pass
+
         def new_page(self):
             return FakePage()
 
@@ -293,6 +299,9 @@ def test_get_cookies_b64_writes_rotated_state(monkeypatch, tmp_path):
             pass
 
     class FakeContext:
+        def add_init_script(self, *a, **kw):
+            pass
+
         def new_page(self):
             return FakePage()
 

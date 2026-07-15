@@ -65,8 +65,19 @@ def _get_cookies_b64(state_path: Path) -> str:
     from playwright.sync_api import sync_playwright
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        ctx = browser.new_context(storage_state=str(state_path))
+        browser = p.chromium.launch(
+            headless=True, args=['--disable-blink-features=AutomationControlled']
+        )
+        ctx = browser.new_context(
+            storage_state=str(state_path),
+            user_agent=(
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                '(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+            ),
+        )
+        ctx.add_init_script(
+            "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+        )
         page = ctx.new_page()
 
         try:
