@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     familylink_cookie_file: str = ''
     cookie_refresher_url: str = ''
     refresher_api_key: str = ''
+    sapisid_relay_token: str = ''
     cache_ttl_seconds: int = 900
     debug: bool = False
 

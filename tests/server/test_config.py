@@ -59,3 +59,11 @@ def test_discord_summary_time_custom(monkeypatch):
     s = Settings()
     t = s.discord_summary_time_parsed
     assert t == datetime.time(8, 30, tzinfo=datetime.UTC)
+
+
+def test_sapisid_relay_token_defaults_empty():
+    """sapisid_relay_token defaults to an empty string when unset."""
+    from familylink_server.config import Settings
+
+    s = Settings()
+    assert s.sapisid_relay_token == ''
