@@ -46,6 +46,55 @@ The Discord bot runs as part of the server process when `DISCORD_BOT_TOKEN`, `DI
 
 A daily usage summary is automatically posted to the configured channel at `DISCORD_SUMMARY_TIME` (default `20:00`). Only members with the `DISCORD_ALLOWED_ROLE` role (default `Parent`) can run commands.
 
+### Linux machine management
+
+The server can manage Linux machines (e.g. a child's gaming PC) via SSH. It polls each machine on a 60-second cycle, accumulates active graphical-session time, and enforces a daily quota by locking the screen and — after a grace period — powering the machine off.
+
+The `/linux-machines` web page lets you add machines, view today's usage, grant bonus minutes, and trigger a lock or power-off immediately.
+
+#### Requirements per managed machine
+
+**OS note:** The SSH commands rely on systemd-logind and D-Bus. Tested on Bazzite (Fedora Atomic, KDE Plasma 6). Adjust if the target machine uses a different desktop environment.
+
+**1. Generate an SSH key pair**
+
+Use the *Generate key* button on the `/linux-machines` add/edit form. Copy the public key to the target machine:
+
+```bash
+# On the target machine (run once)
+mkdir -p ~/.ssh && chmod 700 ~/.ssh
+echo '<paste public key here>' >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+
+**2. Allow passwordless poweroff via sudo**
+
+`systemctl poweroff` requires polkit admin authentication, which is unavailable over a non-interactive SSH session. Add a narrow sudoers rule so the SSH user can power off without a password.
+
+Run the following on the target machine (either physically or via `ssh -t`):
+
+```bash
+echo 'suriel ALL=(ALL) NOPASSWD: /usr/bin/systemctl poweroff' | sudo tee /etc/sudoers.d/familylink-poweroff
+sudo chmod 440 /etc/sudoers.d/familylink-poweroff
+# Verify syntax before relying on it
+sudo visudo -c -f /etc/sudoers.d/familylink-poweroff
+```
+
+Replace `suriel` with the actual SSH user configured for that machine.
+
+> A helper script at `~/familylink-setup.sh` is written to the target machine during first-time setup and performs these three commands automatically — just run `sudo bash ~/familylink-setup.sh` once from a privileged terminal.
+
+#### How enforcement works
+
+| Condition                                      | Action                                                       |
+| ---------------------------------------------- | ------------------------------------------------------------ |
+| Active graphical session (seat-based) detected | Accumulate seconds toward the daily quota                    |
+| Quota exceeded, not yet locked                 | Lock screen via D-Bus (`org.freedesktop.ScreenSaver.Lock`) |
+| Locked, grace period elapsed                   | Power off via`sudo systemctl poweroff`                     |
+| Bonus minutes granted while locked             | Kill`kscreenlocker_greet` to dismiss the lock screen       |
+
+The daily quota and grace period (default 5 min) are configurable per machine.
+
 ### Usage as a CLI
 
 Create a `config.csv` file with the following format:
@@ -173,6 +222,78 @@ make install
 direnv allow
 ```
 
+### Codebase navigation
+
+A knowledge graph (`graphify-out/graph.json`) is checked in. Use it to orient yourself before reading source files:
+
+```bash
+# Install graphify once
+pip install graphifyy
+
+# Then query the graph
+graphify query "<question>"
+graphify explain "<concept>"
+graphify path "<NodeA>" "<NodeB>"
+```
+
+**Architecture questions**
+
+```bash
+graphify query "Why does FamilyLinkService bridge Discord commands to 17 different communities?"
+graphify query "How does FamilyLink connect the API client to the CLI, server, and Discord bot?"
+graphify query "Why does DiscordNotifier connect app management to session alert tests?"
+```
+
+**Auth and session questions**
+
+```bash
+graphify query "How does CookieResolver pick between browser cookies, FAMILYLINK_COOKIES_B64, and SAPISID?"
+graphify query "What happens when a Google session expires — which code paths handle auth_failed?"
+graphify query "How does cookie hot-reload work without a container restart?"
+graphify path "CookieResolver" "FamilyLinkService"
+```
+
+**HTMX and server questions**
+
+```bash
+graphify query "How do HTMX mutation endpoints return partials — which templates are involved?"
+graphify query "What does the lifespan startup sequence initialise and in what order?"
+graphify path "lifespan()" "FamilyLinkService"
+graphify explain "HTMX Mutation Endpoint Returning HTML Partials"
+```
+
+**Discord bot questions**
+
+```bash
+graphify query "How do Discord slash commands reach FamilyLinkService?"
+graphify query "What is the relationship between FamilyLinkBot, AppsGroup, and DiscordNotifier?"
+graphify query "How does the daily summary get posted to Discord?"
+```
+
+**Linux machine questions**
+
+```bash
+graphify query "How does poll_machine enforce daily screen time quotas?"
+graphify query "What triggers a lock vs a power-off on a Linux machine?"
+graphify path "poll_machine()" "LinuxUsageSnapshot"
+```
+
+**Data flow questions**
+
+```bash
+graphify query "How do positional JSON arrays from the Google API become Pydantic models?"
+graphify path "parse_apps_and_usage()" "AppUsage"
+graphify query "How does get_service() inject FamilyLinkService into route handlers?"
+```
+
+**Testing questions**
+
+```bash
+graphify query "Which tests cover the cookie hot-reload endpoint?"
+graphify query "How are Discord bot commands tested without a real Discord connection?"
+graphify query "What does the server test conftest set up?"
+```
+
 ### Docker development
 
 Running the server locally via `docker compose up` requires two extra steps because Google OAuth sets a `Secure` session cookie that browsers silently drop over plain HTTP.
@@ -286,55 +407,6 @@ web: uvicorn familylink_server.main:app --host 0.0.0.0 --port $PORT
 
 Your platform will read this and start the server on the port it provides via the `$PORT` environment variable.
 
-### Linux machine management
-
-The server can manage Linux machines (e.g. a child's gaming PC) via SSH. It polls each machine on a 60-second cycle, accumulates active graphical-session time, and enforces a daily quota by locking the screen and — after a grace period — powering the machine off.
-
-The `/linux-machines` web page lets you add machines, view today's usage, grant bonus minutes, and trigger a lock or power-off immediately.
-
-#### Requirements per managed machine
-
-**OS note:** The SSH commands rely on systemd-logind and D-Bus. Tested on Bazzite (Fedora Atomic, KDE Plasma 6). Adjust if the target machine uses a different desktop environment.
-
-**1. Generate an SSH key pair**
-
-Use the *Generate key* button on the `/linux-machines` add/edit form. Copy the public key to the target machine:
-
-```bash
-# On the target machine (run once)
-mkdir -p ~/.ssh && chmod 700 ~/.ssh
-echo '<paste public key here>' >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
-```
-
-**2. Allow passwordless poweroff via sudo**
-
-`systemctl poweroff` requires polkit admin authentication, which is unavailable over a non-interactive SSH session. Add a narrow sudoers rule so the SSH user can power off without a password.
-
-Run the following on the target machine (either physically or via `ssh -t`):
-
-```bash
-echo 'suriel ALL=(ALL) NOPASSWD: /usr/bin/systemctl poweroff' | sudo tee /etc/sudoers.d/familylink-poweroff
-sudo chmod 440 /etc/sudoers.d/familylink-poweroff
-# Verify syntax before relying on it
-sudo visudo -c -f /etc/sudoers.d/familylink-poweroff
-```
-
-Replace `suriel` with the actual SSH user configured for that machine.
-
-> A helper script at `~/familylink-setup.sh` is written to the target machine during first-time setup and performs these three commands automatically — just run `sudo bash ~/familylink-setup.sh` once from a privileged terminal.
-
-#### How enforcement works
-
-| Condition                                      | Action                                                       |
-| ---------------------------------------------- | ------------------------------------------------------------ |
-| Active graphical session (seat-based) detected | Accumulate seconds toward the daily quota                    |
-| Quota exceeded, not yet locked                 | Lock screen via D-Bus (`org.freedesktop.ScreenSaver.Lock`) |
-| Locked, grace period elapsed                   | Power off via`sudo systemctl poweroff`                     |
-| Bonus minutes granted while locked             | Kill`kscreenlocker_greet` to dismiss the lock screen       |
-
-The daily quota and grace period (default 5 min) are configurable per machine.
-
 #### Coolify deployment
 
 Coolify uses Traefik as its reverse proxy, which terminates TLS and forwards requests to the container over plain HTTP internally. Without special configuration uvicorn would generate `http://` OAuth callback URLs, causing a `redirect_uri_mismatch` error from Google.
@@ -436,9 +508,7 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
    | `COOKIE_REFRESHER_URL` | Internal URL of the sidecar, e.g.`http://cookie-refresher:8080` |
    | `REFRESHER_API_KEY`    | Same value as set on the sidecar                                  |
 6. Deploy both services, then run
-7. ```Shell
-   WEB_BASE_URL="WEB_BASE_URL" REFRESHER_API_KEY="WEBBASEURL"REFRESHERAPIKEY="REFRESHER_API_KEY" REFRESHER_INSECURE_SKIP_TLS_VERIFY="$REFRESHER_INSECURE_SKIP_TLS_VERIFY" python scripts/bootstrap_refresher_session.py --browser chrome
-   ```
+7. WEB_BASE_URL=https://cha67f8p0xtt7y1mv464yu43.192.168.0.22.sslip.o REFRESHER_INSECURE_SKIP_TLS_VERIFY=1 REFRESHER_API_KEY=CHANGE_ME python scripts/bootstrap_refresher_session.py --browser chrome
 8. from your laptop (see diagram above) to seed the sidecar's persisted session — `/refresh` returns 400 until this has been done at least once.
 9. Smoke-test: `curl -X POST -H "X-Api-Key: <key>" http://<sidecar-internal>:8080/refresh` should return `{"cookies_b64": "..."}` within ~30 seconds.
 
@@ -488,92 +558,11 @@ This only refreshes from the *current* browser session — if Google has fully s
 - Gzip compression
 - Port routing to the uvicorn process on `8000`
 
-### Troubleshooting (auth)
+### Troubleshooting
 
-There are two separate auth layers, and they fail independently:
-
-- **Google/Family Link session** — the cookies the server uses to call the Family Link API. Expires on sign-out, password change, or Google security events.
-- **OAuth login** — your own login to *this app* (`fl_session` cookie). Separate from the above; only affects who can access the UI.
-
-#### Google/Family Link session problems
-
-| Symptom                                                                                | Command                                                                                                           | When                                                                                                                                                                     |
-| -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 503 "Google session expired" page,`cookie-refresher` sidecar **is** configured | None — wait. The page itself triggers a background refresh; the 30-min health check retries too.                 | First response. Reload after ~1 minute.                                                                                                                                  |
-| Sidecar logs show`Refresh failed: ... verification: HTTP 401` repeatedly             | `WEB_BASE_URL=<app-url> REFRESHER_API_KEY=<key> python scripts/bootstrap_refresher_session.py --browser chrome` | The sidecar's persisted session itself has died (rare: password change, long inactivity, security event). Run from a machine with Chrome logged into the parent account. |
-| No sidecar configured, or above bootstrap didn't fix it                                | `familylink export-cookies --browser chrome --base64 --coolify --restart`                                       | Full manual reset. Requires restart. Works regardless of sidecar state.                                                                                                  |
-| Just want to check current cookie validity without restarting anything                 | `familylink export-cookies --base64` (no `--coolify`)                                                         | Dry check — writes`cookies.txt` + prints base64, doesn't touch the deployment.                                                                                        |
-
-The sidecar and `bootstrap_refresher_session.py` don't replace `export-cookies` — they automate the *recurring* refresh so you don't have to run `export-cookies` every few weeks. `bootstrap_refresher_session.py` only re-seeds the sidecar's stored session; it doesn't touch the running app's cookies directly. `export-cookies --coolify --restart` is the one command that always works, sidecar or not, because it pushes straight to the app.
-
-#### App login (OAuth) problems
-
-- **`{"detail":"Not authenticated"}` on first visit**: expected — navigate to `/auth/login`
-- **OAuth redirect fails / `redirect_uri_mismatch`**: redirect URI in Google Cloud Console must exactly match your deployed URL, scheme included (`https://` not `http://`)
-- **Behind a reverse proxy, callback URL comes back `http://` instead of `https://`**: app needs `--proxy-headers --forwarded-allow-ips='*'` so uvicorn trusts `X-Forwarded-Proto`. Already set in the `Dockerfile` `CMD` — add it manually if deploying via `Procfile` or another mechanism
-- **Login succeeds but every page redirects back to `/auth/login`**: session cookie is being dropped — if running locally over HTTP, set `DEBUG=true` in `.env`
-
-#### Auth & session endpoint reference
-
-Every endpoint and command that touches a Google/session cookie, in one place.
-
-Three paths keep the Google session alive: bootstrap once by hand, an automatic loop that runs forever, and a manual CLI fallback.
-
-```mermaid
-sequenceDiagram
-    actor Op as Operator (laptop)
-    participant Chrome as Real Chrome
-    participant Script as bootstrap_refresher_session.py
-    participant Main as Main App
-    participant Side as Cookie-Refresher Sidecar
-    participant GA as myaccount.google.com
-    participant FL as kidsmanagement-pa (Family Link API)
-
-    rect rgb(44,36,22)
-    Note over Op,Side: BOOTSTRAP — one-time, or after password change / long inactivity
-    Op->>Chrome: sign in normally
-    Op->>Script: run bootstrap_refresher_session.py
-    Script->>Chrome: browser_cookie3 → extract google.com cookies
-    Script->>Main: POST /admin/refresher-bootstrap  (X-Api-Key)
-    Main->>Side: proxy → POST /bootstrap
-    Side->>Side: write state.json to volume
-    end
-
-    rect rgb(20,42,36)
-    Note over Main,FL: AUTOMATIC — health_check_loop, every 30 min, no human involved
-    loop every 1800s
-        Main->>FL: get_members()  (probe)
-        alt SessionExpiredError (401 / 403)
-            Main->>Side: POST /refresh
-            Side->>Side: load state.json into headless Chromium
-            Side->>GA: goto https://myaccount.google.com/
-            GA-->>Side: cookie jar (check: SAPISID present?)
-            Side->>FL: verify get_members() with fresh cookies
-            FL-->>Side: 200 OK
-            Side->>Side: rewrite state.json (rotated cookies)
-            Side-->>Main: { cookies_b64 }
-            Main->>Main: hot-reload FamilyLinkService
-        end
-    end
-    end
-
-    rect rgb(48,26,28)
-    Note over Op,Main: MANUAL FALLBACK — no SAPISID after nav = sidecar session is dead
-    Op->>Chrome: sign in
-    Op->>Op: familylink export-cookies --browser chrome --base64 --coolify --restart
-    Op->>Main: push FAMILYLINK_COOKIES_B64 → env, restart container
-    end
-```
-
-| Endpoint / command                                                                                              | What it does                                                                                                                                                                                                                                                                                | Google URL called                                                                                                                                                                                                                                                                                                 | Cookies stored where                                                                                                                                                                                                       | Local command / script                                                                                                                                                                                                              |
-| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GET /auth/login` ([oauth.py:54](src/familylink_server/auth/oauth.py#L54))                                     | Redirects browser into Google's OAuth consent screen for**app login** (not Family Link session)                                                                                                                                                                                       | `accounts.google.com` (OIDC discovery via `.well-known/openid-configuration`, [oauth.py:17](src/familylink_server/auth/oauth.py#L17))                                                                                                                                                                          | N/A — no cookie yet                                                                                                                                                                                                       | Browser navigation only                                                                                                                                                                                                             |
-| `GET /auth/callback` ([oauth.py:61](src/familylink_server/auth/oauth.py#L61))                                  | Exchanges OAuth code, checks email ==`FAMILYLINK_GOOGLE_EMAIL`, sets app session cookie                                                                                                                                                                                                   | Google OAuth token endpoint (via authlib)                                                                                                                                                                                                                                                                         | Sets`fl_session` cookie (signed, httponly, 30-day `max_age`) in the browser — **not** a Google cookie, just this app's login                                                                                    | N/A                                                                                                                                                                                                                                 |
-| `GET /auth/logout` ([oauth.py:81](src/familylink_server/auth/oauth.py#L81))                                    | Clears`fl_session`                                                                                                                                                                                                                                                                        | none                                                                                                                                                                                                                                                                                                              | Deletes`fl_session` cookie in browser                                                                                                                                                                                    | N/A                                                                                                                                                                                                                                 |
-| `POST /admin/refresher-bootstrap` ([admin.py:15](src/familylink_server/routers/admin.py#L15))                  | Main app proxy: forwards a Playwright`storage_state` JSON to the sidecar's `/bootstrap`, protected by `X-Api-Key`                                                                                                                                                                     | none directly (pure proxy)                                                                                                                                                                                                                                                                                        | Passes through to sidecar; sidecar writes to`STATE_PATH` (default `/data/state.json`) on its Docker volume                                                                                                             | `scripts/bootstrap_refresher_session.py` (this is what calls it)                                                                                                                                                                  |
-| `POST /bootstrap` on sidecar ([cookie_refresher_app.py:45](src/familylink_server/cookie_refresher_app.py#L45)) | Persists the uploaded`storage_state` JSON to disk for `/refresh` to reuse                                                                                                                                                                                                               | none                                                                                                                                                                                                                                                                                                              | Writes full cookie jar to`STATE_PATH` (default `/data/state.json`)                                                                                                                                                     | Called by`/admin/refresher-bootstrap` above, never directly                                                                                                                                                                       |
-| `POST /refresh` on sidecar ([cookie_refresher_app.py:139](src/familylink_server/cookie_refresher_app.py#L139)) | Loads persisted`state.json` into headless Playwright Chromium, navigates to re-mint short-lived tokens, re-verifies against Family Link API, writes rotated cookies back                                                                                                                  | `https://myaccount.google.com/` ([cookie_refresher_app.py:84](src/familylink_server/cookie_refresher_app.py#L84)), then verifies against `https://kidsmanagement-pa.clients6.google.com` via `FamilyLink().get_members()` ([cookie_refresher_app.py:125](src/familylink_server/cookie_refresher_app.py#L125)) | Reads + rewrites`STATE_PATH` (`/data/state.json`) on sidecar volume                                                                                                                                                    | Called automatically by main app's`health_check_loop` / `_try_auto_refresh` ([main.py:71](src/familylink_server/main.py#L71)); can smoke-test manually with `curl -X POST -H "X-Api-Key: <key>" http://<sidecar>:8080/refresh` |
-| Family Link API calls (e.g.`get_members`) ([client.py:35](src/familylink/client.py#L35))                       | Actual product API — apps, devices, usage, limits                                                                                                                                                                                                                                          | `https://kidsmanagement-pa.clients6.google.com/kidsmanagement/v1`                                                                                                                                                                                                                                               | Reads cookies resolved by`CookieResolver` — see priority list below                                                                                                                                                     | n/a (library-internal); CLI entry point is`familylink` main command                                                                                                                                                               |
-| `CookieResolver.resolve()` ([auth.py:39](src/familylink/auth.py#L39))                                          | Resolves SAPISID + cookie jar the client authenticates with, first match wins:`FAMILYLINK_COOKIES_B64` → `FAMILYLINK_SAPISID` → `FAMILYLINK_COOKIE_FILE` → `./cookies.txt` (`browser="txt"`) → per-profile `sapisid.txt`/`cookies.txt` → `browser_cookie3` (host only) | none itself — consumed by`client.py` calls above                                                                                                                                                                                                                                                               | Depends on source: env var (b64/plain), or local`cookies.txt` / `sapisid.txt` file, or live browser cookie store                                                                                                       | n/a — internal to every`familylink`/`familylink_server` auth path                                                                                                                                                              |
-| `familylink export-cookies` ([cli.py:99](src/familylink/cli.py#L99))                                           | Pulls Google cookies straight from local Chrome/Firefox, filters to`google.com`, verifies `SAPISID` present, writes Netscape file, optionally base64-encodes + pushes to Coolify env + restarts                                                                                         | none (local browser cookie store only, via`browser_cookie3`)                                                                                                                                                                                                                                                    | Writes`cookies.txt` (or `--output` path) locally; with `--base64` also prints/writes `FAMILYLINK_COOKIES_B64` value to local `.env`; with `--coolify` pushes that value into the remote Coolify app's env vars | `familylink export-cookies --browser chrome --base64 [--coolify --restart]`                                                                                                                                                       |
-| `scripts/bootstrap_refresher_session.py`                                                                      | One-time (or rare re-auth) seed of the sidecar: pulls cookies from operator's real browser via`browser_cookie3`, converts to Playwright `storage_state`, POSTs to `/admin/refresher-bootstrap`                                                                                        | none directly (uploads to own app, which proxies to sidecar)                                                                                                                                                                                                                                                      | Reads local browser cookie store only; writes nothing locally — result lands in sidecar's`state.json`                                                                                                                   | `WEB_BASE_URL=... REFRESHER_API_KEY=... python scripts/bootstrap_refresher_session.py --browser chrome`                                                                                                                           |
+- **Database connection fails**: Verify `DATABASE_URL` format and that your database is reachable from the deployment platform
+- **"Could not find SAPISID" / 503 "Google session expired"**: The cookies have expired. If the `cookie-refresher` sidecar is configured, it retries automatically on the next health check. Otherwise re-run `familylink export-cookies --base64 --coolify --restart` from a machine signed into the parent account
+- **OAuth redirect fails / `redirect_uri_mismatch`**: Check that the redirect URI in Google Cloud Console exactly matches your deployed URL (scheme included — `https://` not `http://`)
+- **Behind a reverse proxy, OAuth callback URL is `http://` instead of `https://`**: The app must run with `--proxy-headers --forwarded-allow-ips='*'` so uvicorn trusts the `X-Forwarded-Proto` header from the proxy. This is already set in the `Dockerfile` `CMD`. If deploying via `Procfile` or another mechanism, add the flags there too.
+- **`{"detail":"Not authenticated"}` on first visit**: You haven't logged in yet — navigate to `/auth/login`
+- **Login succeeds but every page redirects back to `/auth/login`**: The session cookie is being dropped. If running locally over HTTP, set `DEBUG=true` in `.env` (see above)
