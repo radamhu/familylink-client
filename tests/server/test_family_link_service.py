@@ -79,6 +79,7 @@ def test_reinit_with_sapisid_sets_env_and_rebuilds_client(monkeypatch):
     svc = FamilyLinkService.__new__(FamilyLinkService)
     svc._members_cache = ('stale', None)
     svc._usage_cache = {'child1': ('stale', None)}
+    svc._auth_failed = True
 
     svc.reinit_with_sapisid('fresh-sapisid-value')
 
@@ -89,3 +90,4 @@ def test_reinit_with_sapisid_sets_env_and_rebuilds_client(monkeypatch):
     assert svc._members_cache is None
     assert svc._usage_cache == {}
     assert svc._client is not None
+    assert svc._auth_failed is True  # unverified — caller must confirm before clearing
