@@ -398,6 +398,51 @@ def test_refresh_forbidden_when_wrong_key(monkeypatch):
     assert resp.status_code == 403
 
 
+async def test_refresh_serializes_concurrent_calls(monkeypatch):
+    """Concurrent POST /refresh calls must not run Playwright simultaneously.
+
+    _get_cookies_b64 reads and rewrites a single on-disk storage_state file;
+    two overlapping runs race on that file and corrupt each other's output.
+    """
+    import asyncio
+    import threading
+
+    from familylink_server.cookie_refresher_app import refresh
+
+    call_count = 0
+    max_concurrent = 0
+    current_concurrent = 0
+    state_lock = threading.Lock()
+    release = threading.Event()
+
+    def fake_get_cookies_b64(state_path):
+        nonlocal call_count, max_concurrent, current_concurrent
+        with state_lock:
+            call_count += 1
+            current_concurrent += 1
+            max_concurrent = max(max_concurrent, current_concurrent)
+        release.wait(timeout=2)
+        with state_lock:
+            current_concurrent -= 1
+        return 'dGVzdA=='
+
+    with patch(
+        'familylink_server.cookie_refresher_app._get_cookies_b64',
+        side_effect=fake_get_cookies_b64,
+    ):
+        task1 = asyncio.create_task(refresh())
+        task2 = asyncio.create_task(refresh())
+        await asyncio.sleep(0.1)  # let both threads reach _get_cookies_b64
+        release.set()
+        result1 = await task1
+        result2 = await task2
+
+    assert call_count == 2
+    assert max_concurrent == 1  # never ran two Playwright sessions at once
+    assert result1 == {'cookies_b64': 'dGVzdA=='}
+    assert result2 == {'cookies_b64': 'dGVzdA=='}
+
+
 def test_refresh_allowed_when_key_matches(monkeypatch):
     """POST /refresh returns 200 when correct X-Api-Key header is sent."""
     from fastapi.testclient import TestClient

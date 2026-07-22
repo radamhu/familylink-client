@@ -144,6 +144,64 @@ async def test_try_auto_refresh_returns_false_on_network_error(monkeypatch):
     assert result is False
 
 
+async def test_try_auto_refresh_skips_when_already_in_progress(monkeypatch):
+    """A second _try_auto_refresh call while one is in-flight returns False immediately.
+
+    Prevents health_check_loop and _kick_off_background_refresh from racing
+    concurrent /refresh calls against the sidecar, which shares a single
+    on-disk storage_state file.
+    """
+    from familylink_server.config import settings
+    from familylink_server.main import _try_auto_refresh
+
+    monkeypatch.setattr(settings, 'cookie_refresher_url', 'http://sidecar:8080')
+
+    call_count = 0
+    entered = asyncio.Event()
+    release = asyncio.Event()
+
+    class FakeResponse:
+        def raise_for_status(self):
+            pass
+
+        def json(self):
+            return {'cookies_b64': 'dGVzdA=='}
+
+    class FakeClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *a):
+            return False
+
+        async def post(self, *a, **kw):
+            nonlocal call_count
+            call_count += 1
+            entered.set()
+            await release.wait()
+            return FakeResponse()
+
+    svc1 = _make_service()
+    svc2 = _make_service()
+
+    with (
+        patch('httpx.AsyncClient', return_value=FakeClient()),
+        patch('familylink_server.services.family_link.FamilyLink'),
+    ):
+        task1 = asyncio.create_task(_try_auto_refresh(svc1, None))
+        await entered.wait()  # first call is now mid-flight, holding the guard
+
+        task2 = asyncio.create_task(_try_auto_refresh(svc2, None))
+        result2 = await asyncio.wait_for(task2, timeout=0.2)
+
+        release.set()
+        result1 = await task1
+
+    assert call_count == 1  # sidecar was only ever hit once concurrently
+    assert result2 is False
+    assert result1 is True
+
+
 async def test_health_check_loop_resets_alert_on_auto_refresh_success(monkeypatch):
     """health_check_loop should reset _alert_active when auto-refresh succeeds."""
     from familylink import SessionExpiredError

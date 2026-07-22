@@ -15,6 +15,8 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title='cookie-refresher')
 
+_refresh_lock = asyncio.Lock()
+
 
 def _to_netscape(cookies: Sequence[Mapping[str, Any]]) -> str:
     """Convert Playwright cookie dicts to Netscape cookies.txt format."""
@@ -138,16 +140,22 @@ def _verify_family_link_access(cookies_b64: str) -> None:
 
 @app.post('/refresh')
 async def refresh(x_api_key: str = Header(default='')) -> dict:
-    """Replay the persisted Google session; return fresh base64 cookies."""
+    """Replay the persisted Google session; return fresh base64 cookies.
+
+    Serialized by `_refresh_lock`: _get_cookies_b64 reads and rewrites a
+    single on-disk storage_state file, so two overlapping calls would race
+    on that file instead of queueing safely.
+    """
     expected = os.environ.get('REFRESHER_API_KEY', '')
     if expected and x_api_key != expected:
         raise HTTPException(403, 'Forbidden')
 
     state_path = Path(os.environ.get('STATE_PATH', '/data/state.json'))
 
-    try:
-        cookies_b64 = await asyncio.to_thread(_get_cookies_b64, state_path)
-        return {'cookies_b64': cookies_b64}
-    except Exception as exc:
-        logger.error('Refresh failed: %s', exc)
-        raise HTTPException(500, str(exc))
+    async with _refresh_lock:
+        try:
+            cookies_b64 = await asyncio.to_thread(_get_cookies_b64, state_path)
+            return {'cookies_b64': cookies_b64}
+        except Exception as exc:
+            logger.error('Refresh failed: %s', exc)
+            raise HTTPException(500, str(exc))

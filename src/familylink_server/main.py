@@ -68,33 +68,46 @@ async def health_check_loop(
             )
 
 
+_refresh_lock = asyncio.Lock()
+
+
 async def _try_auto_refresh(
     service: 'FamilyLinkService',
     notifier: 'DiscordNotifier | None',
 ) -> bool:
-    """Call cookie-refresher sidecar; hot-reload service. Returns True on success."""
+    """Call cookie-refresher sidecar; hot-reload service. Returns True on success.
+
+    Guarded by `_refresh_lock` so health_check_loop and
+    _kick_off_background_refresh never call the sidecar concurrently — it
+    replays a single on-disk storage_state file that can't tolerate two
+    overlapping Playwright runs.
+    """
     url = settings.cookie_refresher_url
     if not url:
         return False
-    try:
-        logger.info('Auto-refresh: calling sidecar at %s/refresh', url)
-        headers = {}
-        if settings.refresher_api_key:
-            headers['X-Api-Key'] = settings.refresher_api_key
-        async with httpx.AsyncClient() as client:
-            resp = await client.post(f'{url}/refresh', timeout=120, headers=headers)
-            resp.raise_for_status()
-        cookies_b64 = resp.json()['cookies_b64']
-        service.reinit_with_cookies_b64(cookies_b64)
-        await service.get_members()  # verify the refresh actually authenticates
-        service.set_auth_failed(False)
-        if notifier:
-            await notifier.notify_session_restored()
-        logger.info('Auto-refresh: success')
-        return True
-    except Exception as exc:
-        logger.error('Auto-refresh: failed — %s', exc)
+    if _refresh_lock.locked():
+        logger.info('Auto-refresh: already in progress, skipping')
         return False
+    async with _refresh_lock:
+        try:
+            logger.info('Auto-refresh: calling sidecar at %s/refresh', url)
+            headers = {}
+            if settings.refresher_api_key:
+                headers['X-Api-Key'] = settings.refresher_api_key
+            async with httpx.AsyncClient() as client:
+                resp = await client.post(f'{url}/refresh', timeout=120, headers=headers)
+                resp.raise_for_status()
+            cookies_b64 = resp.json()['cookies_b64']
+            service.reinit_with_cookies_b64(cookies_b64)
+            await service.get_members()  # verify the refresh actually authenticates
+            service.set_auth_failed(False)
+            if notifier:
+                await notifier.notify_session_restored()
+            logger.info('Auto-refresh: success')
+            return True
+        except Exception as exc:
+            logger.error('Auto-refresh: failed — %s', exc)
+            return False
 
 
 @asynccontextmanager
@@ -166,26 +179,18 @@ app = FastAPI(
 
 app.add_middleware(SessionMiddleware, secret_key=settings.secret_key)
 
-_refresh_in_flight = False
-
 
 def _kick_off_background_refresh() -> None:
     """Fire-and-forget auto-refresh so a live 401 doesn't wait for the next health check."""
-    global _refresh_in_flight
-    if _refresh_in_flight:
+    if _refresh_lock.locked():
         return
-    _refresh_in_flight = True
 
     async def _run() -> None:
-        global _refresh_in_flight
         from familylink_server.services.discord_notifier import get_notifier
 
-        try:
-            service = get_service()
-            service.set_auth_failed(True)
-            await _try_auto_refresh(service, get_notifier())
-        finally:
-            _refresh_in_flight = False
+        service = get_service()
+        service.set_auth_failed(True)
+        await _try_auto_refresh(service, get_notifier())
 
     asyncio.create_task(_run())
 
