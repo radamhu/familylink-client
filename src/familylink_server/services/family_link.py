@@ -44,6 +44,19 @@ class FamilyLinkService:
         self._usage_cache.clear()
         logger.info('FamilyLink client reinitialized with fresh cookie jar')
 
+    def reinit_with_sapisid(self, sapisid: str) -> None:
+        """Hot-swap the FamilyLink client with a raw SAPISID value.
+
+        Does not clear `auth_failed` — the caller must verify the new client
+        actually authenticates (e.g. via `get_members()`) before doing so.
+        """
+        os.environ['FAMILYLINK_SAPISID'] = sapisid
+        os.environ.pop('FAMILYLINK_COOKIES_B64', None)
+        self._client = FamilyLink()
+        self._members_cache = None
+        self._usage_cache.clear()
+        logger.info('FamilyLink client reinitialized with raw SAPISID')
+
     def _is_fresh(self, ts: datetime) -> bool:
         return (datetime.now(UTC) - ts).total_seconds() < self._ttl
 

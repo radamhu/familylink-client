@@ -69,3 +69,23 @@ async def test_get_apps_and_usage_bypass_cache_ignores_fresh_cache(mock_client):
     await svc.get_apps_and_usage('child1', bypass_cache=True)
 
     assert mock_client.get_apps_and_usage.call_count == 2
+
+
+def test_reinit_with_sapisid_sets_env_and_rebuilds_client(monkeypatch):
+    """reinit_with_sapisid sets FAMILYLINK_SAPISID, clears cookies_b64, rebuilds client."""
+    monkeypatch.setenv('FAMILYLINK_COOKIES_B64', 'stale-value')
+    monkeypatch.delenv('FAMILYLINK_SAPISID', raising=False)
+
+    svc = FamilyLinkService.__new__(FamilyLinkService)
+    svc._members_cache = ('stale', None)
+    svc._usage_cache = {'child1': ('stale', None)}
+
+    svc.reinit_with_sapisid('fresh-sapisid-value')
+
+    import os
+
+    assert os.environ['FAMILYLINK_SAPISID'] == 'fresh-sapisid-value'
+    assert 'FAMILYLINK_COOKIES_B64' not in os.environ
+    assert svc._members_cache is None
+    assert svc._usage_cache == {}
+    assert svc._client is not None
