@@ -66,13 +66,21 @@ async def sapisid_relay(
     available. The `token` field is this endpoint's only access control.
     """
     expected = settings.sapisid_relay_token
-    if not expected or not secrets.compare_digest(token, expected):
+    # Compare as bytes: compare_digest requires ASCII-only str operands and
+    # raises TypeError on a non-ASCII token, which would otherwise surface as
+    # an ugly 500 instead of the 403 every other invalid-token case gets.
+    if not expected or not secrets.compare_digest(token.encode(), expected.encode()):
         return HTMLResponse('<p>Forbidden.</p>', status_code=403)
 
     svc.reinit_with_sapisid(sapisid)
     try:
         await svc.get_members()
     except Exception as exc:
+        # The client has already been hot-swapped to the new (unverified) one
+        # at this point, and auth_failed is deliberately left untouched here
+        # (matches the sibling reinit_with_cookies_b64 contract). If the
+        # service was healthy before this call, a bad/malicious relay attempt
+        # silently replaces a working client with a broken one.
         logger.error('SAPISID relay: verification failed — %s', exc)
         return HTMLResponse(f'<p>Reconnect failed: {exc}</p>', status_code=502)
 
