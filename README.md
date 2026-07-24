@@ -356,55 +356,47 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
 
 **Session resilience:** The server monitors the Family Link session in the background. A health check probe runs every 30 minutes; if it fails, the server sets an `auth_failed` flag and posts a Discord alert ("⚠️ Google session expired"). When the session is restored, another alert fires ("✅ Family Link session restored"). While `auth_failed` is set, a red banner appears on every page pointing at the sidecar retry / CLI re-export fallback (see below).
 
-**Auto-refresh sidecar (recommended):** A separate Docker service (`cookie-refresher`) can restore the session fully automatically — no human action required for routine refreshes. It does **not** automate a Google login (Google reliably blocks scripted username/password sign-in with "This browser or app may not be secure", regardless of IP or headless mode — this is a deliberate anti-automation policy, not a bug to work around). Instead, it replays a real, human-authenticated session that you bootstrap once from your own browser.
+**Auto-refresh sidecar (recommended):** Two Docker services restore the session fully automatically — no human action required for routine refreshes. A persistent `firefox` container (headful, via noVNC) holds a real, continuously-logged-in parent Google session; the `cookie-refresher` sidecar reads that browser's *live* cookies on demand. Nothing is ever cloned or replayed, so there is no stale snapshot to go stale — the same reason a phone and a laptop can both stay signed into the same Google account for months without incident.
+
+Google reliably blocks scripted username/password sign-in ("This browser or app may not be secure", regardless of IP or headless mode — a deliberate anti-automation policy). That's why the one-time login below is a real, human, headful sign-in through noVNC rather than anything automated.
 
 ```
 ════════════════════════════════════════════════════════════════════
- ONE-TIME (and rare re-auth) — YOU, on your laptop
+ ONE-TIME (and rare re-auth) — YOU, via noVNC
 ════════════════════════════════════════════════════════════════════
 
-  [1] Log into Google normally
-      in your real Chrome
+  [1] Open the protected noVNC URL (FIREFOX_NOVNC_URL)
               │
               ▼
-  [2] Run scripts/bootstrap_refresher_session.py
-      → pulls cookies from that Chrome
-        (browser_cookie3, same lib the CLI
-         export-cookies already uses)
-      → converts to Playwright storage_state JSON
-      → POSTs it to the deployed web app
+  [2] Sign into the parent Google account normally,
+      inside that browser window
               │
               ▼
-  [3] web app: POST /admin/refresher-bootstrap
-      (X-Api-Key auth)
-      → proxies body to sidecar's internal /bootstrap
+  [3] Session persists on the firefox_profile volume
+      (cookies.sqlite) — nothing to bootstrap or upload
               │
               ▼
-  [4] sidecar: POST /bootstrap
-      → writes state.json to its Docker volume
-              │
-              ▼
-         ✅ done. No automated login ever happens —
-            nothing for Google to flag.
+         ✅ done. The browser stays logged in and keeps
+            itself warm; the refresher reads its cookies.
 
-  You only repeat this if the persisted session ever
-  fully dies (password change, long inactivity,
-  Google security event — rare).
+  You only repeat this if the session ever fully dies
+  (password change, explicit sign-out, Google security
+  event — rare).
 
 ════════════════════════════════════════════════════════════════════
  AUTOMATIC — the app handles this forever after, no human involved
 ════════════════════════════════════════════════════════════════════
 
   every 30 min: health_check_loop probes Family Link API
+  every 12h:    proactive_refresh_loop rotates cookies early
               │
-              ▼ (probe fails: SessionExpiredError)
+              ▼ (probe fails, or proactive timer fires)
   main app calls sidecar: POST /refresh
               │
               ▼
-  sidecar loads state.json from volume into Playwright
-  → visits myaccount.google.com (no login form touched)
-  → grabs fresh cookies
-  → writes rotated cookies BACK to state.json
+  sidecar reads the live firefox_profile's cookies.sqlite
+  (browser_cookie3, no navigation, no snapshot)
+  → verifies against the Family Link API
   → returns cookies_b64
               │
               ▼
@@ -414,35 +406,39 @@ This tells uvicorn to trust Traefik's `X-Forwarded-Proto: https` header so that 
               ▼
          session working again, zero manual action
 
-  ── if /refresh fails (state.json missing, or Google shows
-     no SAPISID after nav = persisted session is fully dead) ──
+  ── if /refresh fails (profile never logged in, or the
+     live session itself is dead) ──
               │
               ▼
-  alert stays active → same existing fallback:
-    • re-run bootstrap script (step [1]-[4] above), or
+  alert stays active, with exponential backoff → fallback:
+    • sign back in via the noVNC UI (step [1]-[2] above), or
     • CLI: familylink export-cookies --coolify --restart
 ```
 
-**Deploying the sidecar in Coolify:**
+**Deploying the sidecar + browser in Coolify:**
 
-1. Add a second service to your Coolify project pointing at the same repo, but set **Dockerfile** to `Dockerfile.refresher`
-2. Mount a persistent volume into the sidecar at `/data` (holds the bootstrapped session; survives container restarts/redeploys)
-3. Set the sidecar's environment variables:| Variable              | Description                                                                                                                        |
-   | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-   | `REFRESHER_API_KEY` | Shared secret required as`X-Api-Key` on both `/refresh` and `/bootstrap`; protects the endpoints from other internal callers |
-4. Note the sidecar's **internal** Coolify service URL (e.g. `http://cookie-refresher:8080`)
-5. On the **main server** service, add:| Variable                 | Description                                                       |
+1. Add a `firefox` service to your Coolify project using the `lscr.io/linuxserver/firefox` image (see `docker-compose.yml`). Mount a persistent volume at `/config` (this is `firefox_profile` — it holds the live, logged-in session; survives restarts/redeploys).
+2. Put the `firefox` service's noVNC port (3000) behind authentication — see the security warning below — and note its URL.
+3. Add a second service pointing at this repo with **Dockerfile** set to `Dockerfile.refresher`. Mount the same volume read-only at `/profile` and set `FIREFOX_PROFILE_DIR=/profile`.
+4. Set the sidecar's environment variables:| Variable              | Description                                                                                          |
+   | --------------------- | ----------------------------------------------------------------------------------------------------- |
+   | `REFRESHER_API_KEY` | Shared secret required as`X-Api-Key` on `/refresh`; protects the endpoint from other internal callers |
+5. Note the sidecar's **internal** Coolify service URL (e.g. `http://cookie-refresher:8080`)
+6. On the **main server** service, add:| Variable                 | Description                                                       |
    | ------------------------ | ----------------------------------------------------------------- |
    | `COOKIE_REFRESHER_URL` | Internal URL of the sidecar, e.g.`http://cookie-refresher:8080` |
    | `REFRESHER_API_KEY`    | Same value as set on the sidecar                                  |
-6. Deploy both services, then run
-7. ```Shell
-   WEB_BASE_URL="WEB_BASE_URL" REFRESHER_API_KEY="WEBBASEURL"REFRESHERAPIKEY="REFRESHER_API_KEY" REFRESHER_INSECURE_SKIP_TLS_VERIFY="$REFRESHER_INSECURE_SKIP_TLS_VERIFY" python scripts/bootstrap_refresher_session.py --browser chrome
-   ```
-8. from your laptop (see diagram above) to seed the sidecar's persisted session — `/refresh` returns 400 until this has been done at least once.
-9. Smoke-test: `curl -X POST -H "X-Api-Key: <key>" http://<sidecar-internal>:8080/refresh` should return `{"cookies_b64": "..."}` within ~30 seconds.
+   | `FIREFOX_NOVNC_URL`    | The protected noVNC URL from step 2 — linked from the session-expired page |
+7. Deploy all three services, then open `FIREFOX_NOVNC_URL` and sign into the parent Google account once (see diagram above) — `/refresh` returns `409` until a session has been logged in at least once.
+8. Smoke-test: `curl -X POST -H "X-Api-Key: <key>" http://<sidecar-internal>:8080/refresh` should return `{"cookies_b64": "..."}` within a few seconds.
 
-> **No credentials on the sidecar.** Because bootstrap captures an already-authenticated session from your real browser, the sidecar never sees your Google password or TOTP secret — nothing to leak, nothing for Google's automated-login detector to catch.
+> **No credentials handled by the sidecar.** The sidecar only reads cookies that are already live in the `firefox` container's profile — it never touches a Google password or TOTP secret. But that profile itself *is* an authenticated session; see the security warning below.
+
+> **⚠️ Security warning — the `firefox` noVNC UI is equivalent to full control of the parent Google account.** Anyone who can reach it can act as the signed-in parent, and the `firefox_profile` volume stores live session tokens at rest (treat it like a credential store). This is a **larger exposure than a cookie snapshot**, so it MUST be locked down:
+>
+> - Put the noVNC route behind authentication (e.g. Traefik basic-auth) — never expose it publicly / unauthenticated on the internet.
+> - Prefer keeping it internal-only and reaching it via an SSH tunnel rather than exposing any public URL at all.
+> - `REFRESHER_API_KEY` still gates `/refresh`, but that's a separate, narrower control — it does not protect the noVNC UI itself.
 
 **Refreshing cookies via CLI (requires restart):** When the sidecar isn't configured (or fails), re-export a full session from your local browser and push it to Coolify:
 
@@ -479,11 +475,11 @@ There are two separate auth layers, and they fail independently:
 | Symptom                                                                                | Command                                                                                                           | When                                                                                                                                                                     |
 | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 503 "Google session expired" page,`cookie-refresher` sidecar **is** configured | None — wait. The page itself triggers a background refresh; the 30-min health check retries too.                 | First response. Reload after ~1 minute.                                                                                                                                  |
-| Sidecar logs show`Refresh failed: ... verification: HTTP 401` repeatedly             | `WEB_BASE_URL=<app-url> REFRESHER_API_KEY=<key> python scripts/bootstrap_refresher_session.py --browser chrome` | The sidecar's persisted session itself has died (rare: password change, long inactivity, security event). Run from a machine with Chrome logged into the parent account. |
-| No sidecar configured, or above bootstrap didn't fix it                                | `familylink export-cookies --browser chrome --base64 --coolify --restart`                                       | Full manual reset. Requires restart. Works regardless of sidecar state.                                                                                                  |
+| Sidecar logs show`Refresh failed: ... verification: HTTP 401` repeatedly             | Open `FIREFOX_NOVNC_URL` and sign back in via the noVNC UI | The live browser's session itself has died (rare: password change, sign-out, security event). Sign in headful, inside that browser — no local Chrome or CLI needed. |
+| No sidecar configured, or the noVNC sign-in didn't fix it                              | `familylink export-cookies --browser chrome --base64 --coolify --restart`                                       | Full manual reset. Requires restart. Works regardless of sidecar/browser state.                                                                                          |
 | Just want to check current cookie validity without restarting anything                 | `familylink export-cookies --base64` (no `--coolify`)                                                         | Dry check — writes`cookies.txt` + prints base64, doesn't touch the deployment.                                                                                        |
 
-The sidecar and `bootstrap_refresher_session.py` don't replace `export-cookies` — they automate the *recurring* refresh so you don't have to run `export-cookies` every few weeks. `bootstrap_refresher_session.py` only re-seeds the sidecar's stored session; it doesn't touch the running app's cookies directly. `export-cookies --coolify --restart` is the one command that always works, sidecar or not, because it pushes straight to the app.
+The sidecar doesn't replace `export-cookies` — it automates the *recurring* refresh so you don't have to run `export-cookies` every few weeks. It reads whatever session is currently live in the `firefox` container; it doesn't touch the running app's cookies directly until a refresh succeeds. `export-cookies --coolify --restart` is the one command that always works, sidecar or not, because it pushes straight to the app.
 
 #### App login (OAuth) problems
 
@@ -496,52 +492,43 @@ The sidecar and `bootstrap_refresher_session.py` don't replace `export-cookies` 
 
 Every endpoint and command that touches a Google/session cookie, in one place.
 
-Three paths keep the Google session alive: bootstrap once by hand, an automatic loop that runs forever, and a manual CLI fallback.
+Three paths keep the Google session alive: a one-time noVNC login, an automatic loop that runs forever, and a manual CLI fallback.
 
-`familylink export-cookies --browser chrome --base64 --coolify --restart` and `python scripts/bootstrap_refresher_session.py --browser chrome` look similar but push to different places with different tokens:
+`familylink export-cookies --browser chrome --base64 --coolify --restart` and signing into the `firefox` container via noVNC look similar (both start from a real, human-authenticated browser) but push to different places with different tokens:
 
 - `export-cookies` reads the full cookie jar from local Chrome, base64-encodes it, and (with `--coolify`) pushes `FAMILYLINK_COOKIES_B64` straight to the Coolify app's env vars, then restarts the container. No token beyond `COOLIFY_TOKEN` (Coolify's own API auth) is involved.
-- `bootstrap_refresher_session.py` also reads the full cookie jar from local Chrome, but converts it to a Playwright `storage_state` and POSTs it to `/admin/refresher-bootstrap`, authenticated with `REFRESHER_API_KEY`, which proxies to the sidecar's `/bootstrap` — no Coolify involved, no restart.
+- Signing in via noVNC doesn't push anything anywhere — it just leaves a live, logged-in session inside the `firefox` container's profile. The sidecar reads that profile's cookies on demand, authenticated with `REFRESHER_API_KEY`, whenever `/refresh` is called.
 
 Two separate, non-overlapping tokens exist in this codebase:
 
 | Token                   | Set where        | Used by                            | Uploads                                                   |
 | ----------------------- | ---------------- | ---------------------------------- | --------------------------------------------------------- |
 | none (raw cookies)      | —               | `export-cookies --coolify`       | `FAMILYLINK_COOKIES_B64` → Coolify env                 |
-| `REFRESHER_API_KEY`   | server + sidecar | `bootstrap_refresher_session.py` | full cookie jar → sidecar's`/bootstrap`                |
+| `REFRESHER_API_KEY`   | server + sidecar | `POST /refresh` on the sidecar   | live profile cookies → returned as`cookies_b64`, never uploaded anywhere |
 
 ```mermaid
 sequenceDiagram
-    actor Op as Operator (laptop)
-    participant Chrome as Real Chrome
-    participant Script as bootstrap_refresher_session.py
+    actor Op as Operator
+    participant FF as firefox (noVNC)
     participant Main as Main App
     participant Side as Cookie-Refresher Sidecar
-    participant GA as myaccount.google.com
     participant FL as kidsmanagement-pa (Family Link API)
 
     rect rgb(44,36,22)
-    Note over Op,Side: BOOTSTRAP — one-time, or after password change / long inactivity
-    Op->>Chrome: sign in normally
-    Op->>Script: run bootstrap_refresher_session.py
-    Script->>Chrome: browser_cookie3 → extract google.com cookies
-    Script->>Main: POST /admin/refresher-bootstrap  (X-Api-Key)
-    Main->>Side: proxy → POST /bootstrap
-    Side->>Side: write state.json to volume
+    Note over Op,FF: LOGIN — one-time, or after password change / sign-out / security event
+    Op->>FF: open FIREFOX_NOVNC_URL, sign in normally
+    FF->>FF: session persists on firefox_profile volume
     end
 
     rect rgb(20,42,36)
-    Note over Main,FL: AUTOMATIC — health_check_loop, every 30 min, no human involved
-    loop every 1800s
+    Note over Main,FL: AUTOMATIC — health_check_loop (30 min) + proactive_refresh_loop (12h), no human involved
+    loop every 1800s (or every 43200s proactively)
         Main->>FL: get_members()  (probe)
-        alt SessionExpiredError (401 / 403)
+        alt SessionExpiredError (401 / 403), or proactive timer fires
             Main->>Side: POST /refresh
-            Side->>Side: load state.json into headless Chromium
-            Side->>GA: goto https://myaccount.google.com/
-            GA-->>Side: cookie jar (check: SAPISID present?)
-            Side->>FL: verify get_members() with fresh cookies
+            Side->>FF: read live cookies.sqlite (browser_cookie3, no navigation)
+            Side->>FL: verify get_members() with those cookies
             FL-->>Side: 200 OK
-            Side->>Side: rewrite state.json (rotated cookies)
             Side-->>Main: { cookies_b64 }
             Main->>Main: hot-reload FamilyLinkService
         end
@@ -549,8 +536,7 @@ sequenceDiagram
     end
 
     rect rgb(48,26,28)
-    Note over Op,Main: MANUAL FALLBACK — no SAPISID after nav = sidecar session is dead
-    Op->>Chrome: sign in
+    Note over Op,Main: MANUAL FALLBACK — live session itself is dead
     Op->>Op: familylink export-cookies --browser chrome --base64 --coolify --restart
     Op->>Main: push FAMILYLINK_COOKIES_B64 → env, restart container
     end
@@ -561,10 +547,8 @@ sequenceDiagram
 | `GET /auth/login` ([oauth.py:54](src/familylink_server/auth/oauth.py#L54))                                     | Redirects browser into Google's OAuth consent screen for**app login** (not Family Link session)                                                                                                                                                                                        | `accounts.google.com` (OIDC discovery via `.well-known/openid-configuration`, [oauth.py:17](src/familylink_server/auth/oauth.py#L17))                                                                                                                                                                          | N/A — no cookie yet                                                                                                                                                                                                       | Browser navigation only                                                                                                                                                                                                             |
 | `GET /auth/callback` ([oauth.py:61](src/familylink_server/auth/oauth.py#L61))                                  | Exchanges OAuth code, checks email ==`FAMILYLINK_GOOGLE_EMAIL`, sets app session cookie                                                                                                                                                                                                    | Google OAuth token endpoint (via authlib)                                                                                                                                                                                                                                                                         | Sets`fl_session` cookie (signed, httponly, 30-day `max_age`) in the browser — **not** a Google cookie, just this app's login                                                                                    | N/A                                                                                                                                                                                                                                 |
 | `GET /auth/logout` ([oauth.py:81](src/familylink_server/auth/oauth.py#L81))                                    | Clears`fl_session`                                                                                                                                                                                                                                                                         | none                                                                                                                                                                                                                                                                                                              | Deletes`fl_session` cookie in browser                                                                                                                                                                                    | N/A                                                                                                                                                                                                                                 |
-| `POST /admin/refresher-bootstrap` ([admin.py:15](src/familylink_server/routers/admin.py#L15))                  | Main app proxy: forwards a Playwright`storage_state` JSON to the sidecar's `/bootstrap`, protected by `X-Api-Key`                                                                                                                                                                      | none directly (pure proxy)                                                                                                                                                                                                                                                                                        | Passes through to sidecar; sidecar writes to`STATE_PATH` (default `/data/state.json`) on its Docker volume                                                                                                             | `scripts/bootstrap_refresher_session.py` (this is what calls it)                                                                                                                                                                  |
-| `POST /bootstrap` on sidecar ([cookie_refresher_app.py:45](src/familylink_server/cookie_refresher_app.py#L45)) | Persists the uploaded`storage_state` JSON to disk for `/refresh` to reuse                                                                                                                                                                                                                | none                                                                                                                                                                                                                                                                                                              | Writes full cookie jar to`STATE_PATH` (default `/data/state.json`)                                                                                                                                                     | Called by`/admin/refresher-bootstrap` above, never directly                                                                                                                                                                       |
-| `POST /refresh` on sidecar ([cookie_refresher_app.py:139](src/familylink_server/cookie_refresher_app.py#L139)) | Loads persisted`state.json` into headless Playwright Chromium, navigates to re-mint short-lived tokens, re-verifies against Family Link API, writes rotated cookies back                                                                                                                   | `https://myaccount.google.com/` ([cookie_refresher_app.py:84](src/familylink_server/cookie_refresher_app.py#L84)), then verifies against `https://kidsmanagement-pa.clients6.google.com` via `FamilyLink().get_members()` ([cookie_refresher_app.py:125](src/familylink_server/cookie_refresher_app.py#L125)) | Reads + rewrites`STATE_PATH` (`/data/state.json`) on sidecar volume                                                                                                                                                    | Called automatically by main app's`health_check_loop` / `_try_auto_refresh` ([main.py:71](src/familylink_server/main.py#L71)); can smoke-test manually with `curl -X POST -H "X-Api-Key: <key>" http://<sidecar>:8080/refresh` |
+| `GET FIREFOX_NOVNC_URL` (noVNC UI, `firefox` container)                                                        | One-time (or rare re-auth) headful login to the parent Google account, done by a human through the browser window                                                                                                                                                                          | Google's normal sign-in flow, inside the live browser                                                                                                                                                                                                                                                             | Session persists as`cookies.sqlite` on the `firefox_profile` volume — read-only mounted into the sidecar                                                                                                              | None — browser navigation only. **Put this URL behind auth; never expose it publicly** (see security warning above)                                                                                                               |
+| `POST /refresh` on sidecar ([cookie_refresher_app.py:105](src/familylink_server/cookie_refresher_app.py#L105)) | Reads the live`firefox_profile`'s `cookies.sqlite` via `browser_cookie3` (no navigation, no snapshot), verifies against the Family Link API, returns them                                                                                                                              | none directly — verifies against`https://kidsmanagement-pa.clients6.google.com` via `FamilyLink().get_members()` ([cookie_refresher_app.py:64](src/familylink_server/cookie_refresher_app.py#L64))                                                                                                          | Reads (never writes)`cookies.sqlite` on the `firefox_profile` volume, mounted read-only at `FIREFOX_PROFILE_DIR`                                                                                                    | Called automatically by main app's`health_check_loop` / `_try_auto_refresh` ([main.py:85](src/familylink_server/main.py#L85)) and `proactive_refresh_loop` ([main.py:141](src/familylink_server/main.py#L141)); can smoke-test manually with `curl -X POST -H "X-Api-Key: <key>" http://<sidecar>:8080/refresh` |
 | Family Link API calls (e.g.`get_members`) ([client.py:35](src/familylink/client.py#L35))                       | Actual product API — apps, devices, usage, limits                                                                                                                                                                                                                                           | `https://kidsmanagement-pa.clients6.google.com/kidsmanagement/v1`                                                                                                                                                                                                                                               | Reads cookies resolved by`CookieResolver` — see priority list below                                                                                                                                                     | n/a (library-internal); CLI entry point is`familylink` main command                                                                                                                                                               |
 | `CookieResolver.resolve()` ([auth.py:39](src/familylink/auth.py#L39))                                          | Resolves SAPISID + cookie jar the client authenticates with, first match wins:`FAMILYLINK_COOKIES_B64` → `FAMILYLINK_SAPISID` → `FAMILYLINK_COOKIE_FILE` → `./cookies.txt` (`browser="txt"`) → per-profile `sapisid.txt`/`cookies.txt` → `browser_cookie3` (host only)  | none itself — consumed by`client.py` calls above                                                                                                                                                                                                                                                               | Depends on source: env var (b64/plain), or local`cookies.txt` / `sapisid.txt` file, or live browser cookie store                                                                                                       | n/a — internal to every`familylink`/`familylink_server` auth path                                                                                                                                                              |
 | `familylink export-cookies` ([cli.py:99](src/familylink/cli.py#L99))                                           | Pulls Google cookies straight from local Chrome/Firefox, filters to`google.com`, verifies `SAPISID` present, writes Netscape file, optionally base64-encodes + pushes to Coolify env + restarts                                                                                          | none (local browser cookie store only, via`browser_cookie3`)                                                                                                                                                                                                                                                    | Writes`cookies.txt` (or `--output` path) locally; with `--base64` also prints/writes `FAMILYLINK_COOKIES_B64` value to local `.env`; with `--coolify` pushes that value into the remote Coolify app's env vars | `familylink export-cookies --browser chrome --base64 [--coolify --restart]`                                                                                                                                                       |
-| `scripts/bootstrap_refresher_session.py`                                                                      | One-time (or rare re-auth) seed of the sidecar: pulls cookies from operator's real browser via`browser_cookie3`, converts to Playwright `storage_state`, POSTs to `/admin/refresher-bootstrap`                                                                                         | none directly (uploads to own app, which proxies to sidecar)                                                                                                                                                                                                                                                      | Reads local browser cookie store only; writes nothing locally — result lands in sidecar's`state.json`                                                                                                                   | `WEB_BASE_URL=... REFRESHER_API_KEY=... python scripts/bootstrap_refresher_session.py --browser chrome`                                                                                                                           |
