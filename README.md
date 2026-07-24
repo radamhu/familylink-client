@@ -460,26 +460,6 @@ The following environment variables must be set in your **local** `.env` before 
 | `COOLIFY_TOKEN`    | Coolify API token — generate in Coolify → Security → API Tokens                        |
 | `COOLIFY_APP_UUID` | UUID of the Coolify application to update — visible in the app's URL or General settings |
 
-**Refreshing cookies from the parent's Android phone (bookmarklet):** when there's no laptop handy, a `javascript:` bookmarklet tapped from the phone's own Chrome bookmarks can relay a fresh `SAPISID` cookie to the app and reconnect it in-process — no restart, no desktop browser.
-
-One-time setup:
-
-1. Generate a token and set it on the server: `python -c "import secrets; print(secrets.token_hex(32))"` → set as `SAPISID_RELAY_TOKEN` in the server's environment, then restart the server.
-2. Build the bookmarklet URL, substituting your app's base URL and the token you just generated:
-
-   ```
-   javascript:(function(){var m=document.cookie.match(/(?:^|; )SAPISID=([^;]+)/);if(!m){alert('Not signed into Google in this tab.');return;}var w=window.open('','sapisid-relay-target');var f=document.createElement('form');f.method='POST';f.action='https://YOUR-APP-BASE-URL/admin/sapisid-relay';f.target='sapisid-relay-target';var i1=document.createElement('input');i1.name='sapisid';i1.value=decodeURIComponent(m[1]);f.appendChild(i1);var i2=document.createElement('input');i2.name='token';i2.value='YOUR-TOKEN';f.appendChild(i2);document.body.appendChild(f);f.submit();})();
-   ```
-3. On a desktop Chrome signed into the **same Google account** as the parent's phone, save that URL as a bookmark (e.g. name it "Refresh FamilyLink"). Chrome's bookmark sync carries it to the phone's Chrome automatically.
-4. On the phone, confirm the bookmark appears (Chrome menu → Bookmarks).
-
-Each time a refresh is needed:
-
-1. On the phone, open any signed-in Google page in Chrome (e.g. `myaccount.google.com`).
-2. Open the bookmark. A new tab shows "Reconnected." on success. (If nothing seems to happen, check for a new *background* tab — some Android Chrome versions open it without switching focus.)
-
-This only refreshes from the *current* browser session — if Google has fully signed the account out, sign back in normally in Chrome first, then tap the bookmark.
-
 **Traefik labels** are already present in `docker-compose.yml` and configure:
 
 - HTTP → HTTPS redirect
@@ -516,25 +496,23 @@ The sidecar and `bootstrap_refresher_session.py` don't replace `export-cookies` 
 
 Every endpoint and command that touches a Google/session cookie, in one place.
 
-Four paths keep the Google session alive: bootstrap once by hand, an automatic loop that runs forever, a manual CLI fallback, and a phone-only bookmarklet relay.
+Three paths keep the Google session alive: bootstrap once by hand, an automatic loop that runs forever, and a manual CLI fallback.
 
-`familylink export-cookies --browser chrome --base64 --coolify --restart` and `python scripts/bootstrap_refresher_session.py --browser chrome` look similar but push to different places with different tokens — neither touches or generates a `SAPISID_RELAY_TOKEN`:
+`familylink export-cookies --browser chrome --base64 --coolify --restart` and `python scripts/bootstrap_refresher_session.py --browser chrome` look similar but push to different places with different tokens:
 
 - `export-cookies` reads the full cookie jar from local Chrome, base64-encodes it, and (with `--coolify`) pushes `FAMILYLINK_COOKIES_B64` straight to the Coolify app's env vars, then restarts the container. No token beyond `COOLIFY_TOKEN` (Coolify's own API auth) is involved.
 - `bootstrap_refresher_session.py` also reads the full cookie jar from local Chrome, but converts it to a Playwright `storage_state` and POSTs it to `/admin/refresher-bootstrap`, authenticated with `REFRESHER_API_KEY`, which proxies to the sidecar's `/bootstrap` — no Coolify involved, no restart.
 
-Three separate, non-overlapping tokens exist in this codebase:
+Two separate, non-overlapping tokens exist in this codebase:
 
 | Token                   | Set where        | Used by                            | Uploads                                                   |
 | ----------------------- | ---------------- | ---------------------------------- | --------------------------------------------------------- |
 | none (raw cookies)      | —               | `export-cookies --coolify`       | `FAMILYLINK_COOKIES_B64` → Coolify env                 |
 | `REFRESHER_API_KEY`   | server + sidecar | `bootstrap_refresher_session.py` | full cookie jar → sidecar's`/bootstrap`                |
-| `SAPISID_RELAY_TOKEN` | server only      | Android bookmarklet                | bare`SAPISID` string → in-process hot-swap, no restart |
 
 ```mermaid
 sequenceDiagram
     actor Op as Operator (laptop)
-    actor Parent as Parent (phone)
     participant Chrome as Real Chrome
     participant Script as bootstrap_refresher_session.py
     participant Main as Main App
@@ -576,19 +554,6 @@ sequenceDiagram
     Op->>Op: familylink export-cookies --browser chrome --base64 --coolify --restart
     Op->>Main: push FAMILYLINK_COOKIES_B64 → env, restart container
     end
-
-    rect rgb(30,30,50)
-    Note over Parent,Main: ANDROID BOOKMARKLET — no laptop needed, no restart
-    Parent->>Parent: open myaccount.google.com in phone Chrome (already signed in)
-    Parent->>Parent: tap synced bookmarklet
-    Note right of Parent: reads SAPISID from document.cookie
-    Parent->>Main: POST /admin/sapisid-relay (sapisid, token)  [plain form, no CORS]
-    Main->>Main: verify token (SAPISID_RELAY_TOKEN, compare_digest)
-    Main->>Main: reinit_with_sapisid() → hot-swap client
-    Main->>FL: get_members() (verify before reporting success)
-    FL-->>Main: 200 OK
-    Main-->>Parent: new tab: "Reconnected."
-    end
 ```
 
 | Endpoint / command                                                                                              | What it does                                                                                                                                                                                                                                                                                 | Google URL called                                                                                                                                                                                                                                                                                                 | Cookies stored where                                                                                                                                                                                                       | Local command / script                                                                                                                                                                                                              |
@@ -603,5 +568,3 @@ sequenceDiagram
 | `CookieResolver.resolve()` ([auth.py:39](src/familylink/auth.py#L39))                                          | Resolves SAPISID + cookie jar the client authenticates with, first match wins:`FAMILYLINK_COOKIES_B64` → `FAMILYLINK_SAPISID` → `FAMILYLINK_COOKIE_FILE` → `./cookies.txt` (`browser="txt"`) → per-profile `sapisid.txt`/`cookies.txt` → `browser_cookie3` (host only)  | none itself — consumed by`client.py` calls above                                                                                                                                                                                                                                                               | Depends on source: env var (b64/plain), or local`cookies.txt` / `sapisid.txt` file, or live browser cookie store                                                                                                       | n/a — internal to every`familylink`/`familylink_server` auth path                                                                                                                                                              |
 | `familylink export-cookies` ([cli.py:99](src/familylink/cli.py#L99))                                           | Pulls Google cookies straight from local Chrome/Firefox, filters to`google.com`, verifies `SAPISID` present, writes Netscape file, optionally base64-encodes + pushes to Coolify env + restarts                                                                                          | none (local browser cookie store only, via`browser_cookie3`)                                                                                                                                                                                                                                                    | Writes`cookies.txt` (or `--output` path) locally; with `--base64` also prints/writes `FAMILYLINK_COOKIES_B64` value to local `.env`; with `--coolify` pushes that value into the remote Coolify app's env vars | `familylink export-cookies --browser chrome --base64 [--coolify --restart]`                                                                                                                                                       |
 | `scripts/bootstrap_refresher_session.py`                                                                      | One-time (or rare re-auth) seed of the sidecar: pulls cookies from operator's real browser via`browser_cookie3`, converts to Playwright `storage_state`, POSTs to `/admin/refresher-bootstrap`                                                                                         | none directly (uploads to own app, which proxies to sidecar)                                                                                                                                                                                                                                                      | Reads local browser cookie store only; writes nothing locally — result lands in sidecar's`state.json`                                                                                                                   | `WEB_BASE_URL=... REFRESHER_API_KEY=... python scripts/bootstrap_refresher_session.py --browser chrome`                                                                                                                           |
-| Android bookmarklet (`javascript:` URI, phone Chrome bookmark)                                                | Reads`SAPISID` from `document.cookie` on a signed-in google.com tab, builds a hidden form, POSTs it (no `fetch`, no CORS) to `/admin/sapisid-relay` in a new tab                                                                                                                     | none (reads the phone's already-authenticated Chrome session, no navigation of its own)                                                                                                                                                                                                                           | Reads the phone's live browser cookie store only; writes nothing — result lands in the running server process via the relay endpoint below                                                                                | Tapped bookmark only — see "Refreshing cookies from the parent's Android phone" above; no CLI equivalent                                                                                                                           |
-| `POST /admin/sapisid-relay` ([admin.py](src/familylink_server/routers/admin.py))                               | Android bookmarklet target: reads`sapisid` + `token` form fields, verifies `token` against `SAPISID_RELAY_TOKEN` (`secrets.compare_digest`), hot-swaps the in-process client via `reinit_with_sapisid()`, verifies with `get_members()` before reporting success — no restart | none directly; the SAPISID itself came from the phone's browser reading`document.cookie` on a signed-in Google tab                                                                                                                                                                                              | Sets`FAMILYLINK_SAPISID` env var in the running process only (not persisted to `.env` or Coolify)                                                                                                                      | Called by the bookmarklet above; no CLI equivalent                                                                                                                                                                                  |
