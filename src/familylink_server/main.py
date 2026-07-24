@@ -89,9 +89,9 @@ async def _try_auto_refresh(
     """Call cookie-refresher sidecar; hot-reload service. Returns True on success.
 
     Guarded by `_refresh_lock` so health_check_loop and
-    _kick_off_background_refresh never call the sidecar concurrently — it
-    replays a single on-disk storage_state file that can't tolerate two
-    overlapping Playwright runs.
+    _kick_off_background_refresh never call the sidecar concurrently — the
+    lock simply serializes cookie-refresh round-trips to the sidecar (and the
+    `os.environ` mutation they trigger), preventing overlapping refreshes.
 
     A failed refresh sets an exponential backoff (60s → 3600s cap); further
     calls short-circuit to False without hitting the sidecar until the

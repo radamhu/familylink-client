@@ -117,7 +117,7 @@ async def test_try_auto_refresh_returns_false_on_http_error(httpx_mock, monkeypa
         url='http://sidecar:8080/refresh',
         method='POST',
         status_code=500,
-        text='Playwright error',
+        text='sidecar error',
     )
 
     svc = _make_service()
@@ -151,8 +151,7 @@ async def test_try_auto_refresh_skips_when_already_in_progress(monkeypatch):
     """A second _try_auto_refresh call while one is in-flight returns False immediately.
 
     Prevents health_check_loop and _kick_off_background_refresh from racing
-    concurrent /refresh calls against the sidecar, which shares a single
-    on-disk storage_state file.
+    concurrent refresh round-trips to the sidecar.
     """
     from familylink_server.config import settings
     from familylink_server.main import _try_auto_refresh
@@ -302,12 +301,17 @@ async def test_proactive_loop_calls_refresh(monkeypatch):
 
 def test_expired_page_shows_novnc_link(monkeypatch):
     monkeypatch.setattr(main.settings, 'firefox_novnc_url', 'https://ff.example')
+    from fastapi import FastAPI
+
     from familylink import SessionExpiredError
 
-    @main.app.get('/_boom_test')
+    test_app = FastAPI()
+    test_app.add_exception_handler(SessionExpiredError, main.session_expired_handler)
+
+    @test_app.get('/_boom_test')
     async def _boom():  # noqa: ANN202
         raise SessionExpiredError('HTTP 401')
 
-    resp = TestClient(main.app, raise_server_exceptions=False).get('/_boom_test')
+    resp = TestClient(test_app, raise_server_exceptions=False).get('/_boom_test')
     assert resp.status_code == 503
     assert 'https://ff.example' in resp.text

@@ -28,6 +28,7 @@ services:
       - firefox
 
   firefox:
+    # noVNC UI on 3000 — expose ONLY behind auth (Traefik basic-auth) or keep internal; NEVER expose publicly.
     image: lscr.io/linuxserver/firefox:latest
     restart: unless-stopped
     shm_size: "1gb"

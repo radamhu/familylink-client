@@ -14,6 +14,8 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title='cookie-refresher')
 
+_refresh_lock = asyncio.Lock()
+
 
 class NotLoggedInError(Exception):
     """Raised when the Firefox profile has no usable Google session."""
@@ -113,7 +115,10 @@ async def refresh(x_api_key: str = Header(default='')) -> dict:
         raise HTTPException(409, 'Firefox profile not initialised — sign in via noVNC.')
 
     try:
-        cookies_b64 = await asyncio.to_thread(_build_verified_cookies_b64, sqlite_path)
+        async with _refresh_lock:
+            cookies_b64 = await asyncio.to_thread(
+                _build_verified_cookies_b64, sqlite_path
+            )
     except NotLoggedInError as exc:
         raise HTTPException(409, str(exc)) from exc
     except Exception as exc:
