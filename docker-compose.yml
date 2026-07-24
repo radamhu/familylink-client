@@ -46,6 +46,9 @@ services:
       DATABASE_URL: postgresql+asyncpg://familylink:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}@db/familylink
       COOKIE_REFRESHER_URL: http://cookie-refresher:8080
       REFRESHER_API_KEY: ${REFRESHER_API_KEY:-}
+      # Link shown on the 503 session-expired page so you can re-login. Set to the
+      # AUTH-PROTECTED external URL of the firefox noVNC UI (see firefox service note).
+      FIREFOX_NOVNC_URL: ${FIREFOX_NOVNC_URL:-}
     depends_on:
       db:
         condition: service_healthy
