@@ -256,9 +256,16 @@ async def session_expired_handler(
 ) -> HTMLResponse:
     """Return a 503 page with re-export instructions when Google cookies expire."""
     _kick_off_background_refresh()
+    novnc = settings.firefox_novnc_url
+    novnc_block = (
+        f'<p>If auto-refresh cannot restore the session, sign back into Google in '
+        f'the refresher browser: <a href="{novnc}">{novnc}</a></p>'
+        if novnc
+        else ''
+    )
     return HTMLResponse(
         status_code=503,
-        content="""<!doctype html>
+        content=f"""<!doctype html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8">
@@ -273,6 +280,7 @@ async def session_expired_handler(
       <p>The Family Link session has expired and needs a full re-export of your Google cookies to restore access.</p>
 
       <p>If the <code>cookie-refresher</code> sidecar is configured, a refresh has been triggered automatically — reload in a few seconds.</p>
+      {novnc_block}
 
       <details open style="margin-top:1rem">
         <summary>Manual fix (CLI, requires restart)</summary>

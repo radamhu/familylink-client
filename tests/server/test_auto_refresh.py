@@ -4,6 +4,8 @@ import asyncio  # noqa: F401
 import os
 from unittest.mock import MagicMock, patch
 
+from fastapi.testclient import TestClient
+
 import familylink_server.main as main
 from familylink_server.services.family_link import FamilyLinkService
 
@@ -296,3 +298,16 @@ async def test_proactive_loop_calls_refresh(monkeypatch):
     except asyncio.CancelledError:
         pass
     assert calls, 'proactive loop should have called _try_auto_refresh at least once'
+
+
+def test_expired_page_shows_novnc_link(monkeypatch):
+    monkeypatch.setattr(main.settings, 'firefox_novnc_url', 'https://ff.example')
+    from familylink import SessionExpiredError
+
+    @main.app.get('/_boom_test')
+    async def _boom():  # noqa: ANN202
+        raise SessionExpiredError('HTTP 401')
+
+    resp = TestClient(main.app, raise_server_exceptions=False).get('/_boom_test')
+    assert resp.status_code == 503
+    assert 'https://ff.example' in resp.text

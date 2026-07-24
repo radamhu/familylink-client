@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     familylink_cookie_file: str = ''
     cookie_refresher_url: str = ''
     refresher_api_key: str = ''
+    firefox_novnc_url: str = ''
     cache_ttl_seconds: int = 900
     debug: bool = False
 
