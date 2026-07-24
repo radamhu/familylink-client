@@ -3,6 +3,7 @@
 import asyncio
 import contextlib
 import logging
+import time
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -36,6 +37,19 @@ from familylink_server.services.linux_poller import poller_loop
 
 logger = logging.getLogger(__name__)
 
+_refresh_lock = asyncio.Lock()
+_refresh_backoff_until = 0.0
+_refresh_backoff_seconds = 0.0
+_BACKOFF_START = 60.0
+_BACKOFF_CAP = 3600.0
+
+
+def _reset_refresh_backoff() -> None:
+    """Clear auto-refresh backoff state (also used by tests)."""
+    global _refresh_backoff_until, _refresh_backoff_seconds
+    _refresh_backoff_until = 0.0
+    _refresh_backoff_seconds = 0.0
+
 
 async def health_check_loop(
     service: 'FamilyLinkService',
@@ -68,9 +82,6 @@ async def health_check_loop(
             )
 
 
-_refresh_lock = asyncio.Lock()
-
-
 async def _try_auto_refresh(
     service: 'FamilyLinkService',
     notifier: 'DiscordNotifier | None',
@@ -81,9 +92,17 @@ async def _try_auto_refresh(
     _kick_off_background_refresh never call the sidecar concurrently — it
     replays a single on-disk storage_state file that can't tolerate two
     overlapping Playwright runs.
+
+    A failed refresh sets an exponential backoff (60s → 3600s cap); further
+    calls short-circuit to False without hitting the sidecar until the
+    cooldown elapses. A success resets the backoff.
     """
+    global _refresh_backoff_until, _refresh_backoff_seconds
     url = settings.cookie_refresher_url
     if not url:
+        return False
+    if time.monotonic() < _refresh_backoff_until:
+        logger.info('Auto-refresh: in backoff, skipping')
         return False
     if _refresh_lock.locked():
         logger.info('Auto-refresh: already in progress, skipping')
@@ -103,10 +122,19 @@ async def _try_auto_refresh(
             service.set_auth_failed(False)
             if notifier:
                 await notifier.notify_session_restored()
+            _refresh_backoff_until = 0.0
+            _refresh_backoff_seconds = 0.0
             logger.info('Auto-refresh: success')
             return True
         except Exception as exc:
             logger.error('Auto-refresh: failed — %s', exc)
+            _refresh_backoff_seconds = min(
+                _BACKOFF_CAP,
+                _refresh_backoff_seconds * 2
+                if _refresh_backoff_seconds
+                else _BACKOFF_START,
+            )
+            _refresh_backoff_until = time.monotonic() + _refresh_backoff_seconds
             return False
 
 

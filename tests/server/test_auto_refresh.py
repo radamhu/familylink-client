@@ -4,6 +4,7 @@ import asyncio  # noqa: F401
 import os
 from unittest.mock import MagicMock, patch
 
+import familylink_server.main as main
 from familylink_server.services.family_link import FamilyLinkService
 
 
@@ -260,3 +261,20 @@ async def test_health_check_loop_resets_alert_on_auto_refresh_success(monkeypatc
     mock_refresh.assert_called_once()
     # auth_failed flag was set then cleared
     assert svc._auth_failed is False
+
+
+async def test_backoff_skips_sidecar_after_failure(monkeypatch, httpx_mock):
+    monkeypatch.setattr(main.settings, 'cookie_refresher_url', 'http://cr:8080')
+    main._reset_refresh_backoff()
+    httpx_mock.add_response(url='http://cr:8080/refresh', status_code=500)
+
+    class _Svc:
+        def set_auth_failed(self, v):
+            pass
+
+    ok1 = await main._try_auto_refresh(_Svc(), None)
+    ok2 = await main._try_auto_refresh(_Svc(), None)  # immediately again
+
+    assert ok1 is False and ok2 is False
+    # sidecar hit only once; the second call was suppressed by backoff
+    assert len(httpx_mock.get_requests()) == 1
