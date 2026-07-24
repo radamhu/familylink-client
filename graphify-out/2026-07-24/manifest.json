@@ -1,7 +1,7 @@
 {
   ".claude/settings.json": {
-    "mtime": 1784894720.1536105,
-    "ast_hash": "9f77eb967bf6b07660d77d1a3f804396",
+    "mtime": 1784892391.277771,
+    "ast_hash": "05323bb86c08173ffe1ed5fedc7d6999",
     "semantic_hash": ""
   },
   ".claude/settings.local.json": {
@@ -140,8 +140,8 @@
     "semantic_hash": ""
   },
   "src/familylink_server/config.py": {
-    "mtime": 1784893176.9141223,
-    "ast_hash": "c276f87ec7a8f2462c9e7d3917fd973b",
+    "mtime": 1784878840.6726766,
+    "ast_hash": "6090f1aa573c7cc99eafe59be8cd9e75",
     "semantic_hash": ""
   },
   "src/familylink_server/constants.py": {
@@ -165,8 +165,8 @@
     "semantic_hash": "06ea69ab580d0b5ce8ddabd74d4b8a80"
   },
   "src/familylink_server/main.py": {
-    "mtime": 1784893176.9142625,
-    "ast_hash": "eb1431cc240d6cbdb437adda82120b62",
+    "mtime": 1784892399.3547945,
+    "ast_hash": "4dd13a546edbf854bc2130f1ee5354f5",
     "semantic_hash": ""
   },
   "src/familylink_server/routers/__init__.py": {
@@ -420,13 +420,13 @@
     "semantic_hash": "c93b80de6750f50c95924e2f1affe4fd"
   },
   "README.md": {
-    "mtime": 1784894550.7172341,
-    "ast_hash": "8c86e8c25d3ca66ea72528d9edad6b47",
+    "mtime": 1784878840.672409,
+    "ast_hash": "828ef9df96160b33b96405893c7b9578",
     "semantic_hash": ""
   },
   "docker-compose.yml": {
-    "mtime": 1784893773.2550206,
-    "ast_hash": "fad56984b6afbdc706f3df8c8c3471a4",
+    "mtime": 1783753869.8066242,
+    "ast_hash": "1c9a56dbde26f478e0b7df26c41ee7a2",
     "semantic_hash": ""
   },
   "docs/superpowers/plans/2026-06-19-client-refactor.md": {
@@ -645,8 +645,8 @@
     "semantic_hash": ""
   },
   "tests/server/test_auto_refresh.py": {
-    "mtime": 1784893293.6307487,
-    "ast_hash": "634dd28a4be7ba31c1350e74de6c9c2f",
+    "mtime": 1784891787.704545,
+    "ast_hash": "46ee9785cc51109d27dd7a127c8247ad",
     "semantic_hash": ""
   },
   "tests/server/test_cookie_refresher.py": {

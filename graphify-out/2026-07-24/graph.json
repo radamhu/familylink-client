@@ -1169,7 +1169,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_familylink_cli_cmd_export_cookies",
-      "community": 65,
+      "community": 41,
       "norm_label": "_cmd_export_cookies()"
     },
     {
@@ -1279,7 +1279,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "src_familylink_cli_rationale_100",
-      "community": 65,
+      "community": 41,
       "norm_label": "export google cookies for cloud/docker deployment."
     },
     {
@@ -1349,7 +1349,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_familylink_client_sessionexpirederror",
-      "community": 28,
+      "community": 86,
       "norm_label": "sessionexpirederror"
     },
     {
@@ -1359,7 +1359,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "runtimeerror",
-      "community": 42,
+      "community": 19,
       "norm_label": "runtimeerror"
     },
     {
@@ -1509,7 +1509,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "src_familylink_client_familylink_get_time_limits",
-      "community": 28,
+      "community": 15,
       "norm_label": ".get_time_limits()"
     },
     {
@@ -1649,7 +1649,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_client_rationale_19",
-      "community": 28,
+      "community": 86,
       "norm_label": "google session has expired or been invalidated.      re-export cookies and updat"
     },
     {
@@ -1709,7 +1709,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "src_familylink_client_rationale_134",
-      "community": 28,
+      "community": 15,
       "norm_label": "get applied time limits for a child (today)."
     },
     {
@@ -1829,7 +1829,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_familylink_models_appsupervisioncapability",
-      "community": 2,
+      "community": 40,
       "norm_label": "appsupervisioncapability"
     },
     {
@@ -1839,7 +1839,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "str",
-      "community": 2,
+      "community": 40,
       "norm_label": "str"
     },
     {
@@ -1849,7 +1849,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "enum",
-      "community": 2,
+      "community": 40,
       "norm_label": "enum"
     },
     {
@@ -1859,7 +1859,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_familylink_models_adsupportstatus",
-      "community": 2,
+      "community": 40,
       "norm_label": "adsupportstatus"
     },
     {
@@ -1869,7 +1869,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_familylink_models_iapsupportstatus",
-      "community": 2,
+      "community": 40,
       "norm_label": "iapsupportstatus"
     },
     {
@@ -1879,7 +1879,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_familylink_models_appsource",
-      "community": 2,
+      "community": 40,
       "norm_label": "appsource"
     },
     {
@@ -1889,7 +1889,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_familylink_models_alwaysallowedstate",
-      "community": 2,
+      "community": 40,
       "norm_label": "alwaysallowedstate"
     },
     {
@@ -2119,7 +2119,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_10",
-      "community": 2,
+      "community": 40,
       "norm_label": "supervision capabilities for an app."
     },
     {
@@ -2129,7 +2129,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_18",
-      "community": 2,
+      "community": 40,
       "norm_label": "ad support status for an app."
     },
     {
@@ -2139,7 +2139,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_25",
-      "community": 2,
+      "community": 40,
       "norm_label": "in-app purchase support status for an app."
     },
     {
@@ -2149,7 +2149,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_32",
-      "community": 2,
+      "community": 40,
       "norm_label": "source of the app installation."
     },
     {
@@ -2159,7 +2159,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_39",
-      "community": 2,
+      "community": 40,
       "norm_label": "state of always-allowed setting for an app."
     },
     {
@@ -2959,7 +2959,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_apps_appsgroup_init",
-      "community": 139,
+      "community": 131,
       "norm_label": ".__init__()"
     },
     {
@@ -2969,7 +2969,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_apps_py_abstractasynccontextmanager",
-      "community": 139,
+      "community": 131,
       "norm_label": "abstractasynccontextmanager"
     },
     {
@@ -2979,7 +2979,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_apps_py_asyncsession",
-      "community": 139,
+      "community": 131,
       "norm_label": "asyncsession"
     },
     {
@@ -3689,7 +3689,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views",
-      "community": 131,
+      "community": 31,
       "norm_label": "views.py"
     },
     {
@@ -3779,7 +3779,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_applimitview",
-      "community": 131,
+      "community": 31,
       "norm_label": "applimitview"
     },
     {
@@ -3859,7 +3859,7 @@
       "source_location": "L181",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_devicelockview",
-      "community": 131,
+      "community": 31,
       "norm_label": "devicelockview"
     },
     {
@@ -3899,7 +3899,7 @@
       "source_location": "L227",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_deviceunlockview",
-      "community": 131,
+      "community": 31,
       "norm_label": "deviceunlockview"
     },
     {
@@ -3939,7 +3939,7 @@
       "source_location": "L273",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview",
-      "community": 131,
+      "community": 11,
       "norm_label": "summaryview"
     },
     {
@@ -3959,7 +3959,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview_lock_device",
-      "community": 31,
+      "community": 11,
       "norm_label": "._lock_device()"
     },
     {
@@ -3969,7 +3969,7 @@
       "source_location": "L318",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview_lock_device_btn",
-      "community": 31,
+      "community": 11,
       "norm_label": "._lock_device_btn()"
     },
     {
@@ -3979,7 +3979,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_1",
-      "community": 131,
+      "community": 31,
       "norm_label": "discord ui views (action button rows for embeds)."
     },
     {
@@ -4019,7 +4019,7 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_92",
-      "community": 131,
+      "community": 31,
       "norm_label": "button shown after setting an app limit: undo (removes limit via always_allow)."
     },
     {
@@ -4059,7 +4059,7 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_182",
-      "community": 131,
+      "community": 31,
       "norm_label": "button shown after locking a device: unlock."
     },
     {
@@ -4079,7 +4079,7 @@
       "source_location": "L228",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_228",
-      "community": 131,
+      "community": 31,
       "norm_label": "button shown after unlocking a device: lock."
     },
     {
@@ -4099,7 +4099,7 @@
       "source_location": "L274",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_274",
-      "community": 131,
+      "community": 11,
       "norm_label": "buttons on the daily summary embed: lock device."
     },
     {
@@ -4109,7 +4109,7 @@
       "source_location": "L294",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_294",
-      "community": 31,
+      "community": 11,
       "norm_label": "handle lock device button press."
     },
     {
@@ -4146,7 +4146,7 @@
       "label": ".discord_enabled()",
       "file_type": "code",
       "source_file": "src/familylink_server/config.py",
-      "source_location": "L36",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "src_familylink_server_config_settings_discord_enabled",
       "community": 18,
@@ -4156,7 +4156,7 @@
       "label": ".discord_summary_time_parsed()",
       "file_type": "code",
       "source_file": "src/familylink_server/config.py",
-      "source_location": "L43",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "src_familylink_server_config_settings_discord_summary_time_parsed",
       "community": 18,
@@ -4196,9 +4196,9 @@
       "label": "True when all three required Discord vars are set.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/config.py",
-      "source_location": "L37",
+      "source_location": "L36",
       "_origin": "ast",
-      "id": "src_familylink_server_config_rationale_37",
+      "id": "src_familylink_server_config_rationale_36",
       "community": 18,
       "norm_label": "true when all three required discord vars are set."
     },
@@ -4206,9 +4206,9 @@
       "label": "Parse HH:MM string into a UTC datetime.time.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/config.py",
-      "source_location": "L44",
+      "source_location": "L43",
       "_origin": "ast",
-      "id": "src_familylink_server_config_rationale_44",
+      "id": "src_familylink_server_config_rationale_43",
       "community": 18,
       "norm_label": "parse hh:mm string into a utc datetime.time."
     },
@@ -4239,7 +4239,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app",
-      "community": 40,
+      "community": 19,
       "norm_label": "cookie_refresher_app.py"
     },
     {
@@ -4249,7 +4249,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_notloggedinerror",
-      "community": 40,
+      "community": 19,
       "norm_label": "notloggedinerror"
     },
     {
@@ -4259,7 +4259,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "exception",
-      "community": 40,
+      "community": 19,
       "norm_label": "exception"
     },
     {
@@ -4269,7 +4269,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_health",
-      "community": 40,
+      "community": 19,
       "norm_label": "health()"
     },
     {
@@ -4279,7 +4279,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_profile_cookie_file",
-      "community": 40,
+      "community": 19,
       "norm_label": "_profile_cookie_file()"
     },
     {
@@ -4289,7 +4289,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_py_path",
-      "community": 40,
+      "community": 19,
       "norm_label": "path"
     },
     {
@@ -4299,7 +4299,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_read_live_google_cookies",
-      "community": 40,
+      "community": 19,
       "norm_label": "_read_live_google_cookies()"
     },
     {
@@ -4309,7 +4309,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_jar_to_netscape",
-      "community": 40,
+      "community": 19,
       "norm_label": "_jar_to_netscape()"
     },
     {
@@ -4319,7 +4319,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_verify_family_link_access",
-      "community": 40,
+      "community": 19,
       "norm_label": "_verify_family_link_access()"
     },
     {
@@ -4329,7 +4329,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_build_verified_cookies_b64",
-      "community": 40,
+      "community": 19,
       "norm_label": "_build_verified_cookies_b64()"
     },
     {
@@ -4339,7 +4339,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_refresh",
-      "community": 40,
+      "community": 19,
       "norm_label": "refresh()"
     },
     {
@@ -4349,7 +4349,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_rationale_1",
-      "community": 40,
+      "community": 19,
       "norm_label": "sidecar: reads cookies from a persistent, logged-in firefox profile."
     },
     {
@@ -4359,7 +4359,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_rationale_19",
-      "community": 40,
+      "community": 19,
       "norm_label": "raised when the firefox profile has no usable google session."
     },
     {
@@ -4369,7 +4369,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_rationale_29",
-      "community": 40,
+      "community": 19,
       "norm_label": "return the first cookies.sqlite under firefox_profile_dir, or none."
     },
     {
@@ -4379,7 +4379,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_rationale_37",
-      "community": 40,
+      "community": 19,
       "norm_label": "read google.com cookies from the live firefox profile.      raises:         notl"
     },
     {
@@ -4389,7 +4389,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_rationale_52",
-      "community": 40,
+      "community": 19,
       "norm_label": "convert browser_cookie3 cookie objects to netscape cookies.txt format."
     },
     {
@@ -4399,7 +4399,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_rationale_65",
-      "community": 40,
+      "community": 19,
       "norm_label": "confirm the cookies authenticate against the family link api.      myaccount.goo"
     },
     {
@@ -4409,7 +4409,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_rationale_91",
-      "community": 40,
+      "community": 19,
       "norm_label": "read live cookies, verify against the family link api, return base64.      raise"
     },
     {
@@ -4419,7 +4419,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "src_familylink_server_cookie_refresher_app_rationale_106",
-      "community": 40,
+      "community": 19,
       "norm_label": "read live cookies from the firefox profile; verify; return base64."
     },
     {
@@ -4449,7 +4449,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config",
-      "community": 7,
+      "community": 143,
       "norm_label": "app_config.py"
     },
     {
@@ -4459,7 +4459,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_get_or_create_app_config",
-      "community": 7,
+      "community": 143,
       "norm_label": "get_or_create_app_config()"
     },
     {
@@ -4469,7 +4469,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_py_asyncsession",
-      "community": 7,
+      "community": 143,
       "norm_label": "asyncsession"
     },
     {
@@ -4479,7 +4479,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_rationale_1",
-      "community": 7,
+      "community": 143,
       "norm_label": "shared appconfig get-or-create helper."
     },
     {
@@ -4489,7 +4489,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_rationale_19",
-      "community": 7,
+      "community": 143,
       "norm_label": "get the appconfig row for (child_id, package_name), creating it if absent."
     },
     {
@@ -4729,7 +4729,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_db_session_py_asyncsession",
-      "community": 134,
+      "community": 11,
       "norm_label": "asyncsession"
     },
     {
@@ -4739,7 +4739,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_familylink_server_db_session_make_session",
-      "community": 134,
+      "community": 11,
       "norm_label": "make_session()"
     },
     {
@@ -4769,7 +4769,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_familylink_server_db_session_rationale_28",
-      "community": 134,
+      "community": 11,
       "norm_label": "async context manager for use outside fastapi dependency injection.      use in"
     },
     {
@@ -4779,7 +4779,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_main",
-      "community": 133,
+      "community": 5,
       "norm_label": "main.py"
     },
     {
@@ -4789,7 +4789,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "src_familylink_server_main_reset_refresh_backoff",
-      "community": 133,
+      "community": 5,
       "norm_label": "_reset_refresh_backoff()"
     },
     {
@@ -4809,27 +4809,17 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_familylink_server_main_try_auto_refresh",
-      "community": 137,
+      "community": 5,
       "norm_label": "_try_auto_refresh()"
-    },
-    {
-      "label": "proactive_refresh_loop()",
-      "file_type": "code",
-      "source_file": "src/familylink_server/main.py",
-      "source_location": "L141",
-      "_origin": "ast",
-      "id": "src_familylink_server_main_proactive_refresh_loop",
-      "community": 137,
-      "norm_label": "proactive_refresh_loop()"
     },
     {
       "label": "lifespan()",
       "file_type": "code",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L160",
+      "source_location": "L142",
       "_origin": "ast",
       "id": "src_familylink_server_main_lifespan",
-      "community": 134,
+      "community": 11,
       "norm_label": "lifespan()"
     },
     {
@@ -4846,20 +4836,20 @@
       "label": "_kick_off_background_refresh()",
       "file_type": "code",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L238",
+      "source_location": "L211",
       "_origin": "ast",
       "id": "src_familylink_server_main_kick_off_background_refresh",
-      "community": 133,
+      "community": 5,
       "norm_label": "_kick_off_background_refresh()"
     },
     {
       "label": "session_expired_handler()",
       "file_type": "code",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L254",
+      "source_location": "L227",
       "_origin": "ast",
       "id": "src_familylink_server_main_session_expired_handler",
-      "community": 133,
+      "community": 5,
       "norm_label": "session_expired_handler()"
     },
     {
@@ -4869,7 +4859,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_main_py_request",
-      "community": 133,
+      "community": 5,
       "norm_label": "request"
     },
     {
@@ -4879,7 +4869,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_main_py_htmlresponse",
-      "community": 133,
+      "community": 5,
       "norm_label": "htmlresponse"
     },
     {
@@ -4889,7 +4879,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_main_rationale_1",
-      "community": 133,
+      "community": 5,
       "norm_label": "fastapi application factory."
     },
     {
@@ -4899,7 +4889,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_familylink_server_main_rationale_48",
-      "community": 133,
+      "community": 5,
       "norm_label": "clear auto-refresh backoff state (also used by tests)."
     },
     {
@@ -4919,47 +4909,37 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_familylink_server_main_rationale_89",
-      "community": 137,
+      "community": 5,
       "norm_label": "call cookie-refresher sidecar; hot-reload service. returns true on success."
-    },
-    {
-      "label": "Refresh cookies from the live browser every `interval` seconds.      The Firefox",
-      "file_type": "rationale",
-      "source_file": "src/familylink_server/main.py",
-      "source_location": "L146",
-      "_origin": "ast",
-      "id": "src_familylink_server_main_rationale_146",
-      "community": 137,
-      "norm_label": "refresh cookies from the live browser every `interval` seconds.      the firefox"
     },
     {
       "label": "Initialize services at startup; shut down cleanly.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L161",
+      "source_location": "L143",
       "_origin": "ast",
-      "id": "src_familylink_server_main_rationale_161",
-      "community": 134,
+      "id": "src_familylink_server_main_rationale_143",
+      "community": 11,
       "norm_label": "initialize services at startup; shut down cleanly."
     },
     {
       "label": "Fire-and-forget auto-refresh so a live 401 doesn't wait for the next health chec",
       "file_type": "rationale",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L239",
+      "source_location": "L212",
       "_origin": "ast",
-      "id": "src_familylink_server_main_rationale_239",
-      "community": 133,
+      "id": "src_familylink_server_main_rationale_212",
+      "community": 5,
       "norm_label": "fire-and-forget auto-refresh so a live 401 doesn't wait for the next health chec"
     },
     {
       "label": "Return a 503 page with re-export instructions when Google cookies expire.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L257",
+      "source_location": "L230",
       "_origin": "ast",
-      "id": "src_familylink_server_main_rationale_257",
-      "community": 133,
+      "id": "src_familylink_server_main_rationale_230",
+      "community": 5,
       "norm_label": "return a 503 page with re-export instructions when google cookies expire."
     },
     {
@@ -5339,7 +5319,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices",
-      "community": 7,
+      "community": 23,
       "norm_label": "devices.py"
     },
     {
@@ -5349,7 +5329,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_child_name",
-      "community": 7,
+      "community": 23,
       "norm_label": "_child_name()"
     },
     {
@@ -5359,7 +5339,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_devices_page",
-      "community": 7,
+      "community": 23,
       "norm_label": "devices_page()"
     },
     {
@@ -5369,7 +5349,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_py_request",
-      "community": 7,
+      "community": 23,
       "norm_label": "request"
     },
     {
@@ -5379,7 +5359,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_py_htmlresponse",
-      "community": 7,
+      "community": 23,
       "norm_label": "htmlresponse"
     },
     {
@@ -5389,7 +5369,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_lock_device",
-      "community": 7,
+      "community": 23,
       "norm_label": "lock_device()"
     },
     {
@@ -5399,7 +5379,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_py_asyncsession",
-      "community": 7,
+      "community": 23,
       "norm_label": "asyncsession"
     },
     {
@@ -5409,7 +5389,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_unlock_device",
-      "community": 7,
+      "community": 23,
       "norm_label": "unlock_device()"
     },
     {
@@ -5419,7 +5399,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_1",
-      "community": 7,
+      "community": 23,
       "norm_label": "router for the /devices html page and htmx lock/unlock endpoints."
     },
     {
@@ -5429,7 +5409,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_35",
-      "community": 7,
+      "community": 23,
       "norm_label": "render the devices page listing supervised devices grouped by kid."
     },
     {
@@ -5439,7 +5419,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_77",
-      "community": 7,
+      "community": 23,
       "norm_label": "lock a device and return the updated device card partial."
     },
     {
@@ -5449,7 +5429,7 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_115",
-      "community": 7,
+      "community": 23,
       "norm_label": "unlock a device and return the updated device card partial."
     },
     {
@@ -5629,7 +5609,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_create_machine",
-      "community": 37,
+      "community": 139,
       "norm_label": "create_machine()"
     },
     {
@@ -5639,7 +5619,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_py_redirectresponse",
-      "community": 37,
+      "community": 139,
       "norm_label": "redirectresponse"
     },
     {
@@ -5679,7 +5659,7 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_update_machine",
-      "community": 16,
+      "community": 139,
       "norm_label": "update_machine()"
     },
     {
@@ -5769,7 +5749,7 @@
       "source_location": "L135",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_rationale_135",
-      "community": 37,
+      "community": 139,
       "norm_label": "create a new linux machine record."
     },
     {
@@ -5799,7 +5779,7 @@
       "source_location": "L198",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_rationale_198",
-      "community": 16,
+      "community": 139,
       "norm_label": "update an existing linux machine record."
     },
     {
@@ -6009,7 +5989,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "src_familylink_server_services_app_enforcer_app_enforcer_loop",
-      "community": 134,
+      "community": 131,
       "norm_label": "app_enforcer_loop()"
     },
     {
@@ -6049,7 +6029,7 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "src_familylink_server_services_app_enforcer_rationale_120",
-      "community": 134,
+      "community": 131,
       "norm_label": "iterate every child with at least one auto-block-enabled app, every poll_interva"
     },
     {
@@ -6349,7 +6329,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_auth_failed",
-      "community": 143,
+      "community": 131,
       "norm_label": ".auth_failed()"
     },
     {
@@ -6379,7 +6359,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_is_fresh",
-      "community": 86,
+      "community": 134,
       "norm_label": "._is_fresh()"
     },
     {
@@ -6389,7 +6369,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_py_datetime",
-      "community": 86,
+      "community": 134,
       "norm_label": "datetime"
     },
     {
@@ -6399,7 +6379,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_get_members",
-      "community": 86,
+      "community": 134,
       "norm_label": ".get_members()"
     },
     {
@@ -6409,7 +6389,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_get_apps_and_usage",
-      "community": 86,
+      "community": 134,
       "norm_label": ".get_apps_and_usage()"
     },
     {
@@ -6419,7 +6399,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_lock_device",
-      "community": 146,
+      "community": 131,
       "norm_label": ".lock_device()"
     },
     {
@@ -6509,7 +6489,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_27",
-      "community": 143,
+      "community": 131,
       "norm_label": "return true if the last google api call failed due to auth."
     },
     {
@@ -6539,7 +6519,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_51",
-      "community": 86,
+      "community": 134,
       "norm_label": "return family members, using the cache when still fresh."
     },
     {
@@ -6549,7 +6529,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_64",
-      "community": 86,
+      "community": 134,
       "norm_label": "return app usage for a child, using the cache when still fresh."
     },
     {
@@ -6559,7 +6539,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_76",
-      "community": 146,
+      "community": 131,
       "norm_label": "lock a supervised device."
     },
     {
@@ -6649,7 +6629,7 @@
       "source_location": "L190",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_poller_poller_loop",
-      "community": 134,
+      "community": 11,
       "norm_label": "poller_loop()"
     },
     {
@@ -6679,7 +6659,7 @@
       "source_location": "L191",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_poller_rationale_191",
-      "community": 134,
+      "community": 11,
       "norm_label": "main poll loop \u2014 iterates all enabled machines every poll_interval seconds."
     },
     {
@@ -7299,124 +7279,124 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh",
-      "community": 41,
+      "community": 5,
       "norm_label": "test_auto_refresh.py"
     },
     {
       "label": "_make_service()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L13",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_make_service",
-      "community": 41,
+      "community": 5,
       "norm_label": "_make_service()"
     },
     {
       "label": "test_cookie_refresher_url_default()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L24",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_cookie_refresher_url_default",
-      "community": 41,
+      "community": 5,
       "norm_label": "test_cookie_refresher_url_default()"
     },
     {
       "label": "test_reinit_with_cookies_b64_sets_env()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L31",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
-      "community": 41,
+      "community": 5,
       "norm_label": "test_reinit_with_cookies_b64_sets_env()"
     },
     {
       "label": "test_reinit_with_cookies_b64_pops_sapisid()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L40",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
-      "community": 41,
+      "community": 5,
       "norm_label": "test_reinit_with_cookies_b64_pops_sapisid()"
     },
     {
       "label": "test_reinit_with_cookies_b64_clears_caches()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L49",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
-      "community": 41,
+      "community": 5,
       "norm_label": "test_reinit_with_cookies_b64_clears_caches()"
     },
     {
       "label": "test_reinit_with_cookies_b64_creates_new_client()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L64",
+      "source_location": "L62",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
-      "community": 41,
+      "community": 5,
       "norm_label": "test_reinit_with_cookies_b64_creates_new_client()"
     },
     {
       "label": "test_try_auto_refresh_no_op_when_url_not_set()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L77",
+      "source_location": "L75",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
-      "community": 41,
+      "community": 5,
       "norm_label": "test_try_auto_refresh_no_op_when_url_not_set()"
     },
     {
       "label": "test_try_auto_refresh_success()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L89",
+      "source_location": "L87",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_try_auto_refresh_success",
-      "community": 137,
+      "community": 5,
       "norm_label": "test_try_auto_refresh_success()"
     },
     {
       "label": "test_try_auto_refresh_returns_false_on_http_error()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L110",
+      "source_location": "L108",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
-      "community": 137,
+      "community": 5,
       "norm_label": "test_try_auto_refresh_returns_false_on_http_error()"
     },
     {
       "label": "test_try_auto_refresh_returns_false_on_network_error()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L128",
+      "source_location": "L126",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
-      "community": 137,
+      "community": 5,
       "norm_label": "test_try_auto_refresh_returns_false_on_network_error()"
     },
     {
       "label": "test_try_auto_refresh_skips_when_already_in_progress()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L150",
+      "source_location": "L148",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
-      "community": 41,
+      "community": 5,
       "norm_label": "test_try_auto_refresh_skips_when_already_in_progress()"
     },
     {
       "label": "test_health_check_loop_resets_alert_on_auto_refresh_success()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L208",
+      "source_location": "L206",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
       "community": 5,
@@ -7426,31 +7406,11 @@
       "label": "test_backoff_skips_sidecar_after_failure()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L268",
+      "source_location": "L266",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_test_backoff_skips_sidecar_after_failure",
-      "community": 41,
+      "community": 5,
       "norm_label": "test_backoff_skips_sidecar_after_failure()"
-    },
-    {
-      "label": "test_proactive_loop_calls_refresh()",
-      "file_type": "code",
-      "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L285",
-      "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_test_proactive_loop_calls_refresh",
-      "community": 41,
-      "norm_label": "test_proactive_loop_calls_refresh()"
-    },
-    {
-      "label": "test_expired_page_shows_novnc_link()",
-      "file_type": "code",
-      "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L303",
-      "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_test_expired_page_shows_novnc_link",
-      "community": 41,
-      "norm_label": "test_expired_page_shows_novnc_link()"
     },
     {
       "label": "Tests for auto-refresh via sidecar.",
@@ -7459,126 +7419,126 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_auto_refresh_rationale_1",
-      "community": 41,
+      "community": 5,
       "norm_label": "tests for auto-refresh via sidecar."
     },
     {
       "label": "Create FamilyLinkService bypassing __init__.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L14",
+      "source_location": "L12",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_14",
-      "community": 41,
+      "id": "tests_server_test_auto_refresh_rationale_12",
+      "community": 5,
       "norm_label": "create familylinkservice bypassing __init__."
     },
     {
       "label": "cookie_refresher_url should default to empty string.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L25",
+      "source_location": "L23",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_25",
-      "community": 41,
+      "id": "tests_server_test_auto_refresh_rationale_23",
+      "community": 5,
       "norm_label": "cookie_refresher_url should default to empty string."
     },
     {
       "label": "reinit_with_cookies_b64 should set FAMILYLINK_COOKIES_B64 in os.environ.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L32",
+      "source_location": "L30",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_32",
-      "community": 41,
+      "id": "tests_server_test_auto_refresh_rationale_30",
+      "community": 5,
       "norm_label": "reinit_with_cookies_b64 should set familylink_cookies_b64 in os.environ."
     },
     {
       "label": "reinit_with_cookies_b64 should remove FAMILYLINK_SAPISID from os.environ.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L41",
+      "source_location": "L39",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_41",
-      "community": 41,
+      "id": "tests_server_test_auto_refresh_rationale_39",
+      "community": 5,
       "norm_label": "reinit_with_cookies_b64 should remove familylink_sapisid from os.environ."
     },
     {
       "label": "reinit_with_cookies_b64 should clear caches but leave auth_failed for the caller",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L50",
+      "source_location": "L48",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_50",
-      "community": 41,
+      "id": "tests_server_test_auto_refresh_rationale_48",
+      "community": 5,
       "norm_label": "reinit_with_cookies_b64 should clear caches but leave auth_failed for the caller"
     },
     {
       "label": "reinit_with_cookies_b64 should replace _client with new FamilyLink instance.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L65",
+      "source_location": "L63",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_65",
-      "community": 41,
+      "id": "tests_server_test_auto_refresh_rationale_63",
+      "community": 5,
       "norm_label": "reinit_with_cookies_b64 should replace _client with new familylink instance."
     },
     {
       "label": "_try_auto_refresh should return False immediately when COOKIE_REFRESHER_URL is e",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L78",
+      "source_location": "L76",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_78",
-      "community": 41,
+      "id": "tests_server_test_auto_refresh_rationale_76",
+      "community": 5,
       "norm_label": "_try_auto_refresh should return false immediately when cookie_refresher_url is e"
     },
     {
       "label": "_try_auto_refresh should call sidecar, reinit service, and return True on succes",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L90",
+      "source_location": "L88",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_90",
-      "community": 137,
+      "id": "tests_server_test_auto_refresh_rationale_88",
+      "community": 5,
       "norm_label": "_try_auto_refresh should call sidecar, reinit service, and return true on succes"
     },
     {
       "label": "_try_auto_refresh should return False when sidecar returns non-2xx.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L111",
+      "source_location": "L109",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_111",
-      "community": 137,
+      "id": "tests_server_test_auto_refresh_rationale_109",
+      "community": 5,
       "norm_label": "_try_auto_refresh should return false when sidecar returns non-2xx."
     },
     {
       "label": "_try_auto_refresh should return False on connection error without raising.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L129",
+      "source_location": "L127",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_129",
-      "community": 137,
+      "id": "tests_server_test_auto_refresh_rationale_127",
+      "community": 5,
       "norm_label": "_try_auto_refresh should return false on connection error without raising."
     },
     {
       "label": "A second _try_auto_refresh call while one is in-flight returns False immediately",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L151",
+      "source_location": "L149",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_151",
-      "community": 41,
+      "id": "tests_server_test_auto_refresh_rationale_149",
+      "community": 5,
       "norm_label": "a second _try_auto_refresh call while one is in-flight returns false immediately"
     },
     {
       "label": "health_check_loop should reset _alert_active when auto-refresh succeeds.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L209",
+      "source_location": "L207",
       "_origin": "ast",
-      "id": "tests_server_test_auto_refresh_rationale_209",
+      "id": "tests_server_test_auto_refresh_rationale_207",
       "community": 5,
       "norm_label": "health_check_loop should reset _alert_active when auto-refresh succeeds."
     },
@@ -7619,7 +7579,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_require_discord_role_passes_with_role",
-      "community": 149,
+      "community": 9,
       "norm_label": "test_require_discord_role_passes_with_role()"
     },
     {
@@ -7629,7 +7589,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_require_discord_role_fails_without_role",
-      "community": 9,
+      "community": 149,
       "norm_label": "test_require_discord_role_fails_without_role()"
     },
     {
@@ -7669,7 +7629,7 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_resolve_child_explicit_id",
-      "community": 150,
+      "community": 152,
       "norm_label": "test_resolve_child_explicit_id()"
     },
     {
@@ -7679,7 +7639,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_apps_block_calls_service",
-      "community": 148,
+      "community": 9,
       "norm_label": "test_apps_block_calls_service()"
     },
     {
@@ -7689,7 +7649,7 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_apps_limit_calls_service",
-      "community": 9,
+      "community": 146,
       "norm_label": "test_apps_limit_calls_service()"
     },
     {
@@ -7799,7 +7759,7 @@
       "source_location": "L386",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_test_apps_auto_block_requires_role",
-      "community": 9,
+      "community": 148,
       "norm_label": "test_apps_auto_block_requires_role()"
     },
     {
@@ -7879,7 +7839,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_33",
-      "community": 149,
+      "community": 9,
       "norm_label": "test that role check passes when member has the required role."
     },
     {
@@ -7889,7 +7849,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_41",
-      "community": 9,
+      "community": 149,
       "norm_label": "test that role check fails when member lacks the required role."
     },
     {
@@ -7929,7 +7889,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_89",
-      "community": 150,
+      "community": 152,
       "norm_label": "test that resolve_child returns matching child when id is provided."
     },
     {
@@ -7939,7 +7899,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_104",
-      "community": 148,
+      "community": 9,
       "norm_label": "test that /apps block calls block_app on the service."
     },
     {
@@ -7949,7 +7909,7 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_126",
-      "community": 9,
+      "community": 146,
       "norm_label": "test that /apps limit calls set_app_limit on the service."
     },
     {
@@ -8049,7 +8009,7 @@
       "source_location": "L387",
       "_origin": "ast",
       "id": "tests_server_test_bot_commands_rationale_387",
-      "community": 9,
+      "community": 148,
       "norm_label": "/apps auto-block' replies with permission error without the discord role."
     },
     {
@@ -8939,7 +8899,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config",
-      "community": 40,
+      "community": 19,
       "norm_label": "test_db_app_config.py"
     },
     {
@@ -8949,7 +8909,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config_test_get_or_create_app_config_retries_after_integrity_error",
-      "community": 40,
+      "community": 19,
       "norm_label": "test_get_or_create_app_config_retries_after_integrity_error()"
     },
     {
@@ -8959,7 +8919,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config_rationale_1",
-      "community": 40,
+      "community": 19,
       "norm_label": "tests for the shared get_or_create_app_config db helper."
     },
     {
@@ -8969,7 +8929,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config_rationale_12",
-      "community": 40,
+      "community": 19,
       "norm_label": "a concurrent insert race (unique constraint violation) is resolved by re-queryin"
     },
     {
@@ -11049,7 +11009,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord",
-      "community": 7,
+      "community": 133,
       "norm_label": "test_routers_discord.py"
     },
     {
@@ -11059,7 +11019,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_block_app_notifies_discord",
-      "community": 7,
+      "community": 133,
       "norm_label": "test_block_app_notifies_discord()"
     },
     {
@@ -11069,7 +11029,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_lock_device_notifies_discord",
-      "community": 7,
+      "community": 133,
       "norm_label": "test_lock_device_notifies_discord()"
     },
     {
@@ -11079,7 +11039,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_set_limit_notifies_discord",
-      "community": 7,
+      "community": 133,
       "norm_label": "test_set_limit_notifies_discord()"
     },
     {
@@ -11089,7 +11049,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_unlock_device_notifies_discord",
-      "community": 7,
+      "community": 133,
       "norm_label": "test_unlock_device_notifies_discord()"
     },
     {
@@ -11099,7 +11059,7 @@
       "source_location": "L154",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_no_notify_when_notifier_is_none",
-      "community": 7,
+      "community": 133,
       "norm_label": "test_no_notify_when_notifier_is_none()"
     },
     {
@@ -11109,7 +11069,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_1",
-      "community": 7,
+      "community": 133,
       "norm_label": "tests that routers call discordnotifier after writes."
     },
     {
@@ -11119,7 +11079,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_7",
-      "community": 7,
+      "community": 133,
       "norm_label": "post /apps/{package}/block should call discordnotifier.notify_change."
     },
     {
@@ -11129,7 +11089,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_44",
-      "community": 7,
+      "community": 133,
       "norm_label": "post /devices/{device_id}/lock should call discordnotifier.notify_change."
     },
     {
@@ -11139,7 +11099,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_79",
-      "community": 7,
+      "community": 133,
       "norm_label": "post /apps/{package}/limit should call discordnotifier.notify_change."
     },
     {
@@ -11149,7 +11109,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_118",
-      "community": 7,
+      "community": 133,
       "norm_label": "post /devices/{device_id}/unlock should call discordnotifier.notify_change."
     },
     {
@@ -11159,7 +11119,7 @@
       "source_location": "L155",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_155",
-      "community": 7,
+      "community": 133,
       "norm_label": "router writes should complete without error when get_notifier returns none."
     },
     {
@@ -11789,7 +11749,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_coolify_requires_base64",
-      "community": 65,
+      "community": 41,
       "norm_label": "test_coolify_requires_base64()"
     },
     {
@@ -11799,7 +11759,7 @@
       "source_location": "L111",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_restart_requires_coolify",
-      "community": 65,
+      "community": 41,
       "norm_label": "test_restart_requires_coolify()"
     },
     {
@@ -11809,7 +11769,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_coolify_exits_on_missing_coolify_url",
-      "community": 65,
+      "community": 41,
       "norm_label": "test_coolify_exits_on_missing_coolify_url()"
     },
     {
@@ -11819,7 +11779,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_coolify_exits_on_missing_coolify_token",
-      "community": 65,
+      "community": 41,
       "norm_label": "test_coolify_exits_on_missing_coolify_token()"
     },
     {
@@ -11829,7 +11789,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_test_coolify_exits_on_missing_coolify_app_uuid",
-      "community": 65,
+      "community": 41,
       "norm_label": "test_coolify_exits_on_missing_coolify_app_uuid()"
     },
     {
@@ -11919,7 +11879,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_105",
-      "community": 65,
+      "community": 41,
       "norm_label": "--coolify without --base64 must exit 1 before touching browser."
     },
     {
@@ -11929,7 +11889,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_112",
-      "community": 65,
+      "community": 41,
       "norm_label": "--restart without --coolify must exit 1 before touching browser."
     },
     {
@@ -11939,7 +11899,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_119",
-      "community": 65,
+      "community": 41,
       "norm_label": "--coolify exits 1 when coolify_url is absent, before touching browser."
     },
     {
@@ -11949,7 +11909,7 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_129",
-      "community": 65,
+      "community": 41,
       "norm_label": "--coolify exits 1 when coolify_token is absent, before touching browser."
     },
     {
@@ -11959,7 +11919,7 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "tests_unit_test_cli_coolify_rationale_139",
-      "community": 65,
+      "community": 41,
       "norm_label": "--coolify exits 1 when coolify_app_uuid is absent, before touching browser."
     },
     {
@@ -11999,7 +11959,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "tests_unit_test_client_test_get_members_raises_on_401",
-      "community": 28,
+      "community": 86,
       "norm_label": "test_get_members_raises_on_401()"
     },
     {
@@ -12009,7 +11969,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "tests_unit_test_client_test_get_members_raises_on_403",
-      "community": 28,
+      "community": 86,
       "norm_label": "test_get_members_raises_on_403()"
     },
     {
@@ -12089,7 +12049,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "tests_unit_test_client_rationale_70",
-      "community": 28,
+      "community": 86,
       "norm_label": "get_members() raises sessionexpirederror on a 401 response."
     },
     {
@@ -12099,7 +12059,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "tests_unit_test_client_rationale_77",
-      "community": 28,
+      "community": 86,
       "norm_label": "get_members() raises sessionexpirederror on a 403 response."
     },
     {
@@ -12149,7 +12109,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_test_models",
-      "community": 2,
+      "community": 137,
       "norm_label": "test_models.py"
     },
     {
@@ -12159,7 +12119,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "tests_unit_test_models_test_members_response_model_validate_alias_keys",
-      "community": 2,
+      "community": 137,
       "norm_label": "test_members_response_model_validate_alias_keys()"
     },
     {
@@ -12169,7 +12129,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "tests_unit_test_models_test_members_response_api_header_snake_case",
-      "community": 2,
+      "community": 137,
       "norm_label": "test_members_response_api_header_snake_case()"
     },
     {
@@ -12179,7 +12139,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "tests_unit_test_models_test_app_usage_model_validate_alias_keys",
-      "community": 2,
+      "community": 137,
       "norm_label": "test_app_usage_model_validate_alias_keys()"
     },
     {
@@ -12189,7 +12149,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_1",
-      "community": 2,
+      "community": 137,
       "norm_label": "tests for familylink models."
     },
     {
@@ -12199,7 +12159,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_7",
-      "community": 2,
+      "community": 137,
       "norm_label": "test membersresponse.model_validate with camelcase alias keys."
     },
     {
@@ -12209,7 +12169,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_33",
-      "community": 2,
+      "community": 137,
       "norm_label": "test nested apiheader conversion to snake_case."
     },
     {
@@ -12219,7 +12179,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "tests_unit_test_models_rationale_45",
-      "community": 2,
+      "community": 137,
       "norm_label": "test appusage.model_validate with camelcase alias keys."
     },
     {
@@ -13661,46 +13621,6 @@
       "id": "readme_coolify_deployment",
       "community": 63,
       "norm_label": "coolify deployment"
-    },
-    {
-      "label": "Troubleshooting (auth)",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L466",
-      "_origin": "ast",
-      "id": "readme_troubleshooting_auth",
-      "community": 63,
-      "norm_label": "troubleshooting (auth)"
-    },
-    {
-      "label": "Google/Family Link session problems",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L473",
-      "_origin": "ast",
-      "id": "readme_google_family_link_session_problems",
-      "community": 63,
-      "norm_label": "google/family link session problems"
-    },
-    {
-      "label": "App login (OAuth) problems",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L484",
-      "_origin": "ast",
-      "id": "readme_app_login_oauth_problems",
-      "community": 63,
-      "norm_label": "app login (oauth) problems"
-    },
-    {
-      "label": "Auth & session endpoint reference",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L491",
-      "_origin": "ast",
-      "id": "readme_auth_session_endpoint_reference",
-      "community": 63,
-      "norm_label": "auth & session endpoint reference"
     },
     {
       "label": "2026-06-19-client-refactor.md",
@@ -20401,7 +20321,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L254",
+      "source_location": "L227",
       "weight": 1.0,
       "source": "src_familylink_server_main_session_expired_handler",
       "target": "src_familylink_client_sessionexpirederror",
@@ -22509,7 +22429,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L178",
+      "source_location": "L160",
       "weight": 1.0,
       "source": "src_familylink_server_main_lifespan",
       "target": "src_familylink_server_auth_oauth_make_session"
@@ -22979,7 +22899,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L173",
+      "source_location": "L155",
       "weight": 1.0,
       "source": "src_familylink_server_main_lifespan",
       "target": "src_familylink_server_bot_client_familylinkbot"
@@ -23151,7 +23071,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L181",
+      "source_location": "L163",
       "weight": 1.0,
       "source": "src_familylink_server_main_lifespan",
       "target": "src_familylink_server_bot_client_bot_task_with_restart"
@@ -26768,7 +26688,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/config.py",
-      "source_location": "L36",
+      "source_location": "L35",
       "weight": 1.0,
       "source": "src_familylink_server_config_settings",
       "target": "src_familylink_server_config_settings_discord_enabled",
@@ -26778,7 +26698,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/config.py",
-      "source_location": "L43",
+      "source_location": "L42",
       "weight": 1.0,
       "source": "src_familylink_server_config_settings",
       "target": "src_familylink_server_config_settings_discord_summary_time_parsed",
@@ -26843,9 +26763,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/config.py",
-      "source_location": "L37",
+      "source_location": "L36",
       "weight": 1.0,
-      "source": "src_familylink_server_config_rationale_37",
+      "source": "src_familylink_server_config_rationale_36",
       "target": "src_familylink_server_config_settings_discord_enabled",
       "confidence_score": 1.0
     },
@@ -26853,9 +26773,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/config.py",
-      "source_location": "L44",
+      "source_location": "L43",
       "weight": 1.0,
-      "source": "src_familylink_server_config_rationale_44",
+      "source": "src_familylink_server_config_rationale_43",
       "target": "src_familylink_server_config_settings_discord_summary_time_parsed",
       "confidence_score": 1.0
     },
@@ -26864,7 +26784,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/config.py",
-      "source_location": "L43",
+      "source_location": "L42",
       "weight": 1.0,
       "source": "src_familylink_server_config_settings_discord_summary_time_parsed",
       "target": "src_familylink_server_config_py_time",
@@ -28591,7 +28511,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L238",
+      "source_location": "L211",
       "weight": 1.0,
       "source": "src_familylink_server_main",
       "target": "src_familylink_server_main_kick_off_background_refresh",
@@ -28601,20 +28521,10 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L160",
+      "source_location": "L142",
       "weight": 1.0,
       "source": "src_familylink_server_main",
       "target": "src_familylink_server_main_lifespan",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/familylink_server/main.py",
-      "source_location": "L141",
-      "weight": 1.0,
-      "source": "src_familylink_server_main",
-      "target": "src_familylink_server_main_proactive_refresh_loop",
       "confidence_score": 1.0
     },
     {
@@ -28631,7 +28541,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L254",
+      "source_location": "L227",
       "weight": 1.0,
       "source": "src_familylink_server_main",
       "target": "src_familylink_server_main_session_expired_handler",
@@ -28662,7 +28572,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L9",
+      "source_location": "L7",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "src_familylink_server_main",
@@ -28705,7 +28615,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L197",
+      "source_location": "L179",
       "weight": 1.0,
       "source": "src_familylink_server_main_lifespan",
       "target": "src_familylink_server_main_health_check_loop",
@@ -28727,7 +28637,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L258",
+      "source_location": "L256",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
       "target": "src_familylink_server_main_health_check_loop"
@@ -28788,17 +28698,6 @@
       "target": "src_familylink_server_main_health_check_loop"
     },
     {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/familylink_server/main.py",
-      "source_location": "L154",
-      "weight": 1.0,
-      "source": "src_familylink_server_main_proactive_refresh_loop",
-      "target": "src_familylink_server_main_try_auto_refresh",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
@@ -28814,7 +28713,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L84",
+      "source_location": "L82",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
       "target": "src_familylink_server_main_try_auto_refresh"
@@ -28825,7 +28724,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L124",
+      "source_location": "L122",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
       "target": "src_familylink_server_main_try_auto_refresh"
@@ -28836,7 +28735,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L145",
+      "source_location": "L143",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
       "target": "src_familylink_server_main_try_auto_refresh"
@@ -28847,7 +28746,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L194",
+      "source_location": "L192",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
       "target": "src_familylink_server_main_try_auto_refresh"
@@ -28858,38 +28757,17 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L103",
+      "source_location": "L101",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_try_auto_refresh_success",
       "target": "src_familylink_server_main_try_auto_refresh"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/familylink_server/main.py",
-      "source_location": "L201",
-      "weight": 1.0,
-      "source": "src_familylink_server_main_lifespan",
-      "target": "src_familylink_server_main_proactive_refresh_loop",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "src/familylink_server/main.py",
-      "source_location": "L146",
-      "weight": 1.0,
-      "source": "src_familylink_server_main_rationale_146",
-      "target": "src_familylink_server_main_proactive_refresh_loop",
-      "confidence_score": 1.0
     },
     {
       "relation": "references",
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L160",
+      "source_location": "L142",
       "weight": 1.0,
       "source": "src_familylink_server_main_lifespan",
       "target": "fastapi",
@@ -28901,7 +28779,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L193",
+      "source_location": "L175",
       "weight": 1.0,
       "source": "src_familylink_server_main_lifespan",
       "target": "src_familylink_server_services_app_enforcer_app_enforcer_loop"
@@ -28912,7 +28790,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L172",
+      "source_location": "L154",
       "weight": 1.0,
       "source": "src_familylink_server_main_lifespan",
       "target": "src_familylink_server_services_discord_notifier_init_notifier"
@@ -28923,7 +28801,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L174",
+      "source_location": "L156",
       "weight": 1.0,
       "source": "src_familylink_server_main_lifespan",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -28934,7 +28812,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L162",
+      "source_location": "L144",
       "weight": 1.0,
       "source": "src_familylink_server_main_lifespan",
       "target": "src_familylink_server_services_family_link_init_service"
@@ -28945,7 +28823,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L189",
+      "source_location": "L171",
       "weight": 1.0,
       "source": "src_familylink_server_main_lifespan",
       "target": "src_familylink_server_services_linux_poller_poller_loop"
@@ -28954,9 +28832,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L161",
+      "source_location": "L143",
       "weight": 1.0,
-      "source": "src_familylink_server_main_rationale_161",
+      "source": "src_familylink_server_main_rationale_143",
       "target": "src_familylink_server_main_lifespan",
       "confidence_score": 1.0
     },
@@ -29085,9 +28963,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L239",
+      "source_location": "L212",
       "weight": 1.0,
-      "source": "src_familylink_server_main_rationale_239",
+      "source": "src_familylink_server_main_rationale_212",
       "target": "src_familylink_server_main_kick_off_background_refresh",
       "confidence_score": 1.0
     },
@@ -29096,7 +28974,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L258",
+      "source_location": "L231",
       "weight": 1.0,
       "source": "src_familylink_server_main_session_expired_handler",
       "target": "src_familylink_server_main_kick_off_background_refresh",
@@ -29106,9 +28984,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L257",
+      "source_location": "L230",
       "weight": 1.0,
-      "source": "src_familylink_server_main_rationale_257",
+      "source": "src_familylink_server_main_rationale_230",
       "target": "src_familylink_server_main_session_expired_handler",
       "confidence_score": 1.0
     },
@@ -29117,7 +28995,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L254",
+      "source_location": "L227",
       "weight": 1.0,
       "source": "src_familylink_server_main_session_expired_handler",
       "target": "src_familylink_server_main_py_htmlresponse",
@@ -29128,7 +29006,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
-      "source_location": "L254",
+      "source_location": "L227",
       "weight": 1.0,
       "source": "src_familylink_server_main_session_expired_handler",
       "target": "src_familylink_server_main_py_request",
@@ -32224,7 +32102,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L15",
+      "source_location": "L13",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_make_service",
       "target": "src_familylink_server_services_family_link_familylinkservice"
@@ -34690,7 +34568,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L13",
+      "source_location": "L11",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_make_service",
@@ -34700,7 +34578,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L268",
+      "source_location": "L266",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_backoff_skips_sidecar_after_failure",
@@ -34710,7 +34588,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L24",
+      "source_location": "L22",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_cookie_refresher_url_default",
@@ -34720,17 +34598,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L303",
-      "weight": 1.0,
-      "source": "tests_server_test_auto_refresh",
-      "target": "tests_server_test_auto_refresh_test_expired_page_shows_novnc_link",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L208",
+      "source_location": "L206",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
@@ -34740,17 +34608,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L285",
-      "weight": 1.0,
-      "source": "tests_server_test_auto_refresh",
-      "target": "tests_server_test_auto_refresh_test_proactive_loop_calls_refresh",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L49",
+      "source_location": "L47",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
@@ -34760,7 +34618,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L64",
+      "source_location": "L62",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
@@ -34770,7 +34628,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L40",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
@@ -34780,7 +34638,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L31",
+      "source_location": "L29",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
@@ -34790,7 +34648,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L77",
+      "source_location": "L75",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
@@ -34800,7 +34658,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L110",
+      "source_location": "L108",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
@@ -34810,7 +34668,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L128",
+      "source_location": "L126",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
@@ -34820,7 +34678,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L150",
+      "source_location": "L148",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
@@ -34830,7 +34688,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L89",
+      "source_location": "L87",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh",
       "target": "tests_server_test_auto_refresh_test_try_auto_refresh_success",
@@ -34850,9 +34708,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L14",
+      "source_location": "L12",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_14",
+      "source": "tests_server_test_auto_refresh_rationale_12",
       "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
@@ -34861,7 +34719,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L216",
+      "source_location": "L214",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
       "target": "tests_server_test_auto_refresh_make_service",
@@ -34872,7 +34730,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L51",
+      "source_location": "L49",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
       "target": "tests_server_test_auto_refresh_make_service",
@@ -34883,7 +34741,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L66",
+      "source_location": "L64",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
       "target": "tests_server_test_auto_refresh_make_service",
@@ -34894,7 +34752,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L42",
+      "source_location": "L40",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
       "target": "tests_server_test_auto_refresh_make_service",
@@ -34905,7 +34763,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L33",
+      "source_location": "L31",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
       "target": "tests_server_test_auto_refresh_make_service",
@@ -34916,7 +34774,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L83",
+      "source_location": "L81",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
       "target": "tests_server_test_auto_refresh_make_service",
@@ -34927,7 +34785,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L123",
+      "source_location": "L121",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
       "target": "tests_server_test_auto_refresh_make_service",
@@ -34938,7 +34796,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L144",
+      "source_location": "L142",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
       "target": "tests_server_test_auto_refresh_make_service",
@@ -34949,7 +34807,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L187",
+      "source_location": "L185",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
       "target": "tests_server_test_auto_refresh_make_service",
@@ -34960,7 +34818,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L101",
+      "source_location": "L99",
       "weight": 1.0,
       "source": "tests_server_test_auto_refresh_test_try_auto_refresh_success",
       "target": "tests_server_test_auto_refresh_make_service",
@@ -34970,9 +34828,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L25",
+      "source_location": "L23",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_25",
+      "source": "tests_server_test_auto_refresh_rationale_23",
       "target": "tests_server_test_auto_refresh_test_cookie_refresher_url_default",
       "confidence_score": 1.0
     },
@@ -34980,9 +34838,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L32",
+      "source_location": "L30",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_32",
+      "source": "tests_server_test_auto_refresh_rationale_30",
       "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
       "confidence_score": 1.0
     },
@@ -34990,9 +34848,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L41",
+      "source_location": "L39",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_41",
+      "source": "tests_server_test_auto_refresh_rationale_39",
       "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
       "confidence_score": 1.0
     },
@@ -35000,9 +34858,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L50",
+      "source_location": "L48",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_50",
+      "source": "tests_server_test_auto_refresh_rationale_48",
       "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
       "confidence_score": 1.0
     },
@@ -35010,9 +34868,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L65",
+      "source_location": "L63",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_65",
+      "source": "tests_server_test_auto_refresh_rationale_63",
       "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
       "confidence_score": 1.0
     },
@@ -35020,9 +34878,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L78",
+      "source_location": "L76",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_78",
+      "source": "tests_server_test_auto_refresh_rationale_76",
       "target": "tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
       "confidence_score": 1.0
     },
@@ -35030,9 +34888,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L90",
+      "source_location": "L88",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_90",
+      "source": "tests_server_test_auto_refresh_rationale_88",
       "target": "tests_server_test_auto_refresh_test_try_auto_refresh_success",
       "confidence_score": 1.0
     },
@@ -35040,9 +34898,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L111",
+      "source_location": "L109",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_111",
+      "source": "tests_server_test_auto_refresh_rationale_109",
       "target": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
       "confidence_score": 1.0
     },
@@ -35050,9 +34908,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L129",
+      "source_location": "L127",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_129",
+      "source": "tests_server_test_auto_refresh_rationale_127",
       "target": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
       "confidence_score": 1.0
     },
@@ -35060,9 +34918,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L151",
+      "source_location": "L149",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_151",
+      "source": "tests_server_test_auto_refresh_rationale_149",
       "target": "tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
       "confidence_score": 1.0
     },
@@ -35070,9 +34928,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L209",
+      "source_location": "L207",
       "weight": 1.0,
-      "source": "tests_server_test_auto_refresh_rationale_209",
+      "source": "tests_server_test_auto_refresh_rationale_207",
       "target": "tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
       "confidence_score": 1.0
     },
@@ -42854,16 +42712,6 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L466",
-      "weight": 1.0,
-      "source": "readme_server_deployment",
-      "target": "readme_troubleshooting_auth",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
       "source_location": "L338",
       "weight": 1.0,
       "source": "readme_linux_machine_management",
@@ -42888,36 +42736,6 @@
       "weight": 1.0,
       "source": "readme_linux_machine_management",
       "target": "readme_requirements_per_managed_machine",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L484",
-      "weight": 1.0,
-      "source": "readme_troubleshooting_auth",
-      "target": "readme_app_login_oauth_problems",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L491",
-      "weight": 1.0,
-      "source": "readme_troubleshooting_auth",
-      "target": "readme_auth_session_endpoint_reference",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L473",
-      "weight": 1.0,
-      "source": "readme_troubleshooting_auth",
-      "target": "readme_google_family_link_session_problems",
       "confidence_score": 1.0
     },
     {
@@ -46607,5 +46425,5 @@
       "source_file": "docs/superpowers/specs/2026-06-30-oauth-bearer-auth-resilience-design.md"
     }
   ],
-  "built_at_commit": "ab561b15f75e931ce21b7ccae1405045218657c8"
+  "built_at_commit": "f0de9d217d3dd3ed9441855d2f12d6def0337dbd"
 }
