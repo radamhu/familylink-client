@@ -1,5 +1,6 @@
 """Sidecar: reads cookies from a persistent, logged-in Firefox profile."""
 
+import asyncio
 import base64
 import logging
 import os
@@ -86,6 +87,20 @@ def _verify_family_link_access(cookies_b64: str) -> None:
             os.environ['FAMILYLINK_SAPISID'] = prev_sapisid
 
 
+def _build_verified_cookies_b64(sqlite_path: Path) -> str:
+    """Read live cookies, verify against the Family Link API, return base64.
+
+    Raises:
+        NotLoggedInError: if the profile holds no SAPISID cookie.
+        RuntimeError: if the cookies fail Family Link API verification.
+    """
+    cookies = _read_live_google_cookies(sqlite_path)
+    cookies_b64 = base64.b64encode(_jar_to_netscape(cookies).encode()).decode()
+    _verify_family_link_access(cookies_b64)
+    logger.info('Refresh: returned %d live google.com cookies', len(cookies))
+    return cookies_b64
+
+
 @app.post('/refresh')
 async def refresh(x_api_key: str = Header(default='')) -> dict:
     """Read live cookies from the Firefox profile; verify; return base64."""
@@ -98,16 +113,11 @@ async def refresh(x_api_key: str = Header(default='')) -> dict:
         raise HTTPException(409, 'Firefox profile not initialised — sign in via noVNC.')
 
     try:
-        cookies = _read_live_google_cookies(sqlite_path)
+        cookies_b64 = await asyncio.to_thread(_build_verified_cookies_b64, sqlite_path)
     except NotLoggedInError as exc:
         raise HTTPException(409, str(exc)) from exc
-
-    cookies_b64 = base64.b64encode(_jar_to_netscape(cookies).encode()).decode()
-    try:
-        _verify_family_link_access(cookies_b64)
     except Exception as exc:
         logger.error('Refresh failed: %s', exc)
         raise HTTPException(502, str(exc)) from exc
 
-    logger.info('Refresh: returned %d live google.com cookies', len(cookies))
     return {'cookies_b64': cookies_b64}
