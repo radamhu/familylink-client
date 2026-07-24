@@ -28,7 +28,9 @@ services:
       - firefox
 
   firefox:
-    # noVNC UI on 3000 — expose ONLY behind auth (Traefik basic-auth) or keep internal; NEVER expose publicly.
+    # noVNC UI on 3000, exposed via Traefik behind basic-auth (middleware ff-auth).
+    # This UI grants FULL control of the logged-in parent Google account — the
+    # basic-auth below is the only thing protecting it. Rotate the hash if leaked.
     image: lscr.io/linuxserver/firefox:latest
     restart: unless-stopped
     shm_size: "1gb"
@@ -38,6 +40,20 @@ services:
       TZ: Etc/UTC
     volumes:
       - firefox_profile:/config
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.ff-http.entryPoints=http
+      - traefik.http.routers.ff-http.rule=Host(`firefox.192.168.0.22.sslip.io`)
+      - traefik.http.routers.ff-http.middlewares=redirect-to-https
+      - traefik.http.routers.ff-https.entryPoints=https
+      - traefik.http.routers.ff-https.rule=Host(`firefox.192.168.0.22.sslip.io`)
+      - traefik.http.routers.ff-https.tls=true
+      - traefik.http.routers.ff-https.middlewares=ff-auth,gzip
+      - traefik.http.routers.ff-https.service=ff
+      - traefik.http.services.ff.loadbalancer.server.port=3000
+      # basic-auth: user "parent"; regenerate with `htpasswd -nbB parent <pass>`
+      # (double every $ as $$ for compose). Change these creds after first login.
+      - traefik.http.middlewares.ff-auth.basicauth.users=parent:$$apr1$$9gDWCDaM$$qwjbCD2rKeIJbqDed1gJP1
 
   web:
     build: .
