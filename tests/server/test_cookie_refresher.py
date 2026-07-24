@@ -47,3 +47,34 @@ def test_refresh_returns_cookies_b64(monkeypatch, tmp_path):
     text = base64.b64decode(b64).decode()
     assert 'SAPISID' in text
     assert text.startswith('# Netscape HTTP Cookie File')
+
+
+def test_refresh_forbidden_when_wrong_key(monkeypatch, tmp_path):
+    monkeypatch.setenv('REFRESHER_API_KEY', 'secret')
+    jar = [_FakeCookie('SAPISID')]
+    client = _client(monkeypatch, tmp_path, jar)
+    resp = client.post('/refresh', headers={'X-Api-Key': 'wrong'})
+    assert resp.status_code == 403
+
+
+def test_refresh_409_when_no_profile(monkeypatch, tmp_path):
+    monkeypatch.setenv('FIREFOX_PROFILE_DIR', str(tmp_path / 'missing'))
+    import familylink_server.cookie_refresher_app as app_mod
+
+    resp = TestClient(app_mod.app).post('/refresh')
+    assert resp.status_code == 409
+
+
+def test_refresh_409_when_no_sapisid(monkeypatch, tmp_path):
+    jar = [_FakeCookie('NID')]  # no SAPISID
+    client = _client(monkeypatch, tmp_path, jar)
+    resp = client.post('/refresh')
+    assert resp.status_code == 409
+
+
+def test_refresh_502_when_session_dead(monkeypatch, tmp_path):
+    jar = [_FakeCookie('SAPISID')]
+    client = _client(monkeypatch, tmp_path, jar, verify_ok=False)
+    resp = client.post('/refresh')
+    assert resp.status_code == 502
+    assert 'verification' in resp.json()['detail']
