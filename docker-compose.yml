@@ -51,9 +51,11 @@ services:
       - traefik.http.routers.ff-https.middlewares=ff-auth,gzip
       - traefik.http.routers.ff-https.service=ff
       - traefik.http.services.ff.loadbalancer.server.port=3000
-      # basic-auth: user "parent"; regenerate with `htpasswd -nbB parent <pass>`
-      # (double every $ as $$ for compose). Change these creds after first login.
-      - traefik.http.middlewares.ff-auth.basicauth.users=parent:$$apr1$$9gDWCDaM$$qwjbCD2rKeIJbqDed1gJP1
+      # basic-auth: user "parent". NOTE: Coolify passes label values to Traefik
+      # literally (no docker-compose $$-unescaping), so use a SINGLE $ apr1 hash
+      # here — NOT $$. If you ever run plain `docker compose` instead, you must
+      # double the $ back to $$. Regenerate: `htpasswd -nbB parent <pass>`.
+      - traefik.http.middlewares.ff-auth.basicauth.users=parent:$apr1$9gDWCDaM$qwjbCD2rKeIJbqDed1gJP1
 
   web:
     build: .
