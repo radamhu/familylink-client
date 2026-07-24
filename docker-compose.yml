@@ -21,8 +21,22 @@ services:
     restart: unless-stopped
     environment:
       REFRESHER_API_KEY: ${REFRESHER_API_KEY:-}
+      FIREFOX_PROFILE_DIR: /profile
     volumes:
-      - refresher_state:/data
+      - firefox_profile:/profile:ro
+    depends_on:
+      - firefox
+
+  firefox:
+    image: lscr.io/linuxserver/firefox:latest
+    restart: unless-stopped
+    shm_size: "1gb"
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+      TZ: Etc/UTC
+    volumes:
+      - firefox_profile:/config
 
   web:
     build: .
@@ -51,4 +65,4 @@ services:
 
 volumes:
   pgdata:
-  refresher_state:
+  firefox_profile:
