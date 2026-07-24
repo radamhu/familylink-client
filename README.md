@@ -276,23 +276,13 @@ alembic upgrade head
 
 This runs once per deployment before the web server starts.
 
-### Step 5: Deploy
-
-Ensure your `Procfile` is committed (created in Step 1):
-
-```
-web: uvicorn familylink_server.main:app --host 0.0.0.0 --port $PORT
-```
-
-Your platform will read this and start the server on the port it provides via the `$PORT` environment variable.
-
-### Linux machine management
+### Step 5: Linux machine management
 
 The server can manage Linux machines (e.g. a child's gaming PC) via SSH. It polls each machine on a 60-second cycle, accumulates active graphical-session time, and enforces a daily quota by locking the screen and — after a grace period — powering the machine off.
 
 The `/linux-machines` web page lets you add machines, view today's usage, grant bonus minutes, and trigger a lock or power-off immediately.
 
-#### Requirements per managed machine
+**Requirements per managed machine**
 
 **OS note:** The SSH commands rely on systemd-logind and D-Bus. Tested on Bazzite (Fedora Atomic, KDE Plasma 6). Adjust if the target machine uses a different desktop environment.
 
@@ -324,7 +314,7 @@ Replace `suriel` with the actual SSH user configured for that machine.
 
 > A helper script at `~/familylink-setup.sh` is written to the target machine during first-time setup and performs these three commands automatically — just run `sudo bash ~/familylink-setup.sh` once from a privileged terminal.
 
-#### How enforcement works
+**How enforcement works**
 
 | Condition                                      | Action                                                       |
 | ---------------------------------------------- | ------------------------------------------------------------ |
@@ -335,7 +325,7 @@ Replace `suriel` with the actual SSH user configured for that machine.
 
 The daily quota and grace period (default 5 min) are configurable per machine.
 
-#### Coolify deployment
+### Step 6: Coolify deployment
 
 Coolify uses Traefik as its reverse proxy, which terminates TLS and forwards requests to the container over plain HTTP internally. Without special configuration uvicorn would generate `http://` OAuth callback URLs, causing a `redirect_uri_mismatch` error from Google.
 
@@ -462,93 +452,3 @@ The following environment variables must be set in your **local** `.env` before 
 - TLS termination
 - Gzip compression
 - Port routing to the uvicorn process on `8000`
-
-### Troubleshooting (auth)
-
-There are two separate auth layers, and they fail independently:
-
-- **Google/Family Link session** — the cookies the server uses to call the Family Link API. Expires on sign-out, password change, or Google security events.
-- **OAuth login** — your own login to *this app* (`fl_session` cookie). Separate from the above; only affects who can access the UI.
-
-#### Google/Family Link session problems
-
-| Symptom                                                                                | Command                                                                                                           | When                                                                                                                                                                     |
-| -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 503 "Google session expired" page,`cookie-refresher` sidecar **is** configured | None — wait. The page itself triggers a background refresh; the 30-min health check retries too.                 | First response. Reload after ~1 minute.                                                                                                                                  |
-| Sidecar logs show`Refresh failed: ... verification: HTTP 401` repeatedly             | Open `FIREFOX_NOVNC_URL` and sign back in via the noVNC UI | The live browser's session itself has died (rare: password change, sign-out, security event). Sign in headful, inside that browser — no local Chrome or CLI needed. |
-| No sidecar configured, or the noVNC sign-in didn't fix it                              | `familylink export-cookies --browser chrome --base64 --coolify --restart`                                       | Full manual reset. Requires restart. Works regardless of sidecar/browser state.                                                                                          |
-| Just want to check current cookie validity without restarting anything                 | `familylink export-cookies --base64` (no `--coolify`)                                                         | Dry check — writes`cookies.txt` + prints base64, doesn't touch the deployment.                                                                                        |
-
-The sidecar doesn't replace `export-cookies` — it automates the *recurring* refresh so you don't have to run `export-cookies` every few weeks. It reads whatever session is currently live in the `firefox` container; it doesn't touch the running app's cookies directly until a refresh succeeds. `export-cookies --coolify --restart` is the one command that always works, sidecar or not, because it pushes straight to the app.
-
-#### App login (OAuth) problems
-
-- **`{"detail":"Not authenticated"}` on first visit**: expected — navigate to `/auth/login`
-- **OAuth redirect fails / `redirect_uri_mismatch`**: redirect URI in Google Cloud Console must exactly match your deployed URL, scheme included (`https://` not `http://`)
-- **Behind a reverse proxy, callback URL comes back `http://` instead of `https://`**: app needs `--proxy-headers --forwarded-allow-ips='*'` so uvicorn trusts `X-Forwarded-Proto`. Already set in the `Dockerfile` `CMD` — add it manually if deploying via `Procfile` or another mechanism
-- **Login succeeds but every page redirects back to `/auth/login`**: session cookie is being dropped — if running locally over HTTP, set `DEBUG=true` in `.env`
-
-#### Auth & session endpoint reference
-
-Every endpoint and command that touches a Google/session cookie, in one place.
-
-Three paths keep the Google session alive: a one-time noVNC login, an automatic loop that runs forever, and a manual CLI fallback.
-
-`familylink export-cookies --browser chrome --base64 --coolify --restart` and signing into the `firefox` container via noVNC look similar (both start from a real, human-authenticated browser) but push to different places with different tokens:
-
-- `export-cookies` reads the full cookie jar from local Chrome, base64-encodes it, and (with `--coolify`) pushes `FAMILYLINK_COOKIES_B64` straight to the Coolify app's env vars, then restarts the container. No token beyond `COOLIFY_TOKEN` (Coolify's own API auth) is involved.
-- Signing in via noVNC doesn't push anything anywhere — it just leaves a live, logged-in session inside the `firefox` container's profile. The sidecar reads that profile's cookies on demand, authenticated with `REFRESHER_API_KEY`, whenever `/refresh` is called.
-
-Two separate, non-overlapping tokens exist in this codebase:
-
-| Token                   | Set where        | Used by                            | Uploads                                                   |
-| ----------------------- | ---------------- | ---------------------------------- | --------------------------------------------------------- |
-| none (raw cookies)      | —               | `export-cookies --coolify`       | `FAMILYLINK_COOKIES_B64` → Coolify env                 |
-| `REFRESHER_API_KEY`   | server + sidecar | `POST /refresh` on the sidecar   | live profile cookies → returned as`cookies_b64`, never uploaded anywhere |
-
-```mermaid
-sequenceDiagram
-    actor Op as Operator
-    participant FF as firefox (noVNC)
-    participant Main as Main App
-    participant Side as Cookie-Refresher Sidecar
-    participant FL as kidsmanagement-pa (Family Link API)
-
-    rect rgb(44,36,22)
-    Note over Op,FF: LOGIN — one-time, or after password change / sign-out / security event
-    Op->>FF: open FIREFOX_NOVNC_URL, sign in normally
-    FF->>FF: session persists on firefox_profile volume
-    end
-
-    rect rgb(20,42,36)
-    Note over Main,FL: AUTOMATIC — health_check_loop (30 min) + proactive_refresh_loop (12h), no human involved
-    loop every 1800s (or every 43200s proactively)
-        Main->>FL: get_members()  (probe)
-        alt SessionExpiredError (401 / 403), or proactive timer fires
-            Main->>Side: POST /refresh
-            Side->>FF: read live cookies.sqlite (browser_cookie3, no navigation)
-            Side->>FL: verify get_members() with those cookies
-            FL-->>Side: 200 OK
-            Side-->>Main: { cookies_b64 }
-            Main->>Main: hot-reload FamilyLinkService
-        end
-    end
-    end
-
-    rect rgb(48,26,28)
-    Note over Op,Main: MANUAL FALLBACK — live session itself is dead
-    Op->>Op: familylink export-cookies --browser chrome --base64 --coolify --restart
-    Op->>Main: push FAMILYLINK_COOKIES_B64 → env, restart container
-    end
-```
-
-| Endpoint / command                                                                                              | What it does                                                                                                                                                                                                                                                                                 | Google URL called                                                                                                                                                                                                                                                                                                 | Cookies stored where                                                                                                                                                                                                       | Local command / script                                                                                                                                                                                                              |
-| --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GET /auth/login` ([oauth.py:54](src/familylink_server/auth/oauth.py#L54))                                     | Redirects browser into Google's OAuth consent screen for**app login** (not Family Link session)                                                                                                                                                                                        | `accounts.google.com` (OIDC discovery via `.well-known/openid-configuration`, [oauth.py:17](src/familylink_server/auth/oauth.py#L17))                                                                                                                                                                          | N/A — no cookie yet                                                                                                                                                                                                       | Browser navigation only                                                                                                                                                                                                             |
-| `GET /auth/callback` ([oauth.py:61](src/familylink_server/auth/oauth.py#L61))                                  | Exchanges OAuth code, checks email ==`FAMILYLINK_GOOGLE_EMAIL`, sets app session cookie                                                                                                                                                                                                    | Google OAuth token endpoint (via authlib)                                                                                                                                                                                                                                                                         | Sets`fl_session` cookie (signed, httponly, 30-day `max_age`) in the browser — **not** a Google cookie, just this app's login                                                                                    | N/A                                                                                                                                                                                                                                 |
-| `GET /auth/logout` ([oauth.py:81](src/familylink_server/auth/oauth.py#L81))                                    | Clears`fl_session`                                                                                                                                                                                                                                                                         | none                                                                                                                                                                                                                                                                                                              | Deletes`fl_session` cookie in browser                                                                                                                                                                                    | N/A                                                                                                                                                                                                                                 |
-| `GET FIREFOX_NOVNC_URL` (noVNC UI, `firefox` container)                                                        | One-time (or rare re-auth) headful login to the parent Google account, done by a human through the browser window                                                                                                                                                                          | Google's normal sign-in flow, inside the live browser                                                                                                                                                                                                                                                             | Session persists as`cookies.sqlite` on the `firefox_profile` volume — read-only mounted into the sidecar                                                                                                              | None — browser navigation only. **Put this URL behind auth; never expose it publicly** (see security warning above)                                                                                                               |
-| `POST /refresh` on sidecar ([cookie_refresher_app.py:105](src/familylink_server/cookie_refresher_app.py#L105)) | Reads the live`firefox_profile`'s `cookies.sqlite` via `browser_cookie3` (no navigation, no snapshot), verifies against the Family Link API, returns them                                                                                                                              | none directly — verifies against`https://kidsmanagement-pa.clients6.google.com` via `FamilyLink().get_members()` ([cookie_refresher_app.py:64](src/familylink_server/cookie_refresher_app.py#L64))                                                                                                          | Reads (never writes)`cookies.sqlite` on the `firefox_profile` volume, mounted read-only at `FIREFOX_PROFILE_DIR`                                                                                                    | Called automatically by main app's`health_check_loop` / `_try_auto_refresh` ([main.py:85](src/familylink_server/main.py#L85)) and `proactive_refresh_loop` ([main.py:141](src/familylink_server/main.py#L141)); can smoke-test manually with `curl -X POST -H "X-Api-Key: <key>" http://<sidecar>:8080/refresh` |
-| Family Link API calls (e.g.`get_members`) ([client.py:35](src/familylink/client.py#L35))                       | Actual product API — apps, devices, usage, limits                                                                                                                                                                                                                                           | `https://kidsmanagement-pa.clients6.google.com/kidsmanagement/v1`                                                                                                                                                                                                                                               | Reads cookies resolved by`CookieResolver` — see priority list below                                                                                                                                                     | n/a (library-internal); CLI entry point is`familylink` main command                                                                                                                                                               |
-| `CookieResolver.resolve()` ([auth.py:39](src/familylink/auth.py#L39))                                          | Resolves SAPISID + cookie jar the client authenticates with, first match wins:`FAMILYLINK_COOKIES_B64` → `FAMILYLINK_SAPISID` → `FAMILYLINK_COOKIE_FILE` → `./cookies.txt` (`browser="txt"`) → per-profile `sapisid.txt`/`cookies.txt` → `browser_cookie3` (host only)  | none itself — consumed by`client.py` calls above                                                                                                                                                                                                                                                               | Depends on source: env var (b64/plain), or local`cookies.txt` / `sapisid.txt` file, or live browser cookie store                                                                                                       | n/a — internal to every`familylink`/`familylink_server` auth path                                                                                                                                                              |
-| `familylink export-cookies` ([cli.py:99](src/familylink/cli.py#L99))                                           | Pulls Google cookies straight from local Chrome/Firefox, filters to`google.com`, verifies `SAPISID` present, writes Netscape file, optionally base64-encodes + pushes to Coolify env + restarts                                                                                          | none (local browser cookie store only, via`browser_cookie3`)                                                                                                                                                                                                                                                    | Writes`cookies.txt` (or `--output` path) locally; with `--base64` also prints/writes `FAMILYLINK_COOKIES_B64` value to local `.env`; with `--coolify` pushes that value into the remote Coolify app's env vars | `familylink export-cookies --browser chrome --base64 [--coolify --restart]`                                                                                                                                                       |
