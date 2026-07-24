@@ -278,3 +278,21 @@ async def test_backoff_skips_sidecar_after_failure(monkeypatch, httpx_mock):
     assert ok1 is False and ok2 is False
     # sidecar hit only once; the second call was suppressed by backoff
     assert len(httpx_mock.get_requests()) == 1
+
+
+async def test_proactive_loop_calls_refresh(monkeypatch):
+    calls = []
+
+    async def _fake_refresh(service, notifier):
+        calls.append(True)
+        return True
+
+    monkeypatch.setattr(main, '_try_auto_refresh', _fake_refresh)
+    task = asyncio.create_task(main.proactive_refresh_loop(object(), None, interval=0))
+    await asyncio.sleep(0.05)
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        pass
+    assert calls, 'proactive loop should have called _try_auto_refresh at least once'

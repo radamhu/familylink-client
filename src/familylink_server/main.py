@@ -138,6 +138,24 @@ async def _try_auto_refresh(
             return False
 
 
+async def proactive_refresh_loop(
+    service: 'FamilyLinkService',
+    notifier: 'DiscordNotifier | None',
+    interval: int = 43200,
+) -> None:
+    """Refresh cookies from the live browser every `interval` seconds.
+
+    The Firefox session is always fresh, so rotating well before natural cookie
+    expiry means a hard 401 is never reached.
+    """
+    while True:
+        await asyncio.sleep(interval)
+        try:
+            await _try_auto_refresh(service, notifier)
+        except Exception as exc:  # never let the loop die
+            logger.warning('Proactive refresh error (transient): %s', exc)
+
+
 @asynccontextmanager
 async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
     """Initialize services at startup; shut down cleanly."""
@@ -179,6 +197,11 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
     health_task = asyncio.create_task(health_check_loop(get_service(), notifier))
     logger.info('Health check task started (interval=1800s)')
 
+    proactive_task = asyncio.create_task(
+        proactive_refresh_loop(get_service(), notifier)
+    )
+    logger.info('Proactive cookie-refresh loop started (interval=43200s)')
+
     yield
 
     poller_task.cancel()
@@ -192,6 +215,10 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
     health_task.cancel()
     with contextlib.suppress(asyncio.CancelledError):
         await health_task
+
+    proactive_task.cancel()
+    with contextlib.suppress(asyncio.CancelledError):
+        await proactive_task
 
     if bot_task is not None:
         bot_task.cancel()
