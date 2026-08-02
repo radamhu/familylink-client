@@ -30,6 +30,9 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+DAILY_SUMMARY_MAX_ATTEMPTS = 3
+DAILY_SUMMARY_RETRY_DELAY_SECONDS = 30
+
 
 def _apps_today(usage: AppUsage) -> tuple[list[dict], int]:
     """Aggregate today's app usage from sessions; returns (sorted_apps, total_seconds)."""
@@ -221,40 +224,58 @@ class FamilyLinkBot(commands.Bot):
         except ImportError:
             SummaryView = None  # type: ignore[assignment]
 
-        try:
-            members = await self.service.get_members()
-            supervised = [
-                m
-                for m in members.members
-                if m.member_supervision_info
-                and m.member_supervision_info.is_supervised_member
-            ]
-            for child in supervised:
-                usage = await self.service.get_apps_and_usage(child.user_id)
-                all_apps_with_usage, total_seconds = _apps_today(usage)
-                top_apps = all_apps_with_usage[:5]
-                device_id = (
-                    usage.device_info[0].device_id if usage.device_info else None
-                )
-                linux_rows = await _fetch_linux_rows(child.user_id, self._make_session)
-                view = None
-                if SummaryView is not None:
-                    view = SummaryView(
-                        self.service,
-                        self.notifier,
-                        child.user_id,
-                        child.profile.display_name,
-                        device_id,
+        for attempt in range(1, DAILY_SUMMARY_MAX_ATTEMPTS + 1):
+            try:
+                members = await self.service.get_members()
+                supervised = [
+                    m
+                    for m in members.members
+                    if m.member_supervision_info
+                    and m.member_supervision_info.is_supervised_member
+                ]
+                for child in supervised:
+                    usage = await self.service.get_apps_and_usage(child.user_id)
+                    all_apps_with_usage, total_seconds = _apps_today(usage)
+                    top_apps = all_apps_with_usage[:5]
+                    device_id = (
+                        usage.device_info[0].device_id if usage.device_info else None
                     )
-                await self.notifier.post_daily_summary(
-                    child.profile.display_name,
-                    top_apps,
-                    total_seconds,
-                    linux_machines=linux_rows,
-                    view=view,
-                )
-        except Exception:
-            logger.exception('Error posting daily summary')
+                    linux_rows = await _fetch_linux_rows(
+                        child.user_id, self._make_session
+                    )
+                    view = None
+                    if SummaryView is not None:
+                        view = SummaryView(
+                            self.service,
+                            self.notifier,
+                            child.user_id,
+                            child.profile.display_name,
+                            device_id,
+                        )
+                    await self.notifier.post_daily_summary(
+                        child.profile.display_name,
+                        top_apps,
+                        total_seconds,
+                        linux_machines=linux_rows,
+                        view=view,
+                    )
+                return
+            except Exception:
+                if attempt == DAILY_SUMMARY_MAX_ATTEMPTS:
+                    logger.exception(
+                        'Error posting daily summary (attempt %d/%d, giving up)',
+                        attempt,
+                        DAILY_SUMMARY_MAX_ATTEMPTS,
+                    )
+                else:
+                    logger.warning(
+                        'Error posting daily summary (attempt %d/%d, retrying in %ds)',
+                        attempt,
+                        DAILY_SUMMARY_MAX_ATTEMPTS,
+                        DAILY_SUMMARY_RETRY_DELAY_SECONDS,
+                        exc_info=True,
+                    )
+                    await asyncio.sleep(DAILY_SUMMARY_RETRY_DELAY_SECONDS)
 
 
 async def _bot_task_with_restart(bot: FamilyLinkBot, token: str) -> None:
