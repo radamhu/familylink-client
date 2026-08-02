@@ -12,12 +12,14 @@ def _make_config(
     auto_blocked_at=None,
     bonus_mins=0,
     bonus_date=None,
+    max_mins=None,
 ):
     cfg = MagicMock()
     cfg.package_name = package_name
     cfg.auto_blocked_at = auto_blocked_at
     cfg.bonus_mins = bonus_mins
     cfg.bonus_date = bonus_date
+    cfg.max_mins = max_mins
     return cfg
 
 
@@ -184,6 +186,59 @@ async def test_enforce_child_restores_after_midnight():
     mock_svc.set_app_limit.assert_awaited_once_with('com.example.app', 30, 'child1')
     assert config.auto_blocked_at is None
     mock_svc.block_app.assert_not_awaited()
+    mock_session.commit.assert_awaited_once()
+
+
+async def test_enforce_child_persists_limit_on_block():
+    """Auto-blocking must persist the pre-block limit onto config.max_mins,
+    so it survives even if Google later reports no usage_limit for the hidden app.
+    """
+    from familylink_server.services.app_enforcer import enforce_child
+
+    config = _make_config()
+    usage = _make_usage(
+        [_make_app(limit_mins=30)],
+        [_make_usage_session(usage_seconds=30 * 60)],
+    )
+    mock_ctx, _ = _make_session_ctx([config])
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.block_app = AsyncMock()
+
+    with patch(
+        'familylink_server.services.app_enforcer.make_session', return_value=mock_ctx
+    ):
+        await enforce_child('child1', mock_svc)
+
+    assert config.max_mins == 30
+
+
+async def test_enforce_child_restores_after_midnight_when_google_limit_is_null():
+    """Once blocked, Google may report usage_limit=None for the hidden app on later
+    polls. Restore-after-midnight must still fire, using the persisted max_mins
+    rather than depending on a live Google usage_limit that no longer exists.
+    """
+    from familylink_server.services.app_enforcer import enforce_child
+
+    yesterday = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=1)
+    config = _make_config(auto_blocked_at=yesterday, max_mins=30)
+    usage = _make_usage(
+        [_make_app(limit_mins=None, hidden=True)],
+        [_make_usage_session(usage_seconds=0)],
+    )
+    mock_ctx, mock_session = _make_session_ctx([config])
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.set_app_limit = AsyncMock()
+    mock_svc.block_app = AsyncMock()
+
+    with patch(
+        'familylink_server.services.app_enforcer.make_session', return_value=mock_ctx
+    ):
+        await enforce_child('child1', mock_svc)
+
+    mock_svc.set_app_limit.assert_awaited_once_with('com.example.app', 30, 'child1')
+    assert config.auto_blocked_at is None
     mock_session.commit.assert_awaited_once()
 
 

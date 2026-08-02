@@ -61,22 +61,29 @@ async def enforce_child(
 
         for config in configs:
             app = apps_by_package.get(config.package_name)
-            if app is None or app.supervision_setting.usage_limit is None:
-                continue
-            limit_mins = app.supervision_setting.usage_limit.daily_usage_limit_mins
+            live_limit = (
+                app.supervision_setting.usage_limit.daily_usage_limit_mins
+                if app is not None and app.supervision_setting.usage_limit is not None
+                else None
+            )
 
             if (
                 config.auto_blocked_at is not None
                 and config.auto_blocked_at.date() < today
             ):
-                await svc.set_app_limit(config.package_name, limit_mins, child_id)
+                restore_limit = (
+                    config.max_mins if config.max_mins is not None else live_limit
+                )
+                if restore_limit is None:
+                    continue
+                await svc.set_app_limit(config.package_name, restore_limit, child_id)
                 config.auto_blocked_at = None
                 session.add(
                     AuditLog(
                         child_id=child_id,
                         action='auto_unblock',
                         target=config.package_name,
-                        new_value=f'{limit_mins} min',
+                        new_value=f'{restore_limit} min',
                         occurred_at=datetime.now(UTC),
                     )
                 )
@@ -85,6 +92,10 @@ async def enforce_child(
                         'auto_unblock', child_id, config.package_name, 'enforcer'
                     )
                 continue
+
+            if app is None or live_limit is None:
+                continue
+            limit_mins = live_limit
 
             bonus = config.bonus_mins if config.bonus_date == today else 0
             effective_limit = limit_mins + bonus
@@ -97,6 +108,7 @@ async def enforce_child(
             ):
                 await svc.block_app(config.package_name, child_id)
                 config.auto_blocked_at = datetime.now(UTC)
+                config.max_mins = limit_mins
                 session.add(
                     AuditLog(
                         child_id=child_id,
