@@ -54,13 +54,27 @@ async def app_autocomplete(
     svc = get_service()
     child_id = getattr(interaction.namespace, 'child', None)
     resolved = await resolve_child(svc, child_id)
-    if resolved is None:
-        return []
-    usage = await svc.get_apps_and_usage(resolved[0])
-    matches = [a for a in usage.apps if current.lower() in a.title.lower()]
+    if resolved is not None:
+        child_ids = [resolved[0]]
+    else:
+        members = await svc.get_members()
+        child_ids = [
+            m.user_id
+            for m in members.members
+            if m.member_supervision_info
+            and m.member_supervision_info.is_supervised_member
+        ]
+
+    seen: dict[str, str] = {}
+    for cid in child_ids:
+        usage = await svc.get_apps_and_usage(cid)
+        for a in usage.apps:
+            if current.lower() in a.title.lower():
+                seen.setdefault(a.package_name, a.title)
+
     return [
-        app_commands.Choice(name=f'{a.title} ({a.package_name})', value=a.package_name)
-        for a in matches[:25]
+        app_commands.Choice(name=f'{title} ({package})', value=package)
+        for package, title in list(seen.items())[:25]
     ]
 
 

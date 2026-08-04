@@ -128,6 +128,40 @@ async def test_app_autocomplete_matches_title_case_insensitive():
     assert choices[0].value == 'com.viber.voip'
 
 
+async def test_app_autocomplete_searches_all_children_when_child_unresolved():
+    """Test that app_autocomplete aggregates apps across kids when child isn't picked yet."""
+    from familylink_server.bot.commands import app_autocomplete
+
+    svc = AsyncMock()
+    emma = MagicMock()
+    emma.user_id = 'uid-1'
+    emma.profile.display_name = 'Emma'
+    emma.member_supervision_info.is_supervised_member = True
+    elinor = MagicMock()
+    elinor.user_id = 'uid-2'
+    elinor.profile.display_name = 'Elinor'
+    elinor.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[emma, elinor])
+
+    viber = MagicMock(title='Viber', package_name='com.viber.voip')
+    usage_by_child = {
+        'uid-1': MagicMock(apps=[]),
+        'uid-2': MagicMock(apps=[viber]),
+    }
+    svc.get_apps_and_usage.side_effect = lambda child_id: usage_by_child[child_id]
+
+    interaction = MagicMock(spec=discord.Interaction)
+    interaction.namespace = MagicMock(child=None)
+
+    with mock.patch(
+        'familylink_server.services.family_link.get_service', return_value=svc
+    ):
+        choices = await app_autocomplete(interaction, 'vib')
+
+    assert len(choices) == 1
+    assert choices[0].value == 'com.viber.voip'
+
+
 async def test_apps_block_calls_service():
     """Test that /apps block calls block_app on the service."""
     from familylink_server.bot.commands.apps import AppsGroup
