@@ -10,6 +10,7 @@ os.environ.setdefault('FAMILYLINK_GOOGLE_EMAIL', 'parent@gmail.com')
 os.environ.setdefault('FAMILYLINK_COOKIES_B64', 'dGVzdA==')
 os.environ.setdefault('DISCORD_ALLOWED_ROLE', 'Parent')
 
+from unittest import mock
 from unittest.mock import AsyncMock, MagicMock
 
 import discord
@@ -98,6 +99,33 @@ async def test_resolve_child_explicit_id():
 
     result = await resolve_child(svc, 'uid-1')
     assert result == ('uid-1', 'Emma')
+
+
+async def test_app_autocomplete_matches_title_case_insensitive():
+    """Test that app_autocomplete finds an app by partial, case-insensitive title."""
+    from familylink_server.bot.commands import app_autocomplete
+
+    svc = AsyncMock()
+    m = MagicMock()
+    m.user_id = 'uid-1'
+    m.profile.display_name = 'Emma'
+    m.member_supervision_info.is_supervised_member = True
+    svc.get_members.return_value = MagicMock(members=[m])
+
+    viber = MagicMock(title='Viber', package_name='com.viber.voip')
+    tiktok = MagicMock(title='TikTok', package_name='com.zhiliaoapp.musically')
+    svc.get_apps_and_usage.return_value = MagicMock(apps=[viber, tiktok])
+
+    interaction = MagicMock(spec=discord.Interaction)
+    interaction.namespace = MagicMock(child=None)
+
+    with mock.patch(
+        'familylink_server.services.family_link.get_service', return_value=svc
+    ):
+        choices = await app_autocomplete(interaction, 'vib')
+
+    assert len(choices) == 1
+    assert choices[0].value == 'com.viber.voip'
 
 
 async def test_apps_block_calls_service():

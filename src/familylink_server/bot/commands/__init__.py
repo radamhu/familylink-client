@@ -44,6 +44,26 @@ async def child_autocomplete(
     ]
 
 
+async def app_autocomplete(
+    interaction: discord.Interaction,
+    current: str,
+) -> list[app_commands.Choice[str]]:
+    """Autocomplete choices for the package parameter, matched by app title."""
+    from familylink_server.services.family_link import get_service
+
+    svc = get_service()
+    child_id = getattr(interaction.namespace, 'child', None)
+    resolved = await resolve_child(svc, child_id)
+    if resolved is None:
+        return []
+    usage = await svc.get_apps_and_usage(resolved[0])
+    matches = [a for a in usage.apps if current.lower() in a.title.lower()]
+    return [
+        app_commands.Choice(name=f'{a.title} ({a.package_name})', value=a.package_name)
+        for a in matches[:25]
+    ]
+
+
 async def resolve_child(
     service: FamilyLinkService,
     child_id: str | None,

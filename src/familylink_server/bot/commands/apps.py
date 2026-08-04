@@ -9,6 +9,7 @@ import discord
 from discord import app_commands
 
 from familylink_server.bot.commands import (
+    app_autocomplete,
     child_autocomplete,
     require_discord_role,
     resolve_child,
@@ -112,7 +113,7 @@ class AppsGroup(app_commands.Group, name='apps', description='Manage supervised 
         minutes='Daily limit in minutes',
         child='Which child',
     )
-    @app_commands.autocomplete(child=child_autocomplete)
+    @app_commands.autocomplete(child=child_autocomplete, package=app_autocomplete)
     async def limit(
         self,
         interaction: discord.Interaction,
@@ -151,7 +152,7 @@ class AppsGroup(app_commands.Group, name='apps', description='Manage supervised 
 
     @app_commands.command(name='block', description='Block an app for a child')
     @app_commands.describe(package='App package name', child='Which child')
-    @app_commands.autocomplete(child=child_autocomplete)
+    @app_commands.autocomplete(child=child_autocomplete, package=app_autocomplete)
     async def block(
         self, interaction: discord.Interaction, package: str, child: str | None = None
     ) -> None:
@@ -183,7 +184,7 @@ class AppsGroup(app_commands.Group, name='apps', description='Manage supervised 
 
     @app_commands.command(name='allow', description='Always allow an app for a child')
     @app_commands.describe(package='App package name', child='Which child')
-    @app_commands.autocomplete(child=child_autocomplete)
+    @app_commands.autocomplete(child=child_autocomplete, package=app_autocomplete)
     async def allow(
         self, interaction: discord.Interaction, package: str, child: str | None = None
     ) -> None:
@@ -222,7 +223,7 @@ class AppsGroup(app_commands.Group, name='apps', description='Manage supervised 
         enabled='Turn auto-block on or off',
         child='Which child',
     )
-    @app_commands.autocomplete(child=child_autocomplete)
+    @app_commands.autocomplete(child=child_autocomplete, package=app_autocomplete)
     async def auto_block(
         self,
         interaction: discord.Interaction,
@@ -291,7 +292,7 @@ class AppsGroup(app_commands.Group, name='apps', description='Manage supervised 
             app_commands.Choice(name='+60 min', value=60),
         ]
     )
-    @app_commands.autocomplete(child=child_autocomplete)
+    @app_commands.autocomplete(child=child_autocomplete, package=app_autocomplete)
     async def bonus(
         self,
         interaction: discord.Interaction,
