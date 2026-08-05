@@ -10,11 +10,11 @@
 
   <nav style="display:inline-flex;gap:2px;background:#f1f5f9;padding:3px;border-radius:10px;margin-bottom:1rem">
     {% for f in ["all", "allowed", "limited", "blocked"] %}
-      {% set pill_color = {"all": "#6b7280", "allowed": "#22c55e", "limited": "#f59e0b", "blocked": "#ef4444"}[f] %}
+      {% set pill_color = {"all": "#6b7280", "allowed": "#16a34a", "limited": "#d97706", "blocked": "#dc2626"}[f] %}
       <a href="/apps?filter={{ f }}"
          {% if filter == f %}aria-current="page"{% endif %}
          style="padding:5px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;text-decoration:none;white-space:nowrap;
-                {% if filter == f %}background:{{ pill_color }};color:white{% else %}color:#6b7280{% endif %}">{{ f | capitalize }}</a>
+                {% if filter == f %}background:{{ pill_color }};color:white{% else %}color:#4b5563{% endif %}">{{ f | capitalize }}</a>
     {% endfor %}
   </nav>
 
@@ -22,10 +22,11 @@
     {% for child in children %}
       <details {% if loop.first %}open{% endif %}
                 style="margin-bottom:0.75rem;border-radius:10px;border:1px solid #e5e7eb;overflow:hidden;background:white">
-        <summary style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px 14px;background:#f8fafc">
+        <summary style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px 14px;background:#f8fafc;margin-bottom:0">
           <span style="width:28px;height:28px;border-radius:50%;background:{{ child.color }};color:white;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">{{ child.display_name[0] | upper }}</span>
           <span style="font-weight:600;font-size:14px;color:#1f2937">{{ child.display_name }}</span>
-          <span style="font-size:0.7rem;color:var(--pico-muted-color);background:#e5e7eb;border-radius:10px;padding:1px 9px">{{ child.apps | length }}</span>
+          <span style="font-size:0.7rem;color:var(--pico-muted-color);background:#e5e7eb;border-radius:10px;padding:1px 9px;margin-left:auto">{{ child.apps | length }}</span>
+          <span style="color:{{ child.color }};font-size:12px">▸</span>
         </summary>
         <div>
           {% for app in child.apps %}
