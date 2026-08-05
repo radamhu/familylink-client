@@ -30,7 +30,7 @@ Each supervised kid becomes a rounded card (`border-radius:10px; border:1px soli
 
 Each row (`partials/app_row.html`) keeps its `id="row-{{ package }}"` (htmx swap target) but restyles:
 
-- **Status** becomes a pill badge: colored background + colored text, rounded, ~11px font — same color-per-state mapping as today, styled like the `device_card.html` chips instead of bare colored `<span>` text.
+- **Status** becomes a pill badge: colored background + colored text, rounded, ~11px font — same color-per-state mapping as today, styled like `child_expanded.html`'s device chips (colored background + colored text, e.g. `background:#fee2e2;color:#991b1b`) instead of bare colored `<span>` text.
 - **Edit** stays a `<details>`/`<summary role="button">` disclosure (approved: keeps rows scannable when a kid has many apps) but the summary button and the panel inside get restyled:
   - Allow / Block buttons become small filled-outline pill buttons tinted with their target state's color (green for allow, red for block) instead of default Pico `outline`/`outline secondary`.
   - The limit form's number input + submit become a single compact chip-style control (rounded, bordered, ~0.75rem).
