@@ -31,7 +31,13 @@ def run(
             print(f'[ERROR] {kid.child_id}: {exc}', file=sys.stderr)  # noqa: T201
             any_failed = True
             continue
-        post_fn(api_url, token, kid.child_id, today, entries)
+
+        try:
+            post_fn(api_url, token, kid.child_id, today, entries)
+        except Exception as exc:
+            print(f'[ERROR] {kid.child_id}: {exc}', file=sys.stderr)  # noqa: T201
+            any_failed = True
+            continue
 
     return 1 if any_failed else 0
 

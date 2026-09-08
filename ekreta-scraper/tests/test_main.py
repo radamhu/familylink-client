@@ -71,6 +71,30 @@ def test_run_continues_after_one_kid_fails():
     assert posted[0][2] == 'child2'
 
 
+def test_run_continues_after_one_kid_post_fails():
+    """Test that run() continues processing after one kid's post_fn fails."""
+    kids = [make_kid('child1'), make_kid('child2')]
+    posted = []
+
+    def post_fn(api_url, token, child_id, day, entries):
+        if child_id == 'child1':
+            raise RuntimeError('API unreachable')
+        posted.append((api_url, token, child_id, day, entries))
+
+    exit_code = run(
+        kids=kids,
+        api_url='http://familylink-web:8000',
+        token='secret',
+        fetch_fn=lambda kid: [],
+        post_fn=post_fn,
+        today=date(2026, 9, 8),
+    )
+
+    assert exit_code == 1
+    assert len(posted) == 1
+    assert posted[0][2] == 'child2'
+
+
 def test_run_all_succeed_returns_zero():
     """Test that run() returns 0 when all kids succeed."""
     kids = [make_kid('child1')]
