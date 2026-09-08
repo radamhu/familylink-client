@@ -142,8 +142,27 @@ class TestFilterUpcoming:
 
 
 class TestFetchHomeworkOrchestration:
+    def test_opens_menu_exactly_once_before_either_source(self, monkeypatch):
+        """Confirmed flow: bejelentkezés -> Elektronikus ellenőrzőkönyv (once)
+        -> Órarend or Házi feladatok (sibling leaves). Each source used to
+        re-click the parent itself, which times out on the second visit
+        because it's an accordion toggle, not a stateless link."""
+        calls = []
+        monkeypatch.setattr(kreta_client, "_login", lambda page, kid: None)
+        monkeypatch.setattr(
+            kreta_client, "_open_electronikus_ellenorzokonyv", lambda page: calls.append(page)
+        )
+        monkeypatch.setattr(kreta_client, "_scrape_orarend", lambda page, kid: [])
+        monkeypatch.setattr(kreta_client, "_scrape_haza_feladatok", lambda page, kid: [])
+        monkeypatch.setattr(kreta_client, "date", _FixedDate)
+        fetch_homework(page=None, kid=make_kid())
+        assert len(calls) == 1
+
     def test_merges_both_sources_and_filters(self, monkeypatch):
         monkeypatch.setattr(kreta_client, "_login", lambda page, kid: None)
+        monkeypatch.setattr(
+            kreta_client, "_open_electronikus_ellenorzokonyv", lambda page: None
+        )
         monkeypatch.setattr(
             kreta_client,
             "_scrape_orarend",
@@ -176,6 +195,9 @@ class TestFetchHomeworkOrchestration:
 
     def test_one_source_failing_does_not_drop_the_other(self, monkeypatch):
         monkeypatch.setattr(kreta_client, "_login", lambda page, kid: None)
+        monkeypatch.setattr(
+            kreta_client, "_open_electronikus_ellenorzokonyv", lambda page: None
+        )
 
         def raising_orarend(page, kid):
             raise RuntimeError("weekend / no orarend view")

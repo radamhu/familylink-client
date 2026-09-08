@@ -98,8 +98,25 @@ def _login(page, kid: Kid) -> None:
     page.wait_for_load_state("networkidle")
 
 
+def _open_electronikus_ellenorzokonyv(page) -> None:
+    """Expand the 'Elektronikus ellenőrzőkönyv' menu — click exactly once.
+
+    Confirmed flow: bejelentkezés -> Elektronikus ellenőrzőkönyv (one
+    click expands it) -> Órarend or Házi feladatok (sibling leaves,
+    picked without re-clicking the parent). It's an accordion toggle,
+    not a stateless link — re-clicking it after a sibling was already
+    chosen (e.g. before scraping the second source) times out, since the
+    click log shows the locator itself never resolves. Call this once
+    per kid, before either source scrape.
+    """
+    page.get_by_text("Elektronikus ellenőrzőkönyv").click()
+    page.wait_for_load_state("networkidle")
+
+
 def _scrape_orarend(page, kid: Kid) -> list[dict]:
     """Scrape today's homework-icon lessons off the Órarend week view.
+
+    Assumes `_open_electronikus_ellenorzokonyv` already ran for this page.
 
     Selectors confirmed against the live site (2026-09-08, Brassó Utcai
     Általános Iskola / 035120): Órarend is a FullCalendar week view where
@@ -114,8 +131,6 @@ def _scrape_orarend(page, kid: Kid) -> list[dict]:
     """
     weekday_index = today_weekday_index(date.today())
 
-    page.get_by_text("Elektronikus ellenőrzőkönyv").click()
-    page.wait_for_load_state("networkidle")
     page.get_by_text("Órarend", exact=True).first.click()
     page.wait_for_load_state("networkidle")
     page.wait_for_selector("td:has(.fc-event-container)")
@@ -185,6 +200,8 @@ def _column_index(header_cells, header_text: str) -> int | None:
 def _scrape_haza_feladatok(page, kid: Kid) -> list[dict]:
     """Scrape the Tanulo/TanuloHaziFeladat homework list table.
 
+    Assumes `_open_electronikus_ellenorzokonyv` already ran for this page.
+
     Unlike Órarend's selectors (confirmed against the live site above),
     this page has not been inspected live — selectors here are a
     best-effort guess and must be verified against the real site (or a
@@ -193,8 +210,6 @@ def _scrape_haza_feladatok(page, kid: Kid) -> list[dict]:
     column-order differences from whatever the real markup turns out to
     be; other columns fall back to empty values if not found.
     """
-    page.get_by_text("Elektronikus ellenőrzőkönyv").click()
-    page.wait_for_load_state("networkidle")
     page.get_by_text("Házi feladatok", exact=True).first.click()
     page.wait_for_load_state("networkidle")
     page.wait_for_selector("table tbody tr")
@@ -232,13 +247,15 @@ def _scrape_haza_feladatok(page, kid: Kid) -> list[dict]:
 def fetch_homework(page, kid: Kid) -> list[dict]:
     """Full login-to-scrape flow for one kid, merging both homework sources.
 
-    Logs in once, then scrapes Órarend and Házi Feladatok independently —
-    one source failing (nav error, markup change, weekend with no Órarend
-    view) does not drop the other source's results. Same-(subject,
-    deadline) entries from both sources are merged into one; the result is
-    filtered to not-yet-due items before being returned for posting.
+    Logs in once, opens the Elektronikus ellenőrzőkönyv menu once, then
+    scrapes Órarend and Házi Feladatok independently — one source failing
+    (nav error, markup change, weekend with no Órarend view) does not
+    drop the other source's results. Same-(subject, deadline) entries
+    from both sources are merged into one; the result is filtered to
+    not-yet-due items before being returned for posting.
     """
     _login(page, kid)
+    _open_electronikus_ellenorzokonyv(page)
 
     entries: list[dict] = []
     try:
