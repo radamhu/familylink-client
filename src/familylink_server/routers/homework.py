@@ -1,5 +1,7 @@
 """Internal endpoints for the eKRÉTA scraper: credentials + homework ingest."""
 
+import logging
+import secrets
 from datetime import UTC, date, datetime, timedelta
 
 from fastapi import APIRouter, Depends, Header, HTTPException
@@ -14,12 +16,19 @@ from familylink_server.db.homework import (
     replace_homework_for_day,
 )
 
-router = APIRouter(prefix='/internal/ekreta', tags=['homework'])
+logger = logging.getLogger(__name__)
+
+router = APIRouter(
+    prefix='/internal/ekreta', tags=['homework'], include_in_schema=False
+)
 
 
 def _require_ingest_token(x_api_key: str = Header(default='')) -> None:
     """Reject calls without the configured shared secret (fail closed)."""
-    if not settings.ekreta_ingest_token or x_api_key != settings.ekreta_ingest_token:
+    if not settings.ekreta_ingest_token or not secrets.compare_digest(
+        x_api_key, settings.ekreta_ingest_token
+    ):
+        logger.warning('eKRÉTA ingest auth failed')
         raise HTTPException(401, 'Unauthorized')
 
 

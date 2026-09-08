@@ -1,5 +1,6 @@
 """Tests for the internal /internal/ekreta credentials/homework endpoints."""
 
+from datetime import date, timedelta
 from unittest.mock import AsyncMock
 
 from fastapi.testclient import TestClient
@@ -39,6 +40,19 @@ def test_credentials_rejects_when_no_token_configured(monkeypatch):
     try:
         resp = client.get(
             '/internal/ekreta/credentials', headers={'X-Api-Key': 'anything'}
+        )
+    finally:
+        _pop_session_override()
+    assert resp.status_code == 401
+
+
+def test_credentials_rejects_same_length_wrong_token(monkeypatch):
+    """A wrong token of the same length must still be rejected (constant-time compare)."""
+    monkeypatch.setattr(settings, 'ekreta_ingest_token', 'secret')
+    client = _client()
+    try:
+        resp = client.get(
+            '/internal/ekreta/credentials', headers={'X-Api-Key': 'wr0ng!'}
         )
     finally:
         _pop_session_override()
@@ -139,3 +153,6 @@ def test_ingest_replaces_and_prunes(monkeypatch):
         }
     ]
     prune_mock.assert_awaited_once()
+    prune_call_args = prune_mock.await_args.args
+    assert prune_call_args[1] == 'child1'
+    assert prune_call_args[2] == date(2026, 9, 8) - timedelta(days=30)
