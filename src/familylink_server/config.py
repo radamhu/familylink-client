@@ -25,6 +25,8 @@ class Settings(BaseSettings):
     firefox_novnc_url: str = ''
     cache_ttl_seconds: int = 900
     debug: bool = False
+    ekreta_ingest_token: str = ''
+    ekreta_retention_days: int = 30
 
     discord_bot_token: str | None = None
     discord_guild_id: int | None = None
