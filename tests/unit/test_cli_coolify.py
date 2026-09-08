@@ -26,24 +26,24 @@ def test_push_patches_env_var(mock_httpx):
         headers={'Authorization': 'Bearer tok'},
         json={'key': 'FAMILYLINK_COOKIES_B64', 'value': 'b64val', 'is_preview': False},
     )
-    mock_httpx.get.assert_not_called()
+    mock_httpx.post.assert_not_called()
 
 
 @patch('familylink.cli.httpx')
 def test_push_does_not_restart_by_default(mock_httpx):
-    """No restart GET request is made when restart=False."""
+    """No restart POST request is made when restart=False."""
     mock_httpx.patch.return_value = _resp()
     _push_to_coolify('b64val', 'http://coolify:8000', 'tok', 'app-uuid', restart=False)
-    mock_httpx.get.assert_not_called()
+    mock_httpx.post.assert_not_called()
 
 
 @patch('familylink.cli.httpx')
 def test_push_restarts_when_requested(mock_httpx):
-    """Restart GET is called with correct URL when restart=True."""
+    """Restart POST is called with correct URL when restart=True."""
     mock_httpx.patch.return_value = _resp()
-    mock_httpx.get.return_value = _resp()
+    mock_httpx.post.return_value = _resp()
     _push_to_coolify('b64val', 'http://coolify:8000', 'tok', 'app-uuid', restart=True)
-    mock_httpx.get.assert_called_once_with(
+    mock_httpx.post.assert_called_once_with(
         'http://coolify:8000/api/v1/applications/app-uuid/restart',
         headers={'Authorization': 'Bearer tok'},
     )
@@ -64,9 +64,9 @@ def test_push_exits_on_patch_api_error(mock_httpx):
 
 @patch('familylink.cli.httpx')
 def test_push_exits_on_restart_api_error(mock_httpx):
-    """sys.exit(1) is called when the restart GET response is not successful."""
+    """sys.exit(1) is called when the restart POST response is not successful."""
     mock_httpx.patch.return_value = _resp()
-    mock_httpx.get.return_value = _resp(
+    mock_httpx.post.return_value = _resp(
         is_success=False, status_code=500, text='Server Error'
     )
     with pytest.raises(SystemExit) as exc:
@@ -90,9 +90,9 @@ def test_push_exits_on_patch_network_error(mock_httpx):
 
 @patch('familylink.cli.httpx')
 def test_push_exits_on_restart_network_error(mock_httpx):
-    """sys.exit(1) is called when the restart GET raises a network error."""
+    """sys.exit(1) is called when the restart POST raises a network error."""
     mock_httpx.patch.return_value = _resp()
-    mock_httpx.get.side_effect = httpx.RequestError('Connection refused')
+    mock_httpx.post.side_effect = httpx.RequestError('Connection refused')
     mock_httpx.RequestError = httpx.RequestError
     with pytest.raises(SystemExit) as exc:
         _push_to_coolify(

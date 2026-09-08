@@ -81,7 +81,7 @@ def _push_to_coolify(
 
     if restart:
         try:
-            resp = httpx.get(
+            resp = httpx.post(
                 f'{url}/api/v1/applications/{app_uuid}/restart',
                 headers=headers,
             )
