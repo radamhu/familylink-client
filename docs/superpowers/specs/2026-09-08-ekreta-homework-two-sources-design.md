@@ -171,6 +171,18 @@ behavior unchanged (renders nothing, no error state).
   between runs).
 - Ingest auth/shared-secret behavior: unchanged from the existing
   fail-closed design.
+- Withdrawn or re-dated homework: the upsert-by-identity model has no
+  signal for "this assignment no longer exists" — if a teacher deletes
+  an assignment or changes its deadline, the old row keeps showing
+  until its original deadline passes (a re-dated item also produces a
+  second row alongside the old one, both visible until the old one
+  expires). A reconcile-on-scrape (delete anything not in the current
+  batch) is not safe to add yet: `_scrape_orarend` only reads today's
+  lessons, so a still-open earlier-assigned item only appears in a
+  batch when Házi Feladatok's still-unverified selectors work — a
+  blind reconcile could wipe valid rows the first time that page's
+  markup doesn't match what was guessed. Known limitation, not fixed
+  here.
 
 ## Testing
 

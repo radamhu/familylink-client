@@ -176,8 +176,8 @@ class HomeworkEntry(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     child_id: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
-    date: Mapped[date] = mapped_column(Date, nullable=False)
     deadline: Mapped[date] = mapped_column(Date, nullable=False)
+    date: Mapped[date] = mapped_column(Date, nullable=False)
     subject: Mapped[str] = mapped_column(String(256), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False, default='')
     fetched_at: Mapped[datetime] = mapped_column(

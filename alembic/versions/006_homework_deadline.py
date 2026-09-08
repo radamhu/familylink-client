@@ -20,6 +20,9 @@ depends_on: str | Sequence[str] | None = None
 
 def upgrade() -> None:
     """Add deadline column and (child_id, subject, deadline) uniqueness."""
+    # Old day-bucket rows carry no deadline and cannot be migrated to the
+    # (child_id, subject, deadline) identity; the next scrape run repopulates.
+    op.execute('DELETE FROM homework_entries')
     op.add_column('homework_entries', sa.Column('deadline', sa.Date(), nullable=False))
     op.create_unique_constraint(
         'uq_homework_entries_child_subject_deadline',

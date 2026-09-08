@@ -1,12 +1,13 @@
+import re
 import sys
-from datetime import date, datetime
+from datetime import date
 
 from config import Kid
 
 INSTITUTION_SEARCH_URL = "https://intezmenykereso.e-kreta.hu/"
 
 _HAZA_FELADATOK_DEADLINE_HEADER = "Házi feladat határideje"
-_HUN_DATE_FORMATS = ("%Y. %m. %d.", "%Y.%m.%d.", "%Y-%m-%d")
+_HUN_DATE_RE = re.compile(r"(\d{4})[.\-]\s*(\d{1,2})[.\-]\s*(\d{1,2})\.?")
 
 
 class KretaClientError(Exception):
@@ -22,19 +23,22 @@ def today_weekday_index(today: date) -> int:
 
 
 def _parse_hun_date(raw: str) -> date:
-    """Parse a Hungarian-locale eKRÉTA date string into a date.
+    """Extract a Hungarian-locale or ISO date from anywhere in a string.
 
-    Tries the format seen on Órarend's dialog footer ("2026. 09. 09."), a
-    plausible Házi Feladatok list-page format without spaces
-    ("2026.09.09."), and plain ISO as a fallback.
+    Matches "2026. 09. 09." (Órarend's dialog footer), "2026.09.09."
+    (a plausible Házi Feladatok list-page format), and ISO "2026-09-08"
+    — as a substring, not requiring the whole input to be only the date,
+    so incidental surrounding text (extra whitespace, a stray label)
+    doesn't break parsing.
     """
-    text = raw.strip()
-    for fmt in _HUN_DATE_FORMATS:
-        try:
-            return datetime.strptime(text, fmt).date()
-        except ValueError:
-            continue
-    raise KretaClientError(f"Unparseable deadline date: {raw!r}")
+    match = _HUN_DATE_RE.search(raw.strip())
+    if not match:
+        raise KretaClientError(f"Unparseable deadline date: {raw!r}")
+    year, month, day = (int(g) for g in match.groups())
+    try:
+        return date(year, month, day)
+    except ValueError as exc:
+        raise KretaClientError(f"Unparseable deadline date: {raw!r}") from exc
 
 
 def parse_homework_entry(raw: dict) -> dict:
@@ -126,38 +130,46 @@ def _scrape_orarend(page, kid: Kid) -> list[dict]:
     entries: list[dict] = []
     for i in range(house_lessons.count()):
         house_lessons.nth(i).click()
-        page.wait_for_selector("[role=dialog]")
-        # The dialog's Kendo TabStrip widget needs a moment to finish
-        # binding its click handlers after the dialog DOM appears —
-        # clicking the tab immediately on dialog-open is a no-op.
-        page.wait_for_timeout(500)
-        page.get_by_text("Házi feladat", exact=True).first.click()
-        page.wait_for_selector(".panel-body")
-
-        raw = {
-            "subject": page.locator('[displayfor="Targy"]').inner_text(),
-            "teacher": page.locator('[displayfor="Tanar"]').inner_text(),
-            "deadline": page.locator(".panel-footer")
-            .first.inner_text()
-            .replace("Határidő:", ""),
-            "text": page.locator(".panel-body").first.inner_text(),
-            "attachments": [
-                row.locator("td").first.inner_text()
-                for row in page.locator(
-                    "#HFCsatolmanyGrid tbody tr:not(.k-no-data)"
-                ).all()
-            ],
-        }
         try:
-            entries.append(parse_homework_entry(raw))
-        except KretaClientError as exc:
-            print(  # noqa: T201
-                f"[WARN] skipping unparseable orarend lesson for {kid.child_id}: {exc}",
-                file=sys.stderr,
-            )
+            page.wait_for_selector("[role=dialog]")
+            # The dialog's Kendo TabStrip widget needs a moment to finish
+            # binding its click handlers after the dialog DOM appears —
+            # clicking the tab immediately on dialog-open is a no-op.
+            page.wait_for_timeout(500)
+            page.get_by_text("Házi feladat", exact=True).first.click()
+            page.wait_for_selector(".panel-body")
 
-        page.locator("#BtnCancel").click()
-        page.wait_for_timeout(300)
+            raw = {
+                "subject": page.locator('[displayfor="Targy"]').inner_text(),
+                "teacher": page.locator('[displayfor="Tanar"]').inner_text(),
+                "deadline": page.locator(".panel-footer")
+                .first.inner_text()
+                .replace("Határidő:", ""),
+                "text": page.locator(".panel-body").first.inner_text(),
+                "attachments": [
+                    row.locator("td").first.inner_text()
+                    for row in page.locator(
+                        "#HFCsatolmanyGrid tbody tr:not(.k-no-data)"
+                    ).all()
+                ],
+            }
+            try:
+                entries.append(parse_homework_entry(raw))
+            except KretaClientError as exc:
+                print(  # noqa: T201
+                    f"[WARN] skipping unparseable orarend lesson for {kid.child_id}: {exc}",
+                    file=sys.stderr,
+                )
+        finally:
+            # Always try to close the dialog, even if reading it failed above —
+            # an open modal blocks the next lesson's click and (via fetch_homework's
+            # per-source isolation) can also block the Házi Feladatok source that
+            # runs after this one on the same page.
+            try:
+                page.locator("#BtnCancel").click()
+                page.wait_for_timeout(300)
+            except Exception:
+                pass
 
     return entries
 
