@@ -35,7 +35,8 @@ services:
       EKRETA_INGEST_TOKEN: ${EKRETA_INGEST_TOKEN:-}
       CRON_SCHEDULE: ${EKRETA_CRON_SCHEDULE:-0 6 * * 1-5}
     depends_on:
-      - web
+      web:
+        condition: service_healthy
 
   firefox:
     # noVNC UI on 3000, exposed via Traefik behind basic-auth (middleware ff-auth).
@@ -81,6 +82,15 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      # No curl/wget in the slim runtime image; a raw TCP connect is enough
+      # to confirm uvicorn is actually accepting connections (not just that
+      # the container started — alembic migrations run before it binds).
+      test: ["CMD", "python3", "-c", "import socket; socket.create_connection(('localhost', 8000), 2)"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     labels:
       - traefik.enable=true
       - traefik.http.middlewares.gzip.compress=true
