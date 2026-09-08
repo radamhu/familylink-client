@@ -4,6 +4,7 @@ from datetime import date, timedelta
 from unittest.mock import AsyncMock
 
 from fastapi.testclient import TestClient
+from freezegun import freeze_time
 
 from familylink_server.config import settings
 from familylink_server.db import get_session
@@ -107,7 +108,9 @@ def test_ingest_requires_token():
     assert resp.status_code == 401
 
 
+@freeze_time('2026-09-08')
 def test_ingest_replaces_and_prunes(monkeypatch):
+    """Time is frozen so the asserted retention cutoff never drifts from 'today'."""
     monkeypatch.setattr(settings, 'ekreta_ingest_token', 'secret')
     monkeypatch.setattr(settings, 'ekreta_retention_days', 30)
     import familylink_server.routers.homework as homework_router
@@ -155,4 +158,4 @@ def test_ingest_replaces_and_prunes(monkeypatch):
     prune_mock.assert_awaited_once()
     prune_call_args = prune_mock.await_args.args
     assert prune_call_args[1] == 'child1'
-    assert prune_call_args[2] == date(2026, 9, 8) - timedelta(days=30)
+    assert prune_call_args[2] == date.today() - timedelta(days=30)
