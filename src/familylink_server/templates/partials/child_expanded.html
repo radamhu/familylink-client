@@ -64,4 +64,15 @@
       </div>
     {% endfor %}
   {% endif %}
+  {% if child.homework %}
+    <div style="font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px;margin-top:10px">Homework today</div>
+    {% for hw in child.homework %}
+      <div style="font-size:11px;margin-bottom:6px">
+        <div style="font-weight:600;color:#374151">{{ hw.subject }}</div>
+        {% if hw.description %}
+          <div style="color:#6b7280;white-space:pre-line">{{ hw.description }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% endif %}
 </div>
