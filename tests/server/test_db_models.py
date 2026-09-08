@@ -159,3 +159,40 @@ def test_linux_usage_snapshot_bonus_mins_stores_value():
         updated_at=datetime.datetime.now(datetime.UTC),
     )
     assert snap.bonus_mins == 30
+
+
+@pytest.mark.asyncio
+async def test_ekreta_credential_insert_and_read(db_session):
+    """Test EkretaCredential model insert and read operations."""
+    from familylink_server.db.models import EkretaCredential
+
+    cred = EkretaCredential(
+        child_id='child1',
+        username='anna.kovacs',
+        password='secret',
+        institution_code='035120',
+    )
+    db_session.add(cred)
+    await db_session.commit()
+    await db_session.refresh(cred)
+    assert cred.id is not None
+    assert cred.institution_code == '035120'
+
+
+@pytest.mark.asyncio
+async def test_homework_entry_insert_and_read(db_session):
+    """Test HomeworkEntry model insert and read operations."""
+    from familylink_server.db.models import HomeworkEntry
+
+    entry = HomeworkEntry(
+        child_id='child1',
+        date=date(2026, 9, 8),
+        subject='Matek',
+        description='Oldd meg a 12. feladatot.',
+        fetched_at=datetime.now(UTC),
+    )
+    db_session.add(entry)
+    await db_session.commit()
+    await db_session.refresh(entry)
+    assert entry.id is not None
+    assert entry.subject == 'Matek'
