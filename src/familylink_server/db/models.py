@@ -7,6 +7,7 @@ from sqlalchemy import (
     Date,
     DateTime,
     ForeignKey,
+    Index,
     Integer,
     String,
     Text,
@@ -145,3 +146,31 @@ class LinuxUsageSnapshot(Base):
         kwargs.setdefault('locked_at', None)
         kwargs.setdefault('poweroff_at', None)
         super().__init__(**kwargs)
+
+
+class EkretaCredential(Base):
+    """Login credentials for one kid's eKRÉTA (Hungarian school portal) account."""
+
+    __tablename__ = 'ekreta_credentials'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    child_id: Mapped[str] = mapped_column(String(64), nullable=False, unique=True)
+    username: Mapped[str] = mapped_column(String(256), nullable=False)
+    password: Mapped[str] = mapped_column(String(256), nullable=False)
+    institution_code: Mapped[str] = mapped_column(String(32), nullable=False)
+
+
+class HomeworkEntry(Base):
+    """One scraped eKRÉTA homework item for a kid on a given date."""
+
+    __tablename__ = 'homework_entries'
+    __table_args__ = (Index('ix_homework_entries_child_date', 'child_id', 'date'),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    child_id: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    date: Mapped[date] = mapped_column(Date, nullable=False)
+    subject: Mapped[str] = mapped_column(String(256), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False, default='')
+    fetched_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False
+    )

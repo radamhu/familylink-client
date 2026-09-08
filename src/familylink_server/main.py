@@ -28,6 +28,7 @@ from familylink_server.routers.apps import router as apps_router
 from familylink_server.routers.dashboard import router as dashboard_router
 from familylink_server.routers.devices import router as devices_router
 from familylink_server.routers.history import router as history_router
+from familylink_server.routers.homework import router as homework_router
 from familylink_server.routers.linux_machines import router as linux_machines_router
 from familylink_server.routers.members import router as members_router
 from familylink_server.routers.usage import router as usage_router
@@ -303,6 +304,7 @@ app.include_router(members_router)
 app.include_router(usage_router)
 app.include_router(devices_router)
 app.include_router(linux_machines_router)
+app.include_router(homework_router)
 
 _static = Path(__file__).parent / 'static'
 if _static.exists():

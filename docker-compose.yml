@@ -27,6 +27,16 @@ services:
     depends_on:
       - firefox
 
+  ekreta-scraper:
+    build: ./ekreta-scraper
+    restart: unless-stopped
+    environment:
+      FAMILYLINK_API_URL: http://web:8000
+      EKRETA_INGEST_TOKEN: ${EKRETA_INGEST_TOKEN:-}
+      CRON_SCHEDULE: ${EKRETA_CRON_SCHEDULE:-0 6 * * 1-5}
+    depends_on:
+      - web
+
   firefox:
     # noVNC UI on 3000, exposed via Traefik behind basic-auth (middleware ff-auth).
     # This UI grants FULL control of the logged-in parent Google account — the
@@ -67,6 +77,7 @@ services:
       # Link shown on the 503 session-expired page so you can re-login. Set to the
       # AUTH-PROTECTED external URL of the firefox noVNC UI (see firefox service note).
       FIREFOX_NOVNC_URL: ${FIREFOX_NOVNC_URL:-}
+      EKRETA_INGEST_TOKEN: ${EKRETA_INGEST_TOKEN:-}
     depends_on:
       db:
         condition: service_healthy

@@ -59,7 +59,7 @@ pythonpath = ["."]
 
 [tool.ruff]
 target-version = 'py312'
-exclude = ['.agents', '.continue', '.kilocode', '.opencode', '.roo']
+exclude = ['.agents', '.continue', '.kilocode', '.opencode', '.roo', 'ekreta-scraper']
 
 [tool.ruff.lint]
 select = [

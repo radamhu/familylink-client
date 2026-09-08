@@ -12,22 +12,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
+
       - name: Install uv
         run: pip install uv
-      
+
       - name: Install dependencies
         run: |
           uv sync --group dev
-      
+
       - name: Run Ruff linter
         run: uv run ruff check .
-      
+
       - name: Run Ruff formatter check
         run: uv run ruff format --check .
 
@@ -36,19 +36,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
+
       - name: Install uv
         run: pip install uv
-      
+
       - name: Install dependencies
         run: |
           uv sync --group test
-      
+
       - name: Run mypy
         run: uv run mypy src/familylink --ignore-missing-imports --check-untyped-defs
 
@@ -60,23 +60,23 @@ jobs:
         python-version: ['3.10', '3.11', '3.12']
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      
+
       - name: Install uv
         run: pip install uv
-      
+
       - name: Install dependencies
         run: |
           uv sync --group test
-      
+
       - name: Run unit tests
         run: |
           uv run pytest tests/unit/ -v --cov=src/familylink --cov-report=xml --cov-report=term
-      
+
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.12'
         uses: codecov/codecov-action@v4
@@ -90,23 +90,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
+
       - name: Install uv
         run: pip install uv
-      
+
       - name: Install dependencies
         run: |
           uv sync --group test
-      
+
       - name: Run integration tests
         run: |
           uv run pytest tests/integration/ -v --cov=src/familylink --cov-report=xml
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
@@ -119,19 +119,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
+
       - name: Install uv
         run: pip install uv
-      
+
       - name: Install dependencies
         run: |
           uv sync --group test
-      
+
       - name: Run smoke tests
         run: |
           uv run pytest tests/smoke/ -v
@@ -141,23 +141,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
+
       - name: Install uv
         run: pip install uv
-      
+
       - name: Install dependencies
         run: |
           uv sync --group test
-      
+
       - name: Run E2E tests
         run: |
           uv run pytest tests/e2e/ -v --cov=src/familylink --cov-report=xml
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
@@ -165,29 +165,48 @@ jobs:
           flags: e2e
           name: e2e-tests
 
+  ekreta-scraper-tests:
+    name: eKRÉTA Scraper Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r ekreta-scraper/requirements-dev.txt
+
+      - name: Run tests
+        run: |
+          cd ekreta-scraper && pytest -v
+
   coverage-report:
     name: Coverage Report
     runs-on: ubuntu-latest
     needs: [unit-tests, integration-tests, e2e-tests]
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
+
       - name: Install uv
         run: pip install uv
-      
+
       - name: Install dependencies
         run: |
           uv sync --group test
-      
+
       - name: Run all tests with coverage
         run: |
           uv run pytest tests/ -v --cov=src/familylink --cov-report=html --cov-report=term --cov-fail-under=80
-      
+
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
@@ -197,7 +216,7 @@ jobs:
   all-tests-passed:
     name: All Tests Passed
     runs-on: ubuntu-latest
-    needs: [lint, typecheck, unit-tests, integration-tests, smoke-tests, e2e-tests, coverage-report]
+    needs: [lint, typecheck, unit-tests, integration-tests, smoke-tests, e2e-tests, coverage-report, ekreta-scraper-tests]
     steps:
       - name: Confirm all tests passed
         run: echo "✅ All CI checks passed successfully!"
