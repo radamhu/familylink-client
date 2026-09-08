@@ -7,10 +7,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 from familylink_server.db.homework import (
-    get_homework_for_day,
+    get_upcoming_homework,
     list_ekreta_credentials,
-    prune_homework_before,
-    replace_homework_for_day,
+    prune_expired_homework,
+    upsert_homework_entries,
 )
 from familylink_server.db.models import Base, EkretaCredential, HomeworkEntry
 
@@ -40,51 +40,71 @@ async def test_list_ekreta_credentials_returns_all_rows(db_session):
 
 
 @pytest.mark.asyncio
-async def test_replace_homework_for_day_replaces_prior_entries(db_session):
-    await replace_homework_for_day(
+async def test_upsert_inserts_new_entry(db_session):
+    await upsert_homework_entries(
         db_session,
         'child1',
         date(2026, 9, 8),
-        [{'subject': 'Old', 'description': 'stale'}],
+        [
+            {
+                'subject': 'Matek',
+                'deadline': date(2026, 9, 10),
+                'description': 'new',
+            }
+        ],
     )
     await db_session.commit()
-    await replace_homework_for_day(
-        db_session,
-        'child1',
-        date(2026, 9, 8),
-        [{'subject': 'Matek', 'description': 'new'}],
-    )
-    await db_session.commit()
-    rows = await get_homework_for_day(db_session, 'child1', date(2026, 9, 8))
-    assert [r.subject for r in rows] == ['Matek']
+    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
+    assert [(r.subject, r.description) for r in rows] == [('Matek', 'new')]
 
 
 @pytest.mark.asyncio
-async def test_replace_homework_for_day_leaves_other_days_alone(db_session):
-    await replace_homework_for_day(
-        db_session,
-        'child1',
-        date(2026, 9, 7),
-        [{'subject': 'Yesterday', 'description': ''}],
-    )
-    await replace_homework_for_day(
+async def test_upsert_refreshes_existing_entry_same_identity(db_session):
+    """Same (child_id, subject, deadline) scraped again refreshes, not duplicates."""
+    await upsert_homework_entries(
         db_session,
         'child1',
         date(2026, 9, 8),
-        [{'subject': 'Today', 'description': ''}],
+        [{'subject': 'Matek', 'deadline': date(2026, 9, 10), 'description': 'stale'}],
     )
     await db_session.commit()
-    rows = await get_homework_for_day(db_session, 'child1', date(2026, 9, 7))
-    assert [r.subject for r in rows] == ['Yesterday']
+    await upsert_homework_entries(
+        db_session,
+        'child1',
+        date(2026, 9, 9),
+        [{'subject': 'Matek', 'deadline': date(2026, 9, 10), 'description': 'fresh'}],
+    )
+    await db_session.commit()
+    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
+    assert [(r.subject, r.description, r.date) for r in rows] == [
+        ('Matek', 'fresh', date(2026, 9, 9))
+    ]
 
 
 @pytest.mark.asyncio
-async def test_prune_homework_before_deletes_old_rows_only(db_session):
+async def test_upsert_keeps_distinct_subject_same_deadline_separate(db_session):
+    await upsert_homework_entries(
+        db_session,
+        'child1',
+        date(2026, 9, 8),
+        [
+            {'subject': 'Matek', 'deadline': date(2026, 9, 10), 'description': 'a'},
+            {'subject': 'Angol', 'deadline': date(2026, 9, 10), 'description': 'b'},
+        ],
+    )
+    await db_session.commit()
+    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
+    assert sorted(r.subject for r in rows) == ['Angol', 'Matek']
+
+
+@pytest.mark.asyncio
+async def test_prune_expired_homework_deletes_past_deadline_only(db_session):
     db_session.add(
         HomeworkEntry(
             child_id='child1',
-            date=date(2020, 1, 1),
-            subject='Ancient',
+            date=date(2026, 9, 1),
+            deadline=date(2026, 9, 7),
+            subject='Old',
             description='',
             fetched_at=datetime.now(UTC),
         )
@@ -93,30 +113,48 @@ async def test_prune_homework_before_deletes_old_rows_only(db_session):
         HomeworkEntry(
             child_id='child1',
             date=date(2026, 9, 8),
+            deadline=date(2026, 9, 10),
             subject='Recent',
             description='',
             fetched_at=datetime.now(UTC),
         )
     )
     await db_session.commit()
-    await prune_homework_before(db_session, 'child1', date(2026, 8, 1))
+    await prune_expired_homework(db_session, 'child1', date(2026, 9, 8))
     await db_session.commit()
-    assert await get_homework_for_day(db_session, 'child1', date(2020, 1, 1)) == []
-    rows = await get_homework_for_day(db_session, 'child1', date(2026, 9, 8))
+    rows = await get_upcoming_homework(db_session, 'child1', date(2020, 1, 1))
     assert [r.subject for r in rows] == ['Recent']
 
 
 @pytest.mark.asyncio
-async def test_get_homework_for_day_orders_by_subject(db_session):
-    await replace_homework_for_day(
+async def test_get_upcoming_homework_excludes_past_deadlines(db_session):
+    await upsert_homework_entries(
         db_session,
         'child1',
         date(2026, 9, 8),
         [
-            {'subject': 'Torna', 'description': ''},
-            {'subject': 'Angol', 'description': ''},
+            {'subject': 'Past', 'deadline': date(2026, 9, 7), 'description': ''},
+            {'subject': 'Today', 'deadline': date(2026, 9, 8), 'description': ''},
+            {'subject': 'Future', 'deadline': date(2026, 9, 9), 'description': ''},
         ],
     )
     await db_session.commit()
-    rows = await get_homework_for_day(db_session, 'child1', date(2026, 9, 8))
-    assert [r.subject for r in rows] == ['Angol', 'Torna']
+    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
+    assert [r.subject for r in rows] == ['Today', 'Future']
+
+
+@pytest.mark.asyncio
+async def test_get_upcoming_homework_orders_by_deadline_then_subject(db_session):
+    await upsert_homework_entries(
+        db_session,
+        'child1',
+        date(2026, 9, 8),
+        [
+            {'subject': 'Torna', 'deadline': date(2026, 9, 9), 'description': ''},
+            {'subject': 'Angol', 'deadline': date(2026, 9, 9), 'description': ''},
+            {'subject': 'Matek', 'deadline': date(2026, 9, 8), 'description': ''},
+        ],
+    )
+    await db_session.commit()
+    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
+    assert [r.subject for r in rows] == ['Matek', 'Angol', 'Torna']

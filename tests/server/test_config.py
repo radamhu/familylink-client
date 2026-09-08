@@ -67,16 +67,13 @@ def test_ekreta_settings_defaults():
 
     s = Settings()
     assert s.ekreta_ingest_token == ''
-    assert s.ekreta_retention_days == 30
 
 
 def test_ekreta_settings_from_env(monkeypatch):
     """Test that eKRÉTA ingest settings read from environment variables."""
     monkeypatch.setenv('EKRETA_INGEST_TOKEN', 'secret-token')
-    monkeypatch.setenv('EKRETA_RETENTION_DAYS', '7')
 
     from familylink_server.config import Settings
 
     s = Settings()
     assert s.ekreta_ingest_token == 'secret-token'
-    assert s.ekreta_retention_days == 7

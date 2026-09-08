@@ -19,52 +19,64 @@ async def list_ekreta_credentials(session: AsyncSession) -> list[EkretaCredentia
     return list(result.scalars().all())
 
 
-async def replace_homework_for_day(
+async def upsert_homework_entries(
     session: AsyncSession,
     child_id: str,
-    day: date,
-    entries: list[dict[str, str]],
+    today: date,
+    entries: list[dict[str, str | date]],
 ) -> None:
-    """Replace a kid's homework rows for `day` with `entries`.
+    """Insert-or-refresh a kid's homework, keyed by (child_id, subject, deadline).
 
-    Each entry is `{'subject': str, 'description': str}`.
+    Each entry is `{'subject': str, 'deadline': date, 'description': str}`. A
+    still-open item scraped again refreshes its description/date/fetched_at
+    in place rather than duplicating.
     """
-    await session.execute(
-        delete(HomeworkEntry).where(
-            HomeworkEntry.child_id == child_id, HomeworkEntry.date == day
-        )
-    )
     fetched_at = datetime.now(UTC)
     for entry in entries:
-        session.add(
-            HomeworkEntry(
-                child_id=child_id,
-                date=day,
-                subject=entry['subject'],
-                description=entry['description'],
-                fetched_at=fetched_at,
+        existing = (
+            await session.execute(
+                select(HomeworkEntry).where(
+                    HomeworkEntry.child_id == child_id,
+                    HomeworkEntry.subject == entry['subject'],
+                    HomeworkEntry.deadline == entry['deadline'],
+                )
             )
-        )
+        ).scalar_one_or_none()
+        if existing is not None:
+            existing.description = entry['description']
+            existing.date = today
+            existing.fetched_at = fetched_at
+        else:
+            session.add(
+                HomeworkEntry(
+                    child_id=child_id,
+                    date=today,
+                    subject=entry['subject'],
+                    deadline=entry['deadline'],
+                    description=entry['description'],
+                    fetched_at=fetched_at,
+                )
+            )
 
 
-async def prune_homework_before(
-    session: AsyncSession, child_id: str, cutoff: date
+async def prune_expired_homework(
+    session: AsyncSession, child_id: str, today: date
 ) -> None:
-    """Delete a kid's homework rows older than `cutoff`."""
+    """Delete a kid's homework rows whose deadline has already passed."""
     await session.execute(
         delete(HomeworkEntry).where(
-            HomeworkEntry.child_id == child_id, HomeworkEntry.date < cutoff
+            HomeworkEntry.child_id == child_id, HomeworkEntry.deadline < today
         )
     )
 
 
-async def get_homework_for_day(
-    session: AsyncSession, child_id: str, day: date
+async def get_upcoming_homework(
+    session: AsyncSession, child_id: str, today: date
 ) -> list[HomeworkEntry]:
-    """Return a kid's homework rows for `day`, ordered by subject."""
+    """Return a kid's not-yet-due homework, ordered by deadline then subject."""
     result = await session.execute(
         select(HomeworkEntry)
-        .where(HomeworkEntry.child_id == child_id, HomeworkEntry.date == day)
-        .order_by(HomeworkEntry.subject)
+        .where(HomeworkEntry.child_id == child_id, HomeworkEntry.deadline >= today)
+        .order_by(HomeworkEntry.deadline, HomeworkEntry.subject)
     )
     return list(result.scalars().all())

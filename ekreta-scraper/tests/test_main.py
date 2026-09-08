@@ -1,7 +1,5 @@
 """Tests for the main module's run() and main() functions."""
 
-from datetime import date
-
 from config import Kid
 from main import run
 
@@ -22,8 +20,8 @@ def test_run_posts_entries_for_each_kid():
     fake_entries = {'child1': [{'subject': 'Matek'}], 'child2': []}
     posted = []
 
-    def fake_post(api_url, token, child_id, day, entries):
-        posted.append((api_url, token, child_id, day, entries))
+    def fake_post(api_url, token, child_id, entries):
+        posted.append((api_url, token, child_id, entries))
 
     exit_code = run(
         kids=kids,
@@ -31,7 +29,6 @@ def test_run_posts_entries_for_each_kid():
         token='secret',
         fetch_fn=lambda kid: fake_entries[kid.child_id],
         post_fn=fake_post,
-        today=date(2026, 9, 8),
     )
 
     assert exit_code == 0
@@ -40,10 +37,9 @@ def test_run_posts_entries_for_each_kid():
             'http://familylink-web:8000',
             'secret',
             'child1',
-            date(2026, 9, 8),
             [{'subject': 'Matek'}],
         ),
-        ('http://familylink-web:8000', 'secret', 'child2', date(2026, 9, 8), []),
+        ('http://familylink-web:8000', 'secret', 'child2', []),
     ]
 
 
@@ -63,7 +59,6 @@ def test_run_continues_after_one_kid_fails():
         token='secret',
         fetch_fn=fetch_fn,
         post_fn=lambda *args: posted.append(args),
-        today=date(2026, 9, 8),
     )
 
     assert exit_code == 1
@@ -76,10 +71,10 @@ def test_run_continues_after_one_kid_post_fails():
     kids = [make_kid('child1'), make_kid('child2')]
     posted = []
 
-    def post_fn(api_url, token, child_id, day, entries):
+    def post_fn(api_url, token, child_id, entries):
         if child_id == 'child1':
             raise RuntimeError('API unreachable')
-        posted.append((api_url, token, child_id, day, entries))
+        posted.append((api_url, token, child_id, entries))
 
     exit_code = run(
         kids=kids,
@@ -87,7 +82,6 @@ def test_run_continues_after_one_kid_post_fails():
         token='secret',
         fetch_fn=lambda kid: [],
         post_fn=post_fn,
-        today=date(2026, 9, 8),
     )
 
     assert exit_code == 1
@@ -104,6 +98,5 @@ def test_run_all_succeed_returns_zero():
         token='secret',
         fetch_fn=lambda kid: [],
         post_fn=lambda *args: None,
-        today=date(2026, 9, 8),
     )
     assert exit_code == 0

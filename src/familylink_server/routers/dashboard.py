@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from familylink_server.auth.oauth import require_user
 from familylink_server.constants import CHILD_COLORS
 from familylink_server.db import get_session
-from familylink_server.db.homework import get_homework_for_day
+from familylink_server.db.homework import get_upcoming_homework
 from familylink_server.db.models import LinuxMachine, LinuxUsageSnapshot
 from familylink_server.services.family_link import FamilyLinkService, get_service
 
@@ -90,9 +90,14 @@ async def _get_child_data(
                 'status': lm_status,
             }
         )
-    homework_rows = await get_homework_for_day(session, child.user_id, today)
+    homework_rows = await get_upcoming_homework(session, child.user_id, today)
     homework = [
-        {'subject': h.subject, 'description': h.description} for h in homework_rows
+        {
+            'subject': h.subject,
+            'description': h.description,
+            'deadline': h.deadline.isoformat(),
+        }
+        for h in homework_rows
     ]
     is_locked = any(d['is_locked'] for d in devices)
     return {

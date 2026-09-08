@@ -187,6 +187,7 @@ async def test_homework_entry_insert_and_read(db_session):
     entry = HomeworkEntry(
         child_id='child1',
         date=date(2026, 9, 8),
+        deadline=date(2026, 9, 10),
         subject='Matek',
         description='Oldd meg a 12. feladatot.',
         fetched_at=datetime.now(UTC),
@@ -196,6 +197,7 @@ async def test_homework_entry_insert_and_read(db_session):
     await db_session.refresh(entry)
     assert entry.id is not None
     assert entry.subject == 'Matek'
+    assert entry.deadline == date(2026, 9, 10)
 
 
 def test_homework_entry_has_composite_child_date_index():
@@ -210,3 +212,19 @@ def test_homework_entry_has_composite_child_date_index():
         if ix.name == 'ix_homework_entries_child_date'
     )
     assert [c.name for c in composite.columns] == ['child_id', 'date']
+
+
+def test_homework_entry_has_unique_child_subject_deadline_constraint():
+    """Test that HomeworkEntry declares the same uniqueness as the migration."""
+    from familylink_server.db.models import HomeworkEntry
+
+    constraints = {
+        c.name: [col.name for col in c.columns]
+        for c in HomeworkEntry.__table__.constraints
+        if c.name
+    }
+    assert constraints['uq_homework_entries_child_subject_deadline'] == [
+        'child_id',
+        'subject',
+        'deadline',
+    ]
