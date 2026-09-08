@@ -2,7 +2,6 @@
 
 import sys
 from collections.abc import Callable
-from datetime import date
 
 from api_client import post_homework
 from config import Kid, fetch_kids
@@ -13,15 +12,13 @@ def run(
     api_url: str,
     token: str,
     fetch_fn: Callable[[Kid], list[dict]],
-    post_fn: Callable[[str, str, str, date, list[dict]], None] = post_homework,
-    today: date | None = None,
+    post_fn: Callable[[str, str, str, list[dict]], None] = post_homework,
 ) -> int:
     """Scrape homework for each kid and POST to the API.
 
     On failure for any kid, log to stderr and skip posting for that kid,
     returning 1 to signal partial failure.
     """
-    today = today or date.today()
     any_failed = False
 
     for kid in kids:
@@ -33,7 +30,7 @@ def run(
             continue
 
         try:
-            post_fn(api_url, token, kid.child_id, today, entries)
+            post_fn(api_url, token, kid.child_id, entries)
         except Exception as exc:
             print(f'[ERROR] {kid.child_id}: {exc}', file=sys.stderr)  # noqa: T201
             any_failed = True
