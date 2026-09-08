@@ -1,6 +1,6 @@
 """Tests for the internal /internal/ekreta credentials/homework endpoints."""
 
-from datetime import date, timedelta
+from datetime import date
 from unittest.mock import AsyncMock
 
 from fastapi.testclient import TestClient
@@ -101,7 +101,7 @@ def test_ingest_requires_token():
     try:
         resp = client.post(
             '/internal/ekreta/homework',
-            json={'child_id': 'child1', 'date': '2026-09-08', 'entries': []},
+            json={'child_id': 'child1', 'entries': []},
         )
     finally:
         _pop_session_override()
@@ -109,28 +109,26 @@ def test_ingest_requires_token():
 
 
 @freeze_time('2026-09-08')
-def test_ingest_replaces_and_prunes(monkeypatch):
-    """Time is frozen so the asserted retention cutoff never drifts from 'today'."""
+def test_ingest_upserts_and_prunes(monkeypatch):
+    """Time is frozen so the asserted 'today' never drifts."""
     monkeypatch.setattr(settings, 'ekreta_ingest_token', 'secret')
-    monkeypatch.setattr(settings, 'ekreta_retention_days', 30)
     import familylink_server.routers.homework as homework_router
 
-    replace_mock = AsyncMock()
+    upsert_mock = AsyncMock()
     prune_mock = AsyncMock()
-    monkeypatch.setattr(homework_router, 'replace_homework_for_day', replace_mock)
-    monkeypatch.setattr(homework_router, 'prune_homework_before', prune_mock)
+    monkeypatch.setattr(homework_router, 'upsert_homework_entries', upsert_mock)
+    monkeypatch.setattr(homework_router, 'prune_expired_homework', prune_mock)
     client = _client()
     try:
         resp = client.post(
             '/internal/ekreta/homework',
             json={
                 'child_id': 'child1',
-                'date': '2026-09-08',
                 'entries': [
                     {
                         'subject': 'Matek',
                         'teacher': 'Kovács Tanárnő',
-                        'deadline': '2026-09-09',
+                        'deadline': '2026-09-10',
                         'text': 'Oldd meg a 12. feladatot.',
                         'attachments': [],
                     }
@@ -141,21 +139,18 @@ def test_ingest_replaces_and_prunes(monkeypatch):
     finally:
         _pop_session_override()
     assert resp.status_code == 204
-    replace_mock.assert_awaited_once()
-    call_args = replace_mock.await_args.args
+    upsert_mock.assert_awaited_once()
+    call_args = upsert_mock.await_args.args
     assert call_args[1] == 'child1'
-    assert call_args[2].isoformat() == '2026-09-08'
+    assert call_args[2] == date(2026, 9, 8)
     assert call_args[3] == [
         {
             'subject': 'Matek',
-            'description': (
-                'Teacher: Kovács Tanárnő\n'
-                'Deadline: 2026-09-09\n'
-                'Oldd meg a 12. feladatot.'
-            ),
+            'deadline': date(2026, 9, 10),
+            'description': 'Teacher: Kovács Tanárnő\nOldd meg a 12. feladatot.',
         }
     ]
     prune_mock.assert_awaited_once()
     prune_call_args = prune_mock.await_args.args
     assert prune_call_args[1] == 'child1'
-    assert prune_call_args[2] == date.today() - timedelta(days=30)
+    assert prune_call_args[2] == date(2026, 9, 8)
