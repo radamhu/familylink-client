@@ -94,6 +94,109 @@ def test_create_machine_redirects():
     assert resp.headers['location'] == '/linux-machines'
 
 
+def test_create_machine_parses_window_times():
+    """POST with window_start_time/window_end_time saves them as datetime.time."""
+    import datetime
+
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    app.dependency_overrides[get_service] = lambda: _mock_svc()
+    mock_s = _mock_session()
+    app.dependency_overrides[get_session] = lambda: mock_s
+    try:
+        client = TestClient(app, follow_redirects=False)
+        resp = client.post(
+            '/linux-machines',
+            data={
+                'friendly_name': 'Test PC',
+                'child_id': 'child1',
+                'hostname': '192.168.1.10',
+                'ssh_port': '22',
+                'ssh_user': 'kid',
+                'ssh_private_key': '-----BEGIN RSA PRIVATE KEY-----\nfake\n-----END RSA PRIVATE KEY-----',
+                'grace_period_mins': '5',
+                'window_start_time': '21:00',
+                'window_end_time': '07:00',
+            },
+            cookies={'fl_session': _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 303
+    saved = mock_s.add.call_args.args[0]
+    assert saved.window_start_time == datetime.time(21, 0)
+    assert saved.window_end_time == datetime.time(7, 0)
+
+
+def test_create_machine_rejects_one_sided_window():
+    """POST with only window_start_time set (no end) returns 400."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    app.dependency_overrides[get_service] = lambda: _mock_svc()
+    app.dependency_overrides[get_session] = lambda: _mock_session()
+    try:
+        client = TestClient(app, follow_redirects=False)
+        resp = client.post(
+            '/linux-machines',
+            data={
+                'friendly_name': 'Test PC',
+                'child_id': 'child1',
+                'hostname': '192.168.1.10',
+                'ssh_port': '22',
+                'ssh_user': 'kid',
+                'ssh_private_key': '-----BEGIN RSA PRIVATE KEY-----\nfake\n-----END RSA PRIVATE KEY-----',
+                'grace_period_mins': '5',
+                'window_start_time': '21:00',
+            },
+            cookies={'fl_session': _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 400
+
+
+def test_update_machine_updates_window_times():
+    """POST /edit with window times updates the existing machine object."""
+    import datetime
+
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    mock_machine = MagicMock()
+    mock_machine.id = 1
+    mock_machine.window_start_time = None
+    mock_machine.window_end_time = None
+
+    app.dependency_overrides[get_service] = lambda: _mock_svc()
+    app.dependency_overrides[get_session] = lambda: _mock_session(machine=mock_machine)
+    try:
+        client = TestClient(app, follow_redirects=False)
+        resp = client.post(
+            '/linux-machines/1/edit',
+            data={
+                'friendly_name': 'Test PC',
+                'child_id': 'child1',
+                'hostname': '192.168.1.10',
+                'ssh_port': '22',
+                'ssh_user': 'kid',
+                'grace_period_mins': '5',
+                'window_start_time': '22:30',
+                'window_end_time': '06:15',
+            },
+            cookies={'fl_session': _cookie()},
+        )
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 303
+    assert mock_machine.window_start_time == datetime.time(22, 30)
+    assert mock_machine.window_end_time == datetime.time(6, 15)
+
+
 def test_lock_machine_returns_partial_html():
     """POST /linux-machines/{id}/lock returns HTML partial with 'locked'."""
     from unittest.mock import patch

@@ -75,6 +75,18 @@
              value="{{ machine.grace_period_mins if machine else 5 }}" required>
     </label>
   </div>
+  <div class="grid">
+    <label>
+      Bedtime window start (UTC, leave blank for no window)
+      <input name="window_start_time" type="time"
+             value="{{ machine.window_start_time.strftime('%H:%M') if machine and machine.window_start_time else '' }}">
+    </label>
+    <label>
+      Bedtime window end (UTC)
+      <input name="window_end_time" type="time"
+             value="{{ machine.window_end_time.strftime('%H:%M') if machine and machine.window_end_time else '' }}">
+    </label>
+  </div>
   <label>
     <input name="enabled" type="checkbox" role="switch"
            {% if not machine or machine.enabled %}checked{% endif %}>

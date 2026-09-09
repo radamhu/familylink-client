@@ -4,6 +4,64 @@ import datetime
 from unittest.mock import AsyncMock, MagicMock, patch
 
 
+def test_in_window_same_day_range():
+    """Start inclusive, end exclusive, for a same-day window."""
+    from familylink_server.services.linux_poller import _in_window
+
+    start, end = datetime.time(9, 0), datetime.time(15, 0)
+    assert _in_window(datetime.time(9, 0), start, end) is True
+    assert _in_window(datetime.time(12, 0), start, end) is True
+    assert _in_window(datetime.time(8, 59), start, end) is False
+    assert _in_window(datetime.time(15, 0), start, end) is False
+
+
+def test_in_window_overnight_wrap():
+    """Start > end wraps past midnight, e.g. bedtime 21:00-07:00."""
+    from familylink_server.services.linux_poller import _in_window
+
+    start, end = datetime.time(21, 0), datetime.time(7, 0)
+    assert _in_window(datetime.time(21, 0), start, end) is True
+    assert _in_window(datetime.time(23, 30), start, end) is True
+    assert _in_window(datetime.time(3, 0), start, end) is True
+    assert _in_window(datetime.time(6, 59), start, end) is True
+    assert _in_window(datetime.time(7, 0), start, end) is False
+    assert _in_window(datetime.time(12, 0), start, end) is False
+
+
+def test_in_window_disabled_when_either_bound_missing():
+    """Either bound unset means no window is enforced."""
+    from familylink_server.services.linux_poller import _in_window
+
+    assert _in_window(datetime.time(22, 0), None, datetime.time(7, 0)) is False
+    assert _in_window(datetime.time(22, 0), datetime.time(21, 0), None) is False
+    assert _in_window(datetime.time(22, 0), None, None) is False
+
+
+def test_in_window_equal_start_end_never_blocks():
+    """Equal start/end is treated as a disabled window, not a 24h block."""
+    from familylink_server.services.linux_poller import _in_window
+
+    assert (
+        _in_window(datetime.time(21, 0), datetime.time(21, 0), datetime.time(21, 0))
+        is False
+    )
+
+
+def test_shift_time_later_within_day():
+    """Shifting by bonus minutes moves the time forward without wrapping."""
+    from familylink_server.services.linux_poller import _shift_time_later
+
+    assert _shift_time_later(datetime.time(21, 0), 45) == datetime.time(21, 45)
+    assert _shift_time_later(datetime.time(21, 0), 0) == datetime.time(21, 0)
+
+
+def test_shift_time_later_wraps_past_midnight():
+    """Shifting past midnight wraps to the next day's time-of-day."""
+    from familylink_server.services.linux_poller import _shift_time_later
+
+    assert _shift_time_later(datetime.time(23, 45), 30) == datetime.time(0, 15)
+
+
 def _make_machine(
     machine_id: int = 1,
     daily_limit_mins: int | None = 60,
@@ -13,6 +71,8 @@ def _make_machine(
     ssh_user: str = 'user',
     ssh_private_key: str = 'key',
     friendly_name: str = 'Test PC',
+    window_start_time: datetime.time | None = None,
+    window_end_time: datetime.time | None = None,
 ) -> MagicMock:
     m = MagicMock()
     m.id = machine_id
@@ -23,6 +83,8 @@ def _make_machine(
     m.friendly_name = friendly_name
     m.daily_limit_mins = daily_limit_mins
     m.grace_period_mins = grace_period_mins
+    m.window_start_time = window_start_time
+    m.window_end_time = window_end_time
     return m
 
 
@@ -359,6 +421,104 @@ async def test_poll_machine_notifies_on_poweroff():
     mock_notifier.notify_change.assert_awaited_once_with(
         'poweroff_linux', machine.child_id, machine.friendly_name, 'poller'
     )
+
+
+async def test_poll_machine_locks_when_in_window_regardless_of_usage():
+    """A machine inside its bedtime window locks even with no daily cap set."""
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine(
+        daily_limit_mins=None,
+        window_start_time=datetime.time(21, 0),
+        window_end_time=datetime.time(7, 0),
+    )
+    snapshot = _make_snapshot(active_seconds=0)
+    mock_ctx, _ = _make_session_ctx(snapshot)
+    now = datetime.datetime(2026, 1, 1, 22, 0, tzinfo=datetime.UTC)
+
+    mock_lock = AsyncMock()
+    with (
+        patch(
+            'familylink_server.services.linux_poller.check_session',
+            AsyncMock(return_value=True),
+        ),
+        patch('familylink_server.services.linux_poller.lock_session', mock_lock),
+        patch(
+            'familylink_server.services.linux_poller.make_session',
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine, now=now)
+
+    mock_lock.assert_awaited_once()
+    assert snapshot.locked_at is not None
+
+
+async def test_poll_machine_bonus_shifts_window_start_later():
+    """bonus_mins delays the window's effective start, same lever as the usage cap."""
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine(
+        daily_limit_mins=None,
+        window_start_time=datetime.time(21, 0),
+        window_end_time=datetime.time(23, 0),
+    )
+    snapshot = _make_snapshot(active_seconds=0, bonus_mins=30)
+    mock_ctx, _ = _make_session_ctx(snapshot)
+    # 21:15 is before the bonus-shifted start of 21:30 — should not lock.
+    now = datetime.datetime(2026, 1, 1, 21, 15, tzinfo=datetime.UTC)
+
+    mock_lock = AsyncMock()
+    with (
+        patch(
+            'familylink_server.services.linux_poller.check_session',
+            AsyncMock(return_value=True),
+        ),
+        patch('familylink_server.services.linux_poller.lock_session', mock_lock),
+        patch(
+            'familylink_server.services.linux_poller.make_session',
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine, now=now)
+
+    mock_lock.assert_not_awaited()
+
+
+async def test_poll_machine_does_not_autounlock_while_in_window():
+    """Being under the usage cap does not unlock a machine still inside its window."""
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine(
+        daily_limit_mins=None,
+        grace_period_mins=5,
+        window_start_time=datetime.time(21, 0),
+        window_end_time=datetime.time(23, 0),
+    )
+    now = datetime.datetime(2026, 1, 1, 22, 0, tzinfo=datetime.UTC)
+    locked_ts = now - datetime.timedelta(
+        minutes=1
+    )  # under grace period, no poweroff yet
+    snapshot = _make_snapshot(active_seconds=0, locked_at=locked_ts)
+    mock_ctx, _ = _make_session_ctx(snapshot)
+
+    mock_unlock = AsyncMock()
+    with (
+        patch(
+            'familylink_server.services.linux_poller.check_session',
+            AsyncMock(return_value=True),
+        ),
+        patch('familylink_server.services.linux_poller.lock_session', AsyncMock()),
+        patch('familylink_server.services.linux_poller.unlock_session', mock_unlock),
+        patch(
+            'familylink_server.services.linux_poller.make_session',
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine, now=now)
+
+    mock_unlock.assert_not_awaited()
+    assert snapshot.locked_at == locked_ts
 
 
 async def test_poll_machine_no_crash_when_notifier_is_none():

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, time, timedelta
 from typing import TYPE_CHECKING
 
 from sqlalchemy import select
@@ -27,15 +27,37 @@ logger = logging.getLogger(__name__)
 POLL_INTERVAL = 60
 
 
+def _in_window(now: time, start: time | None, end: time | None) -> bool:
+    """True when `now` falls in [start, end), wrapping past midnight if start > end.
+
+    Either bound missing, or start == end, means no window is enforced.
+    """
+    if start is None or end is None or start == end:
+        return False
+    if start < end:
+        return start <= now < end
+    return now >= start or now < end
+
+
+def _shift_time_later(t: time, minutes: int) -> time:
+    """Shift a time-of-day forward by `minutes`, wrapping past midnight."""
+    shifted = datetime.combine(date.min, t) + timedelta(minutes=minutes)
+    return shifted.time()
+
+
 async def poll_machine(
-    machine: LinuxMachine, notifier: DiscordNotifier | None = None
+    machine: LinuxMachine,
+    notifier: DiscordNotifier | None = None,
+    now: datetime | None = None,
 ) -> None:
     """Poll one machine: skip if powered off, accumulate active seconds, enforce limits.
 
     Args:
         machine: The LinuxMachine ORM instance to poll.
         notifier: Optional Discord notifier; posts on lock/poweroff when provided.
+        now: Current time, injectable for tests; defaults to datetime.now(UTC).
     """
+    now = now if now is not None else datetime.now(UTC)
     today = date.today()
 
     async with make_session() as session:
@@ -50,7 +72,7 @@ async def poll_machine(
                 machine_id=machine.id,
                 date=today,
                 active_seconds=0,
-                updated_at=datetime.now(UTC),
+                updated_at=now,
             )
             session.add(snapshot)
             try:
@@ -74,8 +96,8 @@ async def poll_machine(
             # status reflects reality. On next successful SSH the poller clears
             # poweroff_at and immediately re-enforces.
             if snapshot.locked_at is not None and snapshot.poweroff_at is None:
-                snapshot.poweroff_at = datetime.now(UTC)
-                snapshot.updated_at = datetime.now(UTC)
+                snapshot.poweroff_at = now
+                snapshot.updated_at = now
                 logger.info(
                     'Machine %s unreachable while locked — marking as powered off',
                     machine.friendly_name,
@@ -92,19 +114,29 @@ async def poll_machine(
 
         if active:
             snapshot.active_seconds += POLL_INTERVAL
-            snapshot.updated_at = datetime.now(UTC)
+            snapshot.updated_at = now
 
         effective_limit_secs = (
             (machine.daily_limit_mins + snapshot.bonus_mins) * 60
             if machine.daily_limit_mins is not None
             else None
         )
+        effective_window_start = (
+            _shift_time_later(machine.window_start_time, snapshot.bonus_mins)
+            if machine.window_start_time is not None
+            else None
+        )
+        in_window = _in_window(
+            now.time(), effective_window_start, machine.window_end_time
+        )
 
         if (
-            effective_limit_secs is not None
-            and snapshot.active_seconds >= effective_limit_secs
-            and snapshot.poweroff_at is None
-        ):
+            (
+                effective_limit_secs is not None
+                and snapshot.active_seconds >= effective_limit_secs
+            )
+            or in_window
+        ) and snapshot.poweroff_at is None:
             try:
                 await lock_session(
                     machine.hostname,
@@ -113,7 +145,7 @@ async def poll_machine(
                     machine.ssh_private_key,
                 )
                 if snapshot.locked_at is None:
-                    snapshot.locked_at = datetime.now(UTC)
+                    snapshot.locked_at = now
                     logger.info('Soft lock applied to %s', machine.friendly_name)
                     if notifier:
                         await notifier.notify_change(
@@ -133,7 +165,9 @@ async def poll_machine(
         if snapshot.locked_at is not None and snapshot.poweroff_at is None:
             # If a bonus was granted after the lock, the kid may now be under the
             # effective limit. Unlock and clear rather than continuing toward poweroff.
-            if (
+            # Still enforced while in_window regardless of usage — bedtime doesn't
+            # lift just because the daily cap has headroom.
+            if not in_window and (
                 effective_limit_secs is None
                 or snapshot.active_seconds < effective_limit_secs
             ):
@@ -157,7 +191,7 @@ async def poll_machine(
                     machine.friendly_name,
                 )
             else:
-                elapsed = (datetime.now(UTC) - snapshot.locked_at).total_seconds()
+                elapsed = (now - snapshot.locked_at).total_seconds()
                 if elapsed >= machine.grace_period_mins * 60:
                     try:
                         await poweroff_machine(
@@ -166,7 +200,7 @@ async def poll_machine(
                             machine.ssh_user,
                             machine.ssh_private_key,
                         )
-                        snapshot.poweroff_at = datetime.now(UTC)
+                        snapshot.poweroff_at = now
                         logger.info(
                             'Hard poweroff applied to %s', machine.friendly_name
                         )
@@ -178,7 +212,7 @@ async def poll_machine(
                                 'poller',
                             )
                     except Exception:
-                        snapshot.poweroff_at = datetime.now(UTC)
+                        snapshot.poweroff_at = now
                         logger.warning(
                             'Poweroff failed for %s — marking as powered off to stop retries',
                             machine.friendly_name,
