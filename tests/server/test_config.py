@@ -22,10 +22,15 @@ def test_settings_reads_from_env(monkeypatch):
 
 
 def test_discord_disabled_by_default():
-    """Test that Discord is disabled when no tokens are set."""
+    """Test that Discord is disabled when no tokens are set.
+
+    _env_file=None bypasses the developer's local .env — without it, this
+    "default" check picks up whatever real DISCORD_BOT_TOKEN happens to be
+    configured on the machine running the tests.
+    """
     from familylink_server.config import Settings
 
-    s = Settings()
+    s = Settings(_env_file=None)
     assert s.discord_enabled is False
 
 
@@ -62,10 +67,14 @@ def test_discord_summary_time_custom(monkeypatch):
 
 
 def test_ekreta_settings_defaults():
-    """Test that eKRÉTA ingest settings have sane defaults."""
+    """Test that eKRÉTA ingest settings have sane defaults.
+
+    _env_file=None bypasses the developer's local .env — see
+    test_discord_disabled_by_default for why that matters here.
+    """
     from familylink_server.config import Settings
 
-    s = Settings()
+    s = Settings(_env_file=None)
     assert s.ekreta_ingest_token == ''
 
 

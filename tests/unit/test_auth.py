@@ -59,12 +59,16 @@ def test_resolve_raises_when_txt_browser_file_missing(monkeypatch, tmp_path):
         ).resolve()
 
 
-def test_resolve_raises_when_no_source_available(monkeypatch):
+def test_resolve_raises_when_no_source_available(monkeypatch, tmp_path):
     """CookieResolver raises RuntimeError when no source is available and browser_cookie3 is None."""
     monkeypatch.delenv('FAMILYLINK_COOKIES_B64', raising=False)
     monkeypatch.delenv('FAMILYLINK_SAPISID', raising=False)
     monkeypatch.delenv('FAMILYLINK_COOKIE_FILE', raising=False)
     monkeypatch.delenv('FAMILYLINK_PROFILES_DIR', raising=False)
+    # browser='txt' with no explicit path falls back to ./cookies.txt in the cwd —
+    # chdir to an empty tmp_path so a real cookies.txt on the dev machine
+    # (e.g. the repo root) can't satisfy that fallback and mask the RuntimeError.
+    monkeypatch.chdir(tmp_path)
     # Patch browser_cookie3 to None so the last resort is unavailable
     import familylink.auth as auth_mod
 

@@ -225,8 +225,8 @@
     "semantic_hash": ""
   },
   "src/familylink_server/services/linux_poller.py": {
-    "mtime": 1788937174.630698,
-    "ast_hash": "0b93a095999efbb9e2a3831031883604",
+    "mtime": 1788938856.3357596,
+    "ast_hash": "cb4f191117d89f590990a49ed17a87c0",
     "semantic_hash": ""
   },
   "src/familylink_server/services/linux_ssh.py": {
@@ -270,8 +270,8 @@
     "semantic_hash": ""
   },
   "tests/server/test_config.py": {
-    "mtime": 1788890551.068899,
-    "ast_hash": "fda68ec533df8d0861301357f87b46af",
+    "mtime": 1788938803.0024142,
+    "ast_hash": "97eae67ee44fbcdcff8d00c04fafd1c0",
     "semantic_hash": ""
   },
   "tests/server/test_cookie_hotreload.py": {
@@ -310,8 +310,8 @@
     "semantic_hash": ""
   },
   "tests/server/test_linux_ssh.py": {
-    "mtime": 1783664730.724733,
-    "ast_hash": "44d0fba7685fcb7406c0192ac70a8554",
+    "mtime": 1788938840.6228817,
+    "ast_hash": "f82ea2597c1b8bac75b9ffe621864357",
     "semantic_hash": ""
   },
   "tests/server/test_main.py": {
@@ -340,7 +340,7 @@
     "semantic_hash": ""
   },
   "tests/server/test_routers_linux_machines.py": {
-    "mtime": 1788938212.3456945,
+    "mtime": 1788938266.3575177,
     "ast_hash": "b03ce1966922c5cdd9e00782836c276a",
     "semantic_hash": ""
   },
@@ -350,8 +350,8 @@
     "semantic_hash": ""
   },
   "tests/unit/test_auth.py": {
-    "mtime": 1783664730.7246184,
-    "ast_hash": "018df1026fe8567f492b49cae092475d",
+    "mtime": 1788938825.3458886,
+    "ast_hash": "aaea58d0fa9aae855de5c4d8a7c7c211",
     "semantic_hash": ""
   },
   "tests/unit/test_cli_coolify.py": {
@@ -585,7 +585,7 @@
     "semantic_hash": "08b96914e1bc533299ab82d20051e7fd"
   },
   "src/familylink_server/templates/partials/linux_machine_card.html": {
-    "mtime": 1788938196.122618,
+    "mtime": 1788938266.357367,
     "ast_hash": "5e7f223d86879498dd8aa71fdb25f0a4",
     "semantic_hash": ""
   },
@@ -635,8 +635,8 @@
     "semantic_hash": ""
   },
   "tests/server/test_auto_refresh.py": {
-    "mtime": 1784895530.8945293,
-    "ast_hash": "ff633f83d985621b780204b597035525",
+    "mtime": 1788938812.438853,
+    "ast_hash": "07fbb82c9381c18486f093eadf293960",
     "semantic_hash": ""
   },
   "tests/server/test_cookie_refresher.py": {

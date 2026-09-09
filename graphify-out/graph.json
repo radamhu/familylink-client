@@ -1334,7 +1334,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client",
-      "community": 33,
+      "community": 166,
       "norm_label": "kreta_client.py"
     },
     {
@@ -1344,7 +1344,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_kretaclienterror",
-      "community": 33,
+      "community": 166,
       "norm_label": "kretaclienterror"
     },
     {
@@ -1374,7 +1374,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_py_date",
-      "community": 33,
+      "community": 166,
       "norm_label": "date"
     },
     {
@@ -1384,7 +1384,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_parse_hun_date",
-      "community": 33,
+      "community": 166,
       "norm_label": "_parse_hun_date()"
     },
     {
@@ -1394,7 +1394,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_parse_homework_entry",
-      "community": 33,
+      "community": 107,
       "norm_label": "parse_homework_entry()"
     },
     {
@@ -1414,7 +1414,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_filter_upcoming",
-      "community": 33,
+      "community": 166,
       "norm_label": "_filter_upcoming()"
     },
     {
@@ -1444,7 +1444,7 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_scrape_orarend",
-      "community": 33,
+      "community": 166,
       "norm_label": "_scrape_orarend()"
     },
     {
@@ -1484,7 +1484,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_rationale_14",
-      "community": 33,
+      "community": 166,
       "norm_label": "raised when scraping fails for a kid (login, navigation, or no school that day)."
     },
     {
@@ -1504,7 +1504,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_rationale_26",
-      "community": 33,
+      "community": 166,
       "norm_label": "extract a hungarian-locale or iso date from anywhere in a string.      matches \""
     },
     {
@@ -1514,7 +1514,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_rationale_45",
-      "community": 33,
+      "community": 107,
       "norm_label": "normalize a raw scraped homework dict into the spec's entry shape."
     },
     {
@@ -1534,7 +1534,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_rationale_80",
-      "community": 33,
+      "community": 166,
       "norm_label": "keep only entries whose deadline hasn't passed yet."
     },
     {
@@ -1564,7 +1564,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_rationale_117",
-      "community": 33,
+      "community": 166,
       "norm_label": "scrape today's homework-icon lessons off the orarend week view.      assumes `_o"
     },
     {
@@ -1824,7 +1824,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client",
-      "community": 33,
+      "community": 107,
       "norm_label": "test_kreta_client.py"
     },
     {
@@ -1874,7 +1874,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_test_parse_homework_entry_full",
-      "community": 33,
+      "community": 107,
       "norm_label": "test_parse_homework_entry_full()"
     },
     {
@@ -1884,7 +1884,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_test_parse_homework_entry_missing_attachments_defaults_empty",
-      "community": 33,
+      "community": 107,
       "norm_label": "test_parse_homework_entry_missing_attachments_defaults_empty()"
     },
     {
@@ -1894,7 +1894,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_test_parse_homework_entry_raises_on_unparseable_deadline",
-      "community": 33,
+      "community": 107,
       "norm_label": "test_parse_homework_entry_raises_on_unparseable_deadline()"
     },
     {
@@ -1954,7 +1954,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testmergehomeworkentries",
-      "community": 103,
+      "community": 107,
       "norm_label": "testmergehomeworkentries"
     },
     {
@@ -1964,7 +1964,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testmergehomeworkentries_test_same_key_collapses_and_keeps_richer_text",
-      "community": 103,
+      "community": 107,
       "norm_label": ".test_same_key_collapses_and_keeps_richer_text()"
     },
     {
@@ -1974,7 +1974,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testmergehomeworkentries_test_different_subject_or_deadline_stays_separate",
-      "community": 103,
+      "community": 107,
       "norm_label": ".test_different_subject_or_deadline_stays_separate()"
     },
     {
@@ -1984,7 +1984,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testfilterupcoming",
-      "community": 33,
+      "community": 107,
       "norm_label": "testfilterupcoming"
     },
     {
@@ -1994,7 +1994,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testfilterupcoming_test_drops_past_deadlines_keeps_today_and_future",
-      "community": 33,
+      "community": 107,
       "norm_label": ".test_drops_past_deadlines_keeps_today_and_future()"
     },
     {
@@ -2637,7 +2637,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_familylink_client_familylink_get_members",
-      "community": 35,
+      "community": 171,
       "norm_label": ".get_members()"
     },
     {
@@ -2647,7 +2647,7 @@
       "source_location": "L114",
       "_origin": "ast",
       "id": "src_familylink_client_familylink_get_apps_and_usage",
-      "community": 107,
+      "community": 35,
       "norm_label": ".get_apps_and_usage()"
     },
     {
@@ -2687,7 +2687,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "src_familylink_client_familylink_print_usage",
-      "community": 35,
+      "community": 171,
       "norm_label": ".print_usage()"
     },
     {
@@ -2837,7 +2837,7 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "src_familylink_client_rationale_108",
-      "community": 35,
+      "community": 171,
       "norm_label": "list family members for the authenticated parent."
     },
     {
@@ -2847,7 +2847,7 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "src_familylink_client_rationale_115",
-      "community": 107,
+      "community": 35,
       "norm_label": "get apps and usage information for a child."
     },
     {
@@ -2887,7 +2887,7 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "src_familylink_client_rationale_149",
-      "community": 35,
+      "community": 171,
       "norm_label": "print usage for all family members."
     },
     {
@@ -3187,7 +3187,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "src_familylink_models_appusage",
-      "community": 107,
+      "community": 35,
       "norm_label": "appusage"
     },
     {
@@ -3197,7 +3197,7 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "src_familylink_models_appusage_get_app_title",
-      "community": 107,
+      "community": 35,
       "norm_label": ".get_app_title()"
     },
     {
@@ -3267,7 +3267,7 @@
       "source_location": "L253",
       "_origin": "ast",
       "id": "src_familylink_models_membersresponse",
-      "community": 74,
+      "community": 171,
       "norm_label": "membersresponse"
     },
     {
@@ -3437,7 +3437,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_162",
-      "community": 107,
+      "community": 35,
       "norm_label": "app usage response model."
     },
     {
@@ -3447,7 +3447,7 @@
       "source_location": "L175",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_175",
-      "community": 107,
+      "community": 35,
       "norm_label": "get the title of an app."
     },
     {
@@ -3507,7 +3507,7 @@
       "source_location": "L254",
       "_origin": "ast",
       "id": "src_familylink_models_rationale_254",
-      "community": 74,
+      "community": 171,
       "norm_label": "response from the members api endpoint."
     },
     {
@@ -3787,7 +3787,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_py",
-      "community": 171,
+      "community": 22,
       "norm_label": "client.py"
     },
     {
@@ -3807,7 +3807,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_linux_rows_for_child",
-      "community": 171,
+      "community": 167,
       "norm_label": "_linux_rows_for_child()"
     },
     {
@@ -3817,7 +3817,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_fetch_linux_rows",
-      "community": 171,
+      "community": 167,
       "norm_label": "_fetch_linux_rows()"
     },
     {
@@ -3907,7 +3907,7 @@
       "source_location": "L281",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_bot_task_with_restart",
-      "community": 171,
+      "community": 22,
       "norm_label": "_bot_task_with_restart()"
     },
     {
@@ -3917,7 +3917,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_rationale_1",
-      "community": 171,
+      "community": 22,
       "norm_label": "discord bot client and restart wrapper."
     },
     {
@@ -3937,7 +3937,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_rationale_65",
-      "community": 171,
+      "community": 167,
       "norm_label": "build linux_machines list for a child given orm machine objects and snap map."
     },
     {
@@ -3947,7 +3947,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_rationale_95",
-      "community": 171,
+      "community": 167,
       "norm_label": "query linux machines + today's snapshots for one child."
     },
     {
@@ -3997,7 +3997,7 @@
       "source_location": "L282",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_rationale_282",
-      "community": 171,
+      "community": 22,
       "norm_label": "run bot.start() in a restart loop; exits cleanly on cancellederror."
     },
     {
@@ -4007,7 +4007,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_commands_init_py",
-      "community": 10,
+      "community": 174,
       "norm_label": "__init__.py"
     },
     {
@@ -4037,7 +4037,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_commands_init_child_autocomplete",
-      "community": 10,
+      "community": 174,
       "norm_label": "child_autocomplete()"
     },
     {
@@ -4077,7 +4077,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_commands_init_rationale_1",
-      "community": 10,
+      "community": 174,
       "norm_label": "shared helpers for bot command modules."
     },
     {
@@ -4097,7 +4097,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_commands_init_rationale_30",
-      "community": 10,
+      "community": 174,
       "norm_label": "autocomplete choices for the optional child parameter."
     },
     {
@@ -4217,7 +4217,7 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_commands_apps_appsgroup_allow",
-      "community": 65,
+      "community": 10,
       "norm_label": ".allow()"
     },
     {
@@ -4387,7 +4387,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux",
-      "community": 29,
+      "community": 39,
       "norm_label": "linux.py"
     },
     {
@@ -4397,7 +4397,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_linuxgroup",
-      "community": 29,
+      "community": 39,
       "norm_label": "linuxgroup"
     },
     {
@@ -4407,7 +4407,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_linuxgroup_init",
-      "community": 29,
+      "community": 39,
       "norm_label": ".__init__()"
     },
     {
@@ -4417,7 +4417,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_py_abstractasynccontextmanager",
-      "community": 29,
+      "community": 39,
       "norm_label": "abstractasynccontextmanager"
     },
     {
@@ -4427,7 +4427,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_py_asyncsession",
-      "community": 29,
+      "community": 39,
       "norm_label": "asyncsession"
     },
     {
@@ -4477,7 +4477,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_rationale_1",
-      "community": 29,
+      "community": 39,
       "norm_label": "discord /linux command group."
     },
     {
@@ -4487,7 +4487,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_rationale_25",
-      "community": 29,
+      "community": 39,
       "norm_label": "slash command group: /linux bonus."
     },
     {
@@ -4527,7 +4527,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_usage_usagegroup",
-      "community": 22,
+      "community": 65,
       "norm_label": "usagegroup"
     },
     {
@@ -4647,7 +4647,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_usage_rationale_34",
-      "community": 22,
+      "community": 65,
       "norm_label": "slash command group: /usage today | history."
     },
     {
@@ -4887,7 +4887,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_appblockview",
-      "community": 52,
+      "community": 31,
       "norm_label": "appblockview"
     },
     {
@@ -5007,7 +5007,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_appallowview",
-      "community": 65,
+      "community": 31,
       "norm_label": "appallowview"
     },
     {
@@ -5047,7 +5047,7 @@
       "source_location": "L181",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_devicelockview",
-      "community": 31,
+      "community": 176,
       "norm_label": "devicelockview"
     },
     {
@@ -5067,7 +5067,7 @@
       "source_location": "L199",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_devicelockview_unlock",
-      "community": 31,
+      "community": 176,
       "norm_label": "._unlock()"
     },
     {
@@ -5077,7 +5077,7 @@
       "source_location": "L221",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_devicelockview_unlock_btn",
-      "community": 31,
+      "community": 176,
       "norm_label": "._unlock_btn()"
     },
     {
@@ -5127,7 +5127,7 @@
       "source_location": "L273",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview",
-      "community": 31,
+      "community": 177,
       "norm_label": "summaryview"
     },
     {
@@ -5147,7 +5147,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview_lock_device",
-      "community": 31,
+      "community": 177,
       "norm_label": "._lock_device()"
     },
     {
@@ -5157,7 +5157,7 @@
       "source_location": "L318",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview_lock_device_btn",
-      "community": 31,
+      "community": 177,
       "norm_label": "._lock_device_btn()"
     },
     {
@@ -5177,7 +5177,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_19",
-      "community": 52,
+      "community": 31,
       "norm_label": "buttons shown after blocking an app: unblock and always allow."
     },
     {
@@ -5227,7 +5227,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_138",
-      "community": 65,
+      "community": 31,
       "norm_label": "button shown after always-allowing an app: remove (blocks it)."
     },
     {
@@ -5247,7 +5247,7 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_182",
-      "community": 31,
+      "community": 176,
       "norm_label": "button shown after locking a device: unlock."
     },
     {
@@ -5257,7 +5257,7 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_202",
-      "community": 31,
+      "community": 176,
       "norm_label": "handle unlock button press."
     },
     {
@@ -5287,7 +5287,7 @@
       "source_location": "L274",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_274",
-      "community": 31,
+      "community": 177,
       "norm_label": "buttons on the daily summary embed: lock device."
     },
     {
@@ -5297,7 +5297,7 @@
       "source_location": "L294",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_294",
-      "community": 31,
+      "community": 177,
       "norm_label": "handle lock device button press."
     },
     {
@@ -5627,7 +5627,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config",
-      "community": 10,
+      "community": 9,
       "norm_label": "app_config.py"
     },
     {
@@ -5637,7 +5637,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_get_or_create_app_config",
-      "community": 10,
+      "community": 9,
       "norm_label": "get_or_create_app_config()"
     },
     {
@@ -5647,7 +5647,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_py_asyncsession",
-      "community": 10,
+      "community": 9,
       "norm_label": "asyncsession"
     },
     {
@@ -5657,7 +5657,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_rationale_1",
-      "community": 10,
+      "community": 9,
       "norm_label": "shared appconfig get-or-create helper."
     },
     {
@@ -5667,7 +5667,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_rationale_19",
-      "community": 10,
+      "community": 9,
       "norm_label": "get the appconfig row for (child_id, package_name), creating it if absent."
     },
     {
@@ -6057,7 +6057,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_familylink_server_db_session_get_session",
-      "community": 24,
+      "community": 11,
       "norm_label": "get_session()"
     },
     {
@@ -6097,7 +6097,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_familylink_server_db_session_rationale_15",
-      "community": 24,
+      "community": 11,
       "norm_label": "get an async database session.      yields an asyncsession from the configured e"
     },
     {
@@ -6177,7 +6177,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "fastapi",
-      "community": 6,
+      "community": 133,
       "norm_label": "fastapi"
     },
     {
@@ -6327,7 +6327,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_routers_admin_py",
-      "community": 6,
+      "community": 133,
       "norm_label": "admin.py"
     },
     {
@@ -6337,7 +6337,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_routers_admin_rationale_1",
-      "community": 6,
+      "community": 133,
       "norm_label": "admin endpoints \u2014 protected, for operational management."
     },
     {
@@ -7657,7 +7657,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_familylink_server_services_discord_notifier_discordnotifier_set_channel",
-      "community": 65,
+      "community": 178,
       "norm_label": ".set_channel()"
     },
     {
@@ -7667,7 +7667,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "textchannel",
-      "community": 65,
+      "community": 178,
       "norm_label": "textchannel"
     },
     {
@@ -7787,7 +7787,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "src_familylink_server_services_discord_notifier_rationale_86",
-      "community": 65,
+      "community": 178,
       "norm_label": "called by the bot's on_ready once the channel is resolved."
     },
     {
@@ -7907,7 +7907,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_reinit_with_cookies_b64",
-      "community": 20,
+      "community": 179,
       "norm_label": ".reinit_with_cookies_b64()"
     },
     {
@@ -8017,7 +8017,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_get_service",
-      "community": 11,
+      "community": 54,
       "norm_label": "get_service()"
     },
     {
@@ -8067,7 +8067,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_35",
-      "community": 20,
+      "community": 179,
       "norm_label": "hot-swap the familylink client with a full fresh cookie jar.          does not c"
     },
     {
@@ -8157,7 +8157,7 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_129",
-      "community": 11,
+      "community": 54,
       "norm_label": "fastapi dependency \u2014 returns the singleton."
     },
     {
@@ -8224,7 +8224,7 @@
       "label": "poller_loop()",
       "file_type": "code",
       "source_file": "src/familylink_server/services/linux_poller.py",
-      "source_location": "L224",
+      "source_location": "L227",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_poller_poller_loop",
       "community": 0,
@@ -8274,9 +8274,9 @@
       "label": "Main poll loop \u2014 iterates all enabled machines every POLL_INTERVAL seconds.",
       "file_type": "rationale",
       "source_file": "src/familylink_server/services/linux_poller.py",
-      "source_location": "L225",
+      "source_location": "L228",
       "_origin": "ast",
-      "id": "src_familylink_server_services_linux_poller_rationale_225",
+      "id": "src_familylink_server_services_linux_poller_rationale_228",
       "community": 0,
       "norm_label": "main poll loop \u2014 iterates all enabled machines every poll_interval seconds."
     },
@@ -8777,7 +8777,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "tests_server_test_auth_app",
-      "community": 54,
+      "community": 24,
       "norm_label": "app()"
     },
     {
@@ -8867,7 +8867,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "tests_server_test_auth_rationale_19",
-      "community": 54,
+      "community": 24,
       "norm_label": "create a fastapi test app with the auth router and a protected route."
     },
     {
@@ -8936,7 +8936,7 @@
       "source_file": "tests/server/test_auto_refresh.py",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
+      "id": "tests_server_test_auto_refresh",
       "community": 41,
       "norm_label": "test_auto_refresh.py"
     },
@@ -8946,7 +8946,7 @@
       "source_file": "tests/server/test_auto_refresh.py",
       "source_location": "L13",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "id": "tests_server_test_auto_refresh_make_service",
       "community": 41,
       "norm_label": "_make_service()"
     },
@@ -8956,17 +8956,17 @@
       "source_file": "tests/server/test_auto_refresh.py",
       "source_location": "L24",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_cookie_refresher_url_default",
-      "community": 41,
+      "id": "tests_server_test_auto_refresh_test_cookie_refresher_url_default",
+      "community": 18,
       "norm_label": "test_cookie_refresher_url_default()"
     },
     {
       "label": "test_reinit_with_cookies_b64_sets_env()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L31",
+      "source_location": "L36",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
+      "id": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
       "community": 41,
       "norm_label": "test_reinit_with_cookies_b64_sets_env()"
     },
@@ -8974,9 +8974,9 @@
       "label": "test_reinit_with_cookies_b64_pops_sapisid()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L40",
+      "source_location": "L45",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
+      "id": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
       "community": 41,
       "norm_label": "test_reinit_with_cookies_b64_pops_sapisid()"
     },
@@ -8984,9 +8984,9 @@
       "label": "test_reinit_with_cookies_b64_clears_caches()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L49",
+      "source_location": "L54",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
+      "id": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
       "community": 41,
       "norm_label": "test_reinit_with_cookies_b64_clears_caches()"
     },
@@ -8994,9 +8994,9 @@
       "label": "test_reinit_with_cookies_b64_creates_new_client()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L64",
+      "source_location": "L69",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
+      "id": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
       "community": 41,
       "norm_label": "test_reinit_with_cookies_b64_creates_new_client()"
     },
@@ -9004,9 +9004,9 @@
       "label": "test_try_auto_refresh_no_op_when_url_not_set()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L77",
+      "source_location": "L82",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
+      "id": "tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
       "community": 41,
       "norm_label": "test_try_auto_refresh_no_op_when_url_not_set()"
     },
@@ -9014,9 +9014,9 @@
       "label": "test_try_auto_refresh_success()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L89",
+      "source_location": "L94",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_success",
+      "id": "tests_server_test_auto_refresh_test_try_auto_refresh_success",
       "community": 41,
       "norm_label": "test_try_auto_refresh_success()"
     },
@@ -9024,9 +9024,9 @@
       "label": "test_try_auto_refresh_returns_false_on_http_error()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L110",
+      "source_location": "L115",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
+      "id": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
       "community": 41,
       "norm_label": "test_try_auto_refresh_returns_false_on_http_error()"
     },
@@ -9034,9 +9034,9 @@
       "label": "test_try_auto_refresh_returns_false_on_network_error()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L128",
+      "source_location": "L133",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
+      "id": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
       "community": 41,
       "norm_label": "test_try_auto_refresh_returns_false_on_network_error()"
     },
@@ -9044,9 +9044,9 @@
       "label": "test_try_auto_refresh_skips_when_already_in_progress()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L150",
+      "source_location": "L155",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
+      "id": "tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
       "community": 41,
       "norm_label": "test_try_auto_refresh_skips_when_already_in_progress()"
     },
@@ -9054,9 +9054,9 @@
       "label": "test_health_check_loop_resets_alert_on_auto_refresh_success()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L207",
+      "source_location": "L212",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
+      "id": "tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
       "community": 5,
       "norm_label": "test_health_check_loop_resets_alert_on_auto_refresh_success()"
     },
@@ -9064,9 +9064,9 @@
       "label": "test_backoff_skips_sidecar_after_failure()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L267",
+      "source_location": "L272",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_backoff_skips_sidecar_after_failure",
+      "id": "tests_server_test_auto_refresh_test_backoff_skips_sidecar_after_failure",
       "community": 41,
       "norm_label": "test_backoff_skips_sidecar_after_failure()"
     },
@@ -9074,9 +9074,9 @@
       "label": "test_proactive_loop_calls_refresh()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L284",
+      "source_location": "L289",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_proactive_loop_calls_refresh",
+      "id": "tests_server_test_auto_refresh_test_proactive_loop_calls_refresh",
       "community": 41,
       "norm_label": "test_proactive_loop_calls_refresh()"
     },
@@ -9084,10 +9084,10 @@
       "label": "test_expired_page_shows_novnc_link()",
       "file_type": "code",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L302",
+      "source_location": "L307",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_expired_page_shows_novnc_link",
-      "community": 6,
+      "id": "tests_server_test_auto_refresh_test_expired_page_shows_novnc_link",
+      "community": 133,
       "norm_label": "test_expired_page_shows_novnc_link()"
     },
     {
@@ -9096,7 +9096,7 @@
       "source_file": "tests/server/test_auto_refresh.py",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_1",
+      "id": "tests_server_test_auto_refresh_rationale_1",
       "community": 41,
       "norm_label": "tests for auto-refresh via sidecar."
     },
@@ -9106,27 +9106,27 @@
       "source_file": "tests/server/test_auto_refresh.py",
       "source_location": "L14",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_14",
+      "id": "tests_server_test_auto_refresh_rationale_14",
       "community": 41,
       "norm_label": "create familylinkservice bypassing __init__."
     },
     {
-      "label": "cookie_refresher_url should default to empty string.",
+      "label": "cookie_refresher_url should default to empty string.      Builds a fresh Setting",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
       "source_location": "L25",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_25",
-      "community": 41,
-      "norm_label": "cookie_refresher_url should default to empty string."
+      "id": "tests_server_test_auto_refresh_rationale_25",
+      "community": 18,
+      "norm_label": "cookie_refresher_url should default to empty string.      builds a fresh setting"
     },
     {
       "label": "reinit_with_cookies_b64 should set FAMILYLINK_COOKIES_B64 in os.environ.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L32",
+      "source_location": "L37",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_32",
+      "id": "tests_server_test_auto_refresh_rationale_37",
       "community": 41,
       "norm_label": "reinit_with_cookies_b64 should set familylink_cookies_b64 in os.environ."
     },
@@ -9134,9 +9134,9 @@
       "label": "reinit_with_cookies_b64 should remove FAMILYLINK_SAPISID from os.environ.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L41",
+      "source_location": "L46",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_41",
+      "id": "tests_server_test_auto_refresh_rationale_46",
       "community": 41,
       "norm_label": "reinit_with_cookies_b64 should remove familylink_sapisid from os.environ."
     },
@@ -9144,9 +9144,9 @@
       "label": "reinit_with_cookies_b64 should clear caches but leave auth_failed for the caller",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L50",
+      "source_location": "L55",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_50",
+      "id": "tests_server_test_auto_refresh_rationale_55",
       "community": 41,
       "norm_label": "reinit_with_cookies_b64 should clear caches but leave auth_failed for the caller"
     },
@@ -9154,9 +9154,9 @@
       "label": "reinit_with_cookies_b64 should replace _client with new FamilyLink instance.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L65",
+      "source_location": "L70",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_65",
+      "id": "tests_server_test_auto_refresh_rationale_70",
       "community": 41,
       "norm_label": "reinit_with_cookies_b64 should replace _client with new familylink instance."
     },
@@ -9164,9 +9164,9 @@
       "label": "_try_auto_refresh should return False immediately when COOKIE_REFRESHER_URL is e",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L78",
+      "source_location": "L83",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_78",
+      "id": "tests_server_test_auto_refresh_rationale_83",
       "community": 41,
       "norm_label": "_try_auto_refresh should return false immediately when cookie_refresher_url is e"
     },
@@ -9174,9 +9174,9 @@
       "label": "_try_auto_refresh should call sidecar, reinit service, and return True on succes",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L90",
+      "source_location": "L95",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_90",
+      "id": "tests_server_test_auto_refresh_rationale_95",
       "community": 41,
       "norm_label": "_try_auto_refresh should call sidecar, reinit service, and return true on succes"
     },
@@ -9184,9 +9184,9 @@
       "label": "_try_auto_refresh should return False when sidecar returns non-2xx.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L111",
+      "source_location": "L116",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_111",
+      "id": "tests_server_test_auto_refresh_rationale_116",
       "community": 41,
       "norm_label": "_try_auto_refresh should return false when sidecar returns non-2xx."
     },
@@ -9194,9 +9194,9 @@
       "label": "_try_auto_refresh should return False on connection error without raising.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L129",
+      "source_location": "L134",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_129",
+      "id": "tests_server_test_auto_refresh_rationale_134",
       "community": 41,
       "norm_label": "_try_auto_refresh should return false on connection error without raising."
     },
@@ -9204,9 +9204,9 @@
       "label": "A second _try_auto_refresh call while one is in-flight returns False immediately",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L151",
+      "source_location": "L156",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_151",
+      "id": "tests_server_test_auto_refresh_rationale_156",
       "community": 41,
       "norm_label": "a second _try_auto_refresh call while one is in-flight returns false immediately"
     },
@@ -9214,9 +9214,9 @@
       "label": "health_check_loop should reset _alert_active when auto-refresh succeeds.",
       "file_type": "rationale",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L208",
+      "source_location": "L213",
       "_origin": "ast",
-      "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_208",
+      "id": "tests_server_test_auto_refresh_rationale_213",
       "community": 5,
       "norm_label": "health_check_loop should reset _alert_active when auto-refresh succeeds."
     },
@@ -9467,7 +9467,7 @@
       "source_location": "L245",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_bot_commands_test_devices_lock_calls_service",
-      "community": 3,
+      "community": 10,
       "norm_label": "test_devices_lock_calls_service()"
     },
     {
@@ -9507,7 +9507,7 @@
       "source_location": "L344",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_bot_commands_test_refresh_clears_cache",
-      "community": 3,
+      "community": 29,
       "norm_label": "test_refresh_clears_cache()"
     },
     {
@@ -9747,7 +9747,7 @@
       "source_location": "L246",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_bot_commands_rationale_246",
-      "community": 3,
+      "community": 10,
       "norm_label": "test that /devices lock calls lock_device on the service."
     },
     {
@@ -9787,7 +9787,7 @@
       "source_location": "L345",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_bot_commands_rationale_345",
-      "community": 3,
+      "community": 29,
       "norm_label": "test that /refresh sets _members_cache to none and empties _usage_cache."
     },
     {
@@ -10414,7 +10414,7 @@
       "label": "test_discord_enabled_when_all_vars_set()",
       "file_type": "code",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L32",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "tests_server_test_config_test_discord_enabled_when_all_vars_set",
       "community": 18,
@@ -10424,7 +10424,7 @@
       "label": "test_discord_summary_time_parsed()",
       "file_type": "code",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L45",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "tests_server_test_config_test_discord_summary_time_parsed",
       "community": 18,
@@ -10434,7 +10434,7 @@
       "label": "test_discord_summary_time_custom()",
       "file_type": "code",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L54",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "tests_server_test_config_test_discord_summary_time_custom",
       "community": 18,
@@ -10444,7 +10444,7 @@
       "label": "test_ekreta_settings_defaults()",
       "file_type": "code",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L64",
+      "source_location": "L69",
       "_origin": "ast",
       "id": "tests_server_test_config_test_ekreta_settings_defaults",
       "community": 18,
@@ -10454,7 +10454,7 @@
       "label": "test_ekreta_settings_from_env()",
       "file_type": "code",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L72",
+      "source_location": "L81",
       "_origin": "ast",
       "id": "tests_server_test_config_test_ekreta_settings_from_env",
       "community": 18,
@@ -10481,22 +10481,22 @@
       "norm_label": "test that settings are read correctly from environment variables."
     },
     {
-      "label": "Test that Discord is disabled when no tokens are set.",
+      "label": "Test that Discord is disabled when no tokens are set.      _env_file=None bypass",
       "file_type": "rationale",
       "source_file": "tests/server/test_config.py",
       "source_location": "L25",
       "_origin": "ast",
       "id": "tests_server_test_config_rationale_25",
       "community": 18,
-      "norm_label": "test that discord is disabled when no tokens are set."
+      "norm_label": "test that discord is disabled when no tokens are set.      _env_file=none bypass"
     },
     {
       "label": "Test that Discord is enabled when all required vars are set.",
       "file_type": "rationale",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L33",
+      "source_location": "L38",
       "_origin": "ast",
-      "id": "tests_server_test_config_rationale_33",
+      "id": "tests_server_test_config_rationale_38",
       "community": 18,
       "norm_label": "test that discord is enabled when all required vars are set."
     },
@@ -10504,9 +10504,9 @@
       "label": "Test that discord_summary_time is parsed correctly with default time.",
       "file_type": "rationale",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L46",
+      "source_location": "L51",
       "_origin": "ast",
-      "id": "tests_server_test_config_rationale_46",
+      "id": "tests_server_test_config_rationale_51",
       "community": 18,
       "norm_label": "test that discord_summary_time is parsed correctly with default time."
     },
@@ -10514,29 +10514,29 @@
       "label": "Test that discord_summary_time can be customized.",
       "file_type": "rationale",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L55",
+      "source_location": "L60",
       "_origin": "ast",
-      "id": "tests_server_test_config_rationale_55",
+      "id": "tests_server_test_config_rationale_60",
       "community": 18,
       "norm_label": "test that discord_summary_time can be customized."
     },
     {
-      "label": "Test that eKR\u00c9TA ingest settings have sane defaults.",
+      "label": "Test that eKR\u00c9TA ingest settings have sane defaults.      _env_file=None bypasse",
       "file_type": "rationale",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L65",
+      "source_location": "L70",
       "_origin": "ast",
-      "id": "tests_server_test_config_rationale_65",
+      "id": "tests_server_test_config_rationale_70",
       "community": 18,
-      "norm_label": "test that ekreta ingest settings have sane defaults."
+      "norm_label": "test that ekreta ingest settings have sane defaults.      _env_file=none bypasse"
     },
     {
       "label": "Test that eKR\u00c9TA ingest settings read from environment variables.",
       "file_type": "rationale",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L73",
+      "source_location": "L82",
       "_origin": "ast",
-      "id": "tests_server_test_config_rationale_73",
+      "id": "tests_server_test_config_rationale_82",
       "community": 18,
       "norm_label": "test that ekreta ingest settings read from environment variables."
     },
@@ -10747,7 +10747,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config",
-      "community": 94,
+      "community": 9,
       "norm_label": "test_db_app_config.py"
     },
     {
@@ -10757,7 +10757,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config_test_get_or_create_app_config_retries_after_integrity_error",
-      "community": 94,
+      "community": 9,
       "norm_label": "test_get_or_create_app_config_retries_after_integrity_error()"
     },
     {
@@ -10767,7 +10767,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config_rationale_1",
-      "community": 94,
+      "community": 9,
       "norm_label": "tests for the shared get_or_create_app_config db helper."
     },
     {
@@ -10777,7 +10777,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "tests_server_test_db_app_config_rationale_12",
-      "community": 94,
+      "community": 9,
       "norm_label": "a concurrent insert race (unique constraint violation) is resolved by re-queryin"
     },
     {
@@ -10947,7 +10947,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "tests_server_test_db_models_test_device_snapshot_unique_device_id",
-      "community": 25,
+      "community": 168,
       "norm_label": "test_device_snapshot_unique_device_id()"
     },
     {
@@ -11007,7 +11007,7 @@
       "source_location": "L165",
       "_origin": "ast",
       "id": "tests_server_test_db_models_test_ekreta_credential_insert_and_read",
-      "community": 1,
+      "community": 25,
       "norm_label": "test_ekreta_credential_insert_and_read()"
     },
     {
@@ -11017,7 +11017,7 @@
       "source_location": "L183",
       "_origin": "ast",
       "id": "tests_server_test_db_models_test_homework_entry_insert_and_read",
-      "community": 1,
+      "community": 25,
       "norm_label": "test_homework_entry_insert_and_read()"
     },
     {
@@ -11087,7 +11087,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "tests_server_test_db_models_rationale_68",
-      "community": 25,
+      "community": 168,
       "norm_label": "test devicesnapshot model with unique constraint on device_id."
     },
     {
@@ -11147,7 +11147,7 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "tests_server_test_db_models_rationale_166",
-      "community": 1,
+      "community": 25,
       "norm_label": "test ekretacredential model insert and read operations."
     },
     {
@@ -11157,7 +11157,7 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "tests_server_test_db_models_rationale_184",
-      "community": 1,
+      "community": 25,
       "norm_label": "test homeworkentry model insert and read operations."
     },
     {
@@ -12311,20 +12311,30 @@
       "norm_label": "test_lock_session_runs_dbus_send()"
     },
     {
-      "label": "test_poweroff_machine_runs_sudo_systemctl()",
+      "label": "test_poweroff_machine_uses_dbus_when_available()",
       "file_type": "code",
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L84",
+      "source_location": "L91",
       "_origin": "ast",
-      "id": "tests_server_test_linux_ssh_test_poweroff_machine_runs_sudo_systemctl",
+      "id": "tests_server_test_linux_ssh_test_poweroff_machine_uses_dbus_when_available",
       "community": 76,
-      "norm_label": "test_poweroff_machine_runs_sudo_systemctl()"
+      "norm_label": "test_poweroff_machine_uses_dbus_when_available()"
+    },
+    {
+      "label": "test_poweroff_machine_falls_back_to_sudo_when_dbus_fails()",
+      "file_type": "code",
+      "source_file": "tests/server/test_linux_ssh.py",
+      "source_location": "L110",
+      "_origin": "ast",
+      "id": "tests_server_test_linux_ssh_test_poweroff_machine_falls_back_to_sudo_when_dbus_fails",
+      "community": 76,
+      "norm_label": "test_poweroff_machine_falls_back_to_sudo_when_dbus_fails()"
     },
     {
       "label": "test_unlock_session_kills_kscreenlocker()",
       "file_type": "code",
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L103",
+      "source_location": "L138",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_test_unlock_session_kills_kscreenlocker",
       "community": 76,
@@ -12381,22 +12391,32 @@
       "norm_label": "lock_session uses dbus-send via session bus (loginctl lock-sessions fails on baz"
     },
     {
-      "label": "poweroff_machine issues sudo systemctl poweroff over SSH.",
+      "label": "poweroff_machine uses D-Bus alone when it succeeds (no sudo needed).",
       "file_type": "rationale",
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L85",
+      "source_location": "L92",
       "_origin": "ast",
-      "id": "tests_server_test_linux_ssh_rationale_85",
+      "id": "tests_server_test_linux_ssh_rationale_92",
       "community": 76,
-      "norm_label": "poweroff_machine issues sudo systemctl poweroff over ssh."
+      "norm_label": "poweroff_machine uses d-bus alone when it succeeds (no sudo needed)."
+    },
+    {
+      "label": "poweroff_machine falls back to sudo systemctl poweroff when D-Bus fails.      So",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_linux_ssh.py",
+      "source_location": "L111",
+      "_origin": "ast",
+      "id": "tests_server_test_linux_ssh_rationale_111",
+      "community": 76,
+      "norm_label": "poweroff_machine falls back to sudo systemctl poweroff when d-bus fails.      so"
     },
     {
       "label": "unlock_session kills the KDE screen locker process (loginctl unlock-sessions fai",
       "file_type": "rationale",
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L104",
+      "source_location": "L139",
       "_origin": "ast",
-      "id": "tests_server_test_linux_ssh_rationale_104",
+      "id": "tests_server_test_linux_ssh_rationale_139",
       "community": 76,
       "norm_label": "unlock_session kills the kde screen locker process (loginctl unlock-sessions fai"
     },
@@ -12457,7 +12477,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "tests_server_test_main_test_bot_not_started_when_discord_disabled",
-      "community": 133,
+      "community": 66,
       "norm_label": "test_bot_not_started_when_discord_disabled()"
     },
     {
@@ -12537,7 +12557,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "tests_server_test_main_rationale_54",
-      "community": 133,
+      "community": 66,
       "norm_label": "lifespan should not create a discord bot task when discord vars are absent."
     },
     {
@@ -12597,7 +12617,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_make_client",
-      "community": 54,
+      "community": 14,
       "norm_label": "_make_client()"
     },
     {
@@ -12627,7 +12647,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_set_limit_returns_partial",
-      "community": 14,
+      "community": 54,
       "norm_label": "test_set_limit_returns_partial()"
     },
     {
@@ -12827,7 +12847,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_rationale_90",
-      "community": 14,
+      "community": 54,
       "norm_label": "post /apps/{package}/limit calls set_app_limit with int minutes and returns 200."
     },
     {
@@ -13407,7 +13427,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework",
-      "community": 1,
+      "community": 94,
       "norm_label": "test_routers_homework.py"
     },
     {
@@ -13417,7 +13437,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_client",
-      "community": 1,
+      "community": 94,
       "norm_label": "_client()"
     },
     {
@@ -13427,7 +13447,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_pop_session_override",
-      "community": 1,
+      "community": 94,
       "norm_label": "_pop_session_override()"
     },
     {
@@ -13437,7 +13457,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_test_credentials_requires_token",
-      "community": 1,
+      "community": 94,
       "norm_label": "test_credentials_requires_token()"
     },
     {
@@ -13447,7 +13467,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_test_credentials_rejects_when_no_token_configured",
-      "community": 1,
+      "community": 94,
       "norm_label": "test_credentials_rejects_when_no_token_configured()"
     },
     {
@@ -13457,7 +13477,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_test_credentials_rejects_same_length_wrong_token",
-      "community": 1,
+      "community": 94,
       "norm_label": "test_credentials_rejects_same_length_wrong_token()"
     },
     {
@@ -13467,7 +13487,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_test_credentials_returns_rows",
-      "community": 1,
+      "community": 94,
       "norm_label": "test_credentials_returns_rows()"
     },
     {
@@ -13477,7 +13497,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_test_ingest_requires_token",
-      "community": 1,
+      "community": 94,
       "norm_label": "test_ingest_requires_token()"
     },
     {
@@ -13487,7 +13507,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_test_ingest_upserts_and_prunes",
-      "community": 1,
+      "community": 94,
       "norm_label": "test_ingest_upserts_and_prunes()"
     },
     {
@@ -13497,7 +13517,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_rationale_1",
-      "community": 1,
+      "community": 94,
       "norm_label": "tests for the internal /internal/ekreta credentials/homework endpoints."
     },
     {
@@ -13507,7 +13527,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_rationale_38",
-      "community": 1,
+      "community": 94,
       "norm_label": "no configured token must mean 'closed', not 'open'."
     },
     {
@@ -13517,7 +13537,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_rationale_51",
-      "community": 1,
+      "community": 94,
       "norm_label": "a wrong token of the same length must still be rejected (constant-time compare)."
     },
     {
@@ -13527,7 +13547,7 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "tests_server_test_routers_homework_rationale_113",
-      "community": 1,
+      "community": 94,
       "norm_label": "time is frozen so the asserted 'today' never drifts."
     },
     {
@@ -13587,7 +13607,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_linux_machines_page_requires_auth",
-      "community": 54,
+      "community": 24,
       "norm_label": "test_linux_machines_page_requires_auth()"
     },
     {
@@ -13697,7 +13717,7 @@
       "source_location": "L374",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_generate_key_requires_auth",
-      "community": 54,
+      "community": 24,
       "norm_label": "test_generate_key_requires_auth()"
     },
     {
@@ -13787,7 +13807,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_rationale_60",
-      "community": 54,
+      "community": 24,
       "norm_label": "get /linux-machines without auth returns 401."
     },
     {
@@ -13897,7 +13917,7 @@
       "source_location": "L375",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_rationale_375",
-      "community": 54,
+      "community": 24,
       "norm_label": "post /linux-machines/generate-key without auth returns 401."
     },
     {
@@ -23918,6 +23938,17 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "ekreta-scraper/tests/test_main.py",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "ekreta_scraper_tests_test_main",
+      "target": "ekreta_scraper_src_main",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -24642,17 +24673,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "ekreta-scraper/tests/test_main.py",
-      "source_location": "L4",
-      "weight": 1.0,
-      "source": "ekreta_scraper_tests_test_main",
-      "target": "src_familylink_server_main",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "ekreta-scraper/tests/test_main.py",
@@ -24909,7 +24929,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/unit/test_auth.py",
-      "source_location": "L73",
+      "source_location": "L77",
       "weight": 1.0,
       "source": "tests_unit_test_auth_test_resolve_raises_when_no_source_available",
       "target": "src_familylink_auth_cookieresolver"
@@ -25615,6 +25635,17 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_auto_refresh.py",
+      "source_location": "L314",
+      "weight": 1.0,
+      "source": "tests_server_test_auto_refresh_test_expired_page_shows_novnc_link",
+      "target": "src_familylink_client_sessionexpirederror"
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "INFERRED",
@@ -25645,17 +25676,6 @@
       "source_location": "L79",
       "weight": 1.0,
       "source": "tests_unit_test_client_test_get_members_raises_on_403",
-      "target": "src_familylink_client_sessionexpirederror"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": ".claude/worktrees/apps-page-eyecandy/tests/server/test_auto_refresh.py",
-      "source_location": "L309",
-      "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_expired_page_shows_novnc_link",
       "target": "src_familylink_client_sessionexpirederror"
     },
     {
@@ -31881,8 +31901,19 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "tests/server/test_auto_refresh.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "tests_server_test_auto_refresh_test_cookie_refresher_url_default",
+      "target": "src_familylink_server_config_settings"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "tests/server/test_config.py",
-      "source_location": "L28",
+      "source_location": "L33",
       "weight": 1.0,
       "source": "tests_server_test_config_test_discord_disabled_by_default",
       "target": "src_familylink_server_config_settings"
@@ -31893,7 +31924,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_config.py",
-      "source_location": "L39",
+      "source_location": "L44",
       "weight": 1.0,
       "source": "tests_server_test_config_test_discord_enabled_when_all_vars_set",
       "target": "src_familylink_server_config_settings"
@@ -31904,7 +31935,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_config.py",
-      "source_location": "L59",
+      "source_location": "L64",
       "weight": 1.0,
       "source": "tests_server_test_config_test_discord_summary_time_custom",
       "target": "src_familylink_server_config_settings"
@@ -31915,7 +31946,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_config.py",
-      "source_location": "L49",
+      "source_location": "L54",
       "weight": 1.0,
       "source": "tests_server_test_config_test_discord_summary_time_parsed",
       "target": "src_familylink_server_config_settings"
@@ -31926,7 +31957,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_config.py",
-      "source_location": "L68",
+      "source_location": "L77",
       "weight": 1.0,
       "source": "tests_server_test_config_test_ekreta_settings_defaults",
       "target": "src_familylink_server_config_settings"
@@ -31937,7 +31968,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_config.py",
-      "source_location": "L78",
+      "source_location": "L87",
       "weight": 1.0,
       "source": "tests_server_test_config_test_ekreta_settings_from_env",
       "target": "src_familylink_server_config_settings"
@@ -33386,7 +33417,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/services/linux_poller.py",
-      "source_location": "L234",
+      "source_location": "L237",
       "weight": 1.0,
       "source": "src_familylink_server_services_linux_poller_poller_loop",
       "target": "src_familylink_server_db_models_linuxmachine"
@@ -34200,7 +34231,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/services/linux_poller.py",
-      "source_location": "L232",
+      "source_location": "L235",
       "weight": 1.0,
       "source": "src_familylink_server_services_linux_poller_poller_loop",
       "target": "src_familylink_server_db_session_make_session"
@@ -34319,6 +34350,17 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_auto_refresh.py",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "tests_server_test_auto_refresh",
+      "target": "src_familylink_server_main",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -34326,17 +34368,6 @@
       "source_location": "L9",
       "weight": 1.0,
       "source": "tests_server_test_health_check",
-      "target": "src_familylink_server_main",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L9",
-      "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
       "target": "src_familylink_server_main",
       "confidence_score": 1.0
     },
@@ -34381,6 +34412,17 @@
       "source": "src_familylink_server_main_rationale_60",
       "target": "src_familylink_server_main_health_check_loop",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_auto_refresh.py",
+      "source_location": "L262",
+      "weight": 1.0,
+      "source": "tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
+      "target": "src_familylink_server_main_health_check_loop"
     },
     {
       "relation": "calls",
@@ -34440,17 +34482,6 @@
     {
       "relation": "calls",
       "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": ".claude/worktrees/apps-page-eyecandy/tests/server/test_auto_refresh.py",
-      "source_location": "L257",
-      "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
-      "target": "src_familylink_server_main_health_check_loop"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/main.py",
       "source_location": "L155",
@@ -34474,10 +34505,10 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
-      "source_file": ".claude/worktrees/apps-page-eyecandy/tests/server/test_auto_refresh.py",
-      "source_location": "L84",
+      "source_file": "tests/server/test_auto_refresh.py",
+      "source_location": "L89",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
+      "source": "tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
       "target": "src_familylink_server_main_try_auto_refresh"
     },
     {
@@ -34485,10 +34516,10 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
-      "source_file": ".claude/worktrees/apps-page-eyecandy/tests/server/test_auto_refresh.py",
-      "source_location": "L124",
+      "source_file": "tests/server/test_auto_refresh.py",
+      "source_location": "L129",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
+      "source": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
       "target": "src_familylink_server_main_try_auto_refresh"
     },
     {
@@ -34496,10 +34527,10 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
-      "source_file": ".claude/worktrees/apps-page-eyecandy/tests/server/test_auto_refresh.py",
-      "source_location": "L145",
+      "source_file": "tests/server/test_auto_refresh.py",
+      "source_location": "L150",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
+      "source": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
       "target": "src_familylink_server_main_try_auto_refresh"
     },
     {
@@ -34507,10 +34538,10 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
-      "source_file": ".claude/worktrees/apps-page-eyecandy/tests/server/test_auto_refresh.py",
-      "source_location": "L193",
+      "source_file": "tests/server/test_auto_refresh.py",
+      "source_location": "L198",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
+      "source": "tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
       "target": "src_familylink_server_main_try_auto_refresh"
     },
     {
@@ -34518,10 +34549,10 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
-      "source_file": ".claude/worktrees/apps-page-eyecandy/tests/server/test_auto_refresh.py",
-      "source_location": "L103",
+      "source_file": "tests/server/test_auto_refresh.py",
+      "source_location": "L108",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_success",
+      "source": "tests_server_test_auto_refresh_test_try_auto_refresh_success",
       "target": "src_familylink_server_main_try_auto_refresh"
     },
     {
@@ -34743,6 +34774,17 @@
       "target": "fastapi"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_auto_refresh.py",
+      "source_location": "L313",
+      "weight": 1.0,
+      "source": "tests_server_test_auto_refresh_test_expired_page_shows_novnc_link",
+      "target": "fastapi"
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -34752,17 +34794,6 @@
       "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_routers_admin_py",
       "target": "fastapi",
       "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": ".claude/worktrees/apps-page-eyecandy/tests/server/test_auto_refresh.py",
-      "source_location": "L308",
-      "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_expired_page_shows_novnc_link",
-      "target": "fastapi"
     },
     {
       "relation": "rationale_for",
@@ -37781,7 +37812,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/services/linux_poller.py",
-      "source_location": "L224",
+      "source_location": "L227",
       "weight": 1.0,
       "source": "src_familylink_server_services_linux_poller_poller_loop",
       "target": "src_familylink_server_services_discord_notifier_discordnotifier",
@@ -38120,6 +38151,17 @@
       "context": "argument",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "tests/server/test_auto_refresh.py",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "tests_server_test_auto_refresh_make_service",
+      "target": "src_familylink_server_services_family_link_familylinkservice"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "tests/server/test_cookie_hotreload.py",
       "source_location": "L10",
       "weight": 1.0,
@@ -38146,17 +38188,6 @@
       "source_location": "L63",
       "weight": 1.0,
       "source": "tests_server_test_family_link_service_test_get_apps_and_usage_bypass_cache_ignores_fresh_cache",
-      "target": "src_familylink_server_services_family_link_familylinkservice"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": ".claude/worktrees/apps-page-eyecandy/tests/server/test_auto_refresh.py",
-      "source_location": "L15",
-      "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
       "target": "src_familylink_server_services_family_link_familylinkservice"
     },
     {
@@ -38798,7 +38829,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/services/linux_poller.py",
-      "source_location": "L224",
+      "source_location": "L227",
       "weight": 1.0,
       "source": "src_familylink_server_services_linux_poller",
       "target": "src_familylink_server_services_linux_poller_poller_loop",
@@ -39015,7 +39046,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/services/linux_poller.py",
-      "source_location": "L197",
+      "source_location": "L200",
       "weight": 1.0,
       "source": "src_familylink_server_services_linux_poller_poll_machine",
       "target": "src_familylink_server_services_linux_ssh_poweroff_machine"
@@ -39026,7 +39057,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/familylink_server/services/linux_poller.py",
-      "source_location": "L177",
+      "source_location": "L180",
       "weight": 1.0,
       "source": "src_familylink_server_services_linux_poller_poll_machine",
       "target": "src_familylink_server_services_linux_ssh_unlock_session"
@@ -39036,7 +39067,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/services/linux_poller.py",
-      "source_location": "L239",
+      "source_location": "L242",
       "weight": 1.0,
       "source": "src_familylink_server_services_linux_poller_poller_loop",
       "target": "src_familylink_server_services_linux_poller_poll_machine",
@@ -39221,9 +39252,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/familylink_server/services/linux_poller.py",
-      "source_location": "L225",
+      "source_location": "L228",
       "weight": 1.0,
-      "source": "src_familylink_server_services_linux_poller_rationale_225",
+      "source": "src_familylink_server_services_linux_poller_rationale_228",
       "target": "src_familylink_server_services_linux_poller_poller_loop",
       "confidence_score": 1.0
     },
@@ -39357,9 +39388,20 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L99",
+      "source_location": "L131",
       "weight": 1.0,
-      "source": "tests_server_test_linux_ssh_test_poweroff_machine_runs_sudo_systemctl",
+      "source": "tests_server_test_linux_ssh_test_poweroff_machine_falls_back_to_sudo_when_dbus_fails",
+      "target": "src_familylink_server_services_linux_ssh_poweroff_machine"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_linux_ssh.py",
+      "source_location": "L106",
+      "weight": 1.0,
+      "source": "tests_server_test_linux_ssh_test_poweroff_machine_uses_dbus_when_available",
       "target": "src_familylink_server_services_linux_ssh_poweroff_machine"
     },
     {
@@ -39378,7 +39420,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L118",
+      "source_location": "L153",
       "weight": 1.0,
       "source": "tests_server_test_linux_ssh_test_unlock_session_kills_kscreenlocker",
       "target": "src_familylink_server_services_linux_ssh_unlock_session"
@@ -41120,18 +41162,18 @@
       "source_file": "tests/server/test_auto_refresh.py",
       "source_location": "L13",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L267",
+      "source_location": "L272",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_backoff_skips_sidecar_after_failure",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_backoff_skips_sidecar_after_failure",
       "confidence_score": 1.0
     },
     {
@@ -41140,128 +41182,128 @@
       "source_file": "tests/server/test_auto_refresh.py",
       "source_location": "L24",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_cookie_refresher_url_default",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_cookie_refresher_url_default",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L302",
+      "source_location": "L307",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_expired_page_shows_novnc_link",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_expired_page_shows_novnc_link",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L207",
+      "source_location": "L212",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L284",
+      "source_location": "L289",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_proactive_loop_calls_refresh",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_proactive_loop_calls_refresh",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L49",
+      "source_location": "L54",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L64",
+      "source_location": "L69",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L40",
+      "source_location": "L45",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L31",
+      "source_location": "L36",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L77",
+      "source_location": "L82",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L110",
+      "source_location": "L115",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L128",
+      "source_location": "L133",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L150",
+      "source_location": "L155",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L89",
+      "source_location": "L94",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_success",
+      "source": "tests_server_test_auto_refresh",
+      "target": "tests_server_test_auto_refresh_test_try_auto_refresh_success",
       "confidence_score": 1.0
     },
     {
@@ -41270,8 +41312,8 @@
       "source_file": "tests/server/test_auto_refresh.py",
       "source_location": "L1",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_1",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_py",
+      "source": "tests_server_test_auto_refresh_rationale_1",
+      "target": "tests_server_test_auto_refresh",
       "confidence_score": 1.0
     },
     {
@@ -41280,8 +41322,8 @@
       "source_file": "tests/server/test_auto_refresh.py",
       "source_location": "L14",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_14",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh_rationale_14",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
@@ -41289,10 +41331,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L215",
+      "source_location": "L220",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
@@ -41300,10 +41342,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L51",
+      "source_location": "L56",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
@@ -41311,10 +41353,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L66",
+      "source_location": "L71",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
@@ -41322,10 +41364,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L42",
+      "source_location": "L47",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
@@ -41333,10 +41375,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L33",
+      "source_location": "L38",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
@@ -41344,10 +41386,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L83",
+      "source_location": "L88",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
@@ -41355,10 +41397,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L123",
+      "source_location": "L128",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
@@ -41366,10 +41408,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L144",
+      "source_location": "L149",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
@@ -41377,10 +41419,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L186",
+      "source_location": "L191",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
@@ -41388,10 +41430,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L101",
+      "source_location": "L106",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_success",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_make_service",
+      "source": "tests_server_test_auto_refresh_test_try_auto_refresh_success",
+      "target": "tests_server_test_auto_refresh_make_service",
       "confidence_score": 1.0
     },
     {
@@ -41400,108 +41442,108 @@
       "source_file": "tests/server/test_auto_refresh.py",
       "source_location": "L25",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_25",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_cookie_refresher_url_default",
+      "source": "tests_server_test_auto_refresh_rationale_25",
+      "target": "tests_server_test_auto_refresh_test_cookie_refresher_url_default",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L32",
+      "source_location": "L37",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_32",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
+      "source": "tests_server_test_auto_refresh_rationale_37",
+      "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_sets_env",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L41",
+      "source_location": "L46",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_41",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
+      "source": "tests_server_test_auto_refresh_rationale_46",
+      "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_pops_sapisid",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L50",
+      "source_location": "L55",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_50",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
+      "source": "tests_server_test_auto_refresh_rationale_55",
+      "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_clears_caches",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L65",
+      "source_location": "L70",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_65",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
+      "source": "tests_server_test_auto_refresh_rationale_70",
+      "target": "tests_server_test_auto_refresh_test_reinit_with_cookies_b64_creates_new_client",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L78",
+      "source_location": "L83",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_78",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
+      "source": "tests_server_test_auto_refresh_rationale_83",
+      "target": "tests_server_test_auto_refresh_test_try_auto_refresh_no_op_when_url_not_set",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L90",
+      "source_location": "L95",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_90",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_success",
+      "source": "tests_server_test_auto_refresh_rationale_95",
+      "target": "tests_server_test_auto_refresh_test_try_auto_refresh_success",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L111",
+      "source_location": "L116",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_111",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
+      "source": "tests_server_test_auto_refresh_rationale_116",
+      "target": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_http_error",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L129",
+      "source_location": "L134",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_129",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
+      "source": "tests_server_test_auto_refresh_rationale_134",
+      "target": "tests_server_test_auto_refresh_test_try_auto_refresh_returns_false_on_network_error",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L151",
+      "source_location": "L156",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_151",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
+      "source": "tests_server_test_auto_refresh_rationale_156",
+      "target": "tests_server_test_auto_refresh_test_try_auto_refresh_skips_when_already_in_progress",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_auto_refresh.py",
-      "source_location": "L208",
+      "source_location": "L213",
       "weight": 1.0,
-      "source": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_208",
-      "target": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
+      "source": "tests_server_test_auto_refresh_rationale_213",
+      "target": "tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
       "confidence_score": 1.0
     },
     {
@@ -43058,7 +43100,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L32",
+      "source_location": "L37",
       "weight": 1.0,
       "source": "tests_server_test_config",
       "target": "tests_server_test_config_test_discord_enabled_when_all_vars_set",
@@ -43068,7 +43110,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L54",
+      "source_location": "L59",
       "weight": 1.0,
       "source": "tests_server_test_config",
       "target": "tests_server_test_config_test_discord_summary_time_custom",
@@ -43078,7 +43120,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L45",
+      "source_location": "L50",
       "weight": 1.0,
       "source": "tests_server_test_config",
       "target": "tests_server_test_config_test_discord_summary_time_parsed",
@@ -43088,7 +43130,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L64",
+      "source_location": "L69",
       "weight": 1.0,
       "source": "tests_server_test_config",
       "target": "tests_server_test_config_test_ekreta_settings_defaults",
@@ -43098,7 +43140,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L72",
+      "source_location": "L81",
       "weight": 1.0,
       "source": "tests_server_test_config",
       "target": "tests_server_test_config_test_ekreta_settings_from_env",
@@ -43148,9 +43190,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L33",
+      "source_location": "L38",
       "weight": 1.0,
-      "source": "tests_server_test_config_rationale_33",
+      "source": "tests_server_test_config_rationale_38",
       "target": "tests_server_test_config_test_discord_enabled_when_all_vars_set",
       "confidence_score": 1.0
     },
@@ -43158,9 +43200,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L46",
+      "source_location": "L51",
       "weight": 1.0,
-      "source": "tests_server_test_config_rationale_46",
+      "source": "tests_server_test_config_rationale_51",
       "target": "tests_server_test_config_test_discord_summary_time_parsed",
       "confidence_score": 1.0
     },
@@ -43168,9 +43210,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L55",
+      "source_location": "L60",
       "weight": 1.0,
-      "source": "tests_server_test_config_rationale_55",
+      "source": "tests_server_test_config_rationale_60",
       "target": "tests_server_test_config_test_discord_summary_time_custom",
       "confidence_score": 1.0
     },
@@ -43178,9 +43220,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L65",
+      "source_location": "L70",
       "weight": 1.0,
-      "source": "tests_server_test_config_rationale_65",
+      "source": "tests_server_test_config_rationale_70",
       "target": "tests_server_test_config_test_ekreta_settings_defaults",
       "confidence_score": 1.0
     },
@@ -43188,9 +43230,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_config.py",
-      "source_location": "L73",
+      "source_location": "L82",
       "weight": 1.0,
-      "source": "tests_server_test_config_rationale_73",
+      "source": "tests_server_test_config_rationale_82",
       "target": "tests_server_test_config_test_ekreta_settings_from_env",
       "confidence_score": 1.0
     },
@@ -45652,17 +45694,27 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L84",
+      "source_location": "L110",
       "weight": 1.0,
       "source": "tests_server_test_linux_ssh",
-      "target": "tests_server_test_linux_ssh_test_poweroff_machine_runs_sudo_systemctl",
+      "target": "tests_server_test_linux_ssh_test_poweroff_machine_falls_back_to_sudo_when_dbus_fails",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L103",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "tests_server_test_linux_ssh",
+      "target": "tests_server_test_linux_ssh_test_poweroff_machine_uses_dbus_when_available",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_linux_ssh.py",
+      "source_location": "L138",
       "weight": 1.0,
       "source": "tests_server_test_linux_ssh",
       "target": "tests_server_test_linux_ssh_test_unlock_session_kills_kscreenlocker",
@@ -45726,9 +45778,9 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L88",
+      "source_location": "L117",
       "weight": 1.0,
-      "source": "tests_server_test_linux_ssh_test_poweroff_machine_runs_sudo_systemctl",
+      "source": "tests_server_test_linux_ssh_test_poweroff_machine_falls_back_to_sudo_when_dbus_fails",
       "target": "tests_server_test_linux_ssh_make_ssh_mock",
       "confidence_score": 1.0
     },
@@ -45737,7 +45789,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L107",
+      "source_location": "L95",
+      "weight": 1.0,
+      "source": "tests_server_test_linux_ssh_test_poweroff_machine_uses_dbus_when_available",
+      "target": "tests_server_test_linux_ssh_make_ssh_mock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_linux_ssh.py",
+      "source_location": "L142",
       "weight": 1.0,
       "source": "tests_server_test_linux_ssh_test_unlock_session_kills_kscreenlocker",
       "target": "tests_server_test_linux_ssh_make_ssh_mock",
@@ -45777,19 +45840,29 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L85",
+      "source_location": "L92",
       "weight": 1.0,
-      "source": "tests_server_test_linux_ssh_rationale_85",
-      "target": "tests_server_test_linux_ssh_test_poweroff_machine_runs_sudo_systemctl",
+      "source": "tests_server_test_linux_ssh_rationale_92",
+      "target": "tests_server_test_linux_ssh_test_poweroff_machine_uses_dbus_when_available",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_linux_ssh.py",
-      "source_location": "L104",
+      "source_location": "L111",
       "weight": 1.0,
-      "source": "tests_server_test_linux_ssh_rationale_104",
+      "source": "tests_server_test_linux_ssh_rationale_111",
+      "target": "tests_server_test_linux_ssh_test_poweroff_machine_falls_back_to_sudo_when_dbus_fails",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_linux_ssh.py",
+      "source_location": "L139",
+      "weight": 1.0,
+      "source": "tests_server_test_linux_ssh_rationale_139",
       "target": "tests_server_test_linux_ssh_test_unlock_session_kills_kscreenlocker",
       "confidence_score": 1.0
     },
@@ -55068,5 +55141,5 @@
       "source_file": "docs/superpowers/specs/2026-06-30-oauth-bearer-auth-resilience-design.md"
     }
   ],
-  "built_at_commit": "d1d736274d5671bd50b02db78efdc3d519826439"
+  "built_at_commit": "b910b6b6de8739529cb060f6b5cade2b604d9204"
 }
