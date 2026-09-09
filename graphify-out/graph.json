@@ -796,7 +796,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "alembic_env",
-      "community": 103,
+      "community": 37,
       "norm_label": "env.py"
     },
     {
@@ -806,7 +806,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "alembic_env_run_migrations_offline",
-      "community": 103,
+      "community": 37,
       "norm_label": "run_migrations_offline()"
     },
     {
@@ -816,7 +816,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "alembic_env_run_migrations_online",
-      "community": 103,
+      "community": 37,
       "norm_label": "run_migrations_online()"
     },
     {
@@ -826,7 +826,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "alembic_env_rationale_1",
-      "community": 103,
+      "community": 37,
       "norm_label": "alembic environment configuration for database migrations.  supports both online"
     },
     {
@@ -836,7 +836,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "alembic_env_rationale_28",
-      "community": 103,
+      "community": 37,
       "norm_label": "run migrations in 'offline' mode.      this generates sql for applying migration"
     },
     {
@@ -846,7 +846,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "alembic_env_rationale_44",
-      "community": 103,
+      "community": 37,
       "norm_label": "run migrations in 'online' mode.      this connects to an actual database and ap"
     },
     {
@@ -1214,7 +1214,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ekreta_scraper_src_api_client",
-      "community": 16,
+      "community": 169,
       "norm_label": "api_client.py"
     },
     {
@@ -1224,7 +1224,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "ekreta_scraper_src_api_client_post_homework",
-      "community": 16,
+      "community": 169,
       "norm_label": "post_homework()"
     },
     {
@@ -1234,7 +1234,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ekreta_scraper_src_api_client_rationale_1",
-      "community": 16,
+      "community": 169,
       "norm_label": "posts scraped homework results back to familylink-server."
     },
     {
@@ -1244,7 +1244,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "ekreta_scraper_src_api_client_rationale_9",
-      "community": 16,
+      "community": 169,
       "norm_label": "post one kid's scraped, not-yet-due homework to familylink-server."
     },
     {
@@ -1254,7 +1254,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ekreta_scraper_src_config",
-      "community": 33,
+      "community": 103,
       "norm_label": "config.py"
     },
     {
@@ -1264,7 +1264,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "ekreta_scraper_src_config_kid",
-      "community": 33,
+      "community": 103,
       "norm_label": "kid"
     },
     {
@@ -1274,7 +1274,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "ekreta_scraper_src_config_fetch_kids",
-      "community": 33,
+      "community": 103,
       "norm_label": "fetch_kids()"
     },
     {
@@ -1284,7 +1284,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "ekreta_scraper_src_config_load_cron_schedule",
-      "community": 33,
+      "community": 103,
       "norm_label": "load_cron_schedule()"
     },
     {
@@ -1294,7 +1294,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ekreta_scraper_src_config_rationale_1",
-      "community": 33,
+      "community": 103,
       "norm_label": "kid config fetched from familylink-server's internal api."
     },
     {
@@ -1304,7 +1304,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "ekreta_scraper_src_config_rationale_11",
-      "community": 33,
+      "community": 103,
       "norm_label": "a kid's ekreta credentials and metadata."
     },
     {
@@ -1314,7 +1314,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "ekreta_scraper_src_config_rationale_20",
-      "community": 33,
+      "community": 103,
       "norm_label": "fetch the configured kid list from familylink-server's internal api."
     },
     {
@@ -1324,7 +1324,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "ekreta_scraper_src_config_rationale_31",
-      "community": 33,
+      "community": 103,
       "norm_label": "load cron schedule from environment or use default."
     },
     {
@@ -1404,7 +1404,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_merge_homework_entries",
-      "community": 33,
+      "community": 166,
       "norm_label": "_merge_homework_entries()"
     },
     {
@@ -1424,7 +1424,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_login",
-      "community": 33,
+      "community": 166,
       "norm_label": "_login()"
     },
     {
@@ -1434,7 +1434,7 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_open_electronikus_ellenorzokonyv",
-      "community": 33,
+      "community": 166,
       "norm_label": "_open_electronikus_ellenorzokonyv()"
     },
     {
@@ -1454,7 +1454,7 @@
       "source_location": "L192",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_column_index",
-      "community": 33,
+      "community": 166,
       "norm_label": "_column_index()"
     },
     {
@@ -1464,7 +1464,7 @@
       "source_location": "L200",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_scrape_haza_feladatok",
-      "community": 33,
+      "community": 166,
       "norm_label": "_scrape_haza_feladatok()"
     },
     {
@@ -1474,7 +1474,7 @@
       "source_location": "L247",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_fetch_homework",
-      "community": 33,
+      "community": 166,
       "norm_label": "fetch_homework()"
     },
     {
@@ -1524,7 +1524,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_rationale_57",
-      "community": 33,
+      "community": 166,
       "norm_label": "collapse same-(subject, deadline) entries from both sources into one.      keeps"
     },
     {
@@ -1544,7 +1544,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_rationale_85",
-      "community": 33,
+      "community": 166,
       "norm_label": "institution search + credential login, shared by both scrape sources."
     },
     {
@@ -1554,7 +1554,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_rationale_102",
-      "community": 33,
+      "community": 166,
       "norm_label": "expand the 'elektronikus ellenorzokonyv' menu \u2014 click exactly once.      confirm"
     },
     {
@@ -1574,7 +1574,7 @@
       "source_location": "L193",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_rationale_193",
-      "community": 33,
+      "community": 166,
       "norm_label": "find a table column's index by its header text."
     },
     {
@@ -1584,7 +1584,7 @@
       "source_location": "L201",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_rationale_201",
-      "community": 33,
+      "community": 166,
       "norm_label": "scrape the tanulo/tanulohazifeladat homework list table.      assumes `_open_ele"
     },
     {
@@ -1594,7 +1594,7 @@
       "source_location": "L248",
       "_origin": "ast",
       "id": "ekreta_scraper_src_kreta_client_rationale_248",
-      "community": 33,
+      "community": 166,
       "norm_label": "full login-to-scrape flow for one kid, merging both homework sources.      logs"
     },
     {
@@ -1664,7 +1664,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_api_client",
-      "community": 16,
+      "community": 169,
       "norm_label": "test_api_client.py"
     },
     {
@@ -1674,7 +1674,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_api_client_test_post_homework_sends_expected_payload",
-      "community": 16,
+      "community": 169,
       "norm_label": "test_post_homework_sends_expected_payload()"
     },
     {
@@ -1684,7 +1684,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_api_client_test_post_homework_raises_on_http_error",
-      "community": 16,
+      "community": 169,
       "norm_label": "test_post_homework_raises_on_http_error()"
     },
     {
@@ -1694,7 +1694,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_api_client_rationale_1",
-      "community": 16,
+      "community": 169,
       "norm_label": "tests for the api_client module."
     },
     {
@@ -1704,7 +1704,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_api_client_rationale_9",
-      "community": 16,
+      "community": 169,
       "norm_label": "test that post_homework sends expected payload."
     },
     {
@@ -1714,7 +1714,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_api_client_rationale_34",
-      "community": 16,
+      "community": 169,
       "norm_label": "test that post_homework raises on http error status."
     },
     {
@@ -1724,7 +1724,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_config",
-      "community": 33,
+      "community": 103,
       "norm_label": "test_config.py"
     },
     {
@@ -1734,7 +1734,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_config_test_fetch_kids_parses_response",
-      "community": 33,
+      "community": 103,
       "norm_label": "test_fetch_kids_parses_response()"
     },
     {
@@ -1744,7 +1744,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_config_test_fetch_kids_raises_on_http_error",
-      "community": 33,
+      "community": 103,
       "norm_label": "test_fetch_kids_raises_on_http_error()"
     },
     {
@@ -1754,7 +1754,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_config_test_load_cron_schedule_default",
-      "community": 33,
+      "community": 103,
       "norm_label": "test_load_cron_schedule_default()"
     },
     {
@@ -1764,7 +1764,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_config_test_load_cron_schedule_override",
-      "community": 33,
+      "community": 103,
       "norm_label": "test_load_cron_schedule_override()"
     },
     {
@@ -1774,7 +1774,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_config_rationale_1",
-      "community": 33,
+      "community": 103,
       "norm_label": "tests for the config module."
     },
     {
@@ -1784,7 +1784,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_config_rationale_9",
-      "community": 33,
+      "community": 103,
       "norm_label": "test that fetch_kids parses response json into kid instances."
     },
     {
@@ -1794,7 +1794,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_config_rationale_40",
-      "community": 33,
+      "community": 103,
       "norm_label": "test that fetch_kids raises on http error status."
     },
     {
@@ -1804,7 +1804,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_config_rationale_53",
-      "community": 33,
+      "community": 103,
       "norm_label": "test that load_cron_schedule returns default schedule."
     },
     {
@@ -1814,7 +1814,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_config_rationale_58",
-      "community": 33,
+      "community": 103,
       "norm_label": "test that load_cron_schedule returns override value from env."
     },
     {
@@ -1834,7 +1834,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_make_kid",
-      "community": 33,
+      "community": 170,
       "norm_label": "make_kid()"
     },
     {
@@ -1954,7 +1954,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testmergehomeworkentries",
-      "community": 33,
+      "community": 103,
       "norm_label": "testmergehomeworkentries"
     },
     {
@@ -1964,7 +1964,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testmergehomeworkentries_test_same_key_collapses_and_keeps_richer_text",
-      "community": 33,
+      "community": 103,
       "norm_label": ".test_same_key_collapses_and_keeps_richer_text()"
     },
     {
@@ -1974,7 +1974,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testmergehomeworkentries_test_different_subject_or_deadline_stays_separate",
-      "community": 33,
+      "community": 103,
       "norm_label": ".test_different_subject_or_deadline_stays_separate()"
     },
     {
@@ -2004,7 +2004,7 @@
       "source_location": "L144",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testfetchhomeworkorchestration",
-      "community": 33,
+      "community": 170,
       "norm_label": "testfetchhomeworkorchestration"
     },
     {
@@ -2014,7 +2014,7 @@
       "source_location": "L145",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testfetchhomeworkorchestration_test_opens_menu_exactly_once_before_either_source",
-      "community": 33,
+      "community": 170,
       "norm_label": ".test_opens_menu_exactly_once_before_either_source()"
     },
     {
@@ -2024,7 +2024,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testfetchhomeworkorchestration_test_merges_both_sources_and_filters",
-      "community": 33,
+      "community": 170,
       "norm_label": ".test_merges_both_sources_and_filters()"
     },
     {
@@ -2034,7 +2034,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_testfetchhomeworkorchestration_test_one_source_failing_does_not_drop_the_other",
-      "community": 33,
+      "community": 170,
       "norm_label": ".test_one_source_failing_does_not_drop_the_other()"
     },
     {
@@ -2044,7 +2044,7 @@
       "source_location": "L224",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_fixeddate",
-      "community": 33,
+      "community": 170,
       "norm_label": "_fixeddate"
     },
     {
@@ -2064,7 +2064,7 @@
       "source_location": "L226",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_fixeddate_today",
-      "community": 33,
+      "community": 170,
       "norm_label": ".today()"
     },
     {
@@ -2074,7 +2074,7 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "ekreta_scraper_tests_test_kreta_client_rationale_146",
-      "community": 33,
+      "community": 170,
       "norm_label": "confirmed flow: bejelentkezes -> elektronikus ellenorzokonyv (once)         -> o"
     },
     {
@@ -3787,7 +3787,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_py",
-      "community": 22,
+      "community": 171,
       "norm_label": "client.py"
     },
     {
@@ -3807,7 +3807,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_linux_rows_for_child",
-      "community": 22,
+      "community": 171,
       "norm_label": "_linux_rows_for_child()"
     },
     {
@@ -3817,7 +3817,7 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_fetch_linux_rows",
-      "community": 77,
+      "community": 171,
       "norm_label": "_fetch_linux_rows()"
     },
     {
@@ -3907,7 +3907,7 @@
       "source_location": "L281",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_bot_task_with_restart",
-      "community": 22,
+      "community": 171,
       "norm_label": "_bot_task_with_restart()"
     },
     {
@@ -3917,7 +3917,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_rationale_1",
-      "community": 22,
+      "community": 171,
       "norm_label": "discord bot client and restart wrapper."
     },
     {
@@ -3937,7 +3937,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_rationale_65",
-      "community": 22,
+      "community": 171,
       "norm_label": "build linux_machines list for a child given orm machine objects and snap map."
     },
     {
@@ -3947,7 +3947,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_rationale_95",
-      "community": 77,
+      "community": 171,
       "norm_label": "query linux machines + today's snapshots for one child."
     },
     {
@@ -3997,7 +3997,7 @@
       "source_location": "L282",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_client_rationale_282",
-      "community": 22,
+      "community": 171,
       "norm_label": "run bot.start() in a restart loop; exits cleanly on cancellederror."
     },
     {
@@ -4057,7 +4057,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_commands_init_app_autocomplete",
-      "community": 10,
+      "community": 174,
       "norm_label": "app_autocomplete()"
     },
     {
@@ -4107,7 +4107,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_commands_init_rationale_51",
-      "community": 10,
+      "community": 174,
       "norm_label": "autocomplete choices for the package parameter, matched by app title."
     },
     {
@@ -4177,7 +4177,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_commands_apps_appsgroup_list",
-      "community": 4,
+      "community": 10,
       "norm_label": ".list()"
     },
     {
@@ -4217,7 +4217,7 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_src_familylink_server_bot_commands_apps_appsgroup_allow",
-      "community": 10,
+      "community": 65,
       "norm_label": ".allow()"
     },
     {
@@ -4317,7 +4317,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_devices_devicesgroup_init",
-      "community": 21,
+      "community": 65,
       "norm_label": ".__init__()"
     },
     {
@@ -4387,7 +4387,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux",
-      "community": 39,
+      "community": 29,
       "norm_label": "linux.py"
     },
     {
@@ -4397,7 +4397,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_linuxgroup",
-      "community": 39,
+      "community": 29,
       "norm_label": "linuxgroup"
     },
     {
@@ -4407,7 +4407,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_linuxgroup_init",
-      "community": 39,
+      "community": 29,
       "norm_label": ".__init__()"
     },
     {
@@ -4417,7 +4417,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_py_abstractasynccontextmanager",
-      "community": 39,
+      "community": 29,
       "norm_label": "abstractasynccontextmanager"
     },
     {
@@ -4427,7 +4427,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_py_asyncsession",
-      "community": 39,
+      "community": 29,
       "norm_label": "asyncsession"
     },
     {
@@ -4477,7 +4477,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_rationale_1",
-      "community": 39,
+      "community": 29,
       "norm_label": "discord /linux command group."
     },
     {
@@ -4487,7 +4487,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_linux_rationale_25",
-      "community": 39,
+      "community": 29,
       "norm_label": "slash command group: /linux bonus."
     },
     {
@@ -4537,7 +4537,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_familylink_server_bot_commands_usage_usagegroup_init",
-      "community": 22,
+      "community": 65,
       "norm_label": ".__init__()"
     },
     {
@@ -4897,7 +4897,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_appblockview_init",
-      "community": 21,
+      "community": 65,
       "norm_label": ".__init__()"
     },
     {
@@ -4977,7 +4977,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_applimitview_init",
-      "community": 21,
+      "community": 65,
       "norm_label": ".__init__()"
     },
     {
@@ -5007,7 +5007,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_appallowview",
-      "community": 31,
+      "community": 65,
       "norm_label": "appallowview"
     },
     {
@@ -5017,7 +5017,7 @@
       "source_location": "L140",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_appallowview_init",
-      "community": 21,
+      "community": 65,
       "norm_label": ".__init__()"
     },
     {
@@ -5057,7 +5057,7 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_devicelockview_init",
-      "community": 21,
+      "community": 65,
       "norm_label": ".__init__()"
     },
     {
@@ -5097,7 +5097,7 @@
       "source_location": "L230",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_deviceunlockview_init",
-      "community": 21,
+      "community": 65,
       "norm_label": ".__init__()"
     },
     {
@@ -5127,7 +5127,7 @@
       "source_location": "L273",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview",
-      "community": 22,
+      "community": 31,
       "norm_label": "summaryview"
     },
     {
@@ -5137,7 +5137,7 @@
       "source_location": "L276",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview_init",
-      "community": 21,
+      "community": 65,
       "norm_label": ".__init__()"
     },
     {
@@ -5147,7 +5147,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview_lock_device",
-      "community": 22,
+      "community": 31,
       "norm_label": "._lock_device()"
     },
     {
@@ -5157,7 +5157,7 @@
       "source_location": "L318",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_summaryview_lock_device_btn",
-      "community": 22,
+      "community": 31,
       "norm_label": "._lock_device_btn()"
     },
     {
@@ -5227,7 +5227,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_138",
-      "community": 31,
+      "community": 65,
       "norm_label": "button shown after always-allowing an app: remove (blocks it)."
     },
     {
@@ -5287,7 +5287,7 @@
       "source_location": "L274",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_274",
-      "community": 22,
+      "community": 31,
       "norm_label": "buttons on the daily summary embed: lock device."
     },
     {
@@ -5297,7 +5297,7 @@
       "source_location": "L294",
       "_origin": "ast",
       "id": "src_familylink_server_bot_views_rationale_294",
-      "community": 22,
+      "community": 31,
       "norm_label": "handle lock device button press."
     },
     {
@@ -5407,7 +5407,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_constants",
-      "community": 65,
+      "community": 9,
       "norm_label": "constants.py"
     },
     {
@@ -5417,7 +5417,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_constants_rationale_1",
-      "community": 65,
+      "community": 9,
       "norm_label": "shared constants for the familylink server."
     },
     {
@@ -5627,7 +5627,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config",
-      "community": 94,
+      "community": 10,
       "norm_label": "app_config.py"
     },
     {
@@ -5637,7 +5637,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_get_or_create_app_config",
-      "community": 94,
+      "community": 10,
       "norm_label": "get_or_create_app_config()"
     },
     {
@@ -5647,7 +5647,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_py_asyncsession",
-      "community": 94,
+      "community": 10,
       "norm_label": "asyncsession"
     },
     {
@@ -5657,7 +5657,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_rationale_1",
-      "community": 94,
+      "community": 10,
       "norm_label": "shared appconfig get-or-create helper."
     },
     {
@@ -5667,7 +5667,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_familylink_server_db_app_config_rationale_19",
-      "community": 94,
+      "community": 10,
       "norm_label": "get the appconfig row for (child_id, package_name), creating it if absent."
     },
     {
@@ -5797,7 +5797,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_models",
-      "community": 77,
+      "community": 168,
       "norm_label": "models.py"
     },
     {
@@ -5807,7 +5807,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_base",
-      "community": 77,
+      "community": 168,
       "norm_label": "base"
     },
     {
@@ -5817,7 +5817,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "declarativebase",
-      "community": 77,
+      "community": 168,
       "norm_label": "declarativebase"
     },
     {
@@ -5837,7 +5837,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_usagesnapshot",
-      "community": 77,
+      "community": 168,
       "norm_label": "usagesnapshot"
     },
     {
@@ -5847,7 +5847,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_devicesnapshot",
-      "community": 77,
+      "community": 168,
       "norm_label": "devicesnapshot"
     },
     {
@@ -5857,7 +5857,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_auditlog",
-      "community": 9,
+      "community": 168,
       "norm_label": "auditlog"
     },
     {
@@ -5877,7 +5877,7 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_linuxmachine_init",
-      "community": 77,
+      "community": 167,
       "norm_label": ".__init__()"
     },
     {
@@ -5887,7 +5887,7 @@
       "source_location": "L127",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_linuxusagesnapshot",
-      "community": 15,
+      "community": 167,
       "norm_label": "linuxusagesnapshot"
     },
     {
@@ -5897,7 +5897,7 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_linuxusagesnapshot_init",
-      "community": 77,
+      "community": 167,
       "norm_label": ".__init__()"
     },
     {
@@ -5927,7 +5927,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_1",
-      "community": 77,
+      "community": 168,
       "norm_label": "sqlalchemy orm models."
     },
     {
@@ -5937,7 +5937,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_21",
-      "community": 77,
+      "community": 168,
       "norm_label": "sqlalchemy declarative base for all orm models."
     },
     {
@@ -5957,7 +5957,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_51",
-      "community": 77,
+      "community": 168,
       "norm_label": "snapshot of app usage on a specific date."
     },
     {
@@ -5967,7 +5967,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_65",
-      "community": 77,
+      "community": 168,
       "norm_label": "snapshot of device state and metadata."
     },
     {
@@ -5977,7 +5977,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_79",
-      "community": 9,
+      "community": 168,
       "norm_label": "audit trail of administrative actions on child accounts."
     },
     {
@@ -5997,7 +5997,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_117",
-      "community": 77,
+      "community": 167,
       "norm_label": "initialise with python-level defaults for optional columns."
     },
     {
@@ -6007,7 +6007,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_128",
-      "community": 15,
+      "community": 167,
       "norm_label": "daily active-session accumulator for a linux machine."
     },
     {
@@ -6017,7 +6017,7 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "src_familylink_server_db_models_rationale_151",
-      "community": 77,
+      "community": 167,
       "norm_label": "initialise with python-level defaults for optional columns."
     },
     {
@@ -6047,7 +6047,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_session",
-      "community": 37,
+      "community": 8,
       "norm_label": "session.py"
     },
     {
@@ -6087,7 +6087,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_db_session_rationale_1",
-      "community": 37,
+      "community": 8,
       "norm_label": "async sqlalchemy session factory."
     },
     {
@@ -6677,7 +6677,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices",
-      "community": 65,
+      "community": 9,
       "norm_label": "devices.py"
     },
     {
@@ -6687,7 +6687,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_child_name",
-      "community": 65,
+      "community": 9,
       "norm_label": "_child_name()"
     },
     {
@@ -6697,7 +6697,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_devices_page",
-      "community": 65,
+      "community": 9,
       "norm_label": "devices_page()"
     },
     {
@@ -6707,7 +6707,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_py_request",
-      "community": 65,
+      "community": 9,
       "norm_label": "request"
     },
     {
@@ -6717,7 +6717,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_py_htmlresponse",
-      "community": 65,
+      "community": 9,
       "norm_label": "htmlresponse"
     },
     {
@@ -6727,7 +6727,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_lock_device",
-      "community": 65,
+      "community": 9,
       "norm_label": "lock_device()"
     },
     {
@@ -6737,7 +6737,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_py_asyncsession",
-      "community": 65,
+      "community": 9,
       "norm_label": "asyncsession"
     },
     {
@@ -6747,7 +6747,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_unlock_device",
-      "community": 65,
+      "community": 9,
       "norm_label": "unlock_device()"
     },
     {
@@ -6757,7 +6757,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_1",
-      "community": 65,
+      "community": 9,
       "norm_label": "router for the /devices html page and htmx lock/unlock endpoints."
     },
     {
@@ -6767,7 +6767,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_35",
-      "community": 65,
+      "community": 9,
       "norm_label": "render the devices page listing supervised devices grouped by kid."
     },
     {
@@ -6777,7 +6777,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_77",
-      "community": 65,
+      "community": 9,
       "norm_label": "lock a device and return the updated device card partial."
     },
     {
@@ -6787,7 +6787,7 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "src_familylink_server_routers_devices_rationale_115",
-      "community": 65,
+      "community": 9,
       "norm_label": "unlock a device and return the updated device card partial."
     },
     {
@@ -6797,7 +6797,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history",
-      "community": 6,
+      "community": 172,
       "norm_label": "history.py"
     },
     {
@@ -6807,7 +6807,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_history_page",
-      "community": 6,
+      "community": 172,
       "norm_label": "history_page()"
     },
     {
@@ -6817,7 +6817,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_py_request",
-      "community": 6,
+      "community": 172,
       "norm_label": "request"
     },
     {
@@ -6827,7 +6827,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_py_asyncsession",
-      "community": 6,
+      "community": 172,
       "norm_label": "asyncsession"
     },
     {
@@ -6837,7 +6837,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_py_htmlresponse",
-      "community": 6,
+      "community": 172,
       "norm_label": "htmlresponse"
     },
     {
@@ -6847,7 +6847,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_rationale_1",
-      "community": 6,
+      "community": 172,
       "norm_label": "router for the /history audit log page."
     },
     {
@@ -6857,7 +6857,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_familylink_server_routers_history_rationale_28",
-      "community": 6,
+      "community": 172,
       "norm_label": "render the audit log history page with infinite-scroll pagination."
     },
     {
@@ -7047,7 +7047,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_parse_window",
-      "community": 15,
+      "community": 173,
       "norm_label": "_parse_window()"
     },
     {
@@ -7057,7 +7057,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_py_time",
-      "community": 15,
+      "community": 173,
       "norm_label": "time"
     },
     {
@@ -7157,7 +7157,7 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_create_machine",
-      "community": 15,
+      "community": 173,
       "norm_label": "create_machine()"
     },
     {
@@ -7167,7 +7167,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_py_redirectresponse",
-      "community": 15,
+      "community": 173,
       "norm_label": "redirectresponse"
     },
     {
@@ -7277,7 +7277,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_rationale_34",
-      "community": 15,
+      "community": 173,
       "norm_label": "parse 'hh:mm' bedtime-window bounds from form strings.      both must be set or"
     },
     {
@@ -7307,7 +7307,7 @@
       "source_location": "L154",
       "_origin": "ast",
       "id": "src_familylink_server_routers_linux_machines_rationale_154",
-      "community": 15,
+      "community": 173,
       "norm_label": "create a new linux machine record."
     },
     {
@@ -7437,7 +7437,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_usage",
-      "community": 6,
+      "community": 175,
       "norm_label": "usage.py"
     },
     {
@@ -7447,7 +7447,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_familylink_server_routers_usage_get_usage_today",
-      "community": 6,
+      "community": 175,
       "norm_label": "get_usage_today()"
     },
     {
@@ -7457,7 +7457,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_familylink_server_routers_usage_py_asyncsession",
-      "community": 6,
+      "community": 175,
       "norm_label": "asyncsession"
     },
     {
@@ -7467,7 +7467,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_routers_usage_rationale_1",
-      "community": 6,
+      "community": 175,
       "norm_label": "router for the /api/usage/today endpoint."
     },
     {
@@ -7477,7 +7477,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_familylink_server_routers_usage_rationale_20",
-      "community": 6,
+      "community": 175,
       "norm_label": "return the top-10 apps by usage seconds for today."
     },
     {
@@ -7637,7 +7637,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_familylink_server_services_discord_notifier_discordnotifier",
-      "community": 21,
+      "community": 65,
       "norm_label": "discordnotifier"
     },
     {
@@ -7647,7 +7647,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_familylink_server_services_discord_notifier_discordnotifier_init",
-      "community": 21,
+      "community": 65,
       "norm_label": ".__init__()"
     },
     {
@@ -7657,7 +7657,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_familylink_server_services_discord_notifier_discordnotifier_set_channel",
-      "community": 21,
+      "community": 65,
       "norm_label": ".set_channel()"
     },
     {
@@ -7667,7 +7667,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "textchannel",
-      "community": 21,
+      "community": 65,
       "norm_label": "textchannel"
     },
     {
@@ -7777,7 +7777,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_familylink_server_services_discord_notifier_rationale_79",
-      "community": 21,
+      "community": 65,
       "norm_label": "sends embeds to a configured discord channel."
     },
     {
@@ -7787,7 +7787,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "src_familylink_server_services_discord_notifier_rationale_86",
-      "community": 21,
+      "community": 65,
       "norm_label": "called by the bot's on_ready once the channel is resolved."
     },
     {
@@ -7867,7 +7867,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice",
-      "community": 9,
+      "community": 65,
       "norm_label": "familylinkservice"
     },
     {
@@ -7887,7 +7887,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_auth_failed",
-      "community": 9,
+      "community": 65,
       "norm_label": ".auth_failed()"
     },
     {
@@ -7897,7 +7897,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_set_auth_failed",
-      "community": 9,
+      "community": 65,
       "norm_label": ".set_auth_failed()"
     },
     {
@@ -7957,7 +7957,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_lock_device",
-      "community": 9,
+      "community": 65,
       "norm_label": ".lock_device()"
     },
     {
@@ -7967,7 +7967,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_unlock_device",
-      "community": 9,
+      "community": 65,
       "norm_label": ".unlock_device()"
     },
     {
@@ -7977,7 +7977,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_set_app_limit",
-      "community": 9,
+      "community": 65,
       "norm_label": ".set_app_limit()"
     },
     {
@@ -7987,7 +7987,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_block_app",
-      "community": 9,
+      "community": 65,
       "norm_label": ".block_app()"
     },
     {
@@ -7997,7 +7997,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_familylinkservice_always_allow_app",
-      "community": 9,
+      "community": 65,
       "norm_label": ".always_allow_app()"
     },
     {
@@ -8037,7 +8037,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_16",
-      "community": 9,
+      "community": 65,
       "norm_label": "wraps the synchronous familylink client for async fastapi use."
     },
     {
@@ -8047,7 +8047,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_27",
-      "community": 9,
+      "community": 65,
       "norm_label": "return true if the last google api call failed due to auth."
     },
     {
@@ -8057,7 +8057,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_31",
-      "community": 9,
+      "community": 65,
       "norm_label": "set or clear the auth-failed flag."
     },
     {
@@ -8097,7 +8097,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_76",
-      "community": 9,
+      "community": 65,
       "norm_label": "lock a supervised device."
     },
     {
@@ -8107,7 +8107,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_82",
-      "community": 9,
+      "community": 65,
       "norm_label": "unlock a supervised device."
     },
     {
@@ -8117,7 +8117,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_90",
-      "community": 9,
+      "community": 65,
       "norm_label": "set a daily usage limit for an app and invalidate the usage cache."
     },
     {
@@ -8127,7 +8127,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_100",
-      "community": 9,
+      "community": 65,
       "norm_label": "block an app and invalidate the usage cache."
     },
     {
@@ -8137,7 +8137,7 @@
       "source_location": "L110",
       "_origin": "ast",
       "id": "src_familylink_server_services_family_link_rationale_110",
-      "community": 9,
+      "community": 65,
       "norm_label": "always-allow an app and invalidate the usage cache."
     },
     {
@@ -8287,7 +8287,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_ssh",
-      "community": 0,
+      "community": 76,
       "norm_label": "linux_ssh.py"
     },
     {
@@ -8297,7 +8297,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_ssh_check_session",
-      "community": 0,
+      "community": 76,
       "norm_label": "check_session()"
     },
     {
@@ -8307,7 +8307,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_ssh_lock_session",
-      "community": 0,
+      "community": 76,
       "norm_label": "lock_session()"
     },
     {
@@ -8317,7 +8317,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_ssh_poweroff_machine",
-      "community": 0,
+      "community": 76,
       "norm_label": "poweroff_machine()"
     },
     {
@@ -8337,7 +8337,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_ssh_rationale_1",
-      "community": 0,
+      "community": 76,
       "norm_label": "ssh helpers for linux machine control."
     },
     {
@@ -8347,7 +8347,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_ssh_rationale_7",
-      "community": 0,
+      "community": 76,
       "norm_label": "return true if a graphical user session is currently active on the machine."
     },
     {
@@ -8357,7 +8357,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_ssh_rationale_37",
-      "community": 0,
+      "community": 76,
       "norm_label": "lock all active sessions on the machine.      args:         hostname: the ssh ho"
     },
     {
@@ -8367,7 +8367,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_familylink_server_services_linux_ssh_rationale_66",
-      "community": 0,
+      "community": 76,
       "norm_label": "power off the machine immediately.      args:         hostname: the ssh host to"
     },
     {
@@ -9057,7 +9057,7 @@
       "source_location": "L207",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_health_check_loop_resets_alert_on_auto_refresh_success",
-      "community": 41,
+      "community": 5,
       "norm_label": "test_health_check_loop_resets_alert_on_auto_refresh_success()"
     },
     {
@@ -9087,7 +9087,7 @@
       "source_location": "L302",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_test_expired_page_shows_novnc_link",
-      "community": 41,
+      "community": 6,
       "norm_label": "test_expired_page_shows_novnc_link()"
     },
     {
@@ -9217,7 +9217,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_auto_refresh_rationale_208",
-      "community": 41,
+      "community": 5,
       "norm_label": "health_check_loop should reset _alert_active when auto-refresh succeeds."
     },
     {
@@ -9407,7 +9407,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_bot_commands_test_app_autocomplete_matches_title_case_insensitive",
-      "community": 10,
+      "community": 174,
       "norm_label": "test_app_autocomplete_matches_title_case_insensitive()"
     },
     {
@@ -9417,7 +9417,7 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_bot_commands_test_app_autocomplete_searches_all_children_when_child_unresolved",
-      "community": 10,
+      "community": 174,
       "norm_label": "test_app_autocomplete_searches_all_children_when_child_unresolved()"
     },
     {
@@ -9687,7 +9687,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_bot_commands_rationale_105",
-      "community": 10,
+      "community": 174,
       "norm_label": "test that app_autocomplete finds an app by partial, case-insensitive title."
     },
     {
@@ -9697,7 +9697,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "users_ferko_development_familylink_client_claude_worktrees_apps_page_eyecandy_tests_server_test_bot_commands_rationale_132",
-      "community": 10,
+      "community": 174,
       "norm_label": "test that app_autocomplete aggregates apps across kids when child isn't picked y"
     },
     {
@@ -10947,7 +10947,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "tests_server_test_db_models_test_device_snapshot_unique_device_id",
-      "community": 77,
+      "community": 25,
       "norm_label": "test_device_snapshot_unique_device_id()"
     },
     {
@@ -10977,7 +10977,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "tests_server_test_db_models_test_linux_usage_snapshot_model_attributes",
-      "community": 25,
+      "community": 167,
       "norm_label": "test_linux_usage_snapshot_model_attributes()"
     },
     {
@@ -10987,7 +10987,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "tests_server_test_db_models_test_linux_usage_snapshot_has_bonus_mins_defaulting_to_zero",
-      "community": 25,
+      "community": 167,
       "norm_label": "test_linux_usage_snapshot_has_bonus_mins_defaulting_to_zero()"
     },
     {
@@ -10997,7 +10997,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "tests_server_test_db_models_test_linux_usage_snapshot_bonus_mins_stores_value",
-      "community": 25,
+      "community": 167,
       "norm_label": "test_linux_usage_snapshot_bonus_mins_stores_value()"
     },
     {
@@ -11007,7 +11007,7 @@
       "source_location": "L165",
       "_origin": "ast",
       "id": "tests_server_test_db_models_test_ekreta_credential_insert_and_read",
-      "community": 25,
+      "community": 1,
       "norm_label": "test_ekreta_credential_insert_and_read()"
     },
     {
@@ -11017,7 +11017,7 @@
       "source_location": "L183",
       "_origin": "ast",
       "id": "tests_server_test_db_models_test_homework_entry_insert_and_read",
-      "community": 25,
+      "community": 1,
       "norm_label": "test_homework_entry_insert_and_read()"
     },
     {
@@ -11087,7 +11087,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "tests_server_test_db_models_rationale_68",
-      "community": 77,
+      "community": 25,
       "norm_label": "test devicesnapshot model with unique constraint on device_id."
     },
     {
@@ -11117,7 +11117,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "tests_server_test_db_models_rationale_118",
-      "community": 25,
+      "community": 167,
       "norm_label": "linuxusagesnapshot has expected columns."
     },
     {
@@ -11127,7 +11127,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "tests_server_test_db_models_rationale_134",
-      "community": 25,
+      "community": 167,
       "norm_label": "linuxusagesnapshot.bonus_mins defaults to 0."
     },
     {
@@ -11137,7 +11137,7 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "tests_server_test_db_models_rationale_149",
-      "community": 25,
+      "community": 167,
       "norm_label": "linuxusagesnapshot.bonus_mins stores an explicit value."
     },
     {
@@ -11147,7 +11147,7 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "tests_server_test_db_models_rationale_166",
-      "community": 25,
+      "community": 1,
       "norm_label": "test ekretacredential model insert and read operations."
     },
     {
@@ -11157,7 +11157,7 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "tests_server_test_db_models_rationale_184",
-      "community": 25,
+      "community": 1,
       "norm_label": "test homeworkentry model insert and read operations."
     },
     {
@@ -12267,7 +12267,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh",
-      "community": 0,
+      "community": 76,
       "norm_label": "test_linux_ssh.py"
     },
     {
@@ -12277,7 +12277,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_make_ssh_mock",
-      "community": 0,
+      "community": 76,
       "norm_label": "_make_ssh_mock()"
     },
     {
@@ -12287,7 +12287,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_test_check_session_returns_true_when_seat_session_active",
-      "community": 0,
+      "community": 76,
       "norm_label": "test_check_session_returns_true_when_seat_session_active()"
     },
     {
@@ -12297,7 +12297,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_test_check_session_returns_false_when_no_seat_session",
-      "community": 0,
+      "community": 76,
       "norm_label": "test_check_session_returns_false_when_no_seat_session()"
     },
     {
@@ -12307,7 +12307,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_test_lock_session_runs_dbus_send",
-      "community": 0,
+      "community": 76,
       "norm_label": "test_lock_session_runs_dbus_send()"
     },
     {
@@ -12317,7 +12317,7 @@
       "source_location": "L84",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_test_poweroff_machine_runs_sudo_systemctl",
-      "community": 0,
+      "community": 76,
       "norm_label": "test_poweroff_machine_runs_sudo_systemctl()"
     },
     {
@@ -12327,7 +12327,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_test_unlock_session_kills_kscreenlocker",
-      "community": 0,
+      "community": 76,
       "norm_label": "test_unlock_session_kills_kscreenlocker()"
     },
     {
@@ -12337,7 +12337,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_rationale_1",
-      "community": 0,
+      "community": 76,
       "norm_label": "tests for ssh helpers in linux_ssh.py."
     },
     {
@@ -12347,7 +12347,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_rationale_15",
-      "community": 0,
+      "community": 76,
       "norm_label": "return (mock_conn, mock_context_manager) for asyncssh.connect."
     },
     {
@@ -12357,7 +12357,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_rationale_26",
-      "community": 0,
+      "community": 76,
       "norm_label": "check_session returns true when a graphical (seat-based) session exists."
     },
     {
@@ -12367,7 +12367,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_rationale_46",
-      "community": 0,
+      "community": 76,
       "norm_label": "check_session returns false when only ssh/system sessions exist (no graphical se"
     },
     {
@@ -12377,7 +12377,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_rationale_66",
-      "community": 0,
+      "community": 76,
       "norm_label": "lock_session uses dbus-send via session bus (loginctl lock-sessions fails on baz"
     },
     {
@@ -12387,7 +12387,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_rationale_85",
-      "community": 0,
+      "community": 76,
       "norm_label": "poweroff_machine issues sudo systemctl poweroff over ssh."
     },
     {
@@ -12397,7 +12397,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "tests_server_test_linux_ssh_rationale_104",
-      "community": 0,
+      "community": 76,
       "norm_label": "unlock_session kills the kde screen locker process (loginctl unlock-sessions fai"
     },
     {
@@ -12627,7 +12627,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_test_set_limit_returns_partial",
-      "community": 54,
+      "community": 14,
       "norm_label": "test_set_limit_returns_partial()"
     },
     {
@@ -12827,7 +12827,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "tests_server_test_routers_apps_rationale_90",
-      "community": 54,
+      "community": 14,
       "norm_label": "post /apps/{package}/limit calls set_app_limit with int minutes and returns 200."
     },
     {
@@ -13217,7 +13217,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_routers_devices",
-      "community": 37,
+      "community": 54,
       "norm_label": "test_routers_devices.py"
     },
     {
@@ -13227,7 +13227,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "tests_server_test_routers_devices_cookie",
-      "community": 37,
+      "community": 54,
       "norm_label": "_cookie()"
     },
     {
@@ -13237,7 +13237,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "tests_server_test_routers_devices_test_devices_page_returns_200",
-      "community": 37,
+      "community": 54,
       "norm_label": "test_devices_page_returns_200()"
     },
     {
@@ -13247,7 +13247,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "tests_server_test_routers_devices_test_lock_device_returns_partial_html",
-      "community": 37,
+      "community": 54,
       "norm_label": "test_lock_device_returns_partial_html()"
     },
     {
@@ -13257,7 +13257,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_routers_devices_rationale_1",
-      "community": 37,
+      "community": 54,
       "norm_label": "tests for the /devices router and htmx lock/unlock endpoints."
     },
     {
@@ -13267,7 +13267,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "tests_server_test_routers_devices_rationale_18",
-      "community": 37,
+      "community": 54,
       "norm_label": "get /devices with a valid session returns 200 and device names."
     },
     {
@@ -13277,7 +13277,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "tests_server_test_routers_devices_rationale_53",
-      "community": 37,
+      "community": 54,
       "norm_label": "post /devices/{id}/lock returns an html partial containing 'locked'."
     },
     {
@@ -13287,7 +13287,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord",
-      "community": 76,
+      "community": 9,
       "norm_label": "test_routers_discord.py"
     },
     {
@@ -13297,7 +13297,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_block_app_notifies_discord",
-      "community": 76,
+      "community": 9,
       "norm_label": "test_block_app_notifies_discord()"
     },
     {
@@ -13307,7 +13307,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_lock_device_notifies_discord",
-      "community": 76,
+      "community": 9,
       "norm_label": "test_lock_device_notifies_discord()"
     },
     {
@@ -13317,7 +13317,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_set_limit_notifies_discord",
-      "community": 76,
+      "community": 9,
       "norm_label": "test_set_limit_notifies_discord()"
     },
     {
@@ -13327,7 +13327,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_unlock_device_notifies_discord",
-      "community": 76,
+      "community": 9,
       "norm_label": "test_unlock_device_notifies_discord()"
     },
     {
@@ -13337,7 +13337,7 @@
       "source_location": "L154",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_test_no_notify_when_notifier_is_none",
-      "community": 76,
+      "community": 9,
       "norm_label": "test_no_notify_when_notifier_is_none()"
     },
     {
@@ -13347,7 +13347,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_1",
-      "community": 76,
+      "community": 9,
       "norm_label": "tests that routers call discordnotifier after writes."
     },
     {
@@ -13357,7 +13357,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_7",
-      "community": 76,
+      "community": 9,
       "norm_label": "post /apps/{package}/block should call discordnotifier.notify_change."
     },
     {
@@ -13367,7 +13367,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_44",
-      "community": 76,
+      "community": 9,
       "norm_label": "post /devices/{device_id}/lock should call discordnotifier.notify_change."
     },
     {
@@ -13377,7 +13377,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_79",
-      "community": 76,
+      "community": 9,
       "norm_label": "post /apps/{package}/limit should call discordnotifier.notify_change."
     },
     {
@@ -13387,7 +13387,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_118",
-      "community": 76,
+      "community": 9,
       "norm_label": "post /devices/{device_id}/unlock should call discordnotifier.notify_change."
     },
     {
@@ -13397,7 +13397,7 @@
       "source_location": "L155",
       "_origin": "ast",
       "id": "tests_server_test_routers_discord_rationale_155",
-      "community": 76,
+      "community": 9,
       "norm_label": "router writes should complete without error when get_notifier returns none."
     },
     {
@@ -13601,10 +13601,30 @@
       "norm_label": "test_create_machine_redirects()"
     },
     {
-      "label": "test_create_machine_parses_window_times()",
+      "label": "test_linux_machines_page_shows_bedtime_window()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
       "source_location": "L97",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_bedtime_window",
+      "community": 11,
+      "norm_label": "test_linux_machines_page_shows_bedtime_window()"
+    },
+    {
+      "label": "test_linux_machines_page_shows_no_bedtime_window_when_unset()",
+      "file_type": "code",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L130",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_no_bedtime_window_when_unset",
+      "community": 11,
+      "norm_label": "test_linux_machines_page_shows_no_bedtime_window_when_unset()"
+    },
+    {
+      "label": "test_create_machine_parses_window_times()",
+      "file_type": "code",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L161",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_create_machine_parses_window_times",
       "community": 11,
@@ -13614,7 +13634,7 @@
       "label": "test_create_machine_rejects_one_sided_window()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L133",
+      "source_location": "L197",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_create_machine_rejects_one_sided_window",
       "community": 11,
@@ -13624,7 +13644,7 @@
       "label": "test_update_machine_updates_window_times()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L162",
+      "source_location": "L226",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_update_machine_updates_window_times",
       "community": 11,
@@ -13634,7 +13654,7 @@
       "label": "test_lock_machine_returns_partial_html()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L200",
+      "source_location": "L264",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_lock_machine_returns_partial_html",
       "community": 11,
@@ -13644,7 +13664,7 @@
       "label": "test_poweroff_machine_returns_partial_html()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L236",
+      "source_location": "L300",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_poweroff_machine_returns_partial_html",
       "community": 11,
@@ -13654,7 +13674,7 @@
       "label": "test_delete_machine_returns_empty()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L272",
+      "source_location": "L336",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_delete_machine_returns_empty",
       "community": 11,
@@ -13664,7 +13684,7 @@
       "label": "test_generate_key_returns_key_pair()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L295",
+      "source_location": "L359",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_generate_key_returns_key_pair",
       "community": 11,
@@ -13674,7 +13694,7 @@
       "label": "test_generate_key_requires_auth()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L310",
+      "source_location": "L374",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_generate_key_requires_auth",
       "community": 54,
@@ -13684,7 +13704,7 @@
       "label": "test_bonus_adds_minutes_and_returns_card()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L319",
+      "source_location": "L383",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_bonus_adds_minutes_and_returns_card",
       "community": 11,
@@ -13694,7 +13714,7 @@
       "label": "test_bonus_on_locked_machine_calls_unlock()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L356",
+      "source_location": "L420",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_bonus_on_locked_machine_calls_unlock",
       "community": 11,
@@ -13704,7 +13724,7 @@
       "label": "test_bonus_rejects_zero_minutes()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L413",
+      "source_location": "L477",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_bonus_rejects_zero_minutes",
       "community": 11,
@@ -13714,7 +13734,7 @@
       "label": "test_bonus_rejects_negative_minutes()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L433",
+      "source_location": "L497",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_bonus_rejects_negative_minutes",
       "community": 11,
@@ -13724,7 +13744,7 @@
       "label": "test_bonus_rejects_excessive_minutes()",
       "file_type": "code",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L453",
+      "source_location": "L517",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_test_bonus_rejects_excessive_minutes",
       "community": 11,
@@ -13781,12 +13801,32 @@
       "norm_label": "post /linux-machines creates machine and redirects to list."
     },
     {
-      "label": "POST with window_start_time/window_end_time saves them as datetime.time.",
+      "label": "List page shows 'Bedtime: HH:MM\u2013HH:MM' on a card when the window is set.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
       "source_location": "L98",
       "_origin": "ast",
       "id": "tests_server_test_routers_linux_machines_rationale_98",
+      "community": 11,
+      "norm_label": "list page shows 'bedtime: hh:mm\u2013hh:mm' on a card when the window is set."
+    },
+    {
+      "label": "List page shows 'No bedtime window' on a card when the window is unset.",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L131",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_linux_machines_rationale_131",
+      "community": 11,
+      "norm_label": "list page shows 'no bedtime window' on a card when the window is unset."
+    },
+    {
+      "label": "POST with window_start_time/window_end_time saves them as datetime.time.",
+      "file_type": "rationale",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L162",
+      "_origin": "ast",
+      "id": "tests_server_test_routers_linux_machines_rationale_162",
       "community": 11,
       "norm_label": "post with window_start_time/window_end_time saves them as datetime.time."
     },
@@ -13794,9 +13834,9 @@
       "label": "POST with only window_start_time set (no end) returns 400.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L134",
+      "source_location": "L198",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_134",
+      "id": "tests_server_test_routers_linux_machines_rationale_198",
       "community": 11,
       "norm_label": "post with only window_start_time set (no end) returns 400."
     },
@@ -13804,9 +13844,9 @@
       "label": "POST /edit with window times updates the existing machine object.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L163",
+      "source_location": "L227",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_163",
+      "id": "tests_server_test_routers_linux_machines_rationale_227",
       "community": 11,
       "norm_label": "post /edit with window times updates the existing machine object."
     },
@@ -13814,9 +13854,9 @@
       "label": "POST /linux-machines/{id}/lock returns HTML partial with 'locked'.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L201",
+      "source_location": "L265",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_201",
+      "id": "tests_server_test_routers_linux_machines_rationale_265",
       "community": 11,
       "norm_label": "post /linux-machines/{id}/lock returns html partial with 'locked'."
     },
@@ -13824,9 +13864,9 @@
       "label": "POST /linux-machines/{id}/poweroff returns HTML partial with 'powered'.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L237",
+      "source_location": "L301",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_237",
+      "id": "tests_server_test_routers_linux_machines_rationale_301",
       "community": 11,
       "norm_label": "post /linux-machines/{id}/poweroff returns html partial with 'powered'."
     },
@@ -13834,9 +13874,9 @@
       "label": "DELETE /linux-machines/{id} returns empty 200 for HTMX removal.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L273",
+      "source_location": "L337",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_273",
+      "id": "tests_server_test_routers_linux_machines_rationale_337",
       "community": 11,
       "norm_label": "delete /linux-machines/{id} returns empty 200 for htmx removal."
     },
@@ -13844,9 +13884,9 @@
       "label": "POST /linux-machines/generate-key returns private and public key strings.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L296",
+      "source_location": "L360",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_296",
+      "id": "tests_server_test_routers_linux_machines_rationale_360",
       "community": 11,
       "norm_label": "post /linux-machines/generate-key returns private and public key strings."
     },
@@ -13854,9 +13894,9 @@
       "label": "POST /linux-machines/generate-key without auth returns 401.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L311",
+      "source_location": "L375",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_311",
+      "id": "tests_server_test_routers_linux_machines_rationale_375",
       "community": 54,
       "norm_label": "post /linux-machines/generate-key without auth returns 401."
     },
@@ -13864,9 +13904,9 @@
       "label": "POST /linux-machines/{id}/bonus with minutes=15 returns 200 with card HTML.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L320",
+      "source_location": "L384",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_320",
+      "id": "tests_server_test_routers_linux_machines_rationale_384",
       "community": 11,
       "norm_label": "post /linux-machines/{id}/bonus with minutes=15 returns 200 with card html."
     },
@@ -13874,9 +13914,9 @@
       "label": "POST /bonus on locked machine calls unlock_session and resets locked_at.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L357",
+      "source_location": "L421",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_357",
+      "id": "tests_server_test_routers_linux_machines_rationale_421",
       "community": 11,
       "norm_label": "post /bonus on locked machine calls unlock_session and resets locked_at."
     },
@@ -13884,9 +13924,9 @@
       "label": "POST /bonus with minutes=0 returns 422 validation error.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L414",
+      "source_location": "L478",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_414",
+      "id": "tests_server_test_routers_linux_machines_rationale_478",
       "community": 11,
       "norm_label": "post /bonus with minutes=0 returns 422 validation error."
     },
@@ -13894,9 +13934,9 @@
       "label": "POST /bonus with minutes=-60 returns 422 validation error.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L434",
+      "source_location": "L498",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_434",
+      "id": "tests_server_test_routers_linux_machines_rationale_498",
       "community": 11,
       "norm_label": "post /bonus with minutes=-60 returns 422 validation error."
     },
@@ -13904,9 +13944,9 @@
       "label": "POST /bonus with minutes=999 returns 422 validation error.",
       "file_type": "rationale",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L454",
+      "source_location": "L518",
       "_origin": "ast",
-      "id": "tests_server_test_routers_linux_machines_rationale_454",
+      "id": "tests_server_test_routers_linux_machines_rationale_518",
       "community": 11,
       "norm_label": "post /bonus with minutes=999 returns 422 validation error."
     },
@@ -13937,7 +13977,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "tests_server_test_routers_members_client",
-      "community": 37,
+      "community": 54,
       "norm_label": "client()"
     },
     {
@@ -13977,7 +14017,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "tests_server_test_routers_members_rationale_20",
-      "community": 37,
+      "community": 54,
       "norm_label": "provide a testclient with familylinkservice mocked out."
     },
     {
@@ -21221,17 +21261,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "ekreta-scraper/tests/test_main.py",
-      "source_location": "L4",
-      "weight": 1.0,
-      "source": "ekreta_scraper_tests_test_main",
-      "target": "agents_skills_caveman_compress_scripts_main",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".agents/skills/caveman-compress/scripts/benchmark.py",
@@ -24610,6 +24639,17 @@
       "weight": 1.0,
       "source": "ekreta_scraper_tests_test_main",
       "target": "ekreta_scraper_tests_test_main_test_run_posts_entries_for_each_kid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "ekreta-scraper/tests/test_main.py",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "ekreta_scraper_tests_test_main",
+      "target": "src_familylink_server_main",
       "confidence_score": 1.0
     },
     {
@@ -33963,7 +34003,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L351",
+      "source_location": "L415",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_adds_minutes_and_returns_card",
       "target": "src_familylink_server_db_session_get_session"
@@ -33974,7 +34014,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L408",
+      "source_location": "L472",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_on_locked_machine_calls_unlock",
       "target": "src_familylink_server_db_session_get_session"
@@ -33985,7 +34025,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L469",
+      "source_location": "L533",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_excessive_minutes",
       "target": "src_familylink_server_db_session_get_session"
@@ -33996,7 +34036,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L449",
+      "source_location": "L513",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_negative_minutes",
       "target": "src_familylink_server_db_session_get_session"
@@ -34007,7 +34047,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L429",
+      "source_location": "L493",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_zero_minutes",
       "target": "src_familylink_server_db_session_get_session"
@@ -34018,7 +34058,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L126",
+      "source_location": "L190",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_parses_window_times",
       "target": "src_familylink_server_db_session_get_session"
@@ -34040,7 +34080,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L158",
+      "source_location": "L222",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_rejects_one_sided_window",
       "target": "src_familylink_server_db_session_get_session"
@@ -34051,7 +34091,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L290",
+      "source_location": "L354",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_delete_machine_returns_empty",
       "target": "src_familylink_server_db_session_get_session"
@@ -34073,7 +34113,29 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L231",
+      "source_location": "L125",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_bedtime_window",
+      "target": "src_familylink_server_db_session_get_session"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L156",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_no_bedtime_window_when_unset",
+      "target": "src_familylink_server_db_session_get_session"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L295",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_lock_machine_returns_partial_html",
       "target": "src_familylink_server_db_session_get_session"
@@ -34084,7 +34146,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L267",
+      "source_location": "L331",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_poweroff_machine_returns_partial_html",
       "target": "src_familylink_server_db_session_get_session"
@@ -34095,7 +34157,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L194",
+      "source_location": "L258",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_update_machine_updates_window_times",
       "target": "src_familylink_server_db_session_get_session"
@@ -38542,7 +38604,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L350",
+      "source_location": "L414",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_adds_minutes_and_returns_card",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -38553,7 +38615,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L407",
+      "source_location": "L471",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_on_locked_machine_calls_unlock",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -38564,7 +38626,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L468",
+      "source_location": "L532",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_excessive_minutes",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -38575,7 +38637,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L448",
+      "source_location": "L512",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_negative_minutes",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -38586,7 +38648,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L428",
+      "source_location": "L492",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_zero_minutes",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -38597,7 +38659,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L125",
+      "source_location": "L189",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_parses_window_times",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -38619,7 +38681,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L157",
+      "source_location": "L221",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_rejects_one_sided_window",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -38630,7 +38692,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L289",
+      "source_location": "L353",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_delete_machine_returns_empty",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -38652,7 +38714,29 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L230",
+      "source_location": "L124",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_bedtime_window",
+      "target": "src_familylink_server_services_family_link_get_service"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L155",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_no_bedtime_window_when_unset",
+      "target": "src_familylink_server_services_family_link_get_service"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L294",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_lock_machine_returns_partial_html",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -38663,7 +38747,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L266",
+      "source_location": "L330",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_poweroff_machine_returns_partial_html",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -38674,7 +38758,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L193",
+      "source_location": "L257",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_update_machine_updates_window_times",
       "target": "src_familylink_server_services_family_link_get_service"
@@ -40734,7 +40818,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L340",
+      "source_location": "L404",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_adds_minutes_and_returns_card",
       "target": "tests_server_test_auth_app"
@@ -40745,7 +40829,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L397",
+      "source_location": "L461",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_on_locked_machine_calls_unlock",
       "target": "tests_server_test_auth_app"
@@ -40756,7 +40840,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L461",
+      "source_location": "L525",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_excessive_minutes",
       "target": "tests_server_test_auth_app"
@@ -40767,7 +40851,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L441",
+      "source_location": "L505",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_negative_minutes",
       "target": "tests_server_test_auth_app"
@@ -40778,7 +40862,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L421",
+      "source_location": "L485",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_zero_minutes",
       "target": "tests_server_test_auth_app"
@@ -40789,7 +40873,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L108",
+      "source_location": "L172",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_parses_window_times",
       "target": "tests_server_test_auth_app"
@@ -40811,7 +40895,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L141",
+      "source_location": "L205",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_rejects_one_sided_window",
       "target": "tests_server_test_auth_app"
@@ -40822,7 +40906,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L283",
+      "source_location": "L347",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_delete_machine_returns_empty",
       "target": "tests_server_test_auth_app"
@@ -40833,7 +40917,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L314",
+      "source_location": "L378",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_generate_key_requires_auth",
       "target": "tests_server_test_auth_app"
@@ -40844,7 +40928,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L299",
+      "source_location": "L363",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_generate_key_returns_key_pair",
       "target": "tests_server_test_auth_app"
@@ -40877,7 +40961,29 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L221",
+      "source_location": "L121",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_bedtime_window",
+      "target": "tests_server_test_auth_app"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L152",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_no_bedtime_window_when_unset",
+      "target": "tests_server_test_auth_app"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L285",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_lock_machine_returns_partial_html",
       "target": "tests_server_test_auth_app"
@@ -40888,7 +40994,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L257",
+      "source_location": "L321",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_poweroff_machine_returns_partial_html",
       "target": "tests_server_test_auth_app"
@@ -40899,7 +41005,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L177",
+      "source_location": "L241",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_update_machine_updates_window_times",
       "target": "tests_server_test_auth_app"
@@ -47627,7 +47733,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L319",
+      "source_location": "L383",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_bonus_adds_minutes_and_returns_card",
@@ -47637,7 +47743,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L356",
+      "source_location": "L420",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_bonus_on_locked_machine_calls_unlock",
@@ -47647,7 +47753,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L453",
+      "source_location": "L517",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_bonus_rejects_excessive_minutes",
@@ -47657,7 +47763,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L433",
+      "source_location": "L497",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_bonus_rejects_negative_minutes",
@@ -47667,7 +47773,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L413",
+      "source_location": "L477",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_bonus_rejects_zero_minutes",
@@ -47677,7 +47783,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L97",
+      "source_location": "L161",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_create_machine_parses_window_times",
@@ -47697,7 +47803,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L133",
+      "source_location": "L197",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_create_machine_rejects_one_sided_window",
@@ -47707,7 +47813,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L272",
+      "source_location": "L336",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_delete_machine_returns_empty",
@@ -47717,7 +47823,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L310",
+      "source_location": "L374",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_generate_key_requires_auth",
@@ -47727,7 +47833,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L295",
+      "source_location": "L359",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_generate_key_returns_key_pair",
@@ -47757,7 +47863,27 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L200",
+      "source_location": "L97",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines",
+      "target": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_bedtime_window",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L130",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines",
+      "target": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_no_bedtime_window_when_unset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L264",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_lock_machine_returns_partial_html",
@@ -47767,7 +47893,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L236",
+      "source_location": "L300",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_poweroff_machine_returns_partial_html",
@@ -47777,7 +47903,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L162",
+      "source_location": "L226",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines",
       "target": "tests_server_test_routers_linux_machines_test_update_machine_updates_window_times",
@@ -47798,7 +47924,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L347",
+      "source_location": "L411",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_adds_minutes_and_returns_card",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47809,7 +47935,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L404",
+      "source_location": "L468",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_on_locked_machine_calls_unlock",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47820,7 +47946,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L465",
+      "source_location": "L529",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_excessive_minutes",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47831,7 +47957,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L445",
+      "source_location": "L509",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_negative_minutes",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47842,7 +47968,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L425",
+      "source_location": "L489",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_zero_minutes",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47853,7 +47979,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L122",
+      "source_location": "L186",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_parses_window_times",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47875,7 +48001,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L154",
+      "source_location": "L218",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_rejects_one_sided_window",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47886,7 +48012,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L286",
+      "source_location": "L350",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_delete_machine_returns_empty",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47897,7 +48023,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L302",
+      "source_location": "L366",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_generate_key_returns_key_pair",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47919,7 +48045,29 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L227",
+      "source_location": "L122",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_bedtime_window",
+      "target": "tests_server_test_routers_linux_machines_cookie",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L153",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_no_bedtime_window_when_unset",
+      "target": "tests_server_test_routers_linux_machines_cookie",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L291",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_lock_machine_returns_partial_html",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47930,7 +48078,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L263",
+      "source_location": "L327",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_poweroff_machine_returns_partial_html",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47941,7 +48089,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L190",
+      "source_location": "L254",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_update_machine_updates_window_times",
       "target": "tests_server_test_routers_linux_machines_cookie",
@@ -47952,7 +48100,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L337",
+      "source_location": "L401",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_adds_minutes_and_returns_card",
       "target": "tests_server_test_routers_linux_machines_mock_svc",
@@ -47963,7 +48111,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L394",
+      "source_location": "L458",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_on_locked_machine_calls_unlock",
       "target": "tests_server_test_routers_linux_machines_mock_svc",
@@ -47974,7 +48122,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L458",
+      "source_location": "L522",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_excessive_minutes",
       "target": "tests_server_test_routers_linux_machines_mock_svc",
@@ -47985,7 +48133,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L438",
+      "source_location": "L502",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_negative_minutes",
       "target": "tests_server_test_routers_linux_machines_mock_svc",
@@ -47996,7 +48144,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L418",
+      "source_location": "L482",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_zero_minutes",
       "target": "tests_server_test_routers_linux_machines_mock_svc",
@@ -48007,7 +48155,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L104",
+      "source_location": "L168",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_parses_window_times",
       "target": "tests_server_test_routers_linux_machines_mock_svc",
@@ -48029,7 +48177,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L138",
+      "source_location": "L202",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_rejects_one_sided_window",
       "target": "tests_server_test_routers_linux_machines_mock_svc",
@@ -48040,7 +48188,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L280",
+      "source_location": "L344",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_delete_machine_returns_empty",
       "target": "tests_server_test_routers_linux_machines_mock_svc",
@@ -48062,7 +48210,29 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L218",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_bedtime_window",
+      "target": "tests_server_test_routers_linux_machines_mock_svc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L147",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_no_bedtime_window_when_unset",
+      "target": "tests_server_test_routers_linux_machines_mock_svc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L282",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_lock_machine_returns_partial_html",
       "target": "tests_server_test_routers_linux_machines_mock_svc",
@@ -48073,7 +48243,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L254",
+      "source_location": "L318",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_poweroff_machine_returns_partial_html",
       "target": "tests_server_test_routers_linux_machines_mock_svc",
@@ -48084,7 +48254,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L174",
+      "source_location": "L238",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_update_machine_updates_window_times",
       "target": "tests_server_test_routers_linux_machines_mock_svc",
@@ -48105,7 +48275,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L338",
+      "source_location": "L402",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_adds_minutes_and_returns_card",
       "target": "tests_server_test_routers_linux_machines_mock_session",
@@ -48116,7 +48286,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L459",
+      "source_location": "L523",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_excessive_minutes",
       "target": "tests_server_test_routers_linux_machines_mock_session",
@@ -48127,7 +48297,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L439",
+      "source_location": "L503",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_negative_minutes",
       "target": "tests_server_test_routers_linux_machines_mock_session",
@@ -48138,7 +48308,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L419",
+      "source_location": "L483",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_bonus_rejects_zero_minutes",
       "target": "tests_server_test_routers_linux_machines_mock_session",
@@ -48149,7 +48319,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L105",
+      "source_location": "L169",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_parses_window_times",
       "target": "tests_server_test_routers_linux_machines_mock_session",
@@ -48171,7 +48341,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L139",
+      "source_location": "L203",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_create_machine_rejects_one_sided_window",
       "target": "tests_server_test_routers_linux_machines_mock_session",
@@ -48182,7 +48352,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L281",
+      "source_location": "L345",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_delete_machine_returns_empty",
       "target": "tests_server_test_routers_linux_machines_mock_session",
@@ -48204,7 +48374,29 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L219",
+      "source_location": "L117",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_bedtime_window",
+      "target": "tests_server_test_routers_linux_machines_mock_session",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L148",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_no_bedtime_window_when_unset",
+      "target": "tests_server_test_routers_linux_machines_mock_session",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L283",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_lock_machine_returns_partial_html",
       "target": "tests_server_test_routers_linux_machines_mock_session",
@@ -48215,7 +48407,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L255",
+      "source_location": "L319",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_poweroff_machine_returns_partial_html",
       "target": "tests_server_test_routers_linux_machines_mock_session",
@@ -48226,7 +48418,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L175",
+      "source_location": "L239",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_test_update_machine_updates_window_times",
       "target": "tests_server_test_routers_linux_machines_mock_session",
@@ -48269,6 +48461,26 @@
       "source_location": "L98",
       "weight": 1.0,
       "source": "tests_server_test_routers_linux_machines_rationale_98",
+      "target": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_bedtime_window",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L131",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_rationale_131",
+      "target": "tests_server_test_routers_linux_machines_test_linux_machines_page_shows_no_bedtime_window_when_unset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/server/test_routers_linux_machines.py",
+      "source_location": "L162",
+      "weight": 1.0,
+      "source": "tests_server_test_routers_linux_machines_rationale_162",
       "target": "tests_server_test_routers_linux_machines_test_create_machine_parses_window_times",
       "confidence_score": 1.0
     },
@@ -48276,9 +48488,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L134",
+      "source_location": "L198",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_134",
+      "source": "tests_server_test_routers_linux_machines_rationale_198",
       "target": "tests_server_test_routers_linux_machines_test_create_machine_rejects_one_sided_window",
       "confidence_score": 1.0
     },
@@ -48286,9 +48498,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L163",
+      "source_location": "L227",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_163",
+      "source": "tests_server_test_routers_linux_machines_rationale_227",
       "target": "tests_server_test_routers_linux_machines_test_update_machine_updates_window_times",
       "confidence_score": 1.0
     },
@@ -48296,9 +48508,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L201",
+      "source_location": "L265",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_201",
+      "source": "tests_server_test_routers_linux_machines_rationale_265",
       "target": "tests_server_test_routers_linux_machines_test_lock_machine_returns_partial_html",
       "confidence_score": 1.0
     },
@@ -48306,9 +48518,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L237",
+      "source_location": "L301",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_237",
+      "source": "tests_server_test_routers_linux_machines_rationale_301",
       "target": "tests_server_test_routers_linux_machines_test_poweroff_machine_returns_partial_html",
       "confidence_score": 1.0
     },
@@ -48316,9 +48528,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L273",
+      "source_location": "L337",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_273",
+      "source": "tests_server_test_routers_linux_machines_rationale_337",
       "target": "tests_server_test_routers_linux_machines_test_delete_machine_returns_empty",
       "confidence_score": 1.0
     },
@@ -48326,9 +48538,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L296",
+      "source_location": "L360",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_296",
+      "source": "tests_server_test_routers_linux_machines_rationale_360",
       "target": "tests_server_test_routers_linux_machines_test_generate_key_returns_key_pair",
       "confidence_score": 1.0
     },
@@ -48336,9 +48548,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L311",
+      "source_location": "L375",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_311",
+      "source": "tests_server_test_routers_linux_machines_rationale_375",
       "target": "tests_server_test_routers_linux_machines_test_generate_key_requires_auth",
       "confidence_score": 1.0
     },
@@ -48346,9 +48558,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L320",
+      "source_location": "L384",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_320",
+      "source": "tests_server_test_routers_linux_machines_rationale_384",
       "target": "tests_server_test_routers_linux_machines_test_bonus_adds_minutes_and_returns_card",
       "confidence_score": 1.0
     },
@@ -48356,9 +48568,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L357",
+      "source_location": "L421",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_357",
+      "source": "tests_server_test_routers_linux_machines_rationale_421",
       "target": "tests_server_test_routers_linux_machines_test_bonus_on_locked_machine_calls_unlock",
       "confidence_score": 1.0
     },
@@ -48366,9 +48578,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L414",
+      "source_location": "L478",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_414",
+      "source": "tests_server_test_routers_linux_machines_rationale_478",
       "target": "tests_server_test_routers_linux_machines_test_bonus_rejects_zero_minutes",
       "confidence_score": 1.0
     },
@@ -48376,9 +48588,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L434",
+      "source_location": "L498",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_434",
+      "source": "tests_server_test_routers_linux_machines_rationale_498",
       "target": "tests_server_test_routers_linux_machines_test_bonus_rejects_negative_minutes",
       "confidence_score": 1.0
     },
@@ -48386,9 +48598,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "tests/server/test_routers_linux_machines.py",
-      "source_location": "L454",
+      "source_location": "L518",
       "weight": 1.0,
-      "source": "tests_server_test_routers_linux_machines_rationale_454",
+      "source": "tests_server_test_routers_linux_machines_rationale_518",
       "target": "tests_server_test_routers_linux_machines_test_bonus_rejects_excessive_minutes",
       "confidence_score": 1.0
     },
@@ -54856,5 +55068,5 @@
       "source_file": "docs/superpowers/specs/2026-06-30-oauth-bearer-auth-resilience-design.md"
     }
   ],
-  "built_at_commit": "a6de84602a38d9c511213e6248c64b2a994768ac"
+  "built_at_commit": "d1d736274d5671bd50b02db78efdc3d519826439"
 }

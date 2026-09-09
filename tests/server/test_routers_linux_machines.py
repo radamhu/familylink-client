@@ -94,6 +94,70 @@ def test_create_machine_redirects():
     assert resp.headers['location'] == '/linux-machines'
 
 
+def test_linux_machines_page_shows_bedtime_window():
+    """List page shows 'Bedtime: HH:MM–HH:MM' on a card when the window is set."""
+    import datetime
+
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    mock_machine = MagicMock()
+    mock_machine.id = 1
+    mock_machine.friendly_name = 'SurielPC'
+    mock_machine.hostname = '192.168.0.127'
+    mock_machine.child_id = 'child1'
+    mock_machine.daily_limit_mins = 180
+    mock_machine.grace_period_mins = 5
+    mock_machine.window_start_time = datetime.time(21, 0)
+    mock_machine.window_end_time = datetime.time(7, 0)
+
+    child = MagicMock(user_id='child1', profile=MagicMock(display_name='Suriel Adam'))
+
+    app.dependency_overrides[get_service] = lambda: _mock_svc([child])
+    app.dependency_overrides[get_session] = lambda: _mock_session(
+        machines=[mock_machine]
+    )
+    try:
+        client = TestClient(app)
+        resp = client.get('/linux-machines', cookies={'fl_session': _cookie()})
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 200
+    assert 'Bedtime: 21:00–07:00' in resp.text
+
+
+def test_linux_machines_page_shows_no_bedtime_window_when_unset():
+    """List page shows 'No bedtime window' on a card when the window is unset."""
+    from familylink_server.main import app
+    from familylink_server.services.family_link import get_service
+
+    mock_machine = MagicMock()
+    mock_machine.id = 1
+    mock_machine.friendly_name = 'SurielPC'
+    mock_machine.hostname = '192.168.0.127'
+    mock_machine.child_id = 'child1'
+    mock_machine.daily_limit_mins = 180
+    mock_machine.grace_period_mins = 5
+    mock_machine.window_start_time = None
+    mock_machine.window_end_time = None
+
+    child = MagicMock(user_id='child1', profile=MagicMock(display_name='Suriel Adam'))
+
+    app.dependency_overrides[get_service] = lambda: _mock_svc([child])
+    app.dependency_overrides[get_session] = lambda: _mock_session(
+        machines=[mock_machine]
+    )
+    try:
+        client = TestClient(app)
+        resp = client.get('/linux-machines', cookies={'fl_session': _cookie()})
+    finally:
+        app.dependency_overrides.pop(get_service, None)
+        app.dependency_overrides.pop(get_session, None)
+    assert resp.status_code == 200
+    assert 'No bedtime window' in resp.text
+
+
 def test_create_machine_parses_window_times():
     """POST with window_start_time/window_end_time saves them as datetime.time."""
     import datetime
