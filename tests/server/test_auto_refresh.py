@@ -22,10 +22,15 @@ def _make_service():
 
 
 def test_cookie_refresher_url_default():
-    """cookie_refresher_url should default to empty string."""
-    from familylink_server.config import settings
+    """cookie_refresher_url should default to empty string.
 
-    assert settings.cookie_refresher_url == ''
+    Builds a fresh Settings(_env_file=None) rather than checking the module
+    singleton — the singleton was already constructed from whatever local
+    .env exists on this machine, which may set a real cookie_refresher_url.
+    """
+    from familylink_server.config import Settings
+
+    assert Settings(_env_file=None).cookie_refresher_url == ''
 
 
 def test_reinit_with_cookies_b64_sets_env():

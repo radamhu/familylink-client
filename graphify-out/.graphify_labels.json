@@ -174,5 +174,9 @@
   "172": "history_page",
   "173": "create_machine",
   "174": "app_autocomplete",
-  "175": "usage.py"
+  "175": "usage.py",
+  "176": "DeviceLockView",
+  "177": "SummaryView",
+  "178": ".set_channel",
+  "179": ".reinit_with_cookies_b64"
 }

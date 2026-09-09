@@ -165,11 +165,14 @@ async def poll_machine(
         if snapshot.locked_at is not None and snapshot.poweroff_at is None:
             # If a bonus was granted after the lock, the kid may now be under the
             # effective limit. Unlock and clear rather than continuing toward poweroff.
-            # Still enforced while in_window regardless of usage — bedtime doesn't
-            # lift just because the daily cap has headroom.
+            # Only applies when a cap is actually configured — with no cap there's
+            # nothing for a bonus to have fixed, so a lock (manual, or otherwise)
+            # must proceed to grace/poweroff like normal. Still enforced while
+            # in_window regardless of usage — bedtime doesn't lift just because
+            # the daily cap has headroom.
             if not in_window and (
-                effective_limit_secs is None
-                or snapshot.active_seconds < effective_limit_secs
+                effective_limit_secs is not None
+                and snapshot.active_seconds < effective_limit_secs
             ):
                 # Best-effort unlock; locked_at must be cleared regardless so the
                 # poller doesn't keep counting elapsed time toward poweroff.
