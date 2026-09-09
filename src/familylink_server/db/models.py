@@ -1,6 +1,6 @@
 """SQLAlchemy ORM models."""
 
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, time
 
 from sqlalchemy import (
     Boolean,
@@ -11,6 +11,7 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
+    Time,
     UniqueConstraint,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -103,6 +104,11 @@ class LinuxMachine(Base):
     daily_limit_mins: Mapped[int | None] = mapped_column(Integer, nullable=True)
     grace_period_mins: Mapped[int] = mapped_column(Integer, default=5)
     enabled: Mapped[bool] = mapped_column(Boolean, default=True)
+    # Overnight (or any) blocked window, e.g. bedtime 21:00-07:00. Naive time-of-day,
+    # UTC-wall-clock convention — same as Settings.discord_summary_time. Both null =
+    # no window enforced; window_start_time > window_end_time means it wraps midnight.
+    window_start_time: Mapped[time | None] = mapped_column(Time(), nullable=True)
+    window_end_time: Mapped[time | None] = mapped_column(Time(), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False
     )
@@ -113,6 +119,8 @@ class LinuxMachine(Base):
         kwargs.setdefault('grace_period_mins', 5)
         kwargs.setdefault('enabled', True)
         kwargs.setdefault('daily_limit_mins', None)
+        kwargs.setdefault('window_start_time', None)
+        kwargs.setdefault('window_end_time', None)
         super().__init__(**kwargs)
 
 

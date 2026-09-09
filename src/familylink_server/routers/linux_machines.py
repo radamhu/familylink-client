@@ -1,7 +1,7 @@
 """Router for /linux-machines CRUD and HTMX action endpoints."""
 
 import logging
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, time
 from pathlib import Path
 
 import asyncssh
@@ -26,6 +26,23 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=['linux_machines'])
 templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / 'templates'))
+
+
+def _parse_window(
+    start_str: str | None, end_str: str | None
+) -> tuple[time | None, time | None]:
+    """Parse 'HH:MM' bedtime-window bounds from form strings.
+
+    Both must be set or both empty — a lone bound has no well-defined window.
+    """
+    start = time.fromisoformat(start_str) if start_str else None
+    end = time.fromisoformat(end_str) if end_str else None
+    if (start is None) != (end is None):
+        raise HTTPException(
+            status_code=400,
+            detail='window_start_time and window_end_time must both be set or both empty',
+        )
+    return start, end
 
 
 async def _get_machine_or_404(machine_id: int, session: AsyncSession) -> LinuxMachine:
@@ -129,10 +146,13 @@ async def create_machine(
     daily_limit_mins: int | None = Form(None),
     grace_period_mins: int = Form(5),
     enabled: bool = Form(False),
+    window_start_time: str | None = Form(None),
+    window_end_time: str | None = Form(None),
     _email: str = require_user,  # type: ignore[assignment]
     session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> RedirectResponse:
     """Create a new Linux machine record."""
+    start, end = _parse_window(window_start_time, window_end_time)
     session.add(
         LinuxMachine(
             friendly_name=friendly_name,
@@ -144,6 +164,8 @@ async def create_machine(
             daily_limit_mins=daily_limit_mins,
             grace_period_mins=grace_period_mins,
             enabled=enabled,
+            window_start_time=start,
+            window_end_time=end,
             created_at=datetime.now(UTC),
         )
     )
@@ -192,10 +214,13 @@ async def update_machine(
     daily_limit_mins: int | None = Form(None),
     grace_period_mins: int = Form(5),
     enabled: bool = Form(False),
+    window_start_time: str | None = Form(None),
+    window_end_time: str | None = Form(None),
     _email: str = require_user,  # type: ignore[assignment]
     session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> RedirectResponse:
     """Update an existing Linux machine record."""
+    start, end = _parse_window(window_start_time, window_end_time)
     machine = await _get_machine_or_404(machine_id, session)
     machine.friendly_name = friendly_name
     machine.child_id = child_id
@@ -207,6 +232,8 @@ async def update_machine(
     machine.daily_limit_mins = daily_limit_mins
     machine.grace_period_mins = grace_period_mins
     machine.enabled = enabled
+    machine.window_start_time = start
+    machine.window_end_time = end
     await session.commit()
     return RedirectResponse('/linux-machines', status_code=303)
 
