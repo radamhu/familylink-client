@@ -160,8 +160,8 @@
     "semantic_hash": "06ea69ab580d0b5ce8ddabd74d4b8a80"
   },
   "src/familylink_server/main.py": {
-    "mtime": 1789024177.7806454,
-    "ast_hash": "707f09121df739f8fe190c9d0ca87ec2",
+    "mtime": 1789026557.6440256,
+    "ast_hash": "769c2215d5dd0bd18f52d11b35b31f5d",
     "semantic_hash": ""
   },
   "src/familylink_server/routers/__init__.py": {
@@ -315,8 +315,8 @@
     "semantic_hash": ""
   },
   "tests/server/test_main.py": {
-    "mtime": 1789024177.792641,
-    "ast_hash": "c458ab78446f5c862eb354f2aa80dd86",
+    "mtime": 1789026543.7595334,
+    "ast_hash": "a6fa31a5efa036d20be9a8d27badc150",
     "semantic_hash": ""
   },
   "tests/server/test_routers_apps.py": {
@@ -415,8 +415,8 @@
     "semantic_hash": "c93b80de6750f50c95924e2f1affe4fd"
   },
   "README.md": {
-    "mtime": 1789024177.641414,
-    "ast_hash": "40095e8e1c5d315fdc0bdc26f26a9857",
+    "mtime": 1789027062.6953971,
+    "ast_hash": "c578eaf9750eeb45aae9c8fcbf34a80a",
     "semantic_hash": ""
   },
   "docker-compose.yml": {
@@ -952,6 +952,11 @@
   "docs/superpowers/plans/2026-09-10-ntfy-notifications.md": {
     "mtime": 1789024580.7505817,
     "ast_hash": "95b4f0d8a9fad1a10430751ccbd8e8d6",
+    "semantic_hash": ""
+  },
+  "scripts/verify_ntfy_topics.py": {
+    "mtime": 1789026942.4484332,
+    "ast_hash": "f0ef87da819d57a312c2e318a8e0c86b",
     "semantic_hash": ""
   }
 }

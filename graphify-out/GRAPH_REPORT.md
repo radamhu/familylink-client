@@ -1,16 +1,16 @@
 # Graph Report - ntfy-notifications  (2026-09-10)
 
 ## Corpus Check
-- 166 files · ~155,159 words
+- 167 files · ~155,842 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2182 nodes · 3203 edges · 224 communities (124 shown, 100 thin omitted)
-- Extraction: 83% EXTRACTED · 17% INFERRED · 0% AMBIGUOUS · INFERRED: 536 edges (avg confidence: 0.77)
+- 2192 nodes · 3222 edges · 228 communities (127 shown, 101 thin omitted)
+- Extraction: 83% EXTRACTED · 17% INFERRED · 0% AMBIGUOUS · INFERRED: 540 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a7ee31dc`
+- Built from commit: `1fa83ca5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -234,9 +234,13 @@
 - [[_COMMUNITY_AsyncSession|AsyncSession]]
 - [[_COMMUNITY_Embed|Embed]]
 - [[_COMMUNITY_datetime|datetime]]
+- [[_COMMUNITY_test_poll_machine_does_not_resend_low_time_warning|test_poll_machine_does_not_resend_low_time_warning]]
+- [[_COMMUNITY_App|App]]
+- [[_COMMUNITY_Birthday|Birthday]]
+- [[_COMMUNITY_UiCustomizations|UiCustomizations]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `app()` - 56 edges
+1. `app()` - 58 edges
 2. `get_service()` - 49 edges
 3. `get_session()` - 45 edges
 4. `FamilyLink` - 40 edges
@@ -250,14 +254,14 @@
 ## Surprising Connections (you probably didn't know these)
 - `Pre-Commit Config` --semantically_similar_to--> `Ruff Lint Workflow`  [INFERRED] [semantically similar]
   .pre-commit-config.yaml → .github/workflows/lint.yml
-- `test_coolify_exits_on_missing_coolify_app_uuid()` --calls--> `_cmd_export_cookies()`  [INFERRED]
-  tests/unit/test_cli_coolify.py → src/familylink/cli.py
-- `test_coolify_exits_on_missing_coolify_token()` --calls--> `_cmd_export_cookies()`  [INFERRED]
-  tests/unit/test_cli_coolify.py → src/familylink/cli.py
 - `test_coolify_exits_on_missing_coolify_url()` --calls--> `_cmd_export_cookies()`  [INFERRED]
   tests/unit/test_cli_coolify.py → src/familylink/cli.py
 - `test_coolify_requires_base64()` --calls--> `_cmd_export_cookies()`  [INFERRED]
   tests/unit/test_cli_coolify.py → src/familylink/cli.py
+- `_make_service()` --calls--> `SessionExpiredError`  [INFERRED]
+  tests/server/test_health_check.py → src/familylink/client.py
+- `client()` --calls--> `FamilyLink`  [INFERRED]
+  tests/unit/test_client.py → src/familylink/client.py
 
 ## Import Cycles
 - 1-file cycle: `src/familylink/client.py -> src/familylink/client.py`
@@ -270,39 +274,39 @@
 - **Linux Machine Control Subsystem** — docs_superpowers_specs_2026_06_25_linux_machine_control_design, concept_linux_poller, src_familylink_server_templates_partials_linux_machine_card [INFERRED 0.95]
 - **Google Auth Resilience + Discord Alerting System** — docs_superpowers_specs_2026_06_30_oauth_bearer_auth_resilience_design, concept_health_check_loop, concept_discord_notifier [EXTRACTED 1.00]
 
-## Communities (224 total, 100 thin omitted)
+## Communities (228 total, 101 thin omitted)
 
 ### Community 0 - "Server Config + DB Session"
-Cohesion: 0.06
-Nodes (72): _in_window(), poll_machine(), poller_loop(), datetime, time, Background asyncio task that polls Linux machines and enforces screen-time limit, Main poll loop — iterates all enabled machines every POLL_INTERVAL seconds., True when `now` falls in [start, end), wrapping past midnight if start > end. (+64 more)
+Cohesion: 0.11
+Nodes (25): _make_machine(), _make_session_ctx(), Build a mock async context manager that returns snapshot from scalar_one_or_none, Active session increments active_seconds by 60., Idle session leaves active_seconds unchanged., lock_session IS called again on every poll when already locked and still over li, poweroff_machine is called after grace_period_mins have elapsed since locked_at., When poweroff_at is set but SSH succeeds, the machine rebooted.      Only powero (+17 more)
 
 ### Community 1 - "Async Services + Linux Poller"
 Cohesion: 0.06
 Nodes (48): get_upcoming_homework(), list_ekreta_credentials(), prune_expired_homework(), AsyncSession, date, Shared homework_entries / ekreta_credentials DB helpers., Return every configured kid's eKRÉTA login., Insert-or-refresh a kid's homework, keyed by (child_id, subject, deadline). (+40 more)
 
 ### Community 2 - "Pydantic Data Models"
-Cohesion: 0.25
-Nodes (11): Enum, str, AdSupportStatus, AlwaysAllowedState, AppSource, AppSupervisionCapability, IAPSupportStatus, Supervision capabilities for an app. (+3 more)
+Cohesion: 0.23
+Nodes (12): Enum, str, AdSupportStatus, AlwaysAllowedState, AppSource, AppSupervisionCapability, IAPSupportStatus, Supervision capabilities for an app. (+4 more)
 
 ### Community 3 - "CLI Commands"
 Cohesion: 0.07
-Nodes (45): AppsGroup, Discord /apps command group., Slash command group: /apps list | limit | block | allow | auto-block | bonus., _make_interaction(), _make_session_ctx(), Tests for bot authorization and child resolution helpers., Test that /apps block calls block_app on the service., Test that /apps limit calls set_app_limit on the service. (+37 more)
+Nodes (47): AppsGroup, Discord /apps command group., Slash command group: /apps list | limit | block | allow | auto-block | bonus., _make_interaction(), _make_session_ctx(), Tests for bot authorization and child resolution helpers., Test that /apps block calls block_app on the service., Test that /apps limit calls set_app_limit on the service. (+39 more)
 
 ### Community 4 - "Discord Bot Embeds"
-Cohesion: 0.09
-Nodes (58): app_enforcer_loop(), enforce_child(), date, Background asyncio task that force-blocks apps Google fails to enforce daily lim, Iterate every child with at least one auto-block-enabled app, every POLL_INTERVA, Sum today's per-package usage, in minutes, from raw usage sessions., Block/restore one child's opted-in apps based on live Google usage vs. limit., _usage_minutes_by_package() (+50 more)
+Cohesion: 0.11
+Nodes (52): app_enforcer_loop(), enforce_child(), date, Background asyncio task that force-blocks apps Google fails to enforce daily lim, Iterate every child with at least one auto-block-enabled app, every POLL_INTERVA, Sum today's per-package usage, in minutes, from raw usage sessions., Block/restore one child's opted-in apps based on live Google usage vs. limit., _usage_minutes_by_package() (+44 more)
 
 ### Community 5 - "Server Lifecycle + Bot Client"
 Cohesion: 0.07
 Nodes (45): benchmark_pair(), count_tokens(), main(), print_table(), main(), print_usage(), backup_dir_for(), build_compress_prompt() (+37 more)
 
 ### Community 6 - "FastAPI Admin Routes"
-Cohesion: 0.13
-Nodes (11): FastAPI, Admin endpoints — protected, for operational management., history_page(), Router for the /history audit log page., Render the audit log history page with infinite-scroll pagination., get_members(), Router for the /api/members endpoint., Return a JSON list of supervised child members. (+3 more)
+Cohesion: 0.05
+Nodes (36): FastAPI, Admin endpoints — protected, for operational management., callback(), login(), logout(), _make_session(), Google OAuth 2.0 login flow and session cookie dependency., FastAPI dependency — returns authenticated user email or raises HTTP 401/403. (+28 more)
 
 ### Community 7 - "App Management Routes"
-Cohesion: 0.06
-Nodes (49): health_check_loop(), _kick_off_background_refresh(), proactive_refresh_loop(), FastAPI application factory., Refresh cookies from the live browser every `interval` seconds.      The Firefox, Fire-and-forget auto-refresh so a live 401 doesn't wait for the next health chec, Return a 503 page with re-export instructions when Google cookies expire., Clear auto-refresh backoff state (also used by tests). (+41 more)
+Cohesion: 0.05
+Nodes (53): health_check_loop(), _kick_off_background_refresh(), proactive_refresh_loop(), HTMLResponse, Request, FastAPI application factory., Refresh cookies from the live browser every `interval` seconds.      The Firefox, Fire-and-forget auto-refresh so a live 401 doesn't wait for the next health chec (+45 more)
 
 ### Community 8 - "Discord Slash Commands"
 Cohesion: 0.06
@@ -310,15 +314,15 @@ Nodes (43): apps_list_embed(), _bar(), change_embed(), daily_summary_embed(), de
 
 ### Community 9 - "Bot Command Tests"
 Cohesion: 0.13
-Nodes (39): get_session(), Get an async database session.      Yields an AsyncSession from the configured e, _cookie(), _mock_session(), _mock_svc(), Tests for /linux-machines router., List page shows 'No bedtime window' on a card when the window is unset., POST with window_start_time/window_end_time saves them as datetime.time. (+31 more)
+Nodes (39): get_service(), FastAPI dependency — returns the singleton., _cookie(), _mock_session(), _mock_svc(), Tests for /linux-machines router., List page shows 'No bedtime window' on a card when the window is unset., POST with window_start_time/window_end_time saves them as datetime.time. (+31 more)
 
 ### Community 10 - "Discord UI Views"
-Cohesion: 0.07
-Nodes (27): _apps_today(), Aggregate today's app usage from sessions; returns (sorted_apps, total_seconds)., Set a daily usage limit., Toggle the auto-block-on-overuse opt-in for an app., Grant bonus minutes to an app, unblocking it immediately if auto-blocked., app_autocomplete(), child_autocomplete(), Shared helpers for bot command modules. (+19 more)
+Cohesion: 0.09
+Nodes (20): _apps_today(), Aggregate today's app usage from sessions; returns (sorted_apps, total_seconds)., Set a daily usage limit., app_autocomplete(), child_autocomplete(), Shared helpers for bot command modules., Autocomplete choices for the optional child parameter., Autocomplete choices for the package parameter, matched by app title. (+12 more)
 
 ### Community 11 - "App Usage Models"
-Cohesion: 0.09
-Nodes (30): BaseModel, AlwaysAllowedAppInfo, ApiHeader, App, AppUsageSession, Birthday, DeviceCapabilityInfo, DeviceDisplayInfo (+22 more)
+Cohesion: 0.11
+Nodes (26): BaseModel, AlwaysAllowedAppInfo, ApiHeader, AppId, AppUsageSession, DeviceCapabilityInfo, DeviceDisplayInfo, DeviceInfo (+18 more)
 
 ### Community 12 - "DevOps + Project Docs"
 Cohesion: 0.67
@@ -329,24 +333,24 @@ Cohesion: 0.16
 Nodes (14): Color-by-index assignment: purple/blue/green/orange/red, Bonus time: bonus_mins column extends daily_limit_mins, apps.html: app list with child switcher and filter nav, base.html: Pico CSS + HTMX layout with nav, dashboard.html: child strip list with expand/collapse JS, devices.html: device card grid page, history.html: audit log with HTMX infinite scroll, linux_machine_form.html: add/edit form with SSH key generation (+6 more)
 
 ### Community 14 - "Discord Apps Command Group"
-Cohesion: 0.14
-Nodes (34): AppConfig, App configuration settings for a child's device usage., _cookie(), _empty_config_session(), _make_app_mock(), _make_member(), _make_usage(), Tests for the /apps router and HTMX limit/block/allow endpoints. (+26 more)
+Cohesion: 0.10
+Nodes (42): AppConfig, App configuration settings for a child's device usage., _cookie(), _empty_config_session(), _make_app_mock(), _make_member(), _make_usage(), Tests for the /apps router and HTMX limit/block/allow endpoints. (+34 more)
 
 ### Community 15 - "API Client Methods"
-Cohesion: 0.09
-Nodes (29): _push_to_coolify(), Convert day range (e.g., 'Mon-Wed' or 'Fri') to list of days, Push FAMILYLINK_COOKIES_B64 to Coolify and optionally restart the app., Unit tests for Coolify push helper in familylink.cli., --coolify without --base64 must exit 1 before touching browser., --restart without --coolify must exit 1 before touching browser., --coolify exits 1 when COOLIFY_URL is absent, before touching browser., --coolify exits 1 when COOLIFY_TOKEN is absent, before touching browser. (+21 more)
+Cohesion: 0.13
+Nodes (22): _push_to_coolify(), Push FAMILYLINK_COOKIES_B64 to Coolify and optionally restart the app., Unit tests for Coolify push helper in familylink.cli., --coolify without --base64 must exit 1 before touching browser., --coolify exits 1 when COOLIFY_URL is absent, before touching browser., PATCH is called with the correct URL, headers, and JSON body., No restart POST request is made when restart=False., Restart POST is called with correct URL when restart=True. (+14 more)
 
 ### Community 16 - "Linux Machine Routes"
-Cohesion: 0.08
-Nodes (19): get_notifier(), init_notifier(), NtfyNotifier, Outbound ntfy push notification service., Sends push notifications to per-kid topics on a (self-hosted) ntfy server., POST a notification for `child_id`. No-op if that kid has no topic mapped., Push a new-homework alert., Push a low-remaining-time warning. (+11 more)
+Cohesion: 0.13
+Nodes (14): Browser, _check_one(), main(), Open the topic's live web view, push a test message, confirm it renders., get_notifier(), init_notifier(), NtfyNotifier, Outbound ntfy push notification service. (+6 more)
 
 ### Community 17 - "Cookie Hot-Reload Tests"
-Cohesion: 0.10
-Nodes (24): post_homework(), Posts scraped homework results back to familylink-server., POST one kid's scraped, not-yet-due homework to familylink-server., main(), Wire together config, api_client, and kreta_client to scrape and post homework., Scrape homework for each kid and POST to the API.      On failure for any kid, l, Launch browser, fetch homework for all kids, and post results to API., run() (+16 more)
+Cohesion: 0.16
+Nodes (17): Fetch the configured kid list from familylink-server's internal API., main(), Wire together config, api_client, and kreta_client to scrape and post homework., Scrape homework for each kid and POST to the API.      On failure for any kid, l, Launch browser, fetch homework for all kids, and post results to API., run(), make_kid(), Tests for the main module's run() and main() functions. (+9 more)
 
 ### Community 18 - "Server Settings"
-Cohesion: 0.07
-Nodes (33): BaseSettings, time, Application settings loaded from environment variables., True when all three required Discord vars are set., Parse HH:MM string into a UTC datetime.time., Parse 'child_id:topic,child_id:topic' into a dict, skipping malformed pairs., Settings, Tests for server configuration. (+25 more)
+Cohesion: 0.08
+Nodes (31): BaseSettings, time, Application settings loaded from environment variables., True when all three required Discord vars are set., Parse HH:MM string into a UTC datetime.time., Parse 'child_id:topic,child_id:topic' into a dict, skipping malformed pairs., Settings, Tests for server configuration. (+23 more)
 
 ### Community 19 - "Cookie Auth Resolution"
 Cohesion: 0.11
@@ -357,28 +361,28 @@ Cohesion: 0.07
 Nodes (26): 503 page update (`main.py`), Architecture, Auth Priority (new), Component Map, Dashboard auth indicator, DB storage, Discord notifier additions (`services/discord_notifier.py`), Fallback B — iOS Shortcut (if PoC fails) (+18 more)
 
 ### Community 21 - "Discord Notification Service"
-Cohesion: 0.22
-Nodes (7): _change_embed(), Post a daily usage summary embed. No-op if channel not yet ready., Build a change-alert embed.  Full embed builder lives in bot.embeds once that mo, Build a daily summary embed., Post a change-alert embed. No-op if channel not yet ready., _summary_embed(), View
+Cohesion: 0.15
+Nodes (22): _make_snapshot(), datetime, time, Tests for the Linux machine poller., Start inclusive, end exclusive, for a same-day window., Start > end wraps past midnight, e.g. bedtime 21:00-07:00., Either bound unset means no window is enforced., A machine inside its bedtime window locks even with no daily cap set. (+14 more)
 
 ### Community 22 - "DB Model Tests"
-Cohesion: 0.15
-Nodes (11): _bot_task_with_restart(), FamilyLinkBot, _linux_rows_for_child(), Discord bot client and restart wrapper., discord.py Bot subclass that wires in FamilyLinkService and DiscordNotifier., Sync command tree, resolve channel, start summary task., Post a daily usage summary embed for each supervised child., Run bot.start() in a restart loop; exits cleanly on CancelledError. (+3 more)
+Cohesion: 0.14
+Nodes (12): lifespan(), Initialize services at startup; shut down cleanly., _bot_task_with_restart(), FamilyLinkBot, Discord bot client and restart wrapper., discord.py Bot subclass that wires in FamilyLinkService and DiscordNotifier., Sync command tree, resolve channel, start summary task., Post a daily usage summary embed for each supervised child. (+4 more)
 
 ### Community 23 - "Dashboard + Constants"
 Cohesion: 0.19
 Nodes (11): Any, Shared constants for the familylink server., child_collapse(), child_detail(), dashboard(), _get_child_data(), Router for the main dashboard page., Render the dashboard with per-child usage summaries. (+3 more)
 
 ### Community 24 - "Discord Notifier Tests"
-Cohesion: 0.14
-Nodes (12): FamilyLink, Get applied time limits for a child (today)., Set daily time limit (minutes) for a device., Disable all time limits for a device (today)., Re-enable previous time limits for a device., Enable downtime for a device (today)., Disable downtime for a device (today)., Client to interact with Google Family Link. (+4 more)
+Cohesion: 0.11
+Nodes (16): Response, FamilyLink, List family members for the authenticated parent., Get apps and usage information for a child., Get time limit for a child., Get applied time limits for a child., Set daily time limit (minutes) for a device., Disable all time limits for a device (today). (+8 more)
 
 ### Community 25 - "API Response Parsers"
-Cohesion: 0.10
-Nodes (19): db_session(), Tests for database models., LinuxUsageSnapshot has expected columns., LinuxUsageSnapshot.bonus_mins defaults to 0., LinuxUsageSnapshot.bonus_mins stores an explicit value., Provide an in-memory SQLite session for testing., Test that HomeworkEntry declares the same composite index as the migration., Test that HomeworkEntry declares the same uniqueness as the migration. (+11 more)
+Cohesion: 0.11
+Nodes (17): db_session(), Tests for database models., Provide an in-memory SQLite session for testing., Test that HomeworkEntry declares the same composite index as the migration., Test that HomeworkEntry declares the same uniqueness as the migration., Test AppConfig.low_time_alerted_date defaults to None., Test AppConfig model insert and read operations., Test DeviceSnapshot model with unique constraint on device_id. (+9 more)
 
 ### Community 26 - "Google OAuth Flow"
 Cohesion: 0.16
-Nodes (24): get_service(), FastAPI dependency — returns the singleton., _cookie(), _fake_session(), Tests for the dashboard (/) and history (/history) routers., Dashboard renders a strip per child with colored avatar and name., GET /children/{child_id}/detail returns the expanded partial with child name and, Return an async generator yielding a mock session. (+16 more)
+Nodes (24): get_session(), Get an async database session.      Yields an AsyncSession from the configured e, _cookie(), _fake_session(), Tests for the dashboard (/) and history (/history) routers., Dashboard renders a strip per child with colored avatar and name., GET /children/{child_id}/detail returns the expanded partial with child name and, Return an async generator yielding a mock session. (+16 more)
 
 ### Community 27 - "FamilyLink Service Tests"
 Cohesion: 0.12
@@ -397,24 +401,20 @@ Cohesion: 0.09
 Nodes (20): Before / After, Benchmarks, How It Work, <img src="../../docs/assets/dancing-rock.svg" width="20" height="20" alt="rock"/> Caveman (285 tokens), Install, 📄 Original (706 tokens), Part of Caveman, Security (+12 more)
 
 ### Community 31 - "Bot UI View Tests"
-Cohesion: 0.09
-Nodes (18): Button, AppAllowView, AppBlockView, AppLimitView, DeviceLockView, Discord UI views (action button rows for embeds)., Handle Undo button press., Button shown after always-allowing an app: Remove (blocks it). (+10 more)
+Cohesion: 0.12
+Nodes (11): Button, Return True when the invoking member has the configured Discord role., require_discord_role(), AppAllowView, Handle Undo button press., Button shown after always-allowing an app: Remove (blocks it)., Handle Remove button press., Handle Unlock button press. (+3 more)
 
 ### Community 32 - "Discord Session Alert Tests"
 Cohesion: 0.10
 Nodes (20): 1. Repository & Package Structure, 2. Database Design (PostgreSQL + Alembic), 3. Authentication, 4. Service Layer, 5. API Routes, 6. Frontend (Jinja2 + HTMX + Pico.css), 7. New Dependencies, 8. What Is NOT Changing (+12 more)
 
 ### Community 33 - "Linux Machine ORM Model"
-Cohesion: 0.05
-Nodes (54): date, fetch_kids(), Kid, load_cron_schedule(), Kid config fetched from familylink-server's internal API., A kid's eKRÉTA credentials and metadata., Fetch the configured kid list from familylink-server's internal API., Load cron schedule from environment or use default. (+46 more)
+Cohesion: 0.15
+Nodes (18): date, KretaClientError, parse_homework_entry(), _parse_hun_date(), Raised when scraping fails for a kid (login, navigation, or no school that day)., Monday=0 .. Friday=4, matching Órarend's fixed 5-column week layout., Extract a Hungarian-locale or ISO date from anywhere in a string.      Matches ", Normalize a raw scraped homework dict into the spec's entry shape. (+10 more)
 
 ### Community 34 - "Linux Usage Snapshot Model"
 Cohesion: 0.10
 Nodes (19): Deleted at the end, eKRÉTA Homework Migration Implementation Plan, `familylink-client/ekreta-scraper/` (new top-level directory, separate runner), `familylink-client` (server side), File Structure, Global Constraints, Task 10: `ekreta-scraper/src/main.py` — post instead of write, Task 11: `ekreta-scraper` Docker packaging (+11 more)
-
-### Community 35 - "API GET Methods"
-Cohesion: 0.17
-Nodes (6): Response, List family members for the authenticated parent., Get apps and usage information for a child., Get time limit for a child., Get applied time limits for a child., Print usage for all family members.
 
 ### Community 36 - "Time Limits + Session Errors"
 Cohesion: 0.10
@@ -425,8 +425,8 @@ Cohesion: 0.10
 Nodes (19): Add / Edit form, Architecture, Data Model, Dependencies, Hard poweroff, HTMX pattern, Linux Machine Control — Design Spec, `linux_machines` (+11 more)
 
 ### Community 38 - "Members Route Tests"
-Cohesion: 0.06
-Nodes (33): CookieJar, Exception, RuntimeError, _build_verified_cookies_b64(), _jar_to_netscape(), NotLoggedInError, _profile_cookie_file(), Sidecar: reads cookies from a persistent, logged-in Firefox profile. (+25 more)
+Cohesion: 0.12
+Nodes (19): CookieJar, Exception, RuntimeError, _build_verified_cookies_b64(), _jar_to_netscape(), NotLoggedInError, _profile_cookie_file(), Sidecar: reads cookies from a persistent, logged-in Firefox profile. (+11 more)
 
 ### Community 39 - "Alembic Migration Env"
 Cohesion: 0.10
@@ -434,7 +434,7 @@ Nodes (19): 1. `firefox` container (config only), 2. `cookie_refresher_app.py` (
 
 ### Community 40 - "Cookie Jar Resolution"
 Cohesion: 0.10
-Nodes (19): Development setup, Docker development, Family Link, Makefile, Prerequisites, Prerequisites, Prerequisites, Quick start (+11 more)
+Nodes (20): Development setup, Docker development, Family Link, Makefile, Prerequisites, Prerequisites, Prerequisites, Quick start (+12 more)
 
 ### Community 41 - "Auth + SAPISIDHASH Generation"
 Cohesion: 0.21
@@ -449,8 +449,8 @@ Cohesion: 0.12
 Nodes (15): `api_client.py` / `main.py`, Dashboard (`dashboard.py`, `child_expanded.html`), Data model change, `db/homework.py`, Deployment, eKRÉTA homework: second source + deadline-based display — design, Error handling, Ingest endpoint (`routers/homework.py`) (+7 more)
 
 ### Community 44 - "Bonus Minutes DB Migration"
-Cohesion: 0.20
-Nodes (15): _apply_config(), _cmd_export_cookies(), _cmd_fetch_config(), _create_default_config(), _get_expected_limits(), _load_config(), main(), _mins_to_hhmm() (+7 more)
+Cohesion: 0.12
+Nodes (22): _apply_config(), _cmd_export_cookies(), _cmd_fetch_config(), _create_default_config(), _get_expected_limits(), _load_config(), main(), _mins_to_hhmm() (+14 more)
 
 ### Community 45 - "Initial DB Schema Migration"
 Cohesion: 0.12
@@ -461,8 +461,8 @@ Cohesion: 0.12
 Nodes (15): mock_client(), Tests for FamilyLinkService singleton with async wrapper and cache-aside., Return a MagicMock that mimics the FamilyLink client., Return a FamilyLinkService bypassing __init__, with TTL=0 (no caching)., get_members should call the client and return its result., get_apps_and_usage should forward child_id to the client., lock_device should call the client with the correct keyword arguments., unlock_device should call the client with the correct keyword arguments. (+7 more)
 
 ### Community 52 - "DB Package Init"
-Cohesion: 0.12
-Nodes (15): mock_init_service(), Tests for the FastAPI application factory., Mock init_service to avoid actual FamilyLink instantiation., FastAPI Swagger UI docs should be available at /docs., OpenAPI schema should be available at /openapi.json., GET /auth/login should redirect to Google OAuth., Lifespan should not create a Discord bot task when Discord vars are absent., GET /linux-machines is registered in the app. (+7 more)
+Cohesion: 0.13
+Nodes (16): fetch_kids(), Kid, load_cron_schedule(), Kid config fetched from familylink-server's internal API., A kid's eKRÉTA credentials and metadata., Load cron schedule from environment or use default., Tests for the config module., Test that fetch_kids raises on HTTP error status. (+8 more)
 
 ### Community 53 - "Server Package Init"
 Cohesion: 0.13
@@ -473,12 +473,12 @@ Cohesion: 0.13
 Nodes (14): eKRÉTA Homework: Second Source + Deadline Display Implementation Plan, `familylink-client/ekreta-scraper/`, `familylink-client` (server side), File Structure, Global Constraints, Task 1: Migration `006` — `deadline` column + identity constraint, Task 2: `HomeworkEntry` model — `deadline` + unique constraint, Task 3: `db/homework.py` — identity-based upsert/prune/query (+6 more)
 
 ### Community 55 - "Cookie Reinit Method"
-Cohesion: 0.13
-Nodes (15): app(), Create a FastAPI test app with the auth router and a protected route., _make_client(), POST /apps/{package}/block calls block_app and returns 200 with partial HTML., POST /apps/{package}/bonus with minutes=-15 returns 400, not applied., POST /apps/{package}/bonus with minutes=45 (not a 15/30/60 preset) returns 400., POST /apps/{package}/limit calls set_app_limit with int minutes and returns 200., test_block_app_returns_partial() (+7 more)
+Cohesion: 0.08
+Nodes (28): mock_init_service(), Tests for the FastAPI application factory., Lifespan should init the ntfy singleton and pass it into both loops., Mock init_service to avoid actual FamilyLink instantiation., No topics configured -> singleton stays unset., FastAPI Swagger UI docs should be available at /docs., OpenAPI schema should be available at /openapi.json., GET /auth/login should redirect to Google OAuth. (+20 more)
 
 ### Community 56 - "Services Package Init"
-Cohesion: 0.16
-Nodes (14): client(), _make_session_cookie(), Tests for Google OAuth login flow and require_user session dependency., Return a TestClient for the test app., A request without a session cookie must be rejected with 401., A request with a valid signed cookie for the owner email must succeed., A valid cookie for a different email must be rejected with 403., GET /auth/login must redirect to accounts.google.com. (+6 more)
+Cohesion: 0.18
+Nodes (15): _column_index(), fetch_homework(), _filter_upcoming(), _login(), _merge_homework_entries(), _open_electronikus_ellenorzokonyv(), Expand the 'Elektronikus ellenőrzőkönyv' menu — click exactly once.      Confirm, Scrape today's homework-icon lessons off the Órarend week view.      Assumes `_o (+7 more)
 
 ### Community 57 - "Test Configuration"
 Cohesion: 0.14
@@ -504,17 +504,21 @@ Nodes (13): Auto-Block Overused Apps — Design Spec, Bonus time (`routers/apps.
 Cohesion: 0.20
 Nodes (12): parse_apps_and_usage(), parse_members_response(), parse_time_limit(), Protobuf-JSON response parsers for the Family Link API., Parse /timeLimit positional list response.      Returns {day_int: {"avail_start", Convert /appsandusage positional list to an AppUsage-compatible dict., Convert /families/mine/members positional list to a MembersResponse-compatible d, test_parse_apps_and_usage_empty_lists() (+4 more)
 
+### Community 65 - "test_cli_coolify.py"
+Cohesion: 0.15
+Nodes (9): notifier(), Tests for NtfyNotifier service., Create a test notifier with one mapped kid., No topic mapped for this child_id -> no HTTP call is made., A failed ntfy push must not raise — it's best-effort., init_notifier should create and return the singleton., test_init_notifier_sets_singleton(), test_send_no_op_for_unmapped_child() (+1 more)
+
 ### Community 66 - "README.md"
-Cohesion: 0.16
-Nodes (7): FamilyLinkService, Wraps the synchronous FamilyLink client for async FastAPI use., Hot-swap the FamilyLink client with a full fresh cookie jar.          Does not c, Return family members, using the cache when still fresh., Return app usage for a child, using the cache when still fresh., Lock a supervised device., Set a daily usage limit for an app and invalidate the usage cache.
+Cohesion: 0.12
+Nodes (9): FamilyLinkService, Block an app and invalidate the usage cache., Always-allow an app and invalidate the usage cache., Wraps the synchronous FamilyLink client for async FastAPI use., Return True if the last Google API call failed due to auth., Hot-swap the FamilyLink client with a full fresh cookie jar.          Does not c, Lock a supervised device., Unlock a supervised device. (+1 more)
 
 ### Community 67 - "Family Link Web Service — Architecture Design"
-Cohesion: 0.14
-Nodes (13): client(), Unit tests for FamilyLink client public API., block_app() POSTs to the apps:updateRestrictions endpoint., always_allow_app() POSTs to the apps:updateRestrictions endpoint., remove_app_limit() POSTs to the apps:updateRestrictions endpoint., FamilyLink client wired to a temp cookie file with no browser/env auth., get_members() parses the raw list response into a MembersResponse., set_app_limit() POSTs to the apps:updateRestrictions endpoint with the right bod (+5 more)
+Cohesion: 0.09
+Nodes (21): Get applied time limits for a child (today)., Google session has expired or been invalidated.      Re-export cookies and updat, SessionExpiredError, test_expired_page_shows_novnc_link(), client(), Unit tests for FamilyLink client public API., block_app() POSTs to the apps:updateRestrictions endpoint., always_allow_app() POSTs to the apps:updateRestrictions endpoint. (+13 more)
 
 ### Community 68 - "get_session"
-Cohesion: 0.18
-Nodes (8): Test that /devices lock calls lock_device on the service., test_devices_lock_calls_service(), DevicesGroup, Discord /devices command group., Slash command group: /devices list | lock | unlock., DeviceUnlockView, Button shown after unlocking a device: Lock., Handle Lock button press.
+Cohesion: 0.11
+Nodes (10): DevicesGroup, Discord /devices command group., Slash command group: /devices list | lock | unlock., AppLimitView, DeviceLockView, DeviceUnlockView, Discord UI views (action button rows for embeds)., Button shown after locking a device: Unlock. (+2 more)
 
 ### Community 69 - "Linux Bonus Time & Dashboard Integration — Design Spec"
 Cohesion: 0.15
@@ -525,20 +529,20 @@ Cohesion: 0.15
 Nodes (12): Architecture, Data flow, Deployment, eKRÉTA homework migration — design, Error handling, New DB tables (Alembic migration, `familylink-client` DB), New router: `src/familylink_server/routers/homework.py`, Non-goals (+4 more)
 
 ### Community 71 - "Discord Bot Integration — Implementation Plan"
-Cohesion: 0.18
-Nodes (9): DiscordNotifier, get_notifier(), init_notifier(), Outbound Discord notification service., Post a session-expired alert. No-op if channel not ready., Post a session-restored confirmation. No-op if channel not ready., Create and store the singleton. Called once in lifespan., Return the singleton, or None when Discord is disabled. (+1 more)
+Cohesion: 0.10
+Nodes (18): TextChannel, _change_embed(), DiscordNotifier, get_notifier(), init_notifier(), Outbound Discord notification service., Post a daily usage summary embed. No-op if channel not yet ready., Post a session-expired alert. No-op if channel not ready. (+10 more)
 
 ### Community 72 - "SKILL.md"
-Cohesion: 0.22
-Nodes (12): _make_interaction(), Tests for Discord UI action views., Unblock button calls always_allow_app and sends a response., Always Allow button calls always_allow_app., Unlock button calls unlock_device., Lock Device button calls lock_device., Unauthorized user gets ephemeral error and service is not called., test_app_block_view_always_allow_calls_service() (+4 more)
+Cohesion: 0.20
+Nodes (14): AppBlockView, Buttons shown after blocking an app: Unblock and Always Allow., _make_interaction(), Tests for Discord UI action views., Unblock button calls always_allow_app and sends a response., Always Allow button calls always_allow_app., Unlock button calls unlock_device., Lock Device button calls lock_device. (+6 more)
 
 ### Community 73 - "Caveman Help"
 Cohesion: 0.17
 Nodes (11): Final verification, Global Constraints, ntfy Kid Notifications Implementation Plan, Task 1: `ntfy_topics` setting, Task 2: `NtfyNotifier` service, Task 3: DB columns for once-per-day low-time alerts, Task 4: Low-time warning in `app_enforcer.py`, Task 5: Low-time warning in `linux_poller.py` (+3 more)
 
 ### Community 74 - "Global Constraints"
-Cohesion: 0.12
-Nodes (16): Application settings loaded from environment variables., Async SQLAlchemy session factory., _cookie(), Tests for the /devices router and HTMX lock/unlock endpoints., GET /devices with a valid session returns 200 and device names., POST /devices/{id}/lock returns an HTML partial containing 'locked'., test_devices_page_returns_200(), test_lock_device_returns_partial_html() (+8 more)
+Cohesion: 0.22
+Nodes (8): Application settings loaded from environment variables., Async SQLAlchemy session factory., _cookie(), Tests for the /devices router and HTMX lock/unlock endpoints., GET /devices with a valid session returns 200 and device names., POST /devices/{id}/lock returns an HTML partial containing 'locked'., test_devices_page_returns_200(), test_lock_device_returns_partial_html()
 
 ### Community 75 - "config.py"
 Cohesion: 0.17
@@ -549,8 +553,8 @@ Cohesion: 0.17
 Nodes (10): caveman, Example output, How to invoke, See also, What it does, Auto-Clarity, Boundaries, Intensity (+2 more)
 
 ### Community 77 - "test_main.py"
-Cohesion: 0.17
-Nodes (9): LinuxMachine, Initialise with Python-level defaults for optional columns., Initialise with Python-level defaults for optional columns., Registered Linux machine managed via SSH., Test LinuxUsageSnapshot.low_time_alerted defaults to False., LinuxMachine has expected columns with correct defaults., test_linux_machine_model_attributes(), test_linux_usage_snapshot_low_time_alerted_defaults_false() (+1 more)
+Cohesion: 0.12
+Nodes (15): LinuxUsageSnapshot, Daily active-session accumulator for a Linux machine., LinuxUsageSnapshot has expected columns., LinuxUsageSnapshot.bonus_mins defaults to 0., LinuxUsageSnapshot.bonus_mins stores an explicit value., Test LinuxUsageSnapshot.low_time_alerted defaults to False., test_linux_usage_snapshot_bonus_mins_stores_value(), test_linux_usage_snapshot_has_bonus_mins_defaulting_to_zero() (+7 more)
 
 ### Community 78 - "Linux Bonus Time Implementation Plan"
 Cohesion: 0.17
@@ -561,8 +565,8 @@ Cohesion: 0.17
 Nodes (11): Architecture, Constraint discovery, Design: Android Bookmarklet SAPISID Relay, Key Implementation Details, Modified Files, New Files, Problem, Scope (+3 more)
 
 ### Community 80 - "SKILL.md"
-Cohesion: 0.20
-Nodes (11): callback(), login(), logout(), _make_session(), Google OAuth 2.0 login flow and session cookie dependency., FastAPI dependency — returns authenticated user email or raises HTTP 401/403., Redirect the browser to Google's OAuth 2.0 authorization page., Handle the OAuth 2.0 callback, set the session cookie, and redirect home. (+3 more)
+Cohesion: 0.26
+Nodes (11): _in_window(), poll_machine(), poller_loop(), datetime, time, Background asyncio task that polls Linux machines and enforces screen-time limit, Main poll loop — iterates all enabled machines every POLL_INTERVAL seconds., True when `now` falls in [start, end), wrapping past midnight if start > end. (+3 more)
 
 ### Community 81 - "caveman-commit"
 Cohesion: 0.17
@@ -636,10 +640,6 @@ Nodes (8): Global Constraints, Persisted-Session Cookie Refresher Implementation
 Cohesion: 0.22
 Nodes (8): CLI changes, Design: Coolify cookie sync for `export-cookies`, Error handling, Execution flow (when `--base64 --coolify [--restart]`), New env vars, New flags, Out of scope, Summary
 
-### Community 99 - "Global Constraints"
-Cohesion: 0.22
-Nodes (9): Google session has expired or been invalidated.      Re-export cookies and updat, SessionExpiredError, MembersResponse, Response from the members API endpoint., test_expired_page_shows_novnc_link(), get_members() raises SessionExpiredError on a 401 response., get_members() raises SessionExpiredError on a 403 response., test_get_members_raises_on_401() (+1 more)
-
 ### Community 100 - "Embed"
 Cohesion: 0.25
 Nodes (7): Family Link Client Refactor — Implementation Plan, Global Constraints, Task 1: Migrate models.py to Pydantic v2, Task 2: Extract parsers.py, Task 3: Extract CookieResolver to auth.py, Task 4: Slim down client.py, Task 5: Discover and implement missing app management methods
@@ -685,8 +685,8 @@ Cohesion: 0.33
 Nodes (5): Global Constraints, Linux Machines: Persistent SSH Key Pair Generation, Self-Review, Task 1: Server-side generate-key endpoint, Task 2: Generate button + public key display in the form
 
 ### Community 134 - "admin.py"
-Cohesion: 0.33
-Nodes (6): create_machine(), _parse_window(), Create a new Linux machine record., Update an existing Linux machine record., Parse 'HH:MM' bedtime-window bounds from form strings.      Both must be set or, update_machine()
+Cohesion: 0.24
+Nodes (8): post_homework(), Posts scraped homework results back to familylink-server., POST one kid's scraped, not-yet-due homework to familylink-server., Tests for the api_client module., Test that post_homework raises on HTTP error status., Test that post_homework sends expected payload., test_post_homework_raises_on_http_error(), test_post_homework_sends_expected_payload()
 
 ### Community 135 - "test_routers_admin.py"
 Cohesion: 0.40
@@ -724,6 +724,10 @@ Nodes (3): JSONResponse, generate_key_pair(), Generate an ed25519 SSH key pair a
 Cohesion: 0.40
 Nodes (4): plugin, $schema, share, snapshot
 
+### Community 144 - "Embed"
+Cohesion: 0.11
+Nodes (16): CookieResolver, Cookie and SAPISID resolution for the Family Link API.  Auth priority (first mat, Resolves a SAPISID string and optional CookieJar from configured sources., _generate_sapisidhash(), Family Link API client., Tests for familylink.auth.CookieResolver., CookieResolver resolves SAPISID from FAMILYLINK_COOKIES_B64 env var., CookieResolver resolves SAPISID from FAMILYLINK_SAPISID env var (no jar). (+8 more)
+
 ### Community 145 - "apps.py"
 Cohesion: 0.50
 Nodes (3): AppUsage, App usage response model., Get the title of an app.
@@ -737,36 +741,48 @@ Cohesion: 0.50
 Nodes (3): Shared fixtures for server tests., Prevent auto-refresh backoff state from leaking between tests.      `_try_auto_r, _reset_auto_refresh_backoff()
 
 ### Community 148 - "test_apps_auto_block_requires_role"
-Cohesion: 0.50
-Nodes (3): Tests for the shared get_or_create_app_config DB helper., A concurrent insert race (unique constraint violation) is resolved by re-queryin, test_get_or_create_app_config_retries_after_integrity_error()
+Cohesion: 0.17
+Nodes (8): Toggle the auto-block-on-overuse opt-in for an app., Grant bonus minutes to an app, unblocking it immediately if auto-blocked., get_or_create_app_config(), Shared AppConfig get-or-create helper., Get the AppConfig row for (child_id, package_name), creating it if absent., Tests for the shared get_or_create_app_config DB helper., A concurrent insert race (unique constraint violation) is resolved by re-queryin, test_get_or_create_app_config_retries_after_integrity_error()
+
+### Community 154 - "Request"
+Cohesion: 0.39
+Nodes (4): _FixedDate, make_kid(), Confirmed flow: bejelentkezés -> Elektronikus ellenőrzőkönyv (once)         -> Ó, TestFetchHomeworkOrchestration
+
+### Community 155 - "Interaction"
+Cohesion: 0.20
+Nodes (9): Profile, User profile information., Tests for familylink models., Test nested ApiHeader conversion to snake_case., Test AppUsage.model_validate with camelCase alias keys., Test MembersResponse.model_validate with camelCase alias keys., test_app_usage_model_validate_alias_keys(), test_members_response_api_header_snake_case() (+1 more)
+
+### Community 160 - "AbstractAsyncContextManager"
+Cohesion: 0.33
+Nodes (6): Tests for the /api/members router., GET /api/members with a valid session cookie returns 200 and a list., GET /api/members without a session cookie returns 401., _session_cookie(), test_get_members_rejects_no_session(), test_get_members_returns_200()
 
 ### Community 167 - "LinuxUsageSnapshot"
-Cohesion: 0.16
-Nodes (25): LinuxUsageSnapshot, Daily active-session accumulator for a Linux machine., bonus_machine(), _child_names(), delete_machine(), edit_machine_form(), _get_machine_or_404(), linux_machines_page() (+17 more)
+Cohesion: 0.13
+Nodes (29): bonus_machine(), _child_names(), create_machine(), delete_machine(), edit_machine_form(), _get_machine_or_404(), linux_machines_page(), lock_machine() (+21 more)
 
 ### Community 168 - "AuditLog"
-Cohesion: 0.18
-Nodes (12): DeclarativeBase, Base, DeviceSnapshot, SQLAlchemy ORM models., SQLAlchemy declarative base for all ORM models., Snapshot of app usage on a specific date., Snapshot of device state and metadata., UsageSnapshot (+4 more)
+Cohesion: 0.14
+Nodes (14): DeclarativeBase, Base, DeviceSnapshot, LinuxMachine, SQLAlchemy ORM models., Initialise with Python-level defaults for optional columns., Initialise with Python-level defaults for optional columns., SQLAlchemy declarative base for all ORM models. (+6 more)
 
 ## Knowledge Gaps
-- **482 isolated node(s):** `$schema`, `plugin`, `snapshot`, `share`, `entrypoint.sh script` (+477 more)
+- **483 isolated node(s):** `$schema`, `plugin`, `snapshot`, `share`, `entrypoint.sh script` (+478 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **100 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **101 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `FamilyLinkService` connect `README.md` to `AbstractAsyncContextManager`, `AsyncSession`, `Interaction`, `CLI Commands`, `Discord Bot Embeds`, `get_session`, `Global Constraints`, `Embed`, `__init__.py`, `App Management Routes`, `apps.py`, `test_apps_limit_calls_service`, `Auth Package Init`, `DB Model Tests`, `Google OAuth Flow`, `File Map`, `.setup_hook`, `Bot UI View Tests`?**
-  _High betweenness centrality (0.098) - this node is a cross-community bridge._
-- **Why does `FamilyLink` connect `Discord Notifier Tests` to `README.md`, `API GET Methods`, `Global Constraints`, `Family Link Web Service — Architecture Design`, `Members Route Tests`, `App Management Routes`, `Bonus Minutes DB Migration`, `Embed`, `apps.py`, `test_apps_limit_calls_service`?**
-  _High betweenness centrality (0.079) - this node is a cross-community bridge._
-- **Are the 54 inferred relationships involving `app()` (e.g. with `_client()` and `FastAPI`) actually correct?**
-  _`app()` has 54 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 46 inferred relationships involving `get_service()` (e.g. with `app_autocomplete()` and `child_autocomplete()`) actually correct?**
+- **Why does `FamilyLinkService` connect `README.md` to `AsyncSession`, `CLI Commands`, `Discord Bot Embeds`, `get_session`, `Global Constraints`, `Embed`, `SKILL.md`, `Bot Command Tests`, `App Management Routes`, `apps.py`, `test_apps_limit_calls_service`, `Auth Package Init`, `DB Model Tests`, `File Map`, `.setup_hook`, `Bot UI View Tests`?**
+  _High betweenness centrality (0.105) - this node is a cross-community bridge._
+- **Why does `FamilyLink` connect `Discord Notifier Tests` to `README.md`, `Family Link Web Service — Architecture Design`, `API GET Methods`, `Global Constraints`, `Members Route Tests`, `App Management Routes`, `Bonus Minutes DB Migration`, `Embed`, `apps.py`, `test_apps_limit_calls_service`?**
+  _High betweenness centrality (0.075) - this node is a cross-community bridge._
+- **Why does `enforce_child()` connect `Discord Bot Embeds` to `README.md`, `Discord Bot Integration — Implementation Plan`, `Discord Apps Command Group`, `Linux Machine Routes`, `Cookie Auth Resolution`?**
+  _High betweenness centrality (0.073) - this node is a cross-community bridge._
+- **Are the 56 inferred relationships involving `app()` (e.g. with `test_auth_login_route_exists()` and `test_bot_not_started_when_discord_disabled()`) actually correct?**
+  _`app()` has 56 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 46 inferred relationships involving `get_service()` (e.g. with `lifespan()` and `app_autocomplete()`) actually correct?**
   _`get_service()` has 46 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 43 inferred relationships involving `get_session()` (e.g. with `_pop_session_override()` and `test_apps_page_hides_auto_block_checkbox_for_blocked_app()`) actually correct?**
   _`get_session()` has 43 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 7 inferred relationships involving `FamilyLink` (e.g. with `_verify_family_link_access()` and `CookieResolver`) actually correct?**
   _`FamilyLink` has 7 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 25 inferred relationships involving `poll_machine()` (e.g. with `LinuxUsageSnapshot` and `make_session()`) actually correct?**
-  _`poll_machine()` has 25 INFERRED edges - model-reasoned connections that need verification._
