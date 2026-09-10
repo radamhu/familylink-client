@@ -4,7 +4,7 @@ is reachable and renders a live push in the ntfy web UI.
 
 Not part of the pytest suite — this hits the real, self-hosted ntfy server
 configured via NTFY_BASE_URL/NTFY_TOPICS. Run manually after configuring
-those env vars (see README "Verifying ntfy setup"):
+those env vars (see docs/ntfy.md):
 
     pip install playwright && playwright install chromium
     python scripts/verify_ntfy_topics.py
