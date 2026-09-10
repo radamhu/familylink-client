@@ -262,6 +262,8 @@ In your deployment platform's dashboard, set these environment variables (see `.
 | `DEBUG`                   | Set to`true` to disable `Secure` flag on the session cookie — required for local HTTP (see below)                                  |
 | `COOKIE_REFRESHER_URL`    | Internal URL of the cookie-refresher sidecar, e.g.`http://cookie-refresher:8080` — enables auto-refresh on session expiry (optional) |
 | `REFRESHER_API_KEY`       | Shared secret sent as`X-Api-Key` to the sidecar — must match the sidecar's own `REFRESHER_API_KEY` (optional but recommended)      |
+| `NTFY_TOPICS`             | Per-kid ntfy push topics:`child_id:topic,child_id:topic` — empty disables ntfy notifications (optional)                              |
+| `NTFY_BASE_URL`           | Base URL of the ntfy server (default:`http://ntfy-qs0o4os08kggkcgs4kos4sgk.192.168.0.22.sslip.io` — self-hosted intranet instance)   |
 | `COOLIFY_URL`             | _(ops workstation only)_ Base URL of your Coolify instance — used by `export-cookies --coolify`                                    |
 | `COOLIFY_TOKEN`           | _(ops workstation only)_ Coolify API token — used by `export-cookies --coolify`                                                    |
 | `COOLIFY_APP_UUID`        | _(ops workstation only)_ UUID of the Coolify app to update — used by `export-cookies --coolify`                                    |

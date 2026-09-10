@@ -35,6 +35,7 @@ from familylink_server.routers.usage import router as usage_router
 from familylink_server.services.app_enforcer import app_enforcer_loop
 from familylink_server.services.family_link import get_service, init_service
 from familylink_server.services.linux_poller import poller_loop
+from familylink_server.services.ntfy_notifier import init_notifier as init_ntfy_notifier
 
 logger = logging.getLogger(__name__)
 
@@ -187,11 +188,23 @@ async def lifespan(application: FastAPI) -> AsyncGenerator[None, None]:
             'Discord bot disabled (DISCORD_BOT_TOKEN / GUILD_ID / CHANNEL_ID not set)'
         )
 
-    poller_task = asyncio.create_task(poller_loop(notifier=notifier))
+    ntfy = None
+    topics = settings.ntfy_topics_parsed
+    if topics:
+        ntfy = init_ntfy_notifier(topics, base_url=settings.ntfy_base_url)
+        logger.info(
+            'ntfy notifications enabled for %d kid(s) via %s',
+            len(topics),
+            settings.ntfy_base_url,
+        )
+    else:
+        logger.info('ntfy notifications disabled (NTFY_TOPICS not set)')
+
+    poller_task = asyncio.create_task(poller_loop(notifier=notifier, ntfy=ntfy))
     logger.info('Linux machine poller started')
 
     enforcer_task = asyncio.create_task(
-        app_enforcer_loop(get_service(), notifier=notifier)
+        app_enforcer_loop(get_service(), notifier=notifier, ntfy=ntfy)
     )
     logger.info('App overuse enforcer started')
 
