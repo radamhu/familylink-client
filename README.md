@@ -6,6 +6,14 @@ A non-official Python package to interact with Google Family Link and linux mach
   <img src="logo.jpeg" alt="Family Link logo" width="200" height="200">
 </p>
 
+## What it does for you as a parent
+
+- Set per-app daily time limits, block apps, or always-allow them
+- Lock/unlock a kid's device, or power off a Linux PC once its quota runs out
+- See usage history and today's top apps on a dashboard
+- Manage everything from Discord: `/apps`, `/devices`, `/usage`, plus a nightly summary
+- Get push notifications for low time remaining and new homework (eKRÉTA, optional)
+
 ## Prerequisites
 
 1. Have a Google Family Link family set up (parent + child)
