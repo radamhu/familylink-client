@@ -86,3 +86,67 @@ def test_ekreta_settings_from_env(monkeypatch):
 
     s = Settings()
     assert s.ekreta_ingest_token == 'secret-token'
+
+
+def test_ntfy_topics_defaults_empty():
+    """No NTFY_TOPICS set -> empty mapping.
+
+    _env_file=None bypasses the developer's local .env — see
+    test_discord_disabled_by_default for why that matters here.
+    """
+    from familylink_server.config import Settings
+
+    s = Settings(_env_file=None)
+    assert s.ntfy_topics_parsed == {}
+
+
+def test_ntfy_topics_parses_single_pair(monkeypatch):
+    monkeypatch.setenv('NTFY_TOPICS', 'child1:familylink-child1-abc123')
+
+    from familylink_server.config import Settings
+
+    s = Settings()
+    assert s.ntfy_topics_parsed == {'child1': 'familylink-child1-abc123'}
+
+
+def test_ntfy_topics_parses_multiple_pairs(monkeypatch):
+    monkeypatch.setenv('NTFY_TOPICS', 'child1:topic-one, child2:topic-two')
+
+    from familylink_server.config import Settings
+
+    s = Settings()
+    assert s.ntfy_topics_parsed == {
+        'child1': 'topic-one',
+        'child2': 'topic-two',
+    }
+
+
+def test_ntfy_topics_skips_malformed_entries(monkeypatch):
+    """Entries without a ':' or with an empty side are dropped, not crashed on."""
+    monkeypatch.setenv('NTFY_TOPICS', 'child1:topic-one,garbage,child2:,:orphan-topic')
+
+    from familylink_server.config import Settings
+
+    s = Settings()
+    assert s.ntfy_topics_parsed == {'child1': 'topic-one'}
+
+
+def test_ntfy_base_url_defaults_to_intranet_instance():
+    """_env_file=None bypasses the developer's local .env, same reasoning as
+    test_discord_disabled_by_default.
+    """
+    from familylink_server.config import Settings
+
+    s = Settings(_env_file=None)
+    assert (
+        s.ntfy_base_url == 'http://ntfy-qs0o4os08kggkcgs4kos4sgk.192.168.0.22.sslip.io'
+    )
+
+
+def test_ntfy_base_url_overridable(monkeypatch):
+    monkeypatch.setenv('NTFY_BASE_URL', 'https://ntfy.example.com')
+
+    from familylink_server.config import Settings
+
+    s = Settings()
+    assert s.ntfy_base_url == 'https://ntfy.example.com'

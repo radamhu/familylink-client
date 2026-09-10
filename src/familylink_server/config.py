@@ -34,6 +34,9 @@ class Settings(BaseSettings):
     discord_allowed_role: str = 'Parent'
     discord_summary_time: str = '20:00'
 
+    ntfy_topics: str = ''
+    ntfy_base_url: str = 'http://ntfy-qs0o4os08kggkcgs4kos4sgk.192.168.0.22.sslip.io'
+
     @property
     def discord_enabled(self) -> bool:
         """True when all three required Discord vars are set."""
@@ -46,6 +49,19 @@ class Settings(BaseSettings):
         """Parse HH:MM string into a UTC datetime.time."""
         h, m = self.discord_summary_time.split(':')
         return datetime.time(int(h), int(m), tzinfo=datetime.UTC)
+
+    @property
+    def ntfy_topics_parsed(self) -> dict[str, str]:
+        """Parse 'child_id:topic,child_id:topic' into a dict, skipping malformed pairs."""
+        result: dict[str, str] = {}
+        for pair in self.ntfy_topics.split(','):
+            pair = pair.strip()
+            if ':' not in pair:
+                continue
+            child_id, topic = (part.strip() for part in pair.split(':', 1))
+            if child_id and topic:
+                result[child_id] = topic
+        return result
 
 
 settings = Settings()
