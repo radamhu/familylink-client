@@ -28,6 +28,7 @@
   "26": "Google OAuth Flow",
   "27": "FamilyLink Service Tests",
   "28": "Unit Client Tests",
+  "29": "Bot Usage Commands",
   "30": "ORM Models",
   "31": "Bot UI View Tests",
   "32": "Discord Session Alert Tests",
@@ -105,6 +106,7 @@
   "104": "dependencies",
   "105": "AGENTS.md",
   "106": "__init__.py",
+  "107": "copilot-instructions.md",
   "108": "GitHub Copilot Instructions",
   "109": "CLAUDE.md Project Instructions",
   "110": "CHILD_COLORS Dashboard Strip Layout",
@@ -172,5 +174,9 @@
   "172": "history_page",
   "173": "create_machine",
   "174": "app_autocomplete",
-  "175": "usage.py"
+  "175": "usage.py",
+  "176": "DeviceLockView",
+  "177": "SummaryView",
+  "178": ".set_channel",
+  "179": ".reinit_with_cookies_b64"
 }
