@@ -45,6 +45,7 @@ class AppConfig(Base):
     )
     bonus_mins: Mapped[int] = mapped_column(Integer, default=0)
     bonus_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+    low_time_alerted_date: Mapped[date | None] = mapped_column(Date, nullable=True)
 
 
 class UsageSnapshot(Base):
@@ -143,6 +144,7 @@ class LinuxUsageSnapshot(Base):
     poweroff_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    low_time_alerted: Mapped[bool] = mapped_column(Boolean, default=False)
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False
     )
@@ -153,6 +155,7 @@ class LinuxUsageSnapshot(Base):
         kwargs.setdefault('bonus_mins', 0)
         kwargs.setdefault('locked_at', None)
         kwargs.setdefault('poweroff_at', None)
+        kwargs.setdefault('low_time_alerted', False)
         super().__init__(**kwargs)
 
 

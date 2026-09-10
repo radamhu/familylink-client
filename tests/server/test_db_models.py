@@ -228,3 +228,41 @@ def test_homework_entry_has_unique_child_subject_deadline_constraint():
         'subject',
         'deadline',
     ]
+
+
+@pytest.mark.asyncio
+async def test_app_config_low_time_alerted_date_defaults_none(db_session):
+    """Test AppConfig.low_time_alerted_date defaults to None."""
+    config = AppConfig(
+        child_id='child1',
+        app_name='TikTok',
+        package_name='com.tiktok',
+    )
+    db_session.add(config)
+    await db_session.commit()
+    assert config.low_time_alerted_date is None
+
+
+@pytest.mark.asyncio
+async def test_linux_usage_snapshot_low_time_alerted_defaults_false(db_session):
+    """Test LinuxUsageSnapshot.low_time_alerted defaults to False."""
+    from familylink_server.db.models import LinuxMachine, LinuxUsageSnapshot
+
+    machine = LinuxMachine(
+        child_id='child1',
+        friendly_name='Test PC',
+        hostname='host',
+        ssh_user='user',
+        ssh_private_key='key',
+        created_at=__import__('datetime').datetime.now(__import__('datetime').UTC),
+    )
+    db_session.add(machine)
+    await db_session.flush()
+    snapshot = LinuxUsageSnapshot(
+        machine_id=machine.id,
+        date=__import__('datetime').date.today(),
+        updated_at=__import__('datetime').datetime.now(__import__('datetime').UTC),
+    )
+    db_session.add(snapshot)
+    await db_session.commit()
+    assert snapshot.low_time_alerted is False
