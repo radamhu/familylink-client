@@ -31,6 +31,7 @@ server = [
     "python-multipart>=0.0.12",
     "discord.py>=2.4",
     "asyncssh>=2.14",
+    "tzdata>=2024.1",
 ]
 dev = [
     "pre-commit>=4.0.1",
