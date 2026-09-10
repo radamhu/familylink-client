@@ -32,19 +32,20 @@ async def _check_one(
         await notifier.send(child_id, 'Verify', marker)
         await page.get_by_text(marker).wait_for(timeout=15_000)
         await page.screenshot(path=f'/tmp/ntfy-verify-{child_id}.png')
-        print(f'OK   {child_id:12s} topic={topic}')
+        print(f'OK   {child_id:12s} topic={topic}')  # noqa: T201
         return True
     except Exception as exc:
-        print(f'FAIL {child_id:12s} topic={topic}  ({exc})')
+        print(f'FAIL {child_id:12s} topic={topic}  ({exc})')  # noqa: T201
         return False
     finally:
         await page.close()
 
 
 async def main() -> int:
+    """Run the smoke test for every configured kid's topic."""
     topics = settings.ntfy_topics_parsed
     if not topics:
-        print('NTFY_TOPICS is empty — nothing to verify.')
+        print('NTFY_TOPICS is empty — nothing to verify.')  # noqa: T201
         return 1
 
     notifier = NtfyNotifier(topics, base_url=settings.ntfy_base_url)
