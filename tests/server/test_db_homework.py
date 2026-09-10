@@ -158,3 +158,37 @@ async def test_get_upcoming_homework_orders_by_deadline_then_subject(db_session)
     await db_session.commit()
     rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
     assert [r.subject for r in rows] == ['Matek', 'Angol', 'Torna']
+
+
+@pytest.mark.asyncio
+async def test_upsert_returns_only_newly_created_entries(db_session):
+    """First call: both entries are new. Second call, one repeated + one new:
+    only the genuinely new one comes back.
+    """
+    new_entries = await upsert_homework_entries(
+        db_session,
+        'child1',
+        date(2026, 9, 8),
+        [
+            {'subject': 'Matek', 'deadline': date(2026, 9, 10), 'description': 'a'},
+            {'subject': 'Angol', 'deadline': date(2026, 9, 10), 'description': 'b'},
+        ],
+    )
+    await db_session.commit()
+    assert sorted(e['subject'] for e in new_entries) == ['Angol', 'Matek']
+
+    more_entries = await upsert_homework_entries(
+        db_session,
+        'child1',
+        date(2026, 9, 9),
+        [
+            {
+                'subject': 'Matek',
+                'deadline': date(2026, 9, 10),
+                'description': 'refreshed',
+            },
+            {'subject': 'Torna', 'deadline': date(2026, 9, 11), 'description': 'c'},
+        ],
+    )
+    await db_session.commit()
+    assert [e['subject'] for e in more_entries] == ['Torna']

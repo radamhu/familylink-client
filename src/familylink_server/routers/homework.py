@@ -15,6 +15,7 @@ from familylink_server.db.homework import (
     prune_expired_homework,
     upsert_homework_entries,
 )
+from familylink_server.services.ntfy_notifier import get_notifier
 
 logger = logging.getLogger(__name__)
 
@@ -108,6 +109,13 @@ async def ingest_homework(
         }
         for e in body.entries
     ]
-    await upsert_homework_entries(session, body.child_id, today, entries)
+    new_entries = await upsert_homework_entries(session, body.child_id, today, entries)
     await prune_expired_homework(session, body.child_id, today)
     await session.commit()
+
+    ntfy = get_notifier()
+    if ntfy:
+        for entry in new_entries:
+            await ntfy.notify_homework(
+                body.child_id, entry['subject'], entry['deadline'].isoformat()
+            )

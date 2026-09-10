@@ -24,14 +24,18 @@ async def upsert_homework_entries(
     child_id: str,
     today: date,
     entries: list[dict[str, str | date]],
-) -> None:
+) -> list[dict[str, str | date]]:
     """Insert-or-refresh a kid's homework, keyed by (child_id, subject, deadline).
 
     Each entry is `{'subject': str, 'deadline': date, 'description': str}`. A
     still-open item scraped again refreshes its description/date/fetched_at
     in place rather than duplicating.
+
+    Returns the subset of `entries` that were newly created this call (not
+    refreshed) — callers use this to notify only on genuinely new homework.
     """
     fetched_at = datetime.now(UTC)
+    new_entries: list[dict[str, str | date]] = []
     for entry in entries:
         existing = (
             await session.execute(
@@ -57,6 +61,8 @@ async def upsert_homework_entries(
                     fetched_at=fetched_at,
                 )
             )
+            new_entries.append(entry)
+    return new_entries
 
 
 async def prune_expired_homework(
