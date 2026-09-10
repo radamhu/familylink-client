@@ -37,9 +37,32 @@ async def test_send_posts_json_payload_to_ntfy(notifier, httpx_mock):
         'topic': 'familylink-child1-abc123',
         'title': 'Hello',
         'message': 'World',
-        'priority': 'high',
+        'priority': 4,
         'tags': ['book'],
     }
+
+
+async def test_send_maps_priority_names_to_ntfy_integer_levels(notifier, httpx_mock):
+    """Ntfy's JSON publish API rejects a string priority with 400 — must send an int."""
+    httpx_mock.add_response(url=TEST_BASE_URL, method='POST')
+    await notifier.send('child1', 'Hello', 'World')  # default priority
+
+    import json
+
+    payload = json.loads(httpx_mock.get_requests()[0].read())
+    assert payload['priority'] == 3
+
+
+async def test_send_falls_back_to_default_priority_for_unknown_name(
+    notifier, httpx_mock
+):
+    httpx_mock.add_response(url=TEST_BASE_URL, method='POST')
+    await notifier.send('child1', 'Hello', 'World', priority='not-a-real-level')
+
+    import json
+
+    payload = json.loads(httpx_mock.get_requests()[0].read())
+    assert payload['priority'] == 3
 
 
 async def test_send_swallows_http_errors(notifier, httpx_mock):

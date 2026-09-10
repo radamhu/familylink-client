@@ -8,6 +8,12 @@ import httpx
 
 logger = logging.getLogger(__name__)
 
+# ntfy's JSON publish API requires `priority` as an integer 1-5 (unlike the
+# header-based publish API, which also accepts these string keywords) — a
+# string value here makes the whole request body invalid JSON to ntfy and
+# every push fails with 400. See https://docs.ntfy.sh/publish/#message-priority
+_PRIORITY_LEVELS = {'min': 1, 'low': 2, 'default': 3, 'high': 4, 'urgent': 5, 'max': 5}
+
 
 class NtfyNotifier:
     """Sends push notifications to per-kid topics on a (self-hosted) ntfy server.
@@ -38,7 +44,7 @@ class NtfyNotifier:
             'topic': topic,
             'title': title,
             'message': message,
-            'priority': priority,
+            'priority': _PRIORITY_LEVELS.get(priority, _PRIORITY_LEVELS['default']),
         }
         if tags:
             payload['tags'] = tags
