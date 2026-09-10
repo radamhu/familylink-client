@@ -76,6 +76,7 @@ def _make_machine(
     friendly_name: str = 'Test PC',
     window_start_time: datetime.time | None = None,
     window_end_time: datetime.time | None = None,
+    child_id: str = 'child1',
 ) -> MagicMock:
     m = MagicMock()
     m.id = machine_id
@@ -88,6 +89,7 @@ def _make_machine(
     m.grace_period_mins = grace_period_mins
     m.window_start_time = window_start_time
     m.window_end_time = window_end_time
+    m.child_id = child_id
     return m
 
 
@@ -96,12 +98,14 @@ def _make_snapshot(
     locked_at: datetime.datetime | None = None,
     poweroff_at: datetime.datetime | None = None,
     bonus_mins: int = 0,
+    low_time_alerted: bool = False,
 ) -> MagicMock:
     snap = MagicMock()
     snap.active_seconds = active_seconds
     snap.locked_at = locked_at
     snap.poweroff_at = poweroff_at
     snap.bonus_mins = bonus_mins
+    snap.low_time_alerted = low_time_alerted
     snap.updated_at = None
     return snap
 
@@ -546,3 +550,105 @@ async def test_poll_machine_no_crash_when_notifier_is_none():
         ),
     ):
         await poll_machine(machine, notifier=None)  # must not raise
+
+
+async def test_poll_machine_sends_low_time_warning_under_threshold():
+    """Remaining time crosses under 15 min -> ntfy.notify_low_time fires once."""
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine(daily_limit_mins=20, friendly_name='Kid PC')
+    snapshot = _make_snapshot(
+        active_seconds=10 * 60
+    )  # 10 min active -> 10 min remaining after this poll
+    mock_ctx, _ = _make_session_ctx(snapshot)
+    mock_ntfy = MagicMock()
+    mock_ntfy.notify_low_time = AsyncMock()
+
+    with (
+        patch(
+            'familylink_server.services.linux_poller.check_session',
+            AsyncMock(return_value=True),
+        ),
+        patch(
+            'familylink_server.services.linux_poller.make_session',
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine, ntfy=mock_ntfy)
+
+    # active_seconds becomes 660 (11 min) -> 9 min remaining, under the 15-min threshold
+    mock_ntfy.notify_low_time.assert_awaited_once_with('child1', 'Kid PC', 9)
+    assert snapshot.low_time_alerted is True
+
+
+async def test_poll_machine_does_not_resend_low_time_warning():
+    """Already alerted -> notify_low_time is not called again."""
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine(daily_limit_mins=20)
+    snapshot = _make_snapshot(active_seconds=10 * 60, low_time_alerted=True)
+    mock_ctx, _ = _make_session_ctx(snapshot)
+    mock_ntfy = MagicMock()
+    mock_ntfy.notify_low_time = AsyncMock()
+
+    with (
+        patch(
+            'familylink_server.services.linux_poller.check_session',
+            AsyncMock(return_value=True),
+        ),
+        patch(
+            'familylink_server.services.linux_poller.make_session',
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine, ntfy=mock_ntfy)
+
+    mock_ntfy.notify_low_time.assert_not_awaited()
+
+
+async def test_poll_machine_skips_low_time_warning_when_no_limit():
+    """No daily_limit_mins configured -> no warning (nothing to run out of)."""
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine(daily_limit_mins=None)
+    snapshot = _make_snapshot(active_seconds=10 * 60)
+    mock_ctx, _ = _make_session_ctx(snapshot)
+    mock_ntfy = MagicMock()
+    mock_ntfy.notify_low_time = AsyncMock()
+
+    with (
+        patch(
+            'familylink_server.services.linux_poller.check_session',
+            AsyncMock(return_value=True),
+        ),
+        patch(
+            'familylink_server.services.linux_poller.make_session',
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine, ntfy=mock_ntfy)
+
+    mock_ntfy.notify_low_time.assert_not_awaited()
+
+
+async def test_poll_machine_low_time_warning_noop_without_ntfy():
+    """No ntfy notifier passed -> no error, flag still stamped."""
+    from familylink_server.services.linux_poller import poll_machine
+
+    machine = _make_machine(daily_limit_mins=20)
+    snapshot = _make_snapshot(active_seconds=10 * 60)
+    mock_ctx, _ = _make_session_ctx(snapshot)
+
+    with (
+        patch(
+            'familylink_server.services.linux_poller.check_session',
+            AsyncMock(return_value=True),
+        ),
+        patch(
+            'familylink_server.services.linux_poller.make_session',
+            return_value=mock_ctx,
+        ),
+    ):
+        await poll_machine(machine)  # no ntfy kwarg — must not raise
+
+    assert snapshot.low_time_alerted is True

@@ -23,10 +23,12 @@ from familylink_server.services.linux_ssh import (
 
 if TYPE_CHECKING:
     from familylink_server.services.discord_notifier import DiscordNotifier
+    from familylink_server.services.ntfy_notifier import NtfyNotifier
 
 logger = logging.getLogger(__name__)
 
 POLL_INTERVAL = 60
+LOW_TIME_THRESHOLD_SECS = 15 * 60
 
 # Bedtime windows are entered and displayed as household wall-clock time, not
 # UTC — settings.local_timezone (default Europe/Budapest) is the conversion
@@ -57,6 +59,7 @@ def _shift_time_later(t: time, minutes: int) -> time:
 async def poll_machine(
     machine: LinuxMachine,
     notifier: DiscordNotifier | None = None,
+    ntfy: NtfyNotifier | None = None,
     now: datetime | None = None,
 ) -> None:
     """Poll one machine: skip if powered off, accumulate active seconds, enforce limits.
@@ -64,6 +67,7 @@ async def poll_machine(
     Args:
         machine: The LinuxMachine ORM instance to poll.
         notifier: Optional Discord notifier; posts on lock/poweroff when provided.
+        ntfy: Optional ntfy notifier; posts a low-time warning when provided.
         now: Current time, injectable for tests; defaults to datetime.now(UTC).
     """
     now = now if now is not None else datetime.now(UTC)
@@ -140,6 +144,19 @@ async def poll_machine(
             effective_window_start,
             machine.window_end_time,
         )
+
+        if (
+            effective_limit_secs is not None
+            and not snapshot.low_time_alerted
+            and snapshot.locked_at is None
+        ):
+            remaining_secs = effective_limit_secs - snapshot.active_seconds
+            if 0 < remaining_secs <= LOW_TIME_THRESHOLD_SECS:
+                snapshot.low_time_alerted = True
+                if ntfy:
+                    await ntfy.notify_low_time(
+                        machine.child_id, machine.friendly_name, remaining_secs // 60
+                    )
 
         if (
             (
@@ -235,11 +252,14 @@ async def poll_machine(
         await session.commit()
 
 
-async def poller_loop(notifier: DiscordNotifier | None = None) -> None:
+async def poller_loop(
+    notifier: DiscordNotifier | None = None, ntfy: NtfyNotifier | None = None
+) -> None:
     """Main poll loop — iterates all enabled machines every POLL_INTERVAL seconds.
 
     Args:
         notifier: Optional Discord notifier passed down to each poll_machine call.
+        ntfy: Optional ntfy notifier passed down to each poll_machine call.
     """
     while True:
         try:
@@ -250,7 +270,7 @@ async def poller_loop(notifier: DiscordNotifier | None = None) -> None:
                 machines = result.scalars().all()
 
             await asyncio.gather(
-                *[poll_machine(m, notifier=notifier) for m in machines],
+                *[poll_machine(m, notifier=notifier, ntfy=ntfy) for m in machines],
                 return_exceptions=True,
             )
         except Exception:
