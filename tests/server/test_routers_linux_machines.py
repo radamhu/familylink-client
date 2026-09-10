@@ -124,7 +124,7 @@ def test_linux_machines_page_shows_bedtime_window():
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    assert 'Bedtime: 21:00–07:00 (UTC)' in resp.text
+    assert 'Bedtime: 21:00–07:00 (local time)' in resp.text
 
 
 def test_linux_machines_page_shows_no_bedtime_window_when_unset():

@@ -77,12 +77,12 @@
   </div>
   <div class="grid">
     <label>
-      Bedtime window start (UTC, leave blank for no window)
+      Bedtime window start (local time, leave blank for no window)
       <input name="window_start_time" type="time"
              value="{{ machine.window_start_time.strftime('%H:%M') if machine and machine.window_start_time else '' }}">
     </label>
     <label>
-      Bedtime window end (UTC)
+      Bedtime window end (local time)
       <input name="window_end_time" type="time"
              value="{{ machine.window_end_time.strftime('%H:%M') if machine and machine.window_end_time else '' }}">
     </label>

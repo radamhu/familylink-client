@@ -6,10 +6,12 @@ import asyncio
 import logging
 from datetime import UTC, date, datetime, time, timedelta
 from typing import TYPE_CHECKING
+from zoneinfo import ZoneInfo
 
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
+from familylink_server.config import settings
 from familylink_server.db.models import LinuxMachine, LinuxUsageSnapshot
 from familylink_server.db.session import make_session
 from familylink_server.services.linux_ssh import (
@@ -25,6 +27,13 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 POLL_INTERVAL = 60
+
+# Bedtime windows are entered and displayed as household wall-clock time, not
+# UTC — settings.local_timezone (default Europe/Budapest) is the conversion
+# used when comparing the current instant against window_start_time/
+# window_end_time. The server process itself may run in any tz (prod runs
+# UTC per docker-compose).
+LOCAL_TZ = ZoneInfo(settings.local_timezone)
 
 
 def _in_window(now: time, start: time | None, end: time | None) -> bool:
@@ -127,7 +136,9 @@ async def poll_machine(
             else None
         )
         in_window = _in_window(
-            now.time(), effective_window_start, machine.window_end_time
+            now.astimezone(LOCAL_TZ).time(),
+            effective_window_start,
+            machine.window_end_time,
         )
 
         if (

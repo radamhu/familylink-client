@@ -2,6 +2,9 @@
 
 import datetime
 from unittest.mock import AsyncMock, MagicMock, patch
+from zoneinfo import ZoneInfo
+
+LOCAL_TZ = ZoneInfo('Europe/Budapest')
 
 
 def test_in_window_same_day_range():
@@ -434,7 +437,9 @@ async def test_poll_machine_locks_when_in_window_regardless_of_usage():
     )
     snapshot = _make_snapshot(active_seconds=0)
     mock_ctx, _ = _make_session_ctx(snapshot)
-    now = datetime.datetime(2026, 1, 1, 22, 0, tzinfo=datetime.UTC)
+    # Window bounds are household wall-clock; tag `now` with that same tz so
+    # the injected value means what it says.
+    now = datetime.datetime(2026, 1, 1, 22, 0, tzinfo=LOCAL_TZ)
 
     mock_lock = AsyncMock()
     with (
@@ -465,8 +470,8 @@ async def test_poll_machine_bonus_shifts_window_start_later():
     )
     snapshot = _make_snapshot(active_seconds=0, bonus_mins=30)
     mock_ctx, _ = _make_session_ctx(snapshot)
-    # 21:15 is before the bonus-shifted start of 21:30 — should not lock.
-    now = datetime.datetime(2026, 1, 1, 21, 15, tzinfo=datetime.UTC)
+    # 21:15 local is before the bonus-shifted start of 21:30 — should not lock.
+    now = datetime.datetime(2026, 1, 1, 21, 15, tzinfo=LOCAL_TZ)
 
     mock_lock = AsyncMock()
     with (
@@ -495,7 +500,7 @@ async def test_poll_machine_does_not_autounlock_while_in_window():
         window_start_time=datetime.time(21, 0),
         window_end_time=datetime.time(23, 0),
     )
-    now = datetime.datetime(2026, 1, 1, 22, 0, tzinfo=datetime.UTC)
+    now = datetime.datetime(2026, 1, 1, 22, 0, tzinfo=LOCAL_TZ)
     locked_ts = now - datetime.timedelta(
         minutes=1
     )  # under grace period, no poweroff yet

@@ -26,6 +26,7 @@ class Settings(BaseSettings):
     cache_ttl_seconds: int = 900
     debug: bool = False
     ekreta_ingest_token: str = ''
+    local_timezone: str = 'Europe/Budapest'
 
     discord_bot_token: str | None = None
     discord_guild_id: int | None = None

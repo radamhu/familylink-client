@@ -19,7 +19,7 @@
     {% endif %}
     <br>
     {% if machine.window_start_time and machine.window_end_time %}
-      <small>Bedtime: {{ machine.window_start_time.strftime('%H:%M') }}–{{ machine.window_end_time.strftime('%H:%M') }} (UTC)</small>
+      <small>Bedtime: {{ machine.window_start_time.strftime('%H:%M') }}–{{ machine.window_end_time.strftime('%H:%M') }} (local time)</small>
     {% else %}
       <small>No bedtime window</small>
     {% endif %}
