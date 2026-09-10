@@ -457,10 +457,10 @@ The following environment variables must be set in your **local** `.env` before 
 
 An `ekreta-scraper` sidecar (see `docker-compose.yml`) can log into the Hungarian eKRÉTA school system on a cron schedule and post each kid's homework to the dashboard.
 
-| Variable                  | Description                                                                                          |
-| -------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `EKRETA_INGEST_TOKEN`    | Shared secret sent as `X-Api-Key` by the scraper — must be set to the **same value** on both the `web` and `ekreta-scraper` services |
-| `EKRETA_CRON_SCHEDULE`  | Cron expression for scrape runs (default `0 6 * * 1-5` — weekday mornings)                          |
+| Variable                 | Description                                                                                                                                      |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `EKRETA_INGEST_TOKEN`  | Shared secret sent as`X-Api-Key` by the scraper — must be set to the **same value** on both the `web` and `ekreta-scraper` services |
+| `EKRETA_CRON_SCHEDULE` | Cron expression for scrape runs (default`0 6 * * 1-5` — weekday mornings)                                                                     |
 
 This feature is entirely optional: if `EKRETA_INGEST_TOKEN` is left unset, the internal ingest endpoints reject every request with `401` and the dashboard simply shows no homework.
 
