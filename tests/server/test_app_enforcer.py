@@ -9,17 +9,21 @@ import pytest
 
 def _make_config(
     package_name='com.example.app',
+    app_name='Example App',
     auto_blocked_at=None,
     bonus_mins=0,
     bonus_date=None,
     max_mins=None,
+    low_time_alerted_date=None,
 ):
     cfg = MagicMock()
     cfg.package_name = package_name
+    cfg.app_name = app_name
     cfg.auto_blocked_at = auto_blocked_at
     cfg.bonus_mins = bonus_mins
     cfg.bonus_date = bonus_date
     cfg.max_mins = max_mins
+    cfg.low_time_alerted_date = low_time_alerted_date
     return cfg
 
 
@@ -373,8 +377,8 @@ async def test_app_enforcer_loop_calls_enforce_child_for_each_distinct_child():
         with pytest.raises(asyncio.CancelledError):
             await app_enforcer.app_enforcer_loop(mock_svc)
 
-    mock_enforce.assert_any_await('child1', mock_svc, notifier=None)
-    mock_enforce.assert_any_await('child2', mock_svc, notifier=None)
+    mock_enforce.assert_any_await('child1', mock_svc, notifier=None, ntfy=None)
+    mock_enforce.assert_any_await('child2', mock_svc, notifier=None, ntfy=None)
 
 
 async def test_app_enforcer_loop_logs_and_continues_when_one_child_raises():
@@ -393,7 +397,7 @@ async def test_app_enforcer_loop_logs_and_continues_when_one_child_raises():
 
     calls = []
 
-    async def _enforce_side_effect(child_id, svc, notifier=None):
+    async def _enforce_side_effect(child_id, svc, notifier=None, ntfy=None):
         calls.append(child_id)
         if child_id == 'child1':
             raise RuntimeError('boom')
@@ -423,3 +427,124 @@ async def test_app_enforcer_loop_logs_and_continues_when_one_child_raises():
     assert set(calls) == {'child1', 'child2'}
     # The failure was logged, not silently swallowed.
     mock_log_exception.assert_called_once()
+
+
+async def test_enforce_child_sends_low_time_warning_under_threshold():
+    """Remaining time crosses under 15 min -> ntfy.notify_low_time fires once, date stamped."""
+    from familylink_server.services.app_enforcer import enforce_child
+
+    config = _make_config(app_name='TikTok')
+    usage = _make_usage(
+        [_make_app(limit_mins=30)],
+        [_make_usage_session(usage_seconds=20 * 60)],  # 10 min remaining
+    )
+    mock_ctx, _ = _make_session_ctx([config])
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.block_app = AsyncMock()
+    mock_ntfy = MagicMock()
+    mock_ntfy.notify_low_time = AsyncMock()
+
+    with patch(
+        'familylink_server.services.app_enforcer.make_session', return_value=mock_ctx
+    ):
+        await enforce_child('child1', mock_svc, ntfy=mock_ntfy)
+
+    mock_ntfy.notify_low_time.assert_awaited_once_with('child1', 'TikTok', 10)
+    assert config.low_time_alerted_date == datetime.date.today()
+
+
+async def test_enforce_child_does_not_resend_low_time_warning_same_day():
+    """Already alerted today -> notify_low_time is not called again."""
+    from familylink_server.services.app_enforcer import enforce_child
+
+    today = datetime.date.today()
+    config = _make_config(low_time_alerted_date=today)
+    usage = _make_usage(
+        [_make_app(limit_mins=30)],
+        [_make_usage_session(usage_seconds=20 * 60)],  # still 10 min remaining
+    )
+    mock_ctx, _ = _make_session_ctx([config])
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.block_app = AsyncMock()
+    mock_ntfy = MagicMock()
+    mock_ntfy.notify_low_time = AsyncMock()
+
+    with patch(
+        'familylink_server.services.app_enforcer.make_session', return_value=mock_ctx
+    ):
+        await enforce_child('child1', mock_svc, ntfy=mock_ntfy)
+
+    mock_ntfy.notify_low_time.assert_not_awaited()
+
+
+async def test_enforce_child_skips_low_time_warning_when_well_over_threshold():
+    """Remaining time is above the threshold -> no warning."""
+    from familylink_server.services.app_enforcer import enforce_child
+
+    config = _make_config()
+    usage = _make_usage(
+        [_make_app(limit_mins=30)],
+        [_make_usage_session(usage_seconds=5 * 60)],  # 25 min remaining
+    )
+    mock_ctx, _ = _make_session_ctx([config])
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.block_app = AsyncMock()
+    mock_ntfy = MagicMock()
+    mock_ntfy.notify_low_time = AsyncMock()
+
+    with patch(
+        'familylink_server.services.app_enforcer.make_session', return_value=mock_ctx
+    ):
+        await enforce_child('child1', mock_svc, ntfy=mock_ntfy)
+
+    mock_ntfy.notify_low_time.assert_not_awaited()
+
+
+async def test_enforce_child_skips_low_time_warning_when_already_blocked():
+    """App already blocked today -> no low-time warning (it's already blocked, not 'soon')."""
+    from familylink_server.services.app_enforcer import enforce_child
+
+    now = datetime.datetime.now(datetime.UTC)
+    config = _make_config(auto_blocked_at=now)
+    usage = _make_usage(
+        [_make_app(limit_mins=30)],
+        [_make_usage_session(usage_seconds=45 * 60)],
+    )
+    mock_ctx, _ = _make_session_ctx([config])
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.block_app = AsyncMock()
+    mock_ntfy = MagicMock()
+    mock_ntfy.notify_low_time = AsyncMock()
+
+    with patch(
+        'familylink_server.services.app_enforcer.make_session', return_value=mock_ctx
+    ):
+        await enforce_child('child1', mock_svc, ntfy=mock_ntfy)
+
+    mock_ntfy.notify_low_time.assert_not_awaited()
+
+
+async def test_enforce_child_low_time_warning_noop_without_ntfy():
+    """No ntfy notifier passed -> no error, nothing sent."""
+    from familylink_server.services.app_enforcer import enforce_child
+
+    config = _make_config()
+    usage = _make_usage(
+        [_make_app(limit_mins=30)],
+        [_make_usage_session(usage_seconds=20 * 60)],
+    )
+    mock_ctx, _ = _make_session_ctx([config])
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.block_app = AsyncMock()
+
+    with patch(
+        'familylink_server.services.app_enforcer.make_session', return_value=mock_ctx
+    ):
+        await enforce_child('child1', mock_svc)  # no ntfy kwarg — must not raise
+
+    assert config.low_time_alerted_date == datetime.date.today()

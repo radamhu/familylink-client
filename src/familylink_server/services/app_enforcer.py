@@ -16,10 +16,12 @@ if TYPE_CHECKING:
     from familylink.models import AppUsage
     from familylink_server.services.discord_notifier import DiscordNotifier
     from familylink_server.services.family_link import FamilyLinkService
+    from familylink_server.services.ntfy_notifier import NtfyNotifier
 
 logger = logging.getLogger(__name__)
 
 POLL_INTERVAL = 300
+LOW_TIME_THRESHOLD_MINS = 15
 
 
 def _usage_minutes_by_package(usage: AppUsage, today: date) -> dict[str, float]:
@@ -41,6 +43,7 @@ async def enforce_child(
     child_id: str,
     svc: FamilyLinkService,
     notifier: DiscordNotifier | None = None,
+    ntfy: NtfyNotifier | None = None,
 ) -> None:
     """Block/restore one child's opted-in apps based on live Google usage vs. limit."""
     today = date.today()
@@ -101,6 +104,18 @@ async def enforce_child(
             effective_limit = limit_mins + bonus
             usage_mins = usage_by_package.get(config.package_name, 0.0)
 
+            remaining_mins = effective_limit - usage_mins
+            if (
+                config.auto_blocked_at is None
+                and config.low_time_alerted_date != today
+                and 0 < remaining_mins <= LOW_TIME_THRESHOLD_MINS
+            ):
+                config.low_time_alerted_date = today
+                if ntfy:
+                    await ntfy.notify_low_time(
+                        child_id, config.app_name, round(remaining_mins)
+                    )
+
             if (
                 usage_mins >= effective_limit
                 and config.auto_blocked_at is None
@@ -127,7 +142,9 @@ async def enforce_child(
 
 
 async def app_enforcer_loop(
-    svc: FamilyLinkService, notifier: DiscordNotifier | None = None
+    svc: FamilyLinkService,
+    notifier: DiscordNotifier | None = None,
+    ntfy: NtfyNotifier | None = None,
 ) -> None:
     """Iterate every child with at least one auto-block-enabled app, every POLL_INTERVAL."""
     while True:
@@ -142,7 +159,7 @@ async def app_enforcer_loop(
 
             results = await asyncio.gather(
                 *[
-                    enforce_child(child_id, svc, notifier=notifier)
+                    enforce_child(child_id, svc, notifier=notifier, ntfy=ntfy)
                     for child_id in child_ids
                 ],
                 return_exceptions=True,
