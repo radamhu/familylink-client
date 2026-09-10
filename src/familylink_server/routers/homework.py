@@ -114,8 +114,19 @@ async def ingest_homework(
     await session.commit()
 
     ntfy = get_notifier()
-    if ntfy:
-        for entry in new_entries:
+    if ntfy and new_entries:
+        if len(new_entries) == 1:
+            entry = new_entries[0]
             await ntfy.notify_homework(
                 body.child_id, entry['subject'], entry['deadline'].isoformat()
+            )
+        else:
+            summary = ', '.join(
+                f'{e["subject"]} ({e["deadline"].isoformat()})' for e in new_entries
+            )
+            await ntfy.send(
+                body.child_id,
+                title=f'📚 {len(new_entries)} new assignments',
+                message=summary,
+                tags=['book'],
             )

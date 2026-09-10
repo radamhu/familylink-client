@@ -528,6 +528,34 @@ async def test_enforce_child_skips_low_time_warning_when_already_blocked():
     mock_ntfy.notify_low_time.assert_not_awaited()
 
 
+async def test_enforce_child_skips_low_time_warning_when_manually_blocked():
+    """App already manually hidden/blocked -> no low-time warning, and the
+    alert date is NOT stamped, so a genuine warning can still fire if the
+    parent unblocks the app later the same day.
+    """
+    from familylink_server.services.app_enforcer import enforce_child
+
+    config = _make_config()
+    usage = _make_usage(
+        [_make_app(limit_mins=30, hidden=True)],
+        [_make_usage_session(usage_seconds=20 * 60)],  # 10 min remaining
+    )
+    mock_ctx, _ = _make_session_ctx([config])
+    mock_svc = MagicMock()
+    mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
+    mock_svc.block_app = AsyncMock()
+    mock_ntfy = MagicMock()
+    mock_ntfy.notify_low_time = AsyncMock()
+
+    with patch(
+        'familylink_server.services.app_enforcer.make_session', return_value=mock_ctx
+    ):
+        await enforce_child('child1', mock_svc, ntfy=mock_ntfy)
+
+    mock_ntfy.notify_low_time.assert_not_awaited()
+    assert config.low_time_alerted_date is None
+
+
 async def test_enforce_child_low_time_warning_noop_without_ntfy():
     """No ntfy notifier passed -> no error, nothing sent."""
     from familylink_server.services.app_enforcer import enforce_child

@@ -205,6 +205,47 @@ def test_ingest_notifies_ntfy_for_new_homework_only(monkeypatch):
 
 
 @freeze_time('2026-09-08')
+def test_ingest_aggregates_notification_for_multiple_new_entries(monkeypatch):
+    """More than one new entry in a single ingest -> one aggregated push, not a burst."""
+    monkeypatch.setattr(settings, 'ekreta_ingest_token', 'secret')
+    import familylink_server.routers.homework as homework_router
+
+    monkeypatch.setattr(
+        homework_router,
+        'upsert_homework_entries',
+        AsyncMock(
+            return_value=[
+                {'subject': 'Matek', 'deadline': date(2026, 9, 10), 'description': 'a'},
+                {'subject': 'Angol', 'deadline': date(2026, 9, 11), 'description': 'b'},
+                {'subject': 'Torna', 'deadline': date(2026, 9, 12), 'description': 'c'},
+            ]
+        ),
+    )
+    monkeypatch.setattr(homework_router, 'prune_expired_homework', AsyncMock())
+    mock_ntfy = AsyncMock()
+    monkeypatch.setattr(homework_router, 'get_notifier', lambda: mock_ntfy)
+
+    client = _client()
+    try:
+        resp = client.post(
+            '/internal/ekreta/homework',
+            json={'child_id': 'child1', 'entries': []},
+            headers={'X-Api-Key': 'secret'},
+        )
+    finally:
+        _pop_session_override()
+
+    assert resp.status_code == 204
+    mock_ntfy.notify_homework.assert_not_awaited()
+    mock_ntfy.send.assert_awaited_once_with(
+        'child1',
+        title='📚 3 new assignments',
+        message='Matek (2026-09-10), Angol (2026-09-11), Torna (2026-09-12)',
+        tags=['book'],
+    )
+
+
+@freeze_time('2026-09-08')
 def test_ingest_skips_ntfy_when_no_new_entries(monkeypatch):
     """upsert_homework_entries reports no new entries -> notify_homework is never called."""
     monkeypatch.setattr(settings, 'ekreta_ingest_token', 'secret')

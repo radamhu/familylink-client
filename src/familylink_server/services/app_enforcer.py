@@ -107,6 +107,7 @@ async def enforce_child(
             remaining_mins = effective_limit - usage_mins
             if (
                 config.auto_blocked_at is None
+                and not app.supervision_setting.hidden
                 and config.low_time_alerted_date != today
                 and 0 < remaining_mins <= LOW_TIME_THRESHOLD_MINS
             ):
