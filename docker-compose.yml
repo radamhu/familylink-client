@@ -86,10 +86,10 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.ff-http.entryPoints=http
-      - traefik.http.routers.ff-http.rule=Host(`firefox.192.168.0.22.sslip.io`)
+      - traefik.http.routers.ff-http.rule=Host(`firefox-familylink.192.168.0.5.sslip.io`)
       - traefik.http.routers.ff-http.middlewares=redirect-to-https
       - traefik.http.routers.ff-https.entryPoints=https
-      - traefik.http.routers.ff-https.rule=Host(`firefox.192.168.0.22.sslip.io`)
+      - traefik.http.routers.ff-https.rule=Host(`firefox-familylink.192.168.0.5.sslip.io`)
       - traefik.http.routers.ff-https.tls=true
       - traefik.http.routers.ff-https.middlewares=ff-auth,gzip
       - traefik.http.routers.ff-https.service=ff
@@ -134,16 +134,16 @@ services:
       - traefik.enable=true
       - traefik.http.middlewares.gzip.compress=true
       - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
-      - traefik.http.routers.http-0-cha67f8p0xtt7y1mv464yu43.entryPoints=http
-      - traefik.http.routers.http-0-cha67f8p0xtt7y1mv464yu43.middlewares=redirect-to-https
-      - traefik.http.routers.http-0-cha67f8p0xtt7y1mv464yu43.rule=Host(`cha67f8p0xtt7y1mv464yu43.192.168.0.22.sslip.io`)
-      - traefik.http.routers.http-0-cha67f8p0xtt7y1mv464yu43.service=http-0-cha67f8p0xtt7y1mv464yu43
-      - traefik.http.routers.https-0-cha67f8p0xtt7y1mv464yu43.entryPoints=https
-      - traefik.http.routers.https-0-cha67f8p0xtt7y1mv464yu43.middlewares=gzip
-      - traefik.http.routers.https-0-cha67f8p0xtt7y1mv464yu43.rule=Host(`cha67f8p0xtt7y1mv464yu43.192.168.0.22.sslip.io`)
-      - traefik.http.routers.https-0-cha67f8p0xtt7y1mv464yu43.tls=true
-      - traefik.http.routers.https-0-cha67f8p0xtt7y1mv464yu43.service=http-0-cha67f8p0xtt7y1mv464yu43
-      - traefik.http.services.http-0-cha67f8p0xtt7y1mv464yu43.loadbalancer.server.port=8000
+      - traefik.http.routers.http-0-familylink-web.entryPoints=http
+      - traefik.http.routers.http-0-familylink-web.middlewares=redirect-to-https
+      - traefik.http.routers.http-0-familylink-web.rule=Host(`familylink.192.168.0.5.sslip.io`)
+      - traefik.http.routers.http-0-familylink-web.service=http-0-familylink-web
+      - traefik.http.routers.https-0-familylink-web.entryPoints=https
+      - traefik.http.routers.https-0-familylink-web.middlewares=gzip
+      - traefik.http.routers.https-0-familylink-web.rule=Host(`familylink.192.168.0.5.sslip.io`)
+      - traefik.http.routers.https-0-familylink-web.tls=true
+      - traefik.http.routers.https-0-familylink-web.service=http-0-familylink-web
+      - traefik.http.services.http-0-familylink-web.loadbalancer.server.port=8000
 
 volumes:
   pgdata:
