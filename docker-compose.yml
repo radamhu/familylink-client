@@ -13,6 +13,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    deploy:
+      resources:
+        limits:
+          cpus: "0.4"
+          memory: 192M
+        reservations:
+          memory: 96M
 
   cookie-refresher:
     build:
@@ -26,6 +33,13 @@ services:
       - firefox_profile:/profile:ro
     depends_on:
       - firefox
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 96M
+        reservations:
+          memory: 48M
 
   ekreta-scraper:
     build: ./ekreta-scraper
@@ -37,6 +51,14 @@ services:
     depends_on:
       web:
         condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          # Playwright + Chromium, not just a script — needs headroom during the cron run.
+          cpus: "0.5"
+          memory: 384M
+        reservations:
+          memory: 96M
 
   firefox:
     # noVNC UI on 3000, exposed via Traefik behind basic-auth (middleware ff-auth).
@@ -44,13 +66,23 @@ services:
     # basic-auth below is the only thing protecting it. Rotate the hash if leaked.
     image: lscr.io/linuxserver/firefox:latest
     restart: unless-stopped
-    shm_size: "1gb"
+    # shm_size counts against the memory limit below on cgroup v2 (tmpfs pages
+    # are charged to the container) — keep it well under the limit or Firefox
+    # gets OOM-killed by its own quota instead of the host's.
+    shm_size: "512mb"
     environment:
       PUID: "1000"
       PGID: "1000"
       TZ: Etc/UTC
     volumes:
       - firefox_profile:/config
+    deploy:
+      resources:
+        limits:
+          cpus: "0.6"
+          memory: 1024M
+        reservations:
+          memory: 384M
     labels:
       - traefik.enable=true
       - traefik.http.routers.ff-http.entryPoints=http
@@ -91,6 +123,13 @@ services:
       timeout: 5s
       retries: 10
       start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.4"
+          memory: 320M
+        reservations:
+          memory: 160M
     labels:
       - traefik.enable=true
       - traefik.http.middlewares.gzip.compress=true
