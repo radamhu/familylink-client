@@ -121,7 +121,7 @@ The app will be available at `http://localhost:8000`.
 **Authentication flow:**
 
 1. Open **http://localhost:8000/auth/login** in your browser
-2. You'll be redirected to Google's OAuth consent screen — sign in with the parent Google account matching `FAMILYLINK_GOOGLE_EMAIL`
+2. You'll be redirected to Google's OAuth consent screen — sign in with the parent Google account matching `FAMILYLINK_GOOGLE_EMAIL` (or one listed in `FAMILYLINK_EXTRA_EMAILS`)
 3. After authorizing, Google redirects back to `/auth/callback`; the server verifies the email and sets a session cookie (`fl_session`)
 4. You're redirected to the home page — you're now authenticated
 

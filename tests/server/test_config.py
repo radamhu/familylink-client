@@ -21,6 +21,22 @@ def test_settings_reads_from_env(monkeypatch):
     assert s.cache_ttl_seconds == 900  # default
 
 
+def test_allowed_emails_combines_primary_and_extras():
+    """allowed_emails lowercases, trims, and skips blanks."""
+    from familylink_server.config import Settings
+
+    s = Settings(
+        _env_file=None,
+        database_url='x',
+        secret_key='x',
+        google_client_id='x',
+        google_client_secret='x',
+        familylink_google_email='Parent@Gmail.com',
+        familylink_extra_emails=' a@b.c ,, D@E.F ',
+    )
+    assert s.allowed_emails == {'parent@gmail.com', 'a@b.c', 'd@e.f'}
+
+
 def test_discord_disabled_by_default():
     """Test that Discord is disabled when no tokens are set.
 

@@ -41,6 +41,7 @@ In your deployment platform's dashboard, set these environment variables (see `.
 | `GOOGLE_CLIENT_ID`        | From Google OAuth credentials                                                                                                           |
 | `GOOGLE_CLIENT_SECRET`    | From Google OAuth credentials                                                                                                           |
 | `FAMILYLINK_GOOGLE_EMAIL` | Parent's Gmail address                                                                                                                  |
+| `FAMILYLINK_EXTRA_EMAILS` | Optional comma-separated extra Google accounts allowed to log in (add as OAuth *Test users* if consent screen is in Testing mode)      |
 | `FAMILYLINK_COOKIES_B64`  | Base64 output from`familylink export-cookies --base64`                                                                                |
 | `CACHE_TTL_SECONDS`       | Cache duration in seconds (default:`900`)                                                                                             |
 | `DEBUG`                   | Set to`true` to disable `Secure` flag on the session cookie — required for local HTTP (see [development.md](development.md))       |

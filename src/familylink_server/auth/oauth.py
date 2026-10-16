@@ -22,6 +22,10 @@ _signer = URLSafeSerializer(settings.secret_key, salt='fl-session')
 _COOKIE_NAME = 'fl_session'
 
 
+def _is_allowed(email: str) -> bool:
+    return email.strip().lower() in settings.allowed_emails
+
+
 def _make_session(email: str) -> str:
     return _signer.dumps({'email': email})
 
@@ -41,7 +45,7 @@ async def _require_user(fl_session: str | None = Cookie(default=None)) -> str:
     if payload is None:
         raise HTTPException(status_code=401, detail='Invalid session')
     email = payload.get('email', '')
-    if email != settings.familylink_google_email:
+    if not _is_allowed(email):
         raise HTTPException(status_code=403, detail='Access denied')
     return email
 
@@ -64,7 +68,7 @@ async def callback(request: Request) -> RedirectResponse:
     token = await _oauth.google.authorize_access_token(request)
     user_info = token.get('userinfo') or {}
     email = user_info.get('email', '')
-    if email != settings.familylink_google_email:
+    if not _is_allowed(email):
         raise HTTPException(status_code=403, detail='Access denied')
     response = RedirectResponse(url='/')
     response.set_cookie(

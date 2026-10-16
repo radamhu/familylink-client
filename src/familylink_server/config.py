@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     google_client_id: str
     google_client_secret: str
     familylink_google_email: str
+    familylink_extra_emails: str = ''
     familylink_cookies_b64: str = ''
     familylink_cookie_file: str = ''
     cookie_refresher_url: str = ''
@@ -36,6 +37,15 @@ class Settings(BaseSettings):
 
     ntfy_topics: str = ''
     ntfy_base_url: str = 'http://ntfy-qs0o4os08kggkcgs4kos4sgk.192.168.0.22.sslip.io'
+
+    @property
+    def allowed_emails(self) -> frozenset[str]:
+        """Lowercased login allowlist: primary email plus comma-separated extras."""
+        emails = [
+            self.familylink_google_email,
+            *self.familylink_extra_emails.split(','),
+        ]
+        return frozenset(e.strip().lower() for e in emails if e.strip())
 
     @property
     def discord_enabled(self) -> bool:

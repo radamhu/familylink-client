@@ -60,6 +60,45 @@ def test_protected_route_rejects_wrong_email(client):
     assert resp.status_code == 403
 
 
+def test_protected_route_accepts_extra_email(client, monkeypatch):
+    """A cookie for an email in FAMILYLINK_EXTRA_EMAILS must be accepted."""
+    monkeypatch.setattr(settings, 'familylink_extra_emails', 'Second@gmail.com, x@y.z')
+    cookie = _make_session_cookie('second@gmail.com')
+    resp = client.get('/protected', cookies={'fl_session': cookie})
+    assert resp.status_code == 200
+
+
+def test_protected_route_email_match_is_case_insensitive(client):
+    """Primary email must match regardless of case."""
+    cookie = _make_session_cookie(settings.familylink_google_email.upper())
+    resp = client.get('/protected', cookies={'fl_session': cookie})
+    assert resp.status_code == 200
+
+
+def test_callback_rejects_unlisted_email(client):
+    """OAuth callback must 403 for an email outside the allowlist."""
+    token = {'userinfo': {'email': 'intruder@gmail.com'}}
+    with patch(
+        'familylink_server.auth.oauth._oauth.google.authorize_access_token',
+        new=AsyncMock(return_value=token),
+    ):
+        resp = client.get('/auth/callback', follow_redirects=False)
+    assert resp.status_code == 403
+
+
+def test_callback_accepts_extra_email(client, monkeypatch):
+    """OAuth callback must set the session cookie for an extra allowed email."""
+    monkeypatch.setattr(settings, 'familylink_extra_emails', 'second@gmail.com')
+    token = {'userinfo': {'email': 'second@gmail.com'}}
+    with patch(
+        'familylink_server.auth.oauth._oauth.google.authorize_access_token',
+        new=AsyncMock(return_value=token),
+    ):
+        resp = client.get('/auth/callback', follow_redirects=False)
+    assert resp.status_code in (302, 307)
+    assert 'fl_session' in resp.headers.get('set-cookie', '')
+
+
 def test_auth_login_redirects_to_google(client):
     """GET /auth/login must redirect to accounts.google.com."""
     mock_redirect = RedirectResponse(
