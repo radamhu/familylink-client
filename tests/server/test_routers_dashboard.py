@@ -4,6 +4,7 @@ from datetime import date
 from unittest.mock import AsyncMock, MagicMock
 
 from fastapi.testclient import TestClient
+from freezegun import freeze_time
 from itsdangerous import URLSafeSerializer
 
 from familylink_server.config import settings
@@ -24,7 +25,13 @@ def _fake_session(machines=None):
         mock_result = MagicMock()
         mock_result.scalars.return_value.all.return_value = machines
         mock_result.scalar_one_or_none.return_value = None
-        mock_session.execute = AsyncMock(return_value=mock_result)
+        no_homework = MagicMock()
+        no_homework.scalars.return_value.all.return_value = []
+
+        async def _execute(stmt):
+            return no_homework if 'homework_entries' in str(stmt) else mock_result
+
+        mock_session.execute = AsyncMock(side_effect=_execute)
         yield mock_session
 
     return _gen
@@ -244,8 +251,18 @@ def test_child_collapse_returns_strip():
     assert '▶' in resp.text
 
 
-def test_child_detail_shows_upcoming_homework():
-    """Expanded child card renders a not-yet-due homework entry, with its deadline."""
+def _hw(subject, registered_on, deadline, description='', seen=None):
+    row = MagicMock()
+    row.subject = subject
+    row.description = description
+    row.deadline = deadline
+    row.registered_on = registered_on
+    row.date = seen or registered_on
+    return row
+
+
+def _child_detail_html(homework_rows):
+    """GET the expanded child card with the given homework rows in the DB."""
     from familylink_server.main import app
     from familylink_server.services.family_link import get_service
 
@@ -264,17 +281,12 @@ def test_child_detail_shows_upcoming_homework():
     mock_svc.get_apps_and_usage = AsyncMock(return_value=usage)
     mock_svc.auth_failed = False
 
-    homework_row = MagicMock()
-    homework_row.subject = 'Matek'
-    homework_row.description = 'Oldd meg a 12. feladatot.'
-    homework_row.deadline = date(2026, 9, 10)
-
     async def _gen():
         mock_session = AsyncMock()
         no_machines = MagicMock()
         no_machines.scalars.return_value.all.return_value = []
         with_homework = MagicMock()
-        with_homework.scalars.return_value.all.return_value = [homework_row]
+        with_homework.scalars.return_value.all.return_value = homework_rows
         mock_session.execute = AsyncMock(side_effect=[no_machines, with_homework])
         yield mock_session
 
@@ -287,9 +299,51 @@ def test_child_detail_shows_upcoming_homework():
         app.dependency_overrides.pop(get_service, None)
         app.dependency_overrides.pop(get_session, None)
     assert resp.status_code == 200
-    assert 'Matek' in resp.text
-    assert 'Oldd meg a 12. feladatot.' in resp.text
-    assert '2026-09-10' in resp.text
+    return resp.text
+
+
+@freeze_time('2026-10-16')  # Friday
+def test_child_detail_renders_week_table_with_today_column():
+    html = _child_detail_html(
+        [
+            _hw(
+                'Matek',
+                date(2026, 10, 14),
+                date(2026, 10, 16),
+                'Oldd meg a 12. feladatot.',
+            )
+        ]
+    )
+    assert 'Matek' in html
+    assert 'Oldd meg a 12. feladatot.' in html
+    assert 'Weekend' in html
+    assert 'class="hw-col hw-today' in html
+
+
+@freeze_time('2026-10-16')
+def test_child_detail_dims_passed_deadline():
+    html = _child_detail_html([_hw('Magyar', date(2026, 10, 13), date(2026, 10, 15))])
+    assert 'class="hw-item hw-past' in html
+
+
+@freeze_time('2026-10-16')
+def test_child_detail_empty_today_column_not_hidden_on_narrow():
+    html = _child_detail_html([_hw('Magyar', date(2026, 10, 13), date(2026, 10, 15))])
+    assert 'class="hw-col hw-today"' in html  # today is empty but never hw-empty
+
+
+@freeze_time('2026-10-17')  # Saturday
+def test_child_detail_saturday_highlights_weekend_with_today_label():
+    html = _child_detail_html([_hw('Magyar', date(2026, 10, 13), date(2026, 10, 15))])
+    assert 'class="hw-col hw-today hw-weekend' in html
+    assert '· today' in html
+
+
+@freeze_time('2026-10-16')
+def test_child_detail_weekend_copy_for_later_week_deadline():
+    html = _child_detail_html([_hw('Tori', date(2026, 10, 15), date(2026, 10, 19))])
+    assert html.count('Tori') == 2  # Thursday original + Weekend copy
+    assert '2026-10-19' in html
 
 
 def test_child_detail_hides_homework_section_when_none_upcoming():

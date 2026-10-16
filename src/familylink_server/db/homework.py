@@ -8,9 +8,15 @@ from typing import TYPE_CHECKING
 from sqlalchemy import delete, select
 
 from familylink_server.db.models import EkretaCredential, HomeworkEntry
+from familylink_server.services.homework_week import week_start
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
+
+
+def local_today() -> date:
+    """Return today's date in container-local time (single source for 'today')."""
+    return date.today()
 
 
 async def list_ekreta_credentials(session: AsyncSession) -> list[EkretaCredential]:
@@ -29,7 +35,8 @@ async def upsert_homework_entries(
 
     Each entry is `{'subject': str, 'deadline': date, 'description': str}`. A
     still-open item scraped again refreshes its description/date/fetched_at
-    in place rather than duplicating.
+    in place rather than duplicating. `date` means "last seen";
+    `registered_on` is the first-seen day, set on insert and never updated.
 
     Returns the subset of `entries` that were newly created this call (not
     refreshed) — callers use this to notify only on genuinely new homework.
@@ -55,6 +62,7 @@ async def upsert_homework_entries(
                 HomeworkEntry(
                     child_id=child_id,
                     date=today,
+                    registered_on=today,
                     subject=entry['subject'],
                     deadline=entry['deadline'],
                     description=entry['description'],
@@ -68,21 +76,26 @@ async def upsert_homework_entries(
 async def prune_expired_homework(
     session: AsyncSession, child_id: str, today: date
 ) -> None:
-    """Delete a kid's homework rows whose deadline has already passed."""
+    """Delete a kid's rows due before Monday of the current week.
+
+    Rows from earlier days of the current week survive so the weekly table can
+    still show them (dimmed).
+    """
     await session.execute(
         delete(HomeworkEntry).where(
-            HomeworkEntry.child_id == child_id, HomeworkEntry.deadline < today
+            HomeworkEntry.child_id == child_id,
+            HomeworkEntry.deadline < week_start(today),
         )
     )
 
 
-async def get_upcoming_homework(
-    session: AsyncSession, child_id: str, today: date
+async def get_child_homework(
+    session: AsyncSession, child_id: str
 ) -> list[HomeworkEntry]:
-    """Return a kid's not-yet-due homework, ordered by deadline then subject."""
+    """Return all of a kid's homework rows, ordered by deadline then subject."""
     result = await session.execute(
         select(HomeworkEntry)
-        .where(HomeworkEntry.child_id == child_id, HomeworkEntry.deadline >= today)
+        .where(HomeworkEntry.child_id == child_id)
         .order_by(HomeworkEntry.deadline, HomeworkEntry.subject)
     )
     return list(result.scalars().all())

@@ -7,8 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 from familylink_server.db.homework import (
-    get_upcoming_homework,
+    get_child_homework,
     list_ekreta_credentials,
+    local_today,
     prune_expired_homework,
     upsert_homework_entries,
 )
@@ -54,7 +55,7 @@ async def test_upsert_inserts_new_entry(db_session):
         ],
     )
     await db_session.commit()
-    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
+    rows = await get_child_homework(db_session, 'child1')
     assert [(r.subject, r.description) for r in rows] == [('Matek', 'new')]
 
 
@@ -75,9 +76,36 @@ async def test_upsert_refreshes_existing_entry_same_identity(db_session):
         [{'subject': 'Matek', 'deadline': date(2026, 9, 10), 'description': 'fresh'}],
     )
     await db_session.commit()
-    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
+    rows = await get_child_homework(db_session, 'child1')
     assert [(r.subject, r.description, r.date) for r in rows] == [
         ('Matek', 'fresh', date(2026, 9, 9))
+    ]
+
+
+@pytest.mark.asyncio
+async def test_upsert_sets_registered_on_on_insert(db_session):
+    await upsert_homework_entries(
+        db_session,
+        'child1',
+        date(2026, 9, 8),
+        [{'subject': 'Matek', 'deadline': date(2026, 9, 10), 'description': ''}],
+    )
+    await db_session.commit()
+    rows = await get_child_homework(db_session, 'child1')
+    assert [r.registered_on for r in rows] == [date(2026, 9, 8)]
+
+
+@pytest.mark.asyncio
+async def test_upsert_refresh_keeps_registered_on(db_session):
+    """A re-scrape moves `date` (last seen) but never `registered_on`."""
+    entry = {'subject': 'Matek', 'deadline': date(2026, 9, 10), 'description': ''}
+    await upsert_homework_entries(db_session, 'child1', date(2026, 9, 8), [entry])
+    await db_session.commit()
+    await upsert_homework_entries(db_session, 'child1', date(2026, 9, 10), [entry])
+    await db_session.commit()
+    rows = await get_child_homework(db_session, 'child1')
+    assert [(r.date, r.registered_on) for r in rows] == [
+        (date(2026, 9, 10), date(2026, 9, 8))
     ]
 
 
@@ -93,58 +121,48 @@ async def test_upsert_keeps_distinct_subject_same_deadline_separate(db_session):
         ],
     )
     await db_session.commit()
-    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
+    rows = await get_child_homework(db_session, 'child1')
     assert sorted(r.subject for r in rows) == ['Angol', 'Matek']
 
 
 @pytest.mark.asyncio
-async def test_prune_expired_homework_deletes_past_deadline_only(db_session):
-    db_session.add(
-        HomeworkEntry(
-            child_id='child1',
-            date=date(2026, 9, 1),
-            deadline=date(2026, 9, 7),
-            subject='Old',
-            description='',
-            fetched_at=datetime.now(UTC),
+async def test_prune_expired_homework_keeps_current_week(db_session):
+    """Thursday 2026-10-15: rows due before Monday 10-12 go; this week's stay."""
+    for subject, deadline in [
+        ('LastWeek', date(2026, 10, 11)),
+        ('Monday', date(2026, 10, 12)),
+        ('Wednesday', date(2026, 10, 14)),
+    ]:
+        db_session.add(
+            HomeworkEntry(
+                child_id='child1',
+                date=date(2026, 10, 9),
+                registered_on=date(2026, 10, 9),
+                deadline=deadline,
+                subject=subject,
+                description='',
+                fetched_at=datetime.now(UTC),
+            )
         )
-    )
-    db_session.add(
-        HomeworkEntry(
-            child_id='child1',
-            date=date(2026, 9, 8),
-            deadline=date(2026, 9, 10),
-            subject='Recent',
-            description='',
-            fetched_at=datetime.now(UTC),
-        )
-    )
     await db_session.commit()
-    await prune_expired_homework(db_session, 'child1', date(2026, 9, 8))
+    await prune_expired_homework(db_session, 'child1', date(2026, 10, 15))
     await db_session.commit()
-    rows = await get_upcoming_homework(db_session, 'child1', date(2020, 1, 1))
-    assert [r.subject for r in rows] == ['Recent']
+    rows = await get_child_homework(db_session, 'child1')
+    assert [r.subject for r in rows] == ['Monday', 'Wednesday']
 
 
 @pytest.mark.asyncio
-async def test_get_upcoming_homework_excludes_past_deadlines(db_session):
-    await upsert_homework_entries(
-        db_session,
-        'child1',
-        date(2026, 9, 8),
-        [
-            {'subject': 'Past', 'deadline': date(2026, 9, 7), 'description': ''},
-            {'subject': 'Today', 'deadline': date(2026, 9, 8), 'description': ''},
-            {'subject': 'Future', 'deadline': date(2026, 9, 9), 'description': ''},
-        ],
-    )
+async def test_get_child_homework_returns_all_rows_for_child_only(db_session):
+    entries = [{'subject': 'Matek', 'deadline': date(2026, 9, 7), 'description': ''}]
+    await upsert_homework_entries(db_session, 'child1', date(2026, 9, 8), entries)
+    await upsert_homework_entries(db_session, 'child2', date(2026, 9, 8), entries)
     await db_session.commit()
-    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
-    assert [r.subject for r in rows] == ['Today', 'Future']
+    rows = await get_child_homework(db_session, 'child1')
+    assert [(r.child_id, r.subject) for r in rows] == [('child1', 'Matek')]
 
 
 @pytest.mark.asyncio
-async def test_get_upcoming_homework_orders_by_deadline_then_subject(db_session):
+async def test_get_child_homework_orders_by_deadline_then_subject(db_session):
     await upsert_homework_entries(
         db_session,
         'child1',
@@ -156,8 +174,12 @@ async def test_get_upcoming_homework_orders_by_deadline_then_subject(db_session)
         ],
     )
     await db_session.commit()
-    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
+    rows = await get_child_homework(db_session, 'child1')
     assert [r.subject for r in rows] == ['Matek', 'Angol', 'Torna']
+
+
+def test_local_today_is_date_today():
+    assert local_today() == date.today()
 
 
 @pytest.mark.asyncio
