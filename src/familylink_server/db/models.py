@@ -189,6 +189,7 @@ class HomeworkEntry(Base):
     child_id: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
     deadline: Mapped[date] = mapped_column(Date, nullable=False)
     date: Mapped[date] = mapped_column(Date, nullable=False)
+    registered_on: Mapped[date] = mapped_column(Date, nullable=False)
     subject: Mapped[str] = mapped_column(String(256), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False, default='')
     fetched_at: Mapped[datetime] = mapped_column(

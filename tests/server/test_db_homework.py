@@ -82,6 +82,33 @@ async def test_upsert_refreshes_existing_entry_same_identity(db_session):
 
 
 @pytest.mark.asyncio
+async def test_upsert_sets_registered_on_on_insert(db_session):
+    await upsert_homework_entries(
+        db_session,
+        'child1',
+        date(2026, 9, 8),
+        [{'subject': 'Matek', 'deadline': date(2026, 9, 10), 'description': ''}],
+    )
+    await db_session.commit()
+    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
+    assert [r.registered_on for r in rows] == [date(2026, 9, 8)]
+
+
+@pytest.mark.asyncio
+async def test_upsert_refresh_keeps_registered_on(db_session):
+    """A re-scrape moves `date` (last seen) but never `registered_on`."""
+    entry = {'subject': 'Matek', 'deadline': date(2026, 9, 10), 'description': ''}
+    await upsert_homework_entries(db_session, 'child1', date(2026, 9, 8), [entry])
+    await db_session.commit()
+    await upsert_homework_entries(db_session, 'child1', date(2026, 9, 10), [entry])
+    await db_session.commit()
+    rows = await get_upcoming_homework(db_session, 'child1', date(2026, 9, 8))
+    assert [(r.date, r.registered_on) for r in rows] == [
+        (date(2026, 9, 10), date(2026, 9, 8))
+    ]
+
+
+@pytest.mark.asyncio
 async def test_upsert_keeps_distinct_subject_same_deadline_separate(db_session):
     await upsert_homework_entries(
         db_session,
@@ -103,6 +130,7 @@ async def test_prune_expired_homework_deletes_past_deadline_only(db_session):
         HomeworkEntry(
             child_id='child1',
             date=date(2026, 9, 1),
+            registered_on=date(2026, 9, 1),
             deadline=date(2026, 9, 7),
             subject='Old',
             description='',
@@ -113,6 +141,7 @@ async def test_prune_expired_homework_deletes_past_deadline_only(db_session):
         HomeworkEntry(
             child_id='child1',
             date=date(2026, 9, 8),
+            registered_on=date(2026, 9, 8),
             deadline=date(2026, 9, 10),
             subject='Recent',
             description='',

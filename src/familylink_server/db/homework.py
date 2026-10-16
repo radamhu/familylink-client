@@ -29,7 +29,8 @@ async def upsert_homework_entries(
 
     Each entry is `{'subject': str, 'deadline': date, 'description': str}`. A
     still-open item scraped again refreshes its description/date/fetched_at
-    in place rather than duplicating.
+    in place rather than duplicating. `date` means "last seen";
+    `registered_on` is the first-seen day, set on insert and never updated.
 
     Returns the subset of `entries` that were newly created this call (not
     refreshed) — callers use this to notify only on genuinely new homework.
@@ -55,6 +56,7 @@ async def upsert_homework_entries(
                 HomeworkEntry(
                     child_id=child_id,
                     date=today,
+                    registered_on=today,
                     subject=entry['subject'],
                     deadline=entry['deadline'],
                     description=entry['description'],

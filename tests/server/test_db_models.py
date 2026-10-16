@@ -187,6 +187,7 @@ async def test_homework_entry_insert_and_read(db_session):
     entry = HomeworkEntry(
         child_id='child1',
         date=date(2026, 9, 8),
+        registered_on=date(2026, 9, 8),
         deadline=date(2026, 9, 10),
         subject='Matek',
         description='Oldd meg a 12. feladatot.',
