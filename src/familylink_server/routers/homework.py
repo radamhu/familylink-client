@@ -12,6 +12,7 @@ from familylink_server.config import settings
 from familylink_server.db import get_session
 from familylink_server.db.homework import (
     list_ekreta_credentials,
+    local_today,
     prune_expired_homework,
     upsert_homework_entries,
 )
@@ -100,7 +101,7 @@ async def ingest_homework(
     session: AsyncSession = Depends(get_session),  # noqa: B008
 ) -> None:
     """Upsert a kid's homework by identity, then prune expired rows."""
-    today = date.today()
+    today = local_today()
     entries = [
         {
             'subject': e.subject,
