@@ -8,6 +8,7 @@
   .hw-col.hw-weekend{background:#fffbeb;border:1px dashed #f59e0b}
   .hw-head{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;margin-bottom:4px}
   .hw-head small{font-weight:400;color:#9ca3af;text-transform:none;letter-spacing:0}
+  .hw-col.hw-weekend.hw-today{background:#eff6ff;border:2px solid #3b82f6}
   .hw-today .hw-head{color:#1d4ed8}
   .hw-item{margin-bottom:6px}
   .hw-item b{display:block;color:#374151}
@@ -26,9 +27,9 @@
   <div class="hw-title">Homework</div>
   <div class="hw-grid">
     {% for col in child.homework.columns %}
-      <div class="hw-col{% if col.is_today %} hw-today{% endif %}{% if col.day is none %} hw-weekend{% endif %}{% if not col.cells %} hw-empty{% endif %}">
+      <div class="hw-col{% if col.is_today %} hw-today{% endif %}{% if col.day is none %} hw-weekend{% endif %}{% if not col.cells and not col.is_today %} hw-empty{% endif %}">
         <div class="hw-head">
-          {% if col.day is none %}Weekend <small>due later</small>{% else %}{{ col.label }} <small>{{ col.day.day }}</small>{% endif %}{% if col.is_today and col.day is not none %} <small>· today</small>{% endif %}
+          {% if col.day is none %}Weekend <small>due later</small>{% else %}{{ col.label }} <small>{{ col.day.day }}</small>{% endif %}{% if col.is_today %} <small>· today</small>{% endif %}
         </div>
         {% for hw in col.cells %}
           <div class="hw-item{% if hw.dimmed %} hw-past{% endif %}{% if hw.due_today %} hw-soon{% endif %}">

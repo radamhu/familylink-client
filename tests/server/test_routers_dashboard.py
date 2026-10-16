@@ -317,13 +317,26 @@ def test_child_detail_renders_week_table_with_today_column():
     assert 'Matek' in html
     assert 'Oldd meg a 12. feladatot.' in html
     assert 'Weekend' in html
-    assert html.count('hw-today') >= 1
+    assert 'class="hw-col hw-today' in html
 
 
 @freeze_time('2026-10-16')
 def test_child_detail_dims_passed_deadline():
     html = _child_detail_html([_hw('Magyar', date(2026, 10, 13), date(2026, 10, 15))])
-    assert 'hw-past' in html
+    assert 'class="hw-item hw-past' in html
+
+
+@freeze_time('2026-10-16')
+def test_child_detail_empty_today_column_not_hidden_on_narrow():
+    html = _child_detail_html([_hw('Magyar', date(2026, 10, 13), date(2026, 10, 15))])
+    assert 'class="hw-col hw-today"' in html  # today is empty but never hw-empty
+
+
+@freeze_time('2026-10-17')  # Saturday
+def test_child_detail_saturday_highlights_weekend_with_today_label():
+    html = _child_detail_html([_hw('Magyar', date(2026, 10, 13), date(2026, 10, 15))])
+    assert 'class="hw-col hw-today hw-weekend' in html
+    assert '· today' in html
 
 
 @freeze_time('2026-10-16')
