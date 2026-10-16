@@ -36,7 +36,7 @@ class Settings(BaseSettings):
     discord_summary_time: str = '20:00'
 
     ntfy_topics: str = ''
-    ntfy_base_url: str = 'http://ntfy-qs0o4os08kggkcgs4kos4sgk.192.168.0.22.sslip.io'
+    ntfy_base_url: str = 'http://ntfy-lxzs2xjhmoq2gnriunycf0rq.192.168.0.5.sslip.io'
 
     @property
     def allowed_emails(self) -> frozenset[str]:

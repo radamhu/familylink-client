@@ -155,7 +155,7 @@ def test_ntfy_base_url_defaults_to_intranet_instance():
 
     s = Settings(_env_file=None)
     assert (
-        s.ntfy_base_url == 'http://ntfy-qs0o4os08kggkcgs4kos4sgk.192.168.0.22.sslip.io'
+        s.ntfy_base_url == 'http://ntfy-lxzs2xjhmoq2gnriunycf0rq.192.168.0.5.sslip.io'
     )
 
 

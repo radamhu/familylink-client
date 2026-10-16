@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-TEST_BASE_URL = 'http://ntfy-qs0o4os08kggkcgs4kos4sgk.192.168.0.22.sslip.io'
+TEST_BASE_URL = 'http://ntfy-lxzs2xjhmoq2gnriunycf0rq.192.168.0.5.sslip.io'
 
 
 @pytest.fixture()
