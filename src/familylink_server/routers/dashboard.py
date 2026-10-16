@@ -1,6 +1,5 @@
 """Router for the main dashboard page."""
 
-from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -13,9 +12,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from familylink_server.auth.oauth import require_user
 from familylink_server.constants import CHILD_COLORS
 from familylink_server.db import get_session
-from familylink_server.db.homework import get_upcoming_homework
+from familylink_server.db.homework import get_child_homework, local_today
 from familylink_server.db.models import LinuxMachine, LinuxUsageSnapshot
 from familylink_server.services.family_link import FamilyLinkService, get_service
+from familylink_server.services.homework_week import build_week
 
 router = APIRouter(tags=['dashboard'])
 templates = Jinja2Templates(directory=str(Path(__file__).parent.parent / 'templates'))
@@ -28,7 +28,7 @@ async def _get_child_data(
     session: AsyncSession,
 ) -> dict:
     """Build the template data dict for a single supervised child."""
-    today = date.today()
+    today = local_today()
     usage = await svc.get_apps_and_usage(child.user_id)
     today_sessions = [
         s
@@ -90,15 +90,7 @@ async def _get_child_data(
                 'status': lm_status,
             }
         )
-    homework_rows = await get_upcoming_homework(session, child.user_id, today)
-    homework = [
-        {
-            'subject': h.subject,
-            'description': h.description,
-            'deadline': h.deadline.isoformat(),
-        }
-        for h in homework_rows
-    ]
+    homework = build_week(await get_child_homework(session, child.user_id), today)
     is_locked = any(d['is_locked'] for d in devices)
     return {
         'display_name': child.profile.display_name,
