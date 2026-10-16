@@ -1,0 +1,45 @@
+{# Weekly homework grid: Mon-Fri + one Weekend column. `child.homework` is a HomeworkWeek. #}
+<style>
+  .hw-wrap{container-type:inline-size;margin-top:10px}
+  .hw-title{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+  .hw-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;font-size:11px}
+  .hw-col{background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:5px;min-height:56px}
+  .hw-col.hw-today{background:#eff6ff;border:2px solid #3b82f6}
+  .hw-col.hw-weekend{background:#fffbeb;border:1px dashed #f59e0b}
+  .hw-head{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;margin-bottom:4px}
+  .hw-head small{font-weight:400;color:#9ca3af;text-transform:none;letter-spacing:0}
+  .hw-today .hw-head{color:#1d4ed8}
+  .hw-item{margin-bottom:6px}
+  .hw-item b{display:block;color:#374151}
+  .hw-item span{display:block;color:#6b7280;white-space:pre-line}
+  .hw-item i{display:block;font-style:normal;font-size:10px;color:#9ca3af}
+  .hw-item.hw-past{opacity:.45}
+  .hw-item.hw-past b{text-decoration:line-through}
+  .hw-item.hw-soon i{color:#dc2626;font-weight:600}
+  .hw-tag{display:inline-block;font-size:10px;background:#fef3c7;color:#92400e;border-radius:4px;padding:0 4px}
+  @container (max-width:520px){
+    .hw-grid{grid-template-columns:1fr}
+    .hw-col.hw-empty{display:none}
+  }
+</style>
+<div class="hw-wrap">
+  <div class="hw-title">Homework</div>
+  <div class="hw-grid">
+    {% for col in child.homework.columns %}
+      <div class="hw-col{% if col.is_today %} hw-today{% endif %}{% if col.day is none %} hw-weekend{% endif %}{% if not col.cells %} hw-empty{% endif %}">
+        <div class="hw-head">
+          {% if col.day is none %}Weekend <small>due later</small>{% else %}{{ col.label }} <small>{{ col.day.day }}</small>{% endif %}{% if col.is_today and col.day is not none %} <small>· today</small>{% endif %}
+        </div>
+        {% for hw in col.cells %}
+          <div class="hw-item{% if hw.dimmed %} hw-past{% endif %}{% if hw.due_today %} hw-soon{% endif %}">
+            <b>{{ hw.subject }}{% if hw.is_weekend_copy %} <span class="hw-tag" style="display:inline">{{ hw.deadline.isoformat() }}</span>{% endif %}</b>
+            {% if hw.description %}<span>{{ hw.description }}</span>{% endif %}
+            {% if not hw.is_weekend_copy %}
+              <i>due {{ hw.deadline.isoformat() }}{% if hw.to_weekend %} → weekend{% endif %}{% if hw.due_today %} (today){% endif %}</i>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+</div>

@@ -17,3 +17,12 @@ VALUES ('<google-family-link-child-id>', '<ekreta-username>', '<ekreta-password>
 ```
 
 `child_id` must match the same Google Family Link member id used elsewhere in the dashboard (the same id shown against that child's other data). Look up the institution code at https://intezmenykereso.e-kreta.hu/.
+
+## Weekly homework table
+
+The expanded child card shows homework as a weekly table (Mon–Fri plus one Weekend column).
+Each item sits in the column of the day the scraper first saw it (`registered_on`); items due
+in a later week are also copied into the Weekend column with their deadline. Today's column is
+highlighted and items whose deadline has passed are dimmed. Rows are kept until Monday of the
+current week, so earlier days stay visible. A new week's table appears once the scraper first
+sees homework in that week; until then (Fri–Sun, Monday before the scrape) the old week stays.
