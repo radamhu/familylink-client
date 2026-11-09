@@ -1,4 +1,5 @@
 from datetime import date
+from unittest.mock import Mock
 
 import kreta_client
 import pytest
@@ -15,6 +16,50 @@ def make_kid() -> Kid:
     return Kid(
         child_id="child1", username="u", password="p", institution_code="035120"
     )
+
+
+@pytest.mark.parametrize("banner_visible", [True, False])
+def test_login_handles_optional_cookie_banner_before_credentials(banner_visible):
+    page = Mock()
+    banner = Mock()
+    banner.is_visible.return_value = banner_visible
+    fields = {"#UserName": Mock(), "#Password": Mock()}
+    events = []
+
+    def accept_cookies():
+        # Acceptance submits a form: credentials entered earlier would be lost.
+        events.append("accept")
+        assert not fields["#UserName"].fill.called
+        assert not fields["#Password"].fill.called
+
+    banner.get_by_role.return_value.click.side_effect = accept_cookies
+    banner.wait_for.side_effect = lambda **kwargs: events.append("hidden")
+    page.locator.side_effect = lambda selector: (
+        banner if selector == "#cookieBanner" else fields.get(selector, Mock())
+    )
+
+    def submit_login():
+        fields["#UserName"].fill.assert_called_once_with("u")
+        fields["#Password"].fill.assert_called_once_with("p")
+        assert events == (["accept", "hidden"] if banner_visible else [])
+
+    login_button = Mock()
+    login_button.click.side_effect = submit_login
+    page.get_by_role.side_effect = lambda role, name: (
+        login_button if name == "Bejelentkezés" else Mock()
+    )
+
+    kreta_client._login(page, make_kid())
+
+    login_button.click.assert_called_once()
+    if banner_visible:
+        banner.get_by_role.assert_called_once_with(
+            "button", name="Az összes kötelező cookie elfogadása", exact=True
+        )
+        banner.wait_for.assert_called_once_with(state="hidden")
+    else:
+        banner.get_by_role.assert_not_called()
+        banner.wait_for.assert_not_called()
 
 
 def test_today_weekday_index_monday():

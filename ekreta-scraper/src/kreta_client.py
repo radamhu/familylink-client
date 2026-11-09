@@ -92,6 +92,14 @@ def _login(page, kid: Kid) -> None:
     page.get_by_role("button", name="TOVÁBB A KRÉTA OLDALÁRA").click()
     page.wait_for_load_state("networkidle")
 
+    cookie_banner = page.locator("#cookieBanner")
+    if cookie_banner.is_visible():
+        cookie_banner.get_by_role(
+            "button", name="Az összes kötelező cookie elfogadása", exact=True
+        ).click()
+        cookie_banner.wait_for(state="hidden")
+        page.wait_for_load_state("networkidle")
+
     page.locator("#UserName").fill(kid.username)
     page.locator("#Password").fill(kid.password)
     page.get_by_role("button", name="Bejelentkezés").click()
