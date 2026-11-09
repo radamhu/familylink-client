@@ -39,7 +39,7 @@ Replace `suriel` with the actual SSH user configured for that machine.
 **How enforcement works**
 
 | Condition                                      | Action                                                       |
-| ----------------------------------------------- | ------------------------------------------------------------ |
+| ---------------------------------------------- | ------------------------------------------------------------ |
 | Active graphical session (seat-based) detected | Accumulate seconds toward the daily quota                    |
 | Quota exceeded, not yet locked                 | Lock screen via D-Bus (`org.freedesktop.ScreenSaver.Lock`) |
 | Locked, grace period elapsed                   | Power off via`sudo systemctl poweroff`                     |
